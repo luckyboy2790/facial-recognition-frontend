@@ -1,0 +1,155 @@
+{
+    "nav": {
+        "dashboard": {
+            "dashboard": "仪表盘",
+            "ecommerce": "电子商务",
+            "analytic": "分析",
+            "project": "项目",
+            "marketing": "营销"
+        },
+        "concepts": "概念",
+        "conceptsAi": {
+            "ai": "人工智能",
+            "chat": "聊天",
+            "image": "图片"
+        },
+        "conceptsCustomers": {
+            "customers": "客户",
+            "customerList": "列表",
+            "customerEdit": "编辑",
+            "customerCreate": "创建",
+            "customerDetails": "详情"
+        },
+        "conceptsProducts": {
+            "products": "产品",
+            "productList": "列表",
+            "productEdit": "编辑",
+            "productCreate": "创建"
+        },
+        "conceptsProjects": {
+            "scrumBoard": "看板",
+            "projects": "项目",
+            "projectList": "列表",
+            "projectDetails": "详情",
+            "projectTasks": "任务",
+            "projectIssue": "问题"
+        },
+        "conceptsOrders": {
+            "orders": "订单",
+            "orderList": "列表",
+            "orderEdit": "编辑",
+            "orderDetails": "详情",
+            "orderCreate": "创建"
+        },
+        "conceptsAccount": {
+            "account": "账户",
+            "settings": "设置",
+            "activityLog": "活动日志",
+            "pricing": "定价",
+            "rolesPermissions": "角色与权限"
+        },
+        "conceptsHelpCenter": {
+            "helpCenter": "帮助中心",
+            "supportHub": "支持中心",
+            "article": "文章",
+            "editArticle": "编辑文章",
+            "manageArticle": "管理文章",
+            "faq": "常见问题"
+        },
+        "calendar": "日历",
+        "fileManager": "文件管理器",
+        "mail": "邮件",
+        "chat": "聊天",
+        "uiComponents": "UI 组件",
+        "uiComponentsCommon": {
+            "common": "通用",
+            "grid": "网格",
+            "button": "按钮",
+            "typography": "排版",
+            "icons": "图标"
+        },
+        "uiComponentsFeedback": {
+            "feedback": "反馈",
+            "alert": "警报",
+            "dialog": "对话框",
+            "drawer": "抽屉",
+            "progress": "进度",
+            "skeleton": "骨架",
+            "spinner": "加载器",
+            "toast": "提示"
+        },
+        "uiComponentsDataDisplay": {
+            "dataDisplay": "数据展示",
+            "avatar": "头像",
+            "badge": "徽章",
+            "calendar": "日历",
+            "cards": "卡片",
+            "table": "表格",
+            "tag": "标签",
+            "timeline": "时间线",
+            "tooltip": "工具提示"
+        },
+        "uiComponentsForms": {
+            "forms": "表单",
+            "checkbox": "复选框",
+            "datePicker": "日期选择器",
+            "formControl": "表单控件",
+            "input": "输入框",
+            "inputGroup": "输入组",
+            "radio": "单选框",
+            "segment": "段",
+            "select": "选择",
+            "switcher": "切换器",
+            "timeInput": "时间输入",
+            "upload": "上传"
+        },
+        "uiComponentsNavigation": {
+            "navigation": "导航",
+            "dropdown": "下拉菜单",
+            "menu": "菜单",
+            "pagination": "分页",
+            "steps": "步骤",
+            "tabs": "选项卡"
+        },
+        "uiComponentsGraph": {
+            "graph": "图表",
+            "charts": "图表",
+            "maps": "地图"
+        },
+        "pages": {
+            "pages": "页面",
+            "welcome": "欢迎",
+            "accessDenied": "拒绝访问"
+        },
+        "authentication": {
+            "authentication": "身份验证",
+            "signIn": "登录",
+            "signInSimple": "简单版",
+            "signInSide": "侧边版",
+            "signInSplit": "分屏版",
+            "signUp": "注册",
+            "signUpSimple": "简单版",
+            "signUpSide": "侧边版",
+            "signUpSplit": "分屏版",
+            "forgotPassword": "忘记密码",
+            "forgotPasswordSimple": "简单版",
+            "forgotPasswordSide": "侧边版",
+            "forgotPasswordSplit": "分屏版",
+            "resetPassword": "重置密码",
+            "resetPasswordSimple": "简单版",
+            "resetPasswordSide": "侧边版",
+            "resetPasswordSplit": "分屏版",
+            "otpVerification": "OTP 验证",
+            "otpVerificationSimple": "简单版",
+            "otpVerificationSide": "侧边版",
+            "otpVerificationSplit": "分屏版"
+        },
+        "guide": {
+            "guide": "指南",
+            "documentation": "文档",
+            "sharedComponentDoc": "共享组件",
+            "utilsDoc": "工具文档",
+            "changeLog": "更新日志"
+        }
+    }
+}

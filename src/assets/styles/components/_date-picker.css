@@ -1,0 +1,157 @@
+.date-picker {
+  @apply z-40 max-w-xs shadow-xl dark:shadow-2xl bg-white dark:bg-gray-800 rounded-xl p-4;
+}
+
+.date-picker-panel {
+  @apply rounded-lg;
+}
+
+.date-picker-header-label {
+  @apply cursor-pointer mx-0.5 select-none text-gray-900 dark:text-gray-100;
+}
+.date-picker-current-month {
+  @apply text-gray-700 dark:text-gray-100;
+}
+
+.date-picker-other-month {
+  @apply text-gray-400 dark:text-gray-600;
+}
+
+.date-picker-selected-date {
+  @apply text-white;
+}
+
+.date-picker-available {
+  @apply hover:text-white;
+}
+
+.date-picker-today {
+  @apply border;
+}
+
+.date-picker-month-cell {
+  @apply text-center py-6 font-semibold;
+}
+
+.date-picker-month-cell-disabled {
+  @apply opacity-30 bg-gray-300 cursor-not-allowed;
+}
+
+.date-picker-month-cell-inner {
+  @apply cursor-pointer px-4 py-2 rounded-lg select-none;
+}
+
+.date-picker-year-cell {
+  @apply text-center py-6;
+}
+
+.date-picker-year-cell-inner {
+  @apply cursor-pointer px-4 py-2 rounded-lg select-none font-semibold;
+}
+
+.date-picker-year-cell-disabled {
+  @apply opacity-30 bg-gray-300 cursor-not-allowed;
+}
+
+.picker {
+  @apply z-40;
+}
+
+.picker-panel {
+  @apply shadow-xl dark:shadow-2xl bg-white dark:bg-gray-900 rounded-2xl p-4 dark:border-2 dark:border-gray-700;
+}
+
+.picker-view {
+  @apply min-w-[280px] w-full flex gap-6;
+}
+
+.picker-table {
+  @apply border-separate border-spacing-y-1.5 w-full;
+}
+
+.picker-header-arrow {
+  @apply cursor-pointer flex items-center px-2 text-lg rtl:rotate-180 select-none h-10;
+}
+
+.picker-direction-button {
+  @apply text-2xl rounded-full h-10 w-10 flex items-center justify-center hover:text-gray-800 hover:dark:text-gray-100 hover:bg-gray-100 hover:dark:bg-gray-700;
+}
+
+.picker-header-label {
+  @apply cursor-pointer mx-0.5 select-none text-gray-900 dark:text-gray-100 text-lg font-semibold;
+}
+
+.year-table,
+.month-table {
+  @apply grid grid-cols-3 gap-4;
+}
+
+.date-picker-cell {
+  @apply text-center w-10 h-10 p-0;
+}
+
+.date-picker-cell-selected {
+  @apply text-gray-100;
+}
+
+.date-picker-cell-selected-start {
+  @apply relative rounded-full before:content-[''] before:absolute before:bg-primary-subtle before:w-full before:h-full before:left-0 before:top-0 ltr:before:rounded-tl-full ltr:before:rounded-bl-full rtl:before:rounded-tr-full rtl:before:rounded-br-full;
+}
+
+.date-picker-cell-selected-end {
+  @apply relative rounded-full before:content-[''] before:absolute before:bg-primary-subtle before:w-full before:h-full before:left-0 before:top-0 ltr:before:rounded-tr-full ltr:before:rounded-br-full rtl:before:rounded-tl-full rtl:before:rounded-bl-full;
+}
+
+.date-picker-cell-inrange-today {
+  @apply relative rounded-full before:content-[''] before:absolute before:bg-primary-subtle before:w-full before:h-full before:left-0 before:top-0;
+}
+
+.date-picker-cell-content {
+  @apply h-full w-full;
+}
+
+.date-picker-cell-current-month {
+  @apply text-gray-700 dark:text-gray-400;
+}
+
+.date-picker-cell-hoverable {
+  @apply hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-gray-300;
+}
+
+.date-picker-cell-disabled {
+  @apply opacity-30 bg-gray-300 cursor-not-allowed;
+}
+
+.date-picker-week-cell {
+  @apply font-semibold;
+}
+
+.week-day-cell {
+  @apply h-7;
+}
+
+.week-day-cell-content {
+  @apply text-xs;
+}
+
+.day-picker,
+.month-picker,
+.year-picker {
+  @apply w-full;
+}
+
+.month-picker-cell,
+.year-picker-cell {
+  @apply text-center py-2 rounded-lg font-semibold text-gray-800;
+}
+
+.month-picker-cell-active,
+.year-picker-cell-active {
+  @apply text-white;
+}
+
+.month-picker-cell-disabled,
+.year-picker-cell-disabled {
+  @apply opacity-30 bg-gray-300 cursor-not-allowed;
+}
+

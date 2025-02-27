@@ -1,0 +1,27 @@
+.segment {
+  @apply inline-flex rounded-xl p-1;
+}
+
+.segment-item {
+  @apply font-semibold 
+    outline-none
+    cursor-pointer
+    select-none
+    rounded-xl
+    px-5
+    md:w-auto
+    transition-all
+    duration-100;
+
+  &:not(.segment-item-active):not(.segment-item-disabled) {
+    @apply hover:text-gray-800 hover:dark:text-gray-100
+  }
+
+  &.segment-item-active {
+    @apply bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-100 shadow-sm;
+  }
+
+  &.segment-item-disabled {
+    @apply cursor-not-allowed opacity-40;
+  }
+}

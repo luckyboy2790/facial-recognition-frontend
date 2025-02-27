@@ -1,0 +1,10 @@
+.badge-inner {
+  @apply absolute z-10 
+        transform
+        top-0
+        ltr:translate-x-2/4 
+        rtl:-translate-x-2/4 
+        -translate-y-2/4  
+        ltr:right-0 
+        rtl:left-0;
+}

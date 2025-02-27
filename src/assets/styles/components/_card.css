@@ -1,0 +1,40 @@
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-2xl ;
+}
+
+.card-border {
+  @apply border border-gray-200 dark:border-gray-800;
+}
+
+.card-shadow {
+  @apply shadow-[0_0.125rem_0.25rem_rgba(0,0,0,0.15)] dark:shadow-[0_0.125rem_0.25rem_rgba(0,0,0,0.15),inset_0_0_0_0.0625rem_rgba(254,254,254,.1)] border-b border-gray-200 dark:border-gray-600 dark:border-none;
+}
+
+.card-header-border {
+  @apply border-b border-gray-200 dark:border-gray-700 rounded-t-2xl;
+}
+
+.card-header-extra {
+  @apply flex justify-between items-center;
+}
+
+.card-footer {
+  @apply rounded-bl-lg rounded-br-lg;
+}
+
+.card-footer-border {
+  @apply border-t border-gray-200 dark:border-gray-600;
+}
+
+.card-header,
+.card-footer {
+  @apply py-3 px-5;
+}
+
+.card-body {
+  @apply p-5;
+}
+
+.card-gutterless {
+  @apply p-0;
+}

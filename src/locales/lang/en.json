@@ -1,0 +1,155 @@
+{
+    "nav": {
+        "dashboard": {
+            "dashboard": "Dashboard",
+            "ecommerce": "Ecommerce",
+            "analytic": "Analytic",
+            "project": "Project",
+            "marketing": "Marketing"
+        },
+        "concepts": "Concepts",
+        "conceptsAi": {
+            "ai": "AI",
+            "chat": "Chat",
+            "image": "Image"
+        },
+        "conceptsCustomers": {
+            "customers": "Customer",
+            "customerList": "List",
+            "customerEdit": "Edit",
+            "customerCreate": "Create",
+            "customerDetails": "Details"
+        },
+        "conceptsProducts": {
+            "scrumBoard": "Scrum Board",
+            "products": "Products",
+            "productList": "List",
+            "productEdit": "Edit",
+            "productCreate": "Create"
+        },
+        "conceptsProjects": {
+            "projects": "Projects",
+            "projectList": "List",
+            "projectDetails": "Details",
+            "projectTasks": "Tasks",
+            "projectIssue": "Issue"
+        },
+        "conceptsOrders": {
+            "orders": "Orders",
+            "orderList": "List",
+            "orderEdit": "Edit",
+            "orderDetails": "Details",
+            "orderCreate": "Create"
+        },
+        "conceptsAccount": {
+            "account": "Account",
+            "settings": "Settings",
+            "activityLog": "Activity log",
+            "pricing": "Pricing",
+            "rolesPermissions": "Roles & Permissions"
+        },
+        "conceptsHelpCenter": {
+            "helpCenter": "Help Center",
+            "supportHub": "Support Hub",
+            "article": "Article",
+            "editArticle": "Edit Article",
+            "manageArticle": "Manage Article",
+            "faq": "FAQ"
+        },
+        "calendar": "Calendar",
+        "fileManager": "File Manager",
+        "mail": "Mail",
+        "chat": "Chat",
+        "uiComponents": "UI Components",
+        "uiComponentsCommon": {
+            "common": "Common",
+            "grid": "Grid",
+            "button": "Button",
+            "typography": "Typography",
+            "icons": "Icons"
+        },
+        "uiComponentsFeedback": {
+            "feedback": "Feedback",
+            "alert": "Alert",
+            "dialog": "Dialog",
+            "drawer": "Drawer",
+            "progress": "Progress",
+            "skeleton": "Skeleton",
+            "spinner": "Spinner",
+            "toast": "Toast"
+        },
+        "uiComponentsDataDisplay": {
+            "dataDisplay": "Data Display",
+            "avatar": "Avatar",
+            "badge": "Badge",
+            "calendar": "Calendar",
+            "cards": "Cards",
+            "table": "Table",
+            "tag": "Tag",
+            "timeline": "Timeline",
+            "tooltip": "Tooltip"
+        },
+        "uiComponentsForms": {
+            "forms": "Forms",
+            "checkbox": "Checkbox",
+            "datePicker": "Date Picker",
+            "formControl": "Form Control",
+            "input": "Input",
+            "inputGroup": "Input Group",
+            "radio": "Radio",
+            "segment": "Segment",
+            "select": "Select",
+            "switcher": "Switcher",
+            "timeInput": "Time Input",
+            "upload": "Upload"
+        },
+        "uiComponentsNavigation": {
+            "navigation": "Navigation",
+            "dropdown": "Dropdown",
+            "menu": "Menu",
+            "pagination": "Pagination",
+            "steps": "Steps",
+            "tabs": "Tabs"
+        },
+        "uiComponentsGraph": {
+            "graph": "Graph",
+            "charts": "Charts",
+            "maps": "Maps"
+        },
+        "pages": {
+            "pages": "Pages",
+            "welcome": "Welcome",
+            "accessDenied": "Access Denied"
+        },
+        "authentication": {
+            "authentication": "Authentication",
+            "signIn": "Sign In",
+            "signInSimple": "Simple",
+            "signInSide": "Side",
+            "signInSplit": "Split",
+            "signUp": "Sign Up",
+            "signUpSimple": "Simple",
+            "signUpSide": "Side",
+            "signUpSplit": "Split",
+            "forgotPassword": "Forgot Password",
+            "forgotPasswordSimple": "Simple",
+            "forgotPasswordSide": "Side",
+            "forgotPasswordSplit": "Split",
+            "resetPassword": "Reset Password",
+            "resetPasswordSimple": "Simple",
+            "resetPasswordSide": "Side",
+            "resetPasswordSplit": "Split",
+            "otpVerification": "Otp Verification",
+            "otpVerificationSimple": "Simple",
+            "otpVerificationSide": "Side",
+            "otpVerificationSplit": "Split"
+        },
+        "guide": {
+            "guide": "Guide",
+            "documentation": "Documentation",
+            "sharedComponentDoc": "Shared Component",
+            "utilsDoc": "Utilities",
+            "changeLog": "Changelog"
+        }
+    }
+}

@@ -1,0 +1,155 @@
+{
+    "nav": {
+        "dashboard": {
+            "dashboard": "لوحة التحكم",
+            "ecommerce": "التجارة الإلكترونية",
+            "analytic": "التحليلات",
+            "project": "المشروع",
+            "marketing": "التسويق"
+        },
+        "concepts": "المفاهيم",
+        "conceptsAi": {
+            "ai": "الذكاء الاصطناعي",
+            "chat": "الدردشة",
+            "image": "الصورة"
+        },
+        "conceptsCustomers": {
+            "customers": "العملاء",
+            "customerList": "القائمة",
+            "customerEdit": "تعديل",
+            "customerCreate": "إنشاء",
+            "customerDetails": "التفاصيل"
+        },
+        "conceptsProducts": {
+            "scrumBoard": "لوحة التحكم",
+            "products": "المنتجات",
+            "productList": "القائمة",
+            "productEdit": "تعديل",
+            "productCreate": "إنشاء"
+        },
+        "conceptsProjects": {
+            "projects": "المشاريع",
+            "projectList": "القائمة",
+            "projectDetails": "التفاصيل",
+            "projectTasks": "المهام",
+            "projectIssue": "المشكلة"
+        },
+        "conceptsOrders": {
+            "orders": "الطلبات",
+            "orderList": "القائمة",
+            "orderEdit": "تعديل",
+            "orderDetails": "التفاصيل",
+            "orderCreate": "إنشاء"
+        },
+        "conceptsAccount": {
+            "account": "الحساب",
+            "settings": "الإعدادات",
+            "activityLog": "سجل الأنشطة",
+            "pricing": "الاسعار",
+            "rolesPermissions": "الأدوار والأذونات"
+        },
+        "conceptsHelpCenter": {
+            "helpCenter": "مركز المساعدة",
+            "supportHub": "مركز الدعم",
+            "article": "المقال",
+            "editArticle": "تعديل المقال",
+            "manageArticle": "ادارة المقال",
+            "faq": "الأسئلة الشائعة"
+        },
+        "calendar": "التقويم",
+        "fileManager": "مدير الملفات",
+        "mail": "البريد",
+        "chat": "الدردشة",
+        "uiComponents": "مكونات الواجهة",
+        "uiComponentsCommon": {
+            "common": "عام",
+            "grid": "الشبكة",
+            "button": "الزر",
+            "typography": "الطباعة",
+            "icons": "الأيقونات"
+        },
+        "uiComponentsFeedback": {
+            "feedback": "التعليقات",
+            "alert": "التنبيه",
+            "dialog": "الحوار",
+            "drawer": "الدرج",
+            "progress": "التقدم",
+            "skeleton": "الهيكل",
+            "spinner": "التحميل",
+            "toast": "الإشعار"
+        },
+        "uiComponentsDataDisplay": {
+            "dataDisplay": "عرض البيانات",
+            "avatar": "الصورة الرمزية",
+            "badge": "الشارة",
+            "calendar": "التقويم",
+            "cards": "البطاقات",
+            "table": "الجدول",
+            "tag": "العلامة",
+            "timeline": "الجدول الزمني",
+            "tooltip": "التلميح"
+        },
+        "uiComponentsForms": {
+            "forms": "النماذج",
+            "checkbox": "خانة الاختيار",
+            "datePicker": "منتقي التاريخ",
+            "formControl": "تحكم النموذج",
+            "input": "الإدخال",
+            "inputGroup": "مجموعة الإدخال",
+            "radio": "زر الاختيار",
+            "segment": "القطعة",
+            "select": "الاختيار",
+            "switcher": "المبدل",
+            "timeInput": "إدخال الوقت",
+            "upload": "التحميل"
+        },
+        "uiComponentsNavigation": {
+            "navigation": "التنقل",
+            "dropdown": "القائمة المنسدلة",
+            "menu": "القائمة",
+            "pagination": "الترقيم",
+            "steps": "الخطوات",
+            "tabs": "الألسنة"
+        },
+        "uiComponentsGraph": {
+            "graph": "الرسوم البيانية",
+            "charts": "المخططات",
+            "maps": "الخرائط"
+        },
+        "pages": {
+            "pages": "الصفحات",
+            "welcome": "مرحبًا",
+            "accessDenied": "تم رفض الوصول"
+        },
+        "authentication": {
+            "authentication": "المصادقة",
+            "signIn": "تسجيل الدخول",
+            "signInSimple": "بسيط",
+            "signInSide": "جانبي",
+            "signInSplit": "مقسم",
+            "signUp": "إنشاء حساب",
+            "signUpSimple": "بسيط",
+            "signUpSide": "جانبي",
+            "signUpSplit": "مقسم",
+            "forgotPassword": "نسيت كلمة المرور",
+            "forgotPasswordSimple": "بسيط",
+            "forgotPasswordSide": "جانبي",
+            "forgotPasswordSplit": "مقسم",
+            "resetPassword": "إعادة تعيين كلمة المرور",
+            "resetPasswordSimple": "بسيط",
+            "resetPasswordSide": "جانبي",
+            "resetPasswordSplit": "مقسم",
+            "otpVerification": "تحقق من الكود المرسل",
+            "otpVerificationSimple": "بسيط",
+            "otpVerificationSide": "جانبي",
+            "otpVerificationSplit": "مقسم"
+        },
+        "guide": {
+            "guide": "الدليل",
+            "documentation": "الوثائق",
+            "sharedComponentDoc": "المكون المشترك",
+            "utilsDoc": "الأدوات",
+            "changeLog": "سجل التغييرات"
+        }
+    }
+}
