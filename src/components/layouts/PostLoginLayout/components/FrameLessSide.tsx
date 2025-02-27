@@ -106,7 +106,7 @@ const FrameLessSide = ({ children }: CommonProps) => {
                                 <>
                                     <LanguageSelector />
                                     <SidePanel />
-                                    <QuickAccessDropdown hoverable={false} />
+                                    <QuickAccessDropdown />
                                     <UserProfileDropdown hoverable={false} />
                                 </>
                             }

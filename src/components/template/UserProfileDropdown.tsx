@@ -20,19 +20,9 @@ type DropdownList = {
 
 const dropdownItemList: DropdownList[] = [
     {
-        label: 'Profile',
-        path: '/concepts/account/settings',
-        icon: <PiUserDuotone />,
-    },
-    {
         label: 'Account Setting',
         path: '/concepts/account/settings',
         icon: <PiGearDuotone />,
-    },
-    {
-        label: 'Activity Log',
-        path: '/concepts/account/activity-log',
-        icon: <PiPulseDuotone />,
     },
 ]
 

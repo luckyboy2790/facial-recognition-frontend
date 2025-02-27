@@ -80,7 +80,9 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
                                 showIcon={cascade <= 0}
                                 userAuthority={userAuthority}
                                 showTitle={
-                                    collapsed ? cascade >= 1 : cascade <= MAX_CASCADE_LEVEL
+                                    collapsed
+                                        ? cascade >= 1
+                                        : cascade <= MAX_CASCADE_LEVEL
                                 }
                                 t={t as TraslationFn}
                                 onLinkClick={handleLinkClick}
@@ -111,7 +113,10 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
                             </VerticalCollapsedMenuItem>
                         )}
                         {nav.type === NAV_ITEM_TYPE_TITLE && (
-                            <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
+                            <AuthorityCheck
+                                userAuthority={userAuthority}
+                                authority={nav.authority}
+                            >
                                 <MenuGroup
                                     key={nav.key}
                                     label={t(nav.translateKey) || nav.title}

@@ -15,19 +15,19 @@ export const protectedRoutes: Routes = [
     /** Example purpose only, please remove */
     {
         key: 'singleMenuItem',
-        path: '/single-menu-view',
+        path: '/project',
         component: lazy(() => import('@/views/demo/SingleMenuView')),
         authority: [],
     },
     {
         key: 'collapseMenu.item1',
-        path: '/collapse-menu-item-view-1',
+        path: '/marketing',
         component: lazy(() => import('@/views/demo/CollapseMenuItemView1')),
         authority: [],
     },
     {
         key: 'collapseMenu.item2',
-        path: '/collapse-menu-item-view-2',
+        path: '/analytic',
         component: lazy(() => import('@/views/demo/CollapseMenuItemView2')),
         authority: [],
     },

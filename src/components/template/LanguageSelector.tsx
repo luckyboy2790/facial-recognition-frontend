@@ -38,10 +38,7 @@ const _LanguageSelector = ({ className }: CommonProps) => {
                     key={lang.label}
                     className="justify-between"
                     eventKey={lang.label}
-                    onClick={() => {
-                        console.log(lang.value)
-                        setLang(lang.value)
-                    }}
+                    onClick={() => setLang(lang.value)}
                 >
                     <span className="flex items-center">
                         <Avatar
