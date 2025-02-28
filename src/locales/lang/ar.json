@@ -3,7 +3,7 @@
         "dashboard": {
             "dashboard": "لوحة التحكم",
             "employees": "موظفين",
-            "analytic": "التحليلات",
+            "attendance": "حضور",
             "project": "المشروع",
             "marketing": "التسويق"
         },

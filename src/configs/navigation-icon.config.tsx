@@ -6,7 +6,7 @@ import {
     PiAcornDuotone,
     PiBagSimpleDuotone,
 } from 'react-icons/pi'
-import { FaUsers } from 'react-icons/fa'
+import { FaUsers, FaRegClock } from 'react-icons/fa'
 import type { JSX } from 'react'
 
 export type NavigationIcons = Record<string, JSX.Element>
@@ -14,7 +14,7 @@ export type NavigationIcons = Record<string, JSX.Element>
 const navigationIcon: NavigationIcons = {
     dashboardDashboard: <PiHouseLineDuotone />,
     dashboardEmployees: <FaUsers />,
-    collapseMenu: <PiArrowsInDuotone />,
+    dashboardAttendance: <FaRegClock />,
     groupSingleMenu: <PiBookOpenUserDuotone />,
     groupCollapseMenu: <PiBookBookmarkDuotone />,
     groupMenu: <PiBagSimpleDuotone />,

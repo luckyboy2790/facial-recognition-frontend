@@ -3,7 +3,7 @@
         "dashboard": {
             "dashboard": "Dashboard",
             "employees": "Employees",
-            "analytic": "Analytic",
+            "attendance": "Attendance",
             "project": "Project",
             "marketing": "Marketing"
         },

@@ -3,7 +3,7 @@
         "dashboard": {
             "dashboard": "仪表盘",
             "employees": "雇员",
-            "analytic": "分析",
+            "attendance": "出席",
             "project": "项目",
             "marketing": "营销"
         },

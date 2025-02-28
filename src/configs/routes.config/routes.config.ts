@@ -38,19 +38,15 @@ export const protectedRoutes: Routes = [
         authority: [],
     },
     {
-        key: 'groupMenu.collapse.item1',
-        path: '/group-collapse-menu-item-view-1',
-        component: lazy(
-            () => import('@/views/demo/GroupCollapseMenuItemView1'),
-        ),
+        key: 'attendance',
+        path: '/attendance',
+        component: lazy(() => import('@/views/attendances/AttendanceList')),
         authority: [],
     },
     {
-        key: 'groupMenu.collapse.item2',
-        path: '/group-collapse-menu-item-view-2',
-        component: lazy(
-            () => import('@/views/demo/GroupCollapseMenuItemView2'),
-        ),
+        key: 'attendance',
+        path: '/attendance-edit/:id',
+        component: lazy(() => import('@/views/attendances/AttendanceEdit')),
         authority: [],
     },
     ...othersRoute,

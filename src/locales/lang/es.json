@@ -3,7 +3,7 @@
         "dashboard": {
             "dashboard": "Panel",
             "employees": "Empleadas",
-            "analytic": "Analítica",
+            "attendance": "Asistencia",
             "project": "Proyecto",
             "marketing": "Marketing"
         },
