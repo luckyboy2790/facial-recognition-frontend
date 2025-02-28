@@ -50,3 +50,15 @@ mock.onGet(`/api/customers`).reply((config) => {
         }, 500)
     })
 })
+
+mock.onGet(new RegExp(`/api/customers/*`)).reply(function (config) {
+    const id = config.url?.split('/')[2]
+
+    const user = employeeDetailData.find((user) => user.id === id)
+
+    if (!user) {
+        return [404, {}]
+    }
+
+    return [200, user]
+})

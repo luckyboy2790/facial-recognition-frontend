@@ -20,15 +20,15 @@ export const protectedRoutes: Routes = [
         authority: [],
     },
     {
-        key: 'collapseMenu.item1',
-        path: '/marketing',
-        component: lazy(() => import('@/views/demo/CollapseMenuItemView1')),
+        key: 'employees',
+        path: '/employee-create',
+        component: lazy(() => import('@/views/employees/EmployeeCreate')),
         authority: [],
     },
     {
-        key: 'collapseMenu.item2',
-        path: '/analytic',
-        component: lazy(() => import('@/views/demo/CollapseMenuItemView2')),
+        key: 'employees',
+        path: '/employee-edit/:id',
+        component: lazy(() => import('@/views/employees/EmployeeEdit')),
         authority: [],
     },
     {

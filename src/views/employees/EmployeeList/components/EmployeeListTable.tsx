@@ -13,7 +13,7 @@ import type { TableQueries } from '@/@types/common'
 
 const statusColor: Record<string, string> = {
     active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    blocked: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
+    archieve: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
 const NameColumn = ({ row }: { row: Customer }) => {
@@ -22,7 +22,7 @@ const NameColumn = ({ row }: { row: Customer }) => {
             <Avatar size={40} shape="circle" src={row.img} />
             <Link
                 className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-                to={`/concepts/customers/customer-details/${row.id}`}
+                to={`/employee-detail/${row.id}`}
             >
                 {row.name}
             </Link>
@@ -76,11 +76,11 @@ const CustomerListTable = () => {
     } = useCustomerList()
 
     const handleEdit = (customer: Customer) => {
-        navigate(`/concepts/customers/customer-edit/${customer.id}`)
+        navigate(`/employee-edit/${customer.id}`)
     }
 
     const handleViewDetails = (customer: Customer) => {
-        navigate(`/concepts/customers/customer-details/${customer.id}`)
+        navigate(`/employee-details/${customer.id}`)
     }
 
     const columns: ColumnDef<Customer>[] = useMemo(

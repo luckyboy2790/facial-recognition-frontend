@@ -258,7 +258,7 @@ export const employeeDetailData = [
         img: '/img/avatars/thumb-3.jpg',
         role: 'user',
         lastOnline: 1732393600,
-        status: 'blocked',
+        status: 'archieve',
         title: 'UI/UX Designer',
         personalInfo: {
             location: 'Mumbai, IN',
@@ -650,7 +650,7 @@ export const employeeDetailData = [
         img: '/img/avatars/thumb-8.jpg',
         role: 'supervisor',
         lastOnline: 1739219200,
-        status: 'blocked',
+        status: 'archieve',
         title: 'Compliance Manager',
         personalInfo: {
             location: 'London, UK',
@@ -727,7 +727,7 @@ export const employeeDetailData = [
         img: '/img/avatars/thumb-9.jpg',
         role: 'guest',
         lastOnline: 1734489600,
-        status: 'blocked',
+        status: 'archieve',
         title: 'Compliance Manager',
         personalInfo: {
             location: 'Ankara, TR',
@@ -958,7 +958,7 @@ export const employeeDetailData = [
         img: '/img/avatars/thumb-12.jpg',
         role: 'guest',
         lastOnline: 1734208000,
-        status: 'blocked',
+        status: 'archieve',
         title: 'Software Engineer',
         personalInfo: {
             location: 'Mumbai, IN',
