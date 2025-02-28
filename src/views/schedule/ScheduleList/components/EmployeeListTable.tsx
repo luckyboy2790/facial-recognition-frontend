@@ -6,10 +6,12 @@ import DataTable from '@/components/shared/DataTable'
 import useCustomerList from '../hooks/useEmployeeList'
 import { Link, useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
-import { TbPencil, TbEye } from 'react-icons/tb'
+import { TbPencil } from 'react-icons/tb'
+import { IoArchiveOutline } from 'react-icons/io5'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Customer } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { Notification, toast } from '@/components/ui'
 
 const statusColor: Record<string, string> = {
     active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
@@ -29,7 +31,13 @@ const NameColumn = ({ row }: { row: Customer }) => {
     )
 }
 
-const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
+const ActionColumn = ({
+    onEdit,
+    onViewDetail,
+}: {
+    onEdit: () => void
+    onViewDetail: () => void
+}) => {
     return (
         <div className="flex items-center gap-3">
             <Tooltip title="Edit">
@@ -39,6 +47,15 @@ const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
                     onClick={onEdit}
                 >
                     <TbPencil />
+                </div>
+            </Tooltip>
+            <Tooltip title="Archive">
+                <div
+                    className={`text-xl cursor-pointer select-none font-semibold`}
+                    role="button"
+                    onClick={onViewDetail}
+                >
+                    <IoArchiveOutline />
                 </div>
             </Tooltip>
         </div>
@@ -60,7 +77,20 @@ const CustomerListTable = () => {
     } = useCustomerList()
 
     const handleEdit = (customer: Customer) => {
-        navigate(`/attendance-edit/${customer.id}`)
+        navigate(`/schedule-edit/${customer.id}`)
+    }
+
+    const handleViewDetails = (
+        type: 'success' | 'warning' | 'danger' | 'info',
+    ) => {
+        toast.push(
+            <Notification
+                title={type.charAt(0).toUpperCase() + type.slice(1)}
+                type={type}
+            >
+                User archived successfully
+            </Notification>,
+        )
     }
 
     const columns: ColumnDef<Customer>[] = useMemo(
@@ -108,6 +138,7 @@ const CustomerListTable = () => {
                 cell: (props) => (
                     <ActionColumn
                         onEdit={() => handleEdit(props.row.original)}
+                        onViewDetail={() => handleViewDetails('success')}
                     />
                 ),
             },

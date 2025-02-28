@@ -49,5 +49,23 @@ export const protectedRoutes: Routes = [
         component: lazy(() => import('@/views/attendances/AttendanceEdit')),
         authority: [],
     },
+    {
+        key: 'schedule',
+        path: '/schedule',
+        component: lazy(() => import('@/views/schedule/ScheduleList')),
+        authority: [],
+    },
+    {
+        key: 'schedule',
+        path: '/schedule-edit/:id',
+        component: lazy(() => import('@/views/schedule/ScheduleEdit')),
+        authority: [],
+    },
+    {
+        key: 'schedule',
+        path: '/schedule-create',
+        component: lazy(() => import('@/views/schedule/ScheduleCreate')),
+        authority: [],
+    },
     ...othersRoute,
 ]

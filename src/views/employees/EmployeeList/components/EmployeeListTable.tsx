@@ -13,7 +13,7 @@ import type { TableQueries } from '@/@types/common'
 
 const statusColor: Record<string, string> = {
     active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archieve: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
+    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
 const NameColumn = ({ row }: { row: Customer }) => {
