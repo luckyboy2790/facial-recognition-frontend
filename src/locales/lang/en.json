@@ -2,7 +2,7 @@
     "nav": {
         "dashboard": {
             "dashboard": "Dashboard",
-            "ecommerce": "Ecommerce",
+            "employees": "Employees",
             "analytic": "Analytic",
             "project": "Project",
             "marketing": "Marketing"

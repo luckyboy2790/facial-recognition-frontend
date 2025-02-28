@@ -2,7 +2,7 @@
     "nav": {
         "dashboard": {
             "dashboard": "仪表盘",
-            "ecommerce": "电子商务",
+            "employees": "雇员",
             "analytic": "分析",
             "project": "项目",
             "marketing": "营销"
