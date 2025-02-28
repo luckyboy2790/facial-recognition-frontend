@@ -1,3 +1,3 @@
-import CustomerDetails from './CustomerDetails'
+import CustomerDetails from './EmployeeDetails'
 
 export default CustomerDetails

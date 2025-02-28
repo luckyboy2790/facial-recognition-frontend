@@ -22,7 +22,7 @@ const NameColumn = ({ row }: { row: Customer }) => {
             <Avatar size={40} shape="circle" src={row.img} />
             <Link
                 className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-                to={`/employee-detail/${row.id}`}
+                to={`/employee-details/${row.id}`}
             >
                 {row.name}
             </Link>

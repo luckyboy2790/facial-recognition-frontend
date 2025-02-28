@@ -32,9 +32,9 @@ export const protectedRoutes: Routes = [
         authority: [],
     },
     {
-        key: 'groupMenu.single',
-        path: '/group-single-menu-item-view',
-        component: lazy(() => import('@/views/demo/GroupSingleMenuItemView')),
+        key: 'employees',
+        path: '/employee-details/:id',
+        component: lazy(() => import('@/views/employees/EmployeeDetails')),
         authority: [],
     },
     {

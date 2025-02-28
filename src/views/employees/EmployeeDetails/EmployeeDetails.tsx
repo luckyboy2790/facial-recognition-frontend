@@ -4,11 +4,11 @@ import Loading from '@/components/shared/Loading'
 import ProfileSection from './ProfileSection'
 import BillingSection from './BillingSection'
 import ActivitySection from './ActivitySection'
-import { apiGetCustomer } from '@/services/CustomersService'
+import { apiGetCustomer } from '@/services/employeeService'
 import useSWR from 'swr'
 import { useParams } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
-import type { Customer } from '../CustomerList/types'
+import type { Customer } from '../EmployeeList/types'
 
 const { TabNav, TabList, TabContent } = Tabs
 
@@ -36,18 +36,20 @@ const CustomerDetails = () => {
                     <Card className="w-full">
                         <Tabs defaultValue="billing">
                             <TabList>
-                                <TabNav value="billing">Billing</TabNav>
-                                <TabNav value="activity">Activity</TabNav>
+                                <TabNav value="billing">
+                                    Personal Information
+                                </TabNav>
+                                <TabNav value="activity">Designation</TabNav>
                             </TabList>
                             <div className="p-4">
-                                <TabContent value="billing">
-                                    <BillingSection data={data} />
+                                <TabContent value="personal">
+                                    {/* <BillingSection data={data} /> */}
                                 </TabContent>
-                                <TabContent value="activity">
-                                    <ActivitySection
+                                <TabContent value="designation">
+                                    {/* <ActivitySection
                                         customerName={data.name}
                                         id={id as string}
-                                    />
+                                    /> */}
                                 </TabContent>
                             </div>
                         </Tabs>
