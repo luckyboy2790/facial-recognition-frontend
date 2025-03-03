@@ -1,0 +1,132 @@
+import { useMemo } from 'react'
+import Tag from '@/components/ui/Tag'
+import useCustomerList from '../hooks/useEmployeeList'
+import cloneDeep from 'lodash/cloneDeep'
+import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
+import type { Customer } from '../types'
+import type { TableQueries } from '@/@types/common'
+import ReportDataTable from '@/components/shared/ReportDataTable'
+
+const statusColor: Record<string, string> = {
+    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
+}
+
+const NameColumn = ({ row }: { row: Customer }) => {
+    return (
+        <div className="flex items-center">
+            <div
+                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
+            >
+                {row.name}
+            </div>
+        </div>
+    )
+}
+
+const CustomerListTable = () => {
+    const {
+        customerList,
+        customerListTotal,
+        tableData,
+        isLoading,
+        setTableData,
+        setSelectAllCustomer,
+        selectedCustomer,
+    } = useCustomerList()
+
+    const columns: ColumnDef<Customer>[] = useMemo(
+        () => [
+            {
+                header: 'Name',
+                accessorKey: 'name',
+                cell: (props) => {
+                    const row = props.row.original
+                    return <NameColumn row={row} />
+                },
+            },
+            {
+                header: 'Email',
+                accessorKey: 'email',
+            },
+            {
+                header: 'location',
+                accessorKey: 'personalInfo.location',
+            },
+            {
+                header: 'Status',
+                accessorKey: 'status',
+                cell: (props) => {
+                    const row = props.row.original
+                    return (
+                        <div className="flex items-center">
+                            <Tag className={statusColor[row.status]}>
+                                <span className="capitalize">{row.status}</span>
+                            </Tag>
+                        </div>
+                    )
+                },
+            },
+            {
+                header: 'Spent',
+                accessorKey: 'totalSpending',
+                cell: (props) => {
+                    return <span>${props.row.original.totalSpending}</span>
+                },
+            },
+        ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [],
+    )
+
+    const handleSetTableData = (data: TableQueries) => {
+        setTableData(data)
+        if (selectedCustomer.length > 0) {
+            setSelectAllCustomer([])
+        }
+    }
+
+    const handlePaginationChange = (page: number) => {
+        const newTableData = cloneDeep(tableData)
+        newTableData.pageIndex = page
+        handleSetTableData(newTableData)
+    }
+
+    const handleSelectChange = (value: number) => {
+        const newTableData = cloneDeep(tableData)
+        newTableData.pageSize = Number(value)
+        newTableData.pageIndex = 1
+        handleSetTableData(newTableData)
+    }
+
+    const handleSort = (sort: OnSortParam) => {
+        const newTableData = cloneDeep(tableData)
+        newTableData.sort = sort
+        handleSetTableData(newTableData)
+    }
+
+    return (
+        <ReportDataTable
+            selectable
+            columns={columns}
+            data={customerList}
+            noData={!isLoading && customerList.length === 0}
+            skeletonAvatarColumns={[0]}
+            skeletonAvatarProps={{ width: 28, height: 28 }}
+            loading={isLoading}
+            pagingData={{
+                total: customerListTotal,
+                pageIndex: tableData.pageIndex as number,
+                pageSize: tableData.pageSize as number,
+            }}
+            checkboxChecked={(row) =>
+                selectedCustomer.some((selected) => selected.id === row.id)
+            }
+            onPaginationChange={handlePaginationChange}
+            onSelectChange={handleSelectChange}
+            onSort={handleSort}
+        />
+    )
+}
+
+export default CustomerListTable

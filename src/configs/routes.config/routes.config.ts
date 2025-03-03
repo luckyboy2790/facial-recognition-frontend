@@ -67,5 +67,55 @@ export const protectedRoutes: Routes = [
         component: lazy(() => import('@/views/schedule/ScheduleCreate')),
         authority: [],
     },
+    {
+        key: 'reports',
+        path: '/reports',
+        component: lazy(() => import('@/views/reports/ReportNamesList')),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/employee-attendance',
+        component: lazy(() => import('@/views/reports/EmployeeAttendanceList')),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/employee-birthdays',
+        component: lazy(() => import('@/views/reports/EmployeeBirthdayList')),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/employee-leaves',
+        component: lazy(() => import('@/views/reports/EmployeeLeaveList')),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/employee-list',
+        component: lazy(() => import('@/views/reports/EmployeeList')),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/employee-schedule',
+        component: lazy(() => import('@/views/reports/EmployeeSchduleList')),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/organization-profile',
+        component: lazy(
+            () => import('@/views/reports/OrganizationalProfileList'),
+        ),
+        authority: [],
+    },
+    {
+        key: 'reports',
+        path: '/reports/user-accounts',
+        component: lazy(() => import('@/views/reports/UserAccountsList')),
+        authority: [],
+    },
     ...othersRoute,
 ]

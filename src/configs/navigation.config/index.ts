@@ -62,6 +62,16 @@ const navigationConfig: NavigationTree[] = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+            {
+                key: 'reports',
+                path: `/reports`,
+                title: 'Reports',
+                translateKey: 'nav.dashboard.reports',
+                icon: 'dashboardReports',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
         ],
     },
 ]
