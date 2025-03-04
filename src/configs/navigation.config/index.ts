@@ -82,6 +82,16 @@ const navigationConfig: NavigationTree[] = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+            {
+                key: 'setting',
+                path: `/setting`,
+                title: 'Setting',
+                translateKey: 'nav.dashboard.setting',
+                icon: 'dashboardSetting',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
         ],
     },
 ]

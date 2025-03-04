@@ -6,7 +6,8 @@
             "attendance": "Asistencia",
             "schedule": "Cronograma",
             "reports": "Informes",
-            "users": "Usuarias"
+            "users": "Usuarias",
+            "setting": "Configuración"
         },
         "concepts": "Conceptos",
         "conceptsAi": {

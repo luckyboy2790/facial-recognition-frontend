@@ -6,7 +6,8 @@
             "attendance": "出席",
             "schedule": "日程",
             "reports": "报告",
-            "users": "用户"
+            "users": "用户",
+            "setting": "环境"
         },
         "concepts": "概念",
         "conceptsAi": {

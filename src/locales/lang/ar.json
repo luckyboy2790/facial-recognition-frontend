@@ -6,7 +6,8 @@
             "attendance": "حضور",
             "schedule": "جدول",
             "reports": "التقارير",
-            "users": "المستخدمون"
+            "users": "المستخدمون",
+            "setting": "جلسة"
         },
         "concepts": "المفاهيم",
         "conceptsAi": {

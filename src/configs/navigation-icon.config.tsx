@@ -1,4 +1,5 @@
 import { PiHouseLineDuotone } from 'react-icons/pi'
+import { IoSettings } from 'react-icons/io5'
 import {
     FaUsers,
     FaRegClock,
@@ -17,6 +18,7 @@ const navigationIcon: NavigationIcons = {
     dashboardSchedule: <FaRegCalendarAlt />,
     dashboardReports: <FaChartBar />,
     dashboardUsers: <FaRegUserCircle />,
+    dashboardSetting: <IoSettings />,
 }
 
 export default navigationIcon
