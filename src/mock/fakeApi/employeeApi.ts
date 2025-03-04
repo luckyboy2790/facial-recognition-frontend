@@ -1,4 +1,4 @@
-import { tasksData } from '../data/employeeData'
+import { roleGroupsData, tasksData } from '../data/employeeData'
 import { mock } from '../MockAdapter'
 import wildCardSearch from '@/utils/wildCardSearch'
 import sortBy, { Primer } from '@/utils/sortBy'
@@ -61,4 +61,15 @@ mock.onGet(new RegExp(`/api/customers/*`)).reply(function (config) {
     }
 
     return [200, user]
+})
+
+mock.onGet(`/api/rbac/roles`).reply(() => {
+    const users = employeeDetailData
+
+    const roleGroup = roleGroupsData.map((group) => {
+        group.users = users.filter((user) => user.role === group.id) as any
+        return group
+    })
+
+    return [200, roleGroup]
 })

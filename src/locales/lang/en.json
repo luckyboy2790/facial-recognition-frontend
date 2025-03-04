@@ -5,7 +5,8 @@
             "employees": "Employees",
             "attendance": "Attendance",
             "schedule": "Schedule",
-            "reports": "Reports"
+            "reports": "Reports",
+            "users": "Users"
         },
         "concepts": "Concepts",
         "conceptsAi": {

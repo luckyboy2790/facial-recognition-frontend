@@ -1,16 +1,10 @@
-import {
-    PiHouseLineDuotone,
-    PiArrowsInDuotone,
-    PiBookOpenUserDuotone,
-    PiBookBookmarkDuotone,
-    PiAcornDuotone,
-    PiBagSimpleDuotone,
-} from 'react-icons/pi'
+import { PiHouseLineDuotone } from 'react-icons/pi'
 import {
     FaUsers,
     FaRegClock,
     FaRegCalendarAlt,
     FaChartBar,
+    FaRegUserCircle,
 } from 'react-icons/fa'
 import type { JSX } from 'react'
 
@@ -22,7 +16,7 @@ const navigationIcon: NavigationIcons = {
     dashboardAttendance: <FaRegClock />,
     dashboardSchedule: <FaRegCalendarAlt />,
     dashboardReports: <FaChartBar />,
-    groupMenu: <PiBagSimpleDuotone />,
+    dashboardUsers: <FaRegUserCircle />,
 }
 
 export default navigationIcon

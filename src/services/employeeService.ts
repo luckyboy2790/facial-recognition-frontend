@@ -27,3 +27,10 @@ export async function apiGetCustomer<T, U extends Record<string, unknown>>({
         params,
     })
 }
+
+export async function apiGetRolesPermissionsRoles<T>() {
+    return ApiService.fetchDataWithAxios<T>({
+        url: '/rbac/roles',
+        method: 'get',
+    })
+}
