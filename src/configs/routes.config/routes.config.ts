@@ -177,5 +177,11 @@ export const protectedRoutes: Routes = [
         component: lazy(() => import('@/views/leaveTypes')),
         authority: [],
     },
+    {
+        key: 'clock',
+        path: '/clock',
+        component: lazy(() => import('@/views/checkInOut')),
+        authority: [],
+    },
     ...othersRoute,
 ]

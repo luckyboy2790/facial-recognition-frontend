@@ -33,7 +33,7 @@ type SidePanelProps = CommonProps
 const clockItemList: DropdownList[] = [
     {
         label: 'Clock In/Out',
-        path: '/concepts/account/settings',
+        path: '/clock',
         icon: <FaRegClock />,
     },
 ]
