@@ -1,9 +1,9 @@
 import { AdaptiveCard, Container } from '@/components/shared'
-import CompanyActionTools from './components/CompanyActionTools'
-import AddCompanySection from './components/AddCompanySection'
-import CompanyListTable from './components/CompanyListSection'
-import CompanyListSelected from './components/CompanyListSelected'
-import CompanyListTableTools from './components/CompanyListTableTools'
+import JobsActionTools from './components/JobsActionTools'
+import AddJobsSection from './components/AddJobsSection'
+import JobsListSection from './components/JobsListSection'
+import CompanyListSelected from './components/JobsListSelected'
+import JobsListTableTools from './components/JobsListTableTools'
 
 const CompanyContent = () => {
     return (
@@ -11,15 +11,15 @@ const CompanyContent = () => {
             <Container>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                        <h3>Add Company</h3>
-                        <CompanyActionTools />
+                        <h3>Add Job Title</h3>
+                        <JobsActionTools />
                     </div>
                     <AdaptiveCard>
-                        <AddCompanySection />
+                        <AddJobsSection />
                     </AdaptiveCard>
                     <AdaptiveCard>
-                        <CompanyListTableTools />
-                        <CompanyListTable />
+                        <JobsListTableTools />
+                        <JobsListSection />
                     </AdaptiveCard>
                 </div>
             </Container>

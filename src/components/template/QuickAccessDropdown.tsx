@@ -54,17 +54,17 @@ const dropdownItemList: DropdownList[] = [
     },
     {
         label: 'Department',
-        path: '/concepts/account/settings',
+        path: '/department',
         icon: <FaCubes />,
     },
     {
         label: 'Job Title',
-        path: '/concepts/account/activity-log',
+        path: '/jobtitle',
         icon: <FaPencilAlt />,
     },
     {
         label: 'Leave Type',
-        path: '/concepts/account/activity-log',
+        path: '/leavetype',
         icon: <FaRegCalendarAlt />,
     },
 ]

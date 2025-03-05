@@ -1,8 +1,11 @@
 import Button from '@/components/ui/Button'
 import { TbCloudDownload, TbCloudUpload } from 'react-icons/tb'
+import { useNavigate } from 'react-router-dom'
 import { CSVLink } from 'react-csv'
 
 const CompanyActionTools = () => {
+    const navigate = useNavigate()
+
     const customerList: any = []
 
     return (
