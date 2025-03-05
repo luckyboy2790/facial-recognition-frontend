@@ -49,7 +49,7 @@ const employeeItemList: DropdownList[] = [
 const dropdownItemList: DropdownList[] = [
     {
         label: 'Company',
-        path: '/concepts/account/settings',
+        path: '/company',
         icon: <FaUniversity />,
     },
     {
@@ -86,10 +86,8 @@ const _QuickAccessDropdown = (props: SidePanelProps) => {
             <Dropdown.Item variant="header">
                 <div className="py-2 px-3 flex items-center gap-3">
                     <PiLinkBold className="text-xl" />
-                    <div>
-                        <div className="font-bold text-gray-900 dark:text-gray-100">
-                            QUICK ACCESS
-                        </div>
+                    <div className="font-bold text-gray-900 dark:text-gray-100">
+                        QUICK ACCESS
                     </div>
                 </div>
             </Dropdown.Item>
