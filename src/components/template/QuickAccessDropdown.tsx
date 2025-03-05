@@ -41,7 +41,7 @@ const clockItemList: DropdownList[] = [
 const employeeItemList: DropdownList[] = [
     {
         label: 'New Employee',
-        path: '/concepts/account/settings',
+        path: '/employee-create',
         icon: <FaUserPlus />,
     },
 ]

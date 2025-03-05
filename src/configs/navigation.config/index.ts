@@ -63,6 +63,16 @@ const navigationConfig: NavigationTree[] = [
                 subMenu: [],
             },
             {
+                key: 'leave',
+                path: `/leave-list`,
+                title: 'Leave',
+                translateKey: 'nav.dashboard.leave',
+                icon: 'dashboardLeave',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
                 key: 'reports',
                 path: `/reports`,
                 title: 'Reports',

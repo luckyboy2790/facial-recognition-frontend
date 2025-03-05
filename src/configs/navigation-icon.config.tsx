@@ -6,6 +6,7 @@ import {
     FaRegCalendarAlt,
     FaChartBar,
     FaRegUserCircle,
+    FaRegCalendarPlus,
 } from 'react-icons/fa'
 import type { JSX } from 'react'
 
@@ -16,6 +17,7 @@ const navigationIcon: NavigationIcons = {
     dashboardEmployees: <FaUsers />,
     dashboardAttendance: <FaRegClock />,
     dashboardSchedule: <FaRegCalendarAlt />,
+    dashboardLeave: <FaRegCalendarPlus />,
     dashboardReports: <FaChartBar />,
     dashboardUsers: <FaRegUserCircle />,
     dashboardSetting: <IoSettings />,
