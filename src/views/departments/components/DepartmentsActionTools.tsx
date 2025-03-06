@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { CSVLink } from 'react-csv'
 
 const CompanyActionTools = () => {
-    const navigate = useNavigate()
-
     const customerList: any = []
 
     return (

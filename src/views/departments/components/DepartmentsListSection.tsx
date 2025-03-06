@@ -1,29 +1,28 @@
 import { useMemo } from 'react'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useDepartmentsList'
+import useDepartmentList from '../hooks/useDepartmentsList'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Department } from '../types'
 import type { TableQueries } from '@/@types/common'
 
-const companyList: any[] = []
-
-const CompanyListTable = () => {
+const DepartmentListTable = () => {
     const {
-        customerListTotal,
+        departmentList,
+        departmentListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllDepartment,
+        setSelectedDepartment,
+        selectedDepartment,
+    } = useDepartmentList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<Department>[] = useMemo(
         () => [
             {
-                header: 'Company Name',
-                accessorKey: 'company',
+                header: 'Department',
+                accessorKey: 'department_name',
             },
         ],
         [],
@@ -31,8 +30,8 @@ const CompanyListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedDepartment.length > 0) {
+            setSelectAllDepartment([])
         }
     }
 
@@ -55,16 +54,16 @@ const CompanyListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: Department) => {
+        setSelectedDepartment(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Department>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllDepartment(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllDepartment([])
         }
     }
 
@@ -72,18 +71,18 @@ const CompanyListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={companyList}
-            noData={!isLoading && companyList.length === 0}
+            data={departmentList}
+            noData={!isLoading && departmentList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: departmentListTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedDepartment.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
@@ -94,4 +93,4 @@ const CompanyListTable = () => {
     )
 }
 
-export default CompanyListTable
+export default DepartmentListTable

@@ -1,29 +1,28 @@
 import { useMemo } from 'react'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useEmployeeList'
+import useCompanyList from '../hooks/useCompanyList'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Company } from '../types'
 import type { TableQueries } from '@/@types/common'
-
-const companyList: any[] = []
 
 const CompanyListTable = () => {
     const {
+        companyList,
         customerListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllCompany,
+        setSelectedCompany,
+        selectedCompany,
+    } = useCompanyList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<Company>[] = useMemo(
         () => [
             {
                 header: 'Company Name',
-                accessorKey: 'company',
+                accessorKey: 'company_name',
             },
         ],
         [],
@@ -31,8 +30,8 @@ const CompanyListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedCompany.length > 0) {
+            setSelectAllCompany([])
         }
     }
 
@@ -55,16 +54,16 @@ const CompanyListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: Company) => {
+        setSelectedCompany(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Company>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllCompany(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllCompany([])
         }
     }
 
@@ -83,7 +82,7 @@ const CompanyListTable = () => {
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedCompany.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}

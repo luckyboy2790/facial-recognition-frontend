@@ -1,4 +1,4 @@
-import useCustomerList from '../hooks/useEmployeeList'
+import useCustomerList from '../hooks/useCompanyList'
 import CustomerListSearch from './CompanyListSearch'
 import cloneDeep from 'lodash/cloneDeep'
 

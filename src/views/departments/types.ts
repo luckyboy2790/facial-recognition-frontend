@@ -39,8 +39,8 @@ type Subscription = {
     amount: number
 }
 
-export type GetCustomersListResponse = {
-    list: Customer[]
+export type GetDepartmentsListResponse = {
+    list: Department[]
     total: number
 }
 
@@ -49,19 +49,12 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type Customer = {
-    id: string
-    name: string
-    firstName: string
-    lastName: string
-    email: string
-    img: string
-    role: string
-    lastOnline: number
-    status: string
-    personalInfo: PersonalInfo
-    orderHistory: OrderHistory[]
-    paymentMethod: PaymentMethod[]
-    subscription: Subscription[]
-    totalSpending: number
+export type Department = {
+    _id: string
+    department_name: string
+}
+
+export type DepartmentCreateResponse = {
+    department: Department
+    message: string
 }

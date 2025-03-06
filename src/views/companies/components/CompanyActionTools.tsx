@@ -3,14 +3,14 @@ import { TbCloudDownload, TbCloudUpload } from 'react-icons/tb'
 import { CSVLink } from 'react-csv'
 
 const CompanyActionTools = () => {
-    const customerList: any = []
+    const companyList: any = []
 
     return (
         <div className="flex flex-col md:flex-row gap-3">
             <CSVLink
                 className="w-full"
-                filename="customerList.csv"
-                data={customerList}
+                filename="companyList.csv"
+                data={companyList}
             >
                 <Button
                     icon={<TbCloudDownload className="text-xl" />}

@@ -39,8 +39,8 @@ type Subscription = {
     amount: number
 }
 
-export type GetCustomersListResponse = {
-    list: Customer[]
+export type GetCompanyListResponse = {
+    list: Company[]
     total: number
 }
 
@@ -64,4 +64,14 @@ export type Customer = {
     paymentMethod: PaymentMethod[]
     subscription: Subscription[]
     totalSpending: number
+}
+
+export type Company = {
+    _id: string
+    company_name: string
+}
+
+export type CompanyCreateResponse = {
+    company: Company
+    message: string
 }

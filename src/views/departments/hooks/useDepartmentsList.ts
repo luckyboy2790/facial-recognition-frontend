@@ -1,46 +1,64 @@
-import { apiGetCustomersList } from '@/services/employeeService'
+import {
+    apiDeleteDepartments,
+    apiDepartmentsList,
+} from '@/services/DepartmentService'
 import useSWR from 'swr'
-import { useCustomerListStore } from '../store/departmentsListStore'
-import type { GetCustomersListResponse } from '../types'
+import { useDepartmentListStore } from '../store/departmentsListStore'
+import type { GetDepartmentsListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 
-export default function useCustomerList() {
+type DepartmentCreateData = {
+    companies: string[]
+}
+
+export default function useDepartmentList() {
     const {
         tableData,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-    } = useCustomerListStore((state) => state)
+        selectedDepartment,
+        setSelectedDepartment,
+        setSelectAllDepartment,
+    } = useDepartmentListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/customers', { ...tableData }],
+        ['/api/departments', { ...tableData }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
-            apiGetCustomersList<GetCustomersListResponse, TableQueries>(params),
+            apiDepartmentsList<GetDepartmentsListResponse, TableQueries>(
+                params,
+            ),
         {
             revalidateOnFocus: false,
         },
     )
 
-    // const customerList = data?.list || []
+    // const departmentList = data?.list || []
 
-    // const customerListTotal = data?.total || 0
+    // const departmentListTotal = data?.total || 0
 
-    const customerList: any[] = []
+    const deleteDepartments = async (companies: string[]) => {
+        await apiDeleteDepartments<string[], DepartmentCreateData>({
+            companies,
+        })
+        mutate()
+        setSelectAllDepartment([])
+    }
 
-    const customerListTotal: any = 0
+    const departmentList = data?.list || []
+
+    const departmentListTotal = data?.total || 0
 
     return {
-        customerList,
-        customerListTotal,
+        departmentList,
+        departmentListTotal,
         error,
         isLoading,
         tableData,
         mutate,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
+        deleteDepartments,
+        selectedDepartment,
+        setSelectedDepartment,
+        setSelectAllDepartment,
     }
 }
