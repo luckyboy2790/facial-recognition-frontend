@@ -1,6 +1,6 @@
 import ApiService from './ApiService'
 
-export async function apiJobTItlesList<T, U extends Record<string, unknown>>(
+export async function apiJobTitlesList<T, U extends Record<string, unknown>>(
     params: U,
 ) {
     return ApiService.fetchDataWithAxios<T>({
@@ -20,7 +20,7 @@ export async function apiCreateJobTitle<T, U extends Record<string, unknown>>(
     })
 }
 
-export async function apiDeleteJobTItles<T, U extends Record<string, unknown>>(
+export async function apiDeleteJobTitles<T, U extends Record<string, unknown>>(
     data: U,
 ) {
     return ApiService.fetchDataWithAxios<T>({

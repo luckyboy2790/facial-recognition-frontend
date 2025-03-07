@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { TableQueries } from '@/@types/common'
-import type { Customer, Filter } from '../types'
+import type { LeaveType, Filter } from '../types'
 
 export const initialTableData: TableQueries = {
     pageIndex: 1,
@@ -12,44 +12,46 @@ export const initialTableData: TableQueries = {
     },
 }
 
-export type CustomersListState = {
+export type LeaveTypesListState = {
     tableData: TableQueries
-    selectedCustomer: Partial<Customer>[]
+    selectedLeaveType: Partial<LeaveType>[]
 }
 
-type CustomersListAction = {
+type LeaveTypesListAction = {
     setTableData: (payload: TableQueries) => void
-    setSelectedCustomer: (checked: boolean, customer: Customer) => void
-    setSelectAllCustomer: (customer: Customer[]) => void
+    setSelectedLeaveType: (checked: boolean, leaveType: LeaveType) => void
+    setSelectAllLeaveType: (leaveType: LeaveType[]) => void
 }
 
-const initialState: CustomersListState = {
+const initialState: LeaveTypesListState = {
     tableData: initialTableData,
-    selectedCustomer: [],
+    selectedLeaveType: [],
 }
 
-export const useCustomerListStore = create<
-    CustomersListState & CustomersListAction
+export const useLeaveTypeListStore = create<
+    LeaveTypesListState & LeaveTypesListAction
 >((set) => ({
     ...initialState,
     setTableData: (payload) => set(() => ({ tableData: payload })),
-    setSelectedCustomer: (checked, row) =>
+    setSelectedLeaveType: (checked, row) =>
         set((state) => {
-            const prevData = state.selectedCustomer
+            const prevData = state.selectedLeaveType
             if (checked) {
-                return { selectedCustomer: [...prevData, ...[row]] }
+                return { selectedLeaveType: [...prevData, ...[row]] }
             } else {
                 if (
-                    prevData.some((prevCustomer) => row.id === prevCustomer.id)
+                    prevData.some(
+                        (prevLeaveType) => row._id === prevLeaveType._id,
+                    )
                 ) {
                     return {
-                        selectedCustomer: prevData.filter(
-                            (prevCustomer) => prevCustomer.id !== row.id,
+                        selectedLeaveType: prevData.filter(
+                            (prevLeaveType) => prevLeaveType._id !== row._id,
                         ),
                     }
                 }
-                return { selectedCustomer: prevData }
+                return { selectedLeaveType: prevData }
             }
         }),
-    setSelectAllCustomer: (row) => set(() => ({ selectedCustomer: row })),
+    setSelectAllLeaveType: (row) => set(() => ({ selectedLeaveType: row })),
 }))

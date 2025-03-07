@@ -22,7 +22,6 @@ export default function useDepartmentList() {
 
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/departments', { ...tableData }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
             apiDepartmentsList<GetDepartmentsListResponse, TableQueries>(
                 params,
@@ -31,10 +30,6 @@ export default function useDepartmentList() {
             revalidateOnFocus: false,
         },
     )
-
-    // const departmentList = data?.list || []
-
-    // const departmentListTotal = data?.total || 0
 
     const deleteDepartments = async (companies: string[]) => {
         await apiDeleteDepartments<string[], DepartmentCreateData>({

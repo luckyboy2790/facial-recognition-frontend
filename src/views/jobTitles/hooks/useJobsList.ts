@@ -1,6 +1,6 @@
 import {
-    apiDeleteJobTItles,
-    apiJobTItlesList,
+    apiDeleteJobTitles,
+    apiJobTitlesList,
 } from '@/services/JobTitleService'
 import { apiDepartmentsList } from '@/services/DepartmentService'
 import useSWR from 'swr'
@@ -46,14 +46,14 @@ export default function useJobTitleList() {
     } = useSWR(
         ['/api/jobTitles', { ...tableData }],
         ([_, params]) =>
-            apiJobTItlesList<GetJobTitleListResponse, TableQueries>(params),
+            apiJobTitlesList<GetJobTitleListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
 
     const deleteJobTitles = async (jobTitles: string[]) => {
-        await apiDeleteJobTItles<string[], DepartmentCreateData>({
+        await apiDeleteJobTitles<string[], DepartmentCreateData>({
             jobTitles,
         })
         mutateJobTitles()

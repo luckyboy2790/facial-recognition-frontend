@@ -6,13 +6,7 @@ import useEmployeeList from '../hooks/useLeaveTypesList'
 import { TbChecks } from 'react-icons/tb'
 
 const CompanyListSelected = () => {
-    const {
-        selectedCustomer,
-        customerList,
-        mutate,
-        customerListTotal,
-        setSelectAllCustomer,
-    } = useEmployeeList()
+    const { selectedLeaveType, mutate, deleteLeaveTypes } = useEmployeeList()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -24,26 +18,28 @@ const CompanyListSelected = () => {
         setDeleteConfirmationOpen(false)
     }
 
-    const handleConfirmDelete = () => {
-        const newCustomerList = customerList.filter((customer) => {
-            return !selectedCustomer.some(
-                (selected) => selected.id === customer.id,
-            )
-        })
-        setSelectAllCustomer([])
-        mutate(
-            {
-                list: newCustomerList,
-                total: customerListTotal - selectedCustomer.length,
-            },
-            false,
-        )
-        setDeleteConfirmationOpen(false)
+    const handleConfirmDelete = async () => {
+        const leaveTypeIds: string[] = selectedLeaveType
+            .map((company) => company._id)
+            .filter((id): id is string => id !== undefined)
+
+        if (leaveTypeIds.length === 0) {
+            console.error('No valid company IDs to delete')
+            return
+        }
+
+        try {
+            await deleteLeaveTypes(leaveTypeIds)
+            setDeleteConfirmationOpen(false)
+            mutate()
+        } catch (error) {
+            console.error('Error deleting companies:', error)
+        }
     }
 
     return (
         <>
-            {selectedCustomer.length > 0 && (
+            {selectedLeaveType.length > 0 && (
                 <StickyFooter
                     className=" flex items-center justify-between py-4 bg-white dark:bg-gray-800"
                     stickyClass="-mx-4 sm:-mx-8 border-t border-gray-200 dark:border-gray-700 px-8"
@@ -52,15 +48,15 @@ const CompanyListSelected = () => {
                     <div className="container mx-auto">
                         <div className="flex items-center justify-between">
                             <span>
-                                {selectedCustomer.length > 0 && (
+                                {selectedLeaveType.length > 0 && (
                                     <span className="flex items-center gap-2">
                                         <span className="text-lg text-primary">
                                             <TbChecks />
                                         </span>
                                         <span className="font-semibold flex items-center gap-1">
                                             <span className="heading-text">
-                                                {selectedCustomer.length}{' '}
-                                                Customers
+                                                {selectedLeaveType.length}{' '}
+                                                LeaveTypes
                                             </span>
                                             <span>selected</span>
                                         </span>

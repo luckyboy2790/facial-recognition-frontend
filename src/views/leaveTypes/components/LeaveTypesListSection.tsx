@@ -1,29 +1,36 @@
 import { useMemo } from 'react'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useLeaveTypesList'
+import useLeaveTypeList from '../hooks/useLeaveTypesList'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { LeaveType } from '../types'
 import type { TableQueries } from '@/@types/common'
-
-const companyList: any[] = []
 
 const CompanyListTable = () => {
     const {
-        customerListTotal,
+        leaveTypeList,
+        leaveTypeListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllLeaveType,
+        setSelectedLeaveType,
+        selectedLeaveType,
+    } = useLeaveTypeList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<LeaveType>[] = useMemo(
         () => [
             {
-                header: 'Company Name',
-                accessorKey: 'company',
+                header: 'Description',
+                accessorKey: 'leave_name',
+            },
+            {
+                header: 'Credits',
+                accessorKey: 'credits',
+            },
+            {
+                header: 'Term',
+                accessorKey: 'percalendar',
             },
         ],
         [],
@@ -31,8 +38,8 @@ const CompanyListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedLeaveType.length > 0) {
+            setSelectAllLeaveType([])
         }
     }
 
@@ -55,16 +62,16 @@ const CompanyListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: LeaveType) => {
+        setSelectedLeaveType(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<LeaveType>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllLeaveType(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllLeaveType([])
         }
     }
 
@@ -72,18 +79,18 @@ const CompanyListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={companyList}
-            noData={!isLoading && companyList.length === 0}
+            data={leaveTypeList}
+            noData={!isLoading && leaveTypeList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: leaveTypeListTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedLeaveType.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}

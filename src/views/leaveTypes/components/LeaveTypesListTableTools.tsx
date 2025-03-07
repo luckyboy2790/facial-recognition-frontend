@@ -1,9 +1,9 @@
-import useCustomerList from '../hooks/useLeaveTypesList'
+import useLeaveTypeList from '../hooks/useLeaveTypesList'
 import LeaveTypesSearch from './LeaveTypesSearch'
 import cloneDeep from 'lodash/cloneDeep'
 
 const CompanyListTableTools = () => {
-    const { tableData, setTableData } = useCustomerList()
+    const { tableData, setTableData } = useLeaveTypeList()
 
     const handleInputChange = (val: string) => {
         const newTableData = cloneDeep(tableData)

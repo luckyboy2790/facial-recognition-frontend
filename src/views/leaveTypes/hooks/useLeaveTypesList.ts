@@ -1,46 +1,57 @@
-import { apiGetCustomersList } from '@/services/employeeService'
+import {
+    apiDeleteLeaveTypes,
+    apiLeaveTypesList,
+} from '@/services/leaveTypeService'
 import useSWR from 'swr'
-import { useCustomerListStore } from '../store/leaveTypesListStore'
-import type { GetCustomersListResponse } from '../types'
+import { useLeaveTypeListStore } from '../store/leaveTypesListStore'
+import type { GetLeaveTypesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 
-export default function useCustomerList() {
+type LeaveTypeData = {
+    leaveTypeIds: string[]
+}
+
+export default function useLeaveTypeList() {
     const {
         tableData,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-    } = useCustomerListStore((state) => state)
+        selectedLeaveType,
+        setSelectedLeaveType,
+        setSelectAllLeaveType,
+    } = useLeaveTypeListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/customers', { ...tableData }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        ['/api/leaveTypes', { ...tableData }],
         ([_, params]) =>
-            apiGetCustomersList<GetCustomersListResponse, TableQueries>(params),
+            apiLeaveTypesList<GetLeaveTypesListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
 
-    // const customerList = data?.list || []
+    const deleteLeaveTypes = async (leaveTypeIds: string[]) => {
+        await apiDeleteLeaveTypes<string[], LeaveTypeData>({
+            leaveTypeIds,
+        })
+        mutate()
+        setSelectAllLeaveType([])
+    }
 
-    // const customerListTotal = data?.total || 0
+    const leaveTypeList = data?.list || []
 
-    const customerList: any[] = []
-
-    const customerListTotal: any = 0
+    const leaveTypeListTotal = data?.total || 0
 
     return {
-        customerList,
-        customerListTotal,
+        leaveTypeList,
+        leaveTypeListTotal,
         error,
         isLoading,
         tableData,
+        deleteLeaveTypes,
         mutate,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
+        selectedLeaveType,
+        setSelectedLeaveType,
+        setSelectAllLeaveType,
     }
 }

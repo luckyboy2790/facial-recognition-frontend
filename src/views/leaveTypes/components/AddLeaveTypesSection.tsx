@@ -1,27 +1,110 @@
 import { useState } from 'react'
-import { Button, Input } from '@/components/ui'
+import { Button, Input, Notification, toast } from '@/components/ui'
 import { FaPlus } from 'react-icons/fa'
 import Radio from '@/components/ui/Radio'
+import { LeaveTypeCreateResponse } from '../types'
+import { apiCreateLeaveType } from '@/services/leaveTypeService'
+import useSWR from 'swr'
+import useLeaveTypeList from '../hooks/useLeaveTypesList'
 
-const AddCompanySection = () => {
-    const [value, setValue] = useState('Banana')
+type LeaveTypeCreateData = {
+    leaveName: string
+    credits: string
+    percalendar: string
+}
+
+const AddLeaveTypeSection = () => {
+    const [termValue, setTermValue] = useState('Monthly')
+    const [leaveName, setLeaveName] = useState('')
+    const [credits, setCredits] = useState('')
+    const { mutate } = useLeaveTypeList()
 
     const onChange = (val: string) => {
-        setValue(val)
+        setTermValue(val)
+    }
+
+    const createLeaveType = async () => {
+        return apiCreateLeaveType<LeaveTypeCreateResponse, LeaveTypeCreateData>(
+            {
+                leaveName,
+                credits,
+                percalendar: termValue,
+            },
+        )
+    }
+
+    const { data, isLoading } = useSWR('/api/company/create', {
+        revalidateOnFocus: false,
+    })
+
+    const handleSubmit = async () => {
+        try {
+            if (leaveName === '') {
+                toast.push(
+                    <Notification title={'error'} type={'danger'}>
+                        You have to fill company name.
+                    </Notification>,
+                )
+
+                return
+            }
+
+            const numericCredits = Number(credits)
+            if (
+                isNaN(numericCredits) ||
+                numericCredits < 0 ||
+                numericCredits > 365
+            ) {
+                toast.push(
+                    <Notification title={'error'} type={'danger'}>
+                        Credits must be a number between 0 and 365.
+                    </Notification>,
+                )
+                return
+            }
+
+            const newLeaveType = await createLeaveType()
+
+            if (newLeaveType?.company?._id) {
+                mutate()
+
+                setLeaveName('')
+                setCredits('')
+                setTermValue('Monthly')
+            }
+
+            console.log(newLeaveType)
+        } catch (error) {
+            console.error('Error creating company:', error)
+        }
     }
 
     return (
         <>
             <div className="flex flex-col gap-4">
-                <Input placeholder="Job Title" />
-                <Input placeholder="Credits" />
-                <Radio.Group vertical value={value} onChange={onChange}>
-                    <Radio value={'monthly'}>Monthly</Radio>
-                    <Radio value={'yearly'}>Yearly</Radio>
+                <Input
+                    placeholder='Leave Name (e.g. "Vacation Leave, Sick Leave")'
+                    value={leaveName}
+                    onChange={(e) => setLeaveName(e.target.value)}
+                />
+                <Input
+                    placeholder='Credits (e.g. "15" (days))'
+                    value={credits}
+                    onChange={(e) => setCredits(e.target.value)}
+                />
+                <Radio.Group vertical value={termValue} onChange={onChange}>
+                    <Radio value={'Monthly'}>Monthly</Radio>
+                    <Radio value={'Yearly'}>Yearly</Radio>
                 </Radio.Group>
             </div>
             <div className="flex justify-end">
-                <Button variant="solid" icon={<FaPlus />}>
+                <Button
+                    variant="solid"
+                    icon={<FaPlus />}
+                    onClick={handleSubmit}
+                    // disabled={isLoading}
+                    loading={isLoading}
+                >
                     Create
                 </Button>
             </div>
@@ -29,4 +112,4 @@ const AddCompanySection = () => {
     )
 }
 
-export default AddCompanySection
+export default AddLeaveTypeSection
