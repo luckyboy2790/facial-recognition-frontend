@@ -1,46 +1,79 @@
-import { apiGetCustomersList } from '@/services/employeeService'
+import {
+    apiDeleteJobTItles,
+    apiJobTItlesList,
+} from '@/services/JobTitleService'
+import { apiDepartmentsList } from '@/services/DepartmentService'
 import useSWR from 'swr'
-import { useCustomerListStore } from '../store/jobsListStore'
-import type { GetCustomersListResponse } from '../types'
+import { useJobTitleListStore } from '../store/jobsListStore'
+import type { GetJobTitleListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { GetDepartmentsListResponse } from '@/views/departments/types'
 
-export default function useCustomerList() {
+type DepartmentCreateData = {
+    jobTitles: string[]
+}
+
+export default function useJobTitleList() {
     const {
         tableData,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-    } = useCustomerListStore((state) => state)
+        selectedJobTitle,
+        setSelectedJobTitle,
+        setSelectAllJobTitle,
+    } = useJobTitleListStore((state) => state)
 
-    const { data, error, isLoading, mutate } = useSWR(
-        ['/api/customers', { ...tableData }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {
+        data: departmentsData,
+        error: departmentsError,
+        isLoading: isDepartmentsLoading,
+        mutate: mutateDepartment,
+    } = useSWR(
+        ['/api/departments', { ...tableData }],
         ([_, params]) =>
-            apiGetCustomersList<GetCustomersListResponse, TableQueries>(params),
+            apiDepartmentsList<GetDepartmentsListResponse, TableQueries>(
+                params,
+            ),
         {
             revalidateOnFocus: false,
         },
     )
 
-    // const customerList = data?.list || []
+    const {
+        data: jobTitlesData,
+        error: jobTitlesError,
+        isLoading: isJobTitlesLoading,
+        mutate: mutateJobTitles,
+    } = useSWR(
+        ['/api/jobTitles', { ...tableData }],
+        ([_, params]) =>
+            apiJobTItlesList<GetJobTitleListResponse, TableQueries>(params),
+        {
+            revalidateOnFocus: false,
+        },
+    )
 
-    // const customerListTotal = data?.total || 0
-
-    const customerList: any[] = []
-
-    const customerListTotal: any = 0
+    const deleteJobTitles = async (jobTitles: string[]) => {
+        await apiDeleteJobTItles<string[], DepartmentCreateData>({
+            jobTitles,
+        })
+        mutateJobTitles()
+        setSelectAllJobTitle([])
+    }
 
     return {
-        customerList,
-        customerListTotal,
-        error,
-        isLoading,
+        departmentList: departmentsData?.list || [],
+        departmentListTotal: departmentsData?.total || 0,
+        jobTitlesList: jobTitlesData?.list || [],
+        jobTitlesTotal: jobTitlesData?.total || 0,
+        error: departmentsError || jobTitlesError,
+        isLoading: isDepartmentsLoading || isJobTitlesLoading,
         tableData,
-        mutate,
+        deleteJobTitles,
+        mutateDepartment,
+        mutateJobTitles,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
+        selectedJobTitle,
+        setSelectedJobTitle,
+        setSelectAllJobTitle,
     }
 }

@@ -1,29 +1,32 @@
 import { useMemo } from 'react'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useJobsList'
+import useJobTitlesList from '../hooks/useJobsList'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { JobTitle } from '../types'
 import type { TableQueries } from '@/@types/common'
-
-const companyList: any[] = []
 
 const CompanyListTable = () => {
     const {
-        customerListTotal,
+        jobTitlesList,
+        jobTitlesTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllJobTitle,
+        setSelectedJobTitle,
+        selectedJobTitle,
+    } = useJobTitlesList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<JobTitle>[] = useMemo(
         () => [
             {
-                header: 'Company Name',
-                accessorKey: 'company',
+                header: 'Job title',
+                accessorKey: 'job_title',
+            },
+            {
+                header: 'Department Name',
+                accessorKey: 'department_name',
             },
         ],
         [],
@@ -31,8 +34,8 @@ const CompanyListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedJobTitle.length > 0) {
+            setSelectAllJobTitle([])
         }
     }
 
@@ -55,16 +58,16 @@ const CompanyListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: JobTitle) => {
+        setSelectedJobTitle(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<JobTitle>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllJobTitle(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllJobTitle([])
         }
     }
 
@@ -72,18 +75,18 @@ const CompanyListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={companyList}
-            noData={!isLoading && companyList.length === 0}
+            data={jobTitlesList}
+            noData={!isLoading && jobTitlesList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: jobTitlesTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedJobTitle.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}

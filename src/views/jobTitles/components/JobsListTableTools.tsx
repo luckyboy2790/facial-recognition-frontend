@@ -1,9 +1,9 @@
-import useCustomerList from '../hooks/useJobsList'
-import CustomerListSearch from './JobsSearch'
+import useJobTitleList from '../hooks/useJobsList'
+import JobTitleListSearch from './JobsSearch'
 import cloneDeep from 'lodash/cloneDeep'
 
 const CompanyListTableTools = () => {
-    const { tableData, setTableData } = useCustomerList()
+    const { tableData, setTableData } = useJobTitleList()
 
     const handleInputChange = (val: string) => {
         const newTableData = cloneDeep(tableData)
@@ -20,7 +20,7 @@ const CompanyListTableTools = () => {
 
     return (
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <CustomerListSearch onInputChange={handleInputChange} />
+            <JobTitleListSearch onInputChange={handleInputChange} />
         </div>
     )
 }

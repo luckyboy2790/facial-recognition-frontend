@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { TableQueries } from '@/@types/common'
-import type { Customer, Filter } from '../types'
+import type { JobTitle, Filter } from '../types'
 
 export const initialTableData: TableQueries = {
     pageIndex: 1,
@@ -12,44 +12,46 @@ export const initialTableData: TableQueries = {
     },
 }
 
-export type CustomersListState = {
+export type JobTitlesListState = {
     tableData: TableQueries
-    selectedCustomer: Partial<Customer>[]
+    selectedJobTitle: Partial<JobTitle>[]
 }
 
-type CustomersListAction = {
+type JobTitlesListAction = {
     setTableData: (payload: TableQueries) => void
-    setSelectedCustomer: (checked: boolean, customer: Customer) => void
-    setSelectAllCustomer: (customer: Customer[]) => void
+    setSelectedJobTitle: (checked: boolean, jobTitle: JobTitle) => void
+    setSelectAllJobTitle: (jobTitle: JobTitle[]) => void
 }
 
-const initialState: CustomersListState = {
+const initialState: JobTitlesListState = {
     tableData: initialTableData,
-    selectedCustomer: [],
+    selectedJobTitle: [],
 }
 
-export const useCustomerListStore = create<
-    CustomersListState & CustomersListAction
+export const useJobTitleListStore = create<
+    JobTitlesListState & JobTitlesListAction
 >((set) => ({
     ...initialState,
     setTableData: (payload) => set(() => ({ tableData: payload })),
-    setSelectedCustomer: (checked, row) =>
+    setSelectedJobTitle: (checked, row) =>
         set((state) => {
-            const prevData = state.selectedCustomer
+            const prevData = state.selectedJobTitle
             if (checked) {
-                return { selectedCustomer: [...prevData, ...[row]] }
+                return { selectedJobTitle: [...prevData, ...[row]] }
             } else {
                 if (
-                    prevData.some((prevCustomer) => row.id === prevCustomer.id)
+                    prevData.some(
+                        (prevJobTitle) => row._id === prevJobTitle._id,
+                    )
                 ) {
                     return {
-                        selectedCustomer: prevData.filter(
-                            (prevCustomer) => prevCustomer.id !== row.id,
+                        selectedJobTitle: prevData.filter(
+                            (prevJobTitle) => prevJobTitle._id !== row._id,
                         ),
                     }
                 }
-                return { selectedCustomer: prevData }
+                return { selectedJobTitle: prevData }
             }
         }),
-    setSelectAllCustomer: (row) => set(() => ({ selectedCustomer: row })),
+    setSelectAllJobTitle: (row) => set(() => ({ selectedJobTitle: row })),
 }))

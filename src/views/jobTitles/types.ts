@@ -39,8 +39,14 @@ type Subscription = {
     amount: number
 }
 
-export type GetCustomersListResponse = {
-    list: Customer[]
+export type JobTitle = {
+    _id: string
+    job_title: string
+    department_id: string
+}
+
+export type GetJobTitleListResponse = {
+    list: JobTitle[]
     total: number
 }
 
@@ -49,19 +55,7 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type Customer = {
-    id: string
-    name: string
-    firstName: string
-    lastName: string
-    email: string
-    img: string
-    role: string
-    lastOnline: number
-    status: string
-    personalInfo: PersonalInfo
-    orderHistory: OrderHistory[]
-    paymentMethod: PaymentMethod[]
-    subscription: Subscription[]
-    totalSpending: number
+export type JobTitleCreateResponse = {
+    job_title: JobTitle
+    message: string
 }
