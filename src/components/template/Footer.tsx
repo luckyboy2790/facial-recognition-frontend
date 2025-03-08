@@ -46,7 +46,7 @@ export default function Footer({
     return (
         <footer
             className={classNames(
-                `footer flex flex-auto items-center h-16 ${PAGE_CONTAINER_GUTTER_X}`,
+                `footer flex flex-auto items-center h-auto pb-6 ${PAGE_CONTAINER_GUTTER_X}`,
                 className,
             )}
         >

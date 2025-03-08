@@ -54,6 +54,7 @@ const EmployeeCreate = () => {
                     firstName: '',
                     lastName: '',
                     email: '',
+                    gender: '',
                     img: '',
                     phoneNumber: '',
                     dialCode: '',
@@ -61,7 +62,13 @@ const EmployeeCreate = () => {
                     address: '',
                     city: '',
                     postcode: '',
-                    tags: [],
+                    civilStatus: '',
+                    height: '',
+                    weight: '',
+                    age: '',
+                    birthday: '',
+                    nationalId: '',
+                    placeOfBirth: '',
                 }}
                 onFormSubmit={handleFormSubmit}
             >

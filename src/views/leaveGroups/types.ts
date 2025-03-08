@@ -39,8 +39,8 @@ type Subscription = {
     amount: number
 }
 
-export type GetLeaveTypesListResponse = {
-    list: LeaveType[]
+export type GetLeaveGroupsListResponse = {
+    list: LeaveGroup[]
     total: number
 }
 
@@ -49,13 +49,15 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type LeaveType = {
+export type LeaveGroup = {
     _id: string
-    leave_name: string
-    credit: number
+    leaveGroupName: string
+    description: number
+    leavePrivilege: string[]
+    status: string
 }
 
-export type LeaveTypeCreateResponse = {
-    company: LeaveType
+export type LeaveGroupCreateResponse = {
+    leave_group: LeaveGroup
     message: string
 }

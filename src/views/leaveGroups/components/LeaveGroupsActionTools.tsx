@@ -31,10 +31,14 @@ const CompanyActionTools = () => {
             </Button>
             <Button
                 variant="solid"
-                icon={<FaPlus className="text-xl" />}
-                onClick={() => navigate('/leavegroup')}
+                icon={
+                    <FaPlus
+                        className="text-xl"
+                        onClick={() => navigate('/leavegroup')}
+                    />
+                }
             >
-                Add leave group
+                Add
             </Button>
         </div>
     )

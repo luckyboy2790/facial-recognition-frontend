@@ -178,6 +178,12 @@ export const protectedRoutes: Routes = [
         authority: [],
     },
     {
+        key: 'leavegroup',
+        path: '/leavegroup',
+        component: lazy(() => import('@/views/leaveGroups')),
+        authority: [],
+    },
+    {
         key: 'clock',
         path: '/clock',
         component: lazy(() => import('@/views/checkInOut')),

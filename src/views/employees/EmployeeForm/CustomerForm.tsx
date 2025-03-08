@@ -2,11 +2,9 @@ import { useEffect } from 'react'
 import { Form } from '@/components/ui/Form'
 import Container from '@/components/shared/Container'
 import BottomStickyBar from '@/components/template/BottomStickyBar'
-import OverviewSection from './OverviewSection'
-import AddressSection from './AddressSection'
-import TagsSection from './TagsSection'
+import PersonalInfomationSection from './PersonalInfomation'
+import EmployeeDetailSection from './EmployeeDetail'
 import ProfileImageSection from './ProfileImageSection'
-import AccountSection from './AccountSection'
 import isEmpty from 'lodash/isEmpty'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -24,6 +22,9 @@ type CustomerFormProps = {
 const validationSchema: ZodType<CustomerFormSchema> = z.object({
     firstName: z.string().min(1, { message: 'First name required' }),
     lastName: z.string().min(1, { message: 'Last name required' }),
+    gender: z.string().min(1, { message: 'Gender required' }),
+
+    civilStatus: z.string().min(1, { message: 'Civil Status required' }),
     email: z
         .string()
         .min(1, { message: 'Email required' })
@@ -37,16 +38,39 @@ const validationSchema: ZodType<CustomerFormSchema> = z.object({
     postcode: z.string().min(1, { message: 'Postcode required' }),
     city: z.string().min(1, { message: 'City required' }),
     img: z.string(),
-    tags: z.array(z.object({ value: z.string(), label: z.string() })),
+    height: z
+        .string()
+        .regex(/^\d+$/, { message: 'Height must be a numeric value' })
+        .refine((val) => Number(val) >= 50 && Number(val) <= 250, {
+            message: 'Height must be between 50 cm and 250 cm',
+        }),
+    weight: z
+        .string()
+        .regex(/^\d+$/, { message: 'Weight must be a numeric value' })
+        .refine((val) => Number(val) >= 20 && Number(val) <= 300, {
+            message: 'Weight must be between 20 kg and 300 kg',
+        }),
+    age: z
+        .string()
+        .regex(/^\d+$/, { message: 'Age must be a numeric value' })
+        .refine((val) => Number(val) >= 1 && Number(val) <= 120, {
+            message: 'Age must be between 1 and 120',
+        }),
+    birthday: z
+        .string()
+        .min(1, { message: 'Birthday is required' })
+        .regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: 'Invalid date format (YYYY-MM-DD)',
+        })
+        .refine((val) => new Date(val) <= new Date(), {
+            message: 'Birthday cannot be in the future',
+        }),
+    nationalId: z.string().min(1, { message: 'National Id required' }),
+    placeOfBirth: z.string().min(1, { message: 'Place of birth required' }),
 })
 
 const CustomerForm = (props: CustomerFormProps) => {
-    const {
-        onFormSubmit,
-        defaultValues = {},
-        newCustomer = false,
-        children,
-    } = props
+    const { onFormSubmit, defaultValues = {}, children } = props
 
     const {
         handleSubmit,
@@ -84,18 +108,18 @@ const CustomerForm = (props: CustomerFormProps) => {
             <Container>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="gap-4 flex flex-col flex-auto">
-                        <OverviewSection control={control} errors={errors} />
-                        <AddressSection control={control} errors={errors} />
-                    </div>
-                    <div className="md:w-[370px] gap-4 flex flex-col">
                         <ProfileImageSection
                             control={control}
                             errors={errors}
                         />
-                        <TagsSection control={control} errors={errors} />
-                        {!newCustomer && (
-                            <AccountSection control={control} errors={errors} />
-                        )}
+                        <PersonalInfomationSection
+                            control={control}
+                            errors={errors}
+                        />
+                        <EmployeeDetailSection
+                            control={control}
+                            errors={errors}
+                        />
                     </div>
                 </div>
             </Container>
