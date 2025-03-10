@@ -90,7 +90,7 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
     ]
 
     const employmentStatusOption = [
-        { label: 'Active', value: 'Actived' },
+        { label: 'Active', value: 'Active' },
         { label: 'Archived', value: 'Archived' },
     ]
 

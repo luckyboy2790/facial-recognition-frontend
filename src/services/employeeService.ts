@@ -11,7 +11,7 @@ export async function apiGetCustomersList<T, U extends Record<string, unknown>>(
     params: U,
 ) {
     return ApiService.fetchDataWithAxios<T>({
-        url: '/customers',
+        url: 'http://localhost:5000/api/employee',
         method: 'get',
         params,
     })

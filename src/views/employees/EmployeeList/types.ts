@@ -1,3 +1,9 @@
+import { Company } from '@/views/companies/types'
+import { Department } from '@/views/departments/types'
+import { JobTitle } from '@/views/jobTitles/types'
+import { LeaveGroup } from '@/views/leaveGroups/types'
+import { String } from 'lodash'
+
 type PersonalInfo = {
     location: string
     title: string
@@ -40,7 +46,7 @@ type Subscription = {
 }
 
 export type GetCustomersListResponse = {
-    list: Customer[]
+    list: Employee[]
     total: number
 }
 
@@ -49,19 +55,41 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type Customer = {
-    id: string
+export type FaceInfo = {
     name: string
-    firstName: string
-    lastName: string
-    email: string
+    descriptors: number[]
+}
+
+export type Employee = {
+    _id: string
+    full_name: string
     img: string
-    role: string
-    lastOnline: number
-    status: string
-    personalInfo: PersonalInfo
-    orderHistory: OrderHistory[]
-    paymentMethod: PaymentMethod[]
-    subscription: Subscription[]
-    totalSpending: number
+    email: string
+    dial_code: string
+    phone_number: string
+    face_info: FaceInfo
+    address: string
+    gender: string
+    civil_status: string
+    height: string
+    weight: string
+    age: string
+    birthday: string
+    national_id: string
+    place_of_birth: string
+    company: Company
+    department: Department
+    job_title: JobTitle
+    company_id: string
+    department_id: string
+    job_title_id: String
+    pin: string
+    company_email: string
+    leave_group_id: string
+    leave_group: LeaveGroup
+    employee_type: string
+    employee_status: string
+    official_start_date: string
+    date_regularized: string
+    __v: number
 }

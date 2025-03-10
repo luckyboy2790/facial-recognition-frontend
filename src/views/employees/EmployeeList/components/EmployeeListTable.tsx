@@ -8,23 +8,27 @@ import { Link, useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import { TbPencil, TbEye } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Employee } from '../types'
 import type { TableQueries } from '@/@types/common'
 
 const statusColor: Record<string, string> = {
-    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
+    Active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
-const NameColumn = ({ row }: { row: Customer }) => {
+const NameColumn = ({ row }: { row: Employee }) => {
     return (
         <div className="flex items-center">
-            <Avatar size={40} shape="circle" src={row.img} />
+            <Avatar
+                size={40}
+                shape="circle"
+                src={`http://localhost:5000${row.img}`}
+            />
             <Link
                 className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-                to={`/employee-details/${row.id}`}
+                to={`/employee-details/${row._id}`}
             >
-                {row.name}
+                {row.full_name}
             </Link>
         </div>
     )
@@ -75,31 +79,39 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
-    const handleEdit = (customer: Customer) => {
-        navigate(`/employee-edit/${customer.id}`)
+    const handleEdit = (customer: Employee) => {
+        navigate(`/employee-edit/${customer._id}`)
     }
 
-    const handleViewDetails = (customer: Customer) => {
-        navigate(`/employee-details/${customer.id}`)
+    const handleViewDetails = (customer: Employee) => {
+        navigate(`/employee-details/${customer._id}`)
     }
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<Employee>[] = useMemo(
         () => [
             {
                 header: 'Name',
-                accessorKey: 'name',
+                accessorKey: 'full_name',
                 cell: (props) => {
                     const row = props.row.original
                     return <NameColumn row={row} />
                 },
             },
             {
-                header: 'Email',
-                accessorKey: 'email',
+                header: 'Company',
+                accessorKey: 'company.company_name',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Department',
+                accessorKey: 'department.department_name',
+            },
+            {
+                header: 'Position',
+                accessorKey: 'job_title.job_title',
+            },
+            {
+                header: 'Leave Privileges',
+                accessorKey: 'leave_group.group_name',
             },
             {
                 header: 'Status',
@@ -108,18 +120,13 @@ const CustomerListTable = () => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
-                            <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                            <Tag className={statusColor[row.employee_status]}>
+                                <span className="capitalize">
+                                    {row.employee_status}
+                                </span>
                             </Tag>
                         </div>
                     )
-                },
-            },
-            {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
                 },
             },
             {
@@ -165,11 +172,11 @@ const CustomerListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
+    const handleRowSelect = (checked: boolean, row: Employee) => {
         setSelectedCustomer(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Employee>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
             setSelectAllCustomer(originalRows)
@@ -193,7 +200,7 @@ const CustomerListTable = () => {
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedCustomer.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
