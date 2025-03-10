@@ -34,3 +34,10 @@ export async function apiGetRolesPermissionsRoles<T>() {
         method: 'get',
     })
 }
+
+export async function apiGetAllData<T>() {
+    return ApiService.fetchDataWithAxios<T>({
+        url: 'http://localhost:5000/api/employee/total_field',
+        method: 'get',
+    })
+}

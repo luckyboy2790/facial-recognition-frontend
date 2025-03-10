@@ -6,12 +6,9 @@ export type UserFields = {
     email: string
     dialCode: string
     phoneNumber: string
-    img: string
-    country: string
+    faceDescriptor: string[]
     address: string
     gender: string
-    postcode: string
-    city: string
     civilStatus: string
     height: string
     weight: string
@@ -25,7 +22,7 @@ export type EmployeeDetail = {
     company: string
     department: string
     jobTitle: string
-    idNumber: string
+    pin: string
     companyEmail: string
     leaveGroup: string
     employmentType: string
@@ -38,12 +35,9 @@ export type ProfileImageFields = {
     img: string
 }
 
-export type AccountField = {
-    banAccount?: boolean
-    accountVerified?: boolean
-}
-
-export type CustomerFormSchema = UserFields & ProfileImageFields & AccountField
+export type CustomerFormSchema = UserFields &
+    ProfileImageFields &
+    EmployeeDetail
 
 export type FormSectionBaseProps = {
     control: Control<CustomerFormSchema>

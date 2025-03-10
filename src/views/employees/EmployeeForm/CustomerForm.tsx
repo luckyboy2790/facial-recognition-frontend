@@ -19,7 +19,7 @@ type CustomerFormProps = {
     newCustomer?: boolean
 } & CommonProps
 
-const validationSchema: ZodType<CustomerFormSchema> = z.object({
+const validationSchema: ZodType<any> = z.object({
     firstName: z.string().min(1, { message: 'First name required' }),
     lastName: z.string().min(1, { message: 'Last name required' }),
     gender: z.string().min(1, { message: 'Gender required' }),
@@ -33,10 +33,7 @@ const validationSchema: ZodType<CustomerFormSchema> = z.object({
     phoneNumber: z
         .string()
         .min(1, { message: 'Please input your mobile number' }),
-    country: z.string().min(1, { message: 'Please select a country' }),
     address: z.string().min(1, { message: 'Addrress required' }),
-    postcode: z.string().min(1, { message: 'Postcode required' }),
-    city: z.string().min(1, { message: 'City required' }),
     img: z.string(),
     height: z
         .string()
@@ -67,6 +64,39 @@ const validationSchema: ZodType<CustomerFormSchema> = z.object({
         }),
     nationalId: z.string().min(1, { message: 'National Id required' }),
     placeOfBirth: z.string().min(1, { message: 'Place of birth required' }),
+    department: z.string().min(1, { message: 'Department name required' }),
+    company: z.string().min(1, { message: 'Company name required' }),
+    jobTitle: z.string().min(1, { message: 'Job Title required' }),
+    pin: z
+        .string()
+        .regex(/^\d{6,10}$/, {
+            message: 'PIN must be between 6 and 10 numeric digits',
+        })
+        .refine((val) => Number(val) >= 0 && Number(val) <= 9999999999, {
+            message: 'PIN must be a 4-digit number between 1000 and 9999',
+        }),
+    companyEmail: z
+        .string()
+        .min(1, { message: 'Email required' })
+        .email({ message: 'Invalid email' }),
+    leaveGroup: z.string().min(1, { message: 'Leave Group required' }),
+    employmentType: z.string().min(1, { message: 'Employment Type required' }),
+    employmentStatus: z
+        .string()
+        .min(1, { message: 'Employment Status required' }),
+    officialStartDate: z
+        .string()
+        .min(1, { message: 'Official Start Date is required' })
+        .regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: 'Invalid date format (YYYY-MM-DD)',
+        }),
+    dateRegularized: z
+        .string()
+        .min(1, { message: 'Date Regularized is required' })
+        .regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: 'Invalid date format (YYYY-MM-DD)',
+        }),
+    faceDescriptor: z.array(z.number()),
 })
 
 const CustomerForm = (props: CustomerFormProps) => {
@@ -77,12 +107,9 @@ const CustomerForm = (props: CustomerFormProps) => {
         reset,
         formState: { errors },
         control,
+        setValue,
     } = useForm<CustomerFormSchema>({
         defaultValues: {
-            ...{
-                banAccount: false,
-                accountVerified: true,
-            },
             ...defaultValues,
         },
         resolver: zodResolver(validationSchema),
@@ -92,7 +119,6 @@ const CustomerForm = (props: CustomerFormProps) => {
         if (!isEmpty(defaultValues)) {
             reset(defaultValues)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(defaultValues)])
 
     const onSubmit = (values: CustomerFormSchema) => {
@@ -111,6 +137,7 @@ const CustomerForm = (props: CustomerFormProps) => {
                         <ProfileImageSection
                             control={control}
                             errors={errors}
+                            setValue={setValue}
                         />
                         <PersonalInfomationSection
                             control={control}

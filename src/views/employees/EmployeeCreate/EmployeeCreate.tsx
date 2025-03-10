@@ -20,13 +20,72 @@ const EmployeeCreate = () => {
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
-        await sleep(800)
+
+        try {
+            let imageUrl = values.img
+
+            if (values.img && values.img.startsWith('blob:')) {
+                const formData = new FormData()
+                const response = await fetch(values.img)
+                const blob = await response.blob()
+                formData.append('image', blob, 'profile.jpg')
+
+                const uploadResponse = await fetch(
+                    'http://localhost:5000/api/upload-image',
+                    {
+                        method: 'POST',
+                        body: formData,
+                    },
+                )
+                const uploadResult = await uploadResponse.json()
+
+                if (!uploadResult.success) {
+                    console.error(
+                        '❌ Failed to upload image:',
+                        uploadResult.message,
+                    )
+                    setIsSubmiting(false)
+                    return
+                }
+
+                imageUrl = uploadResult.imageUrl
+            }
+
+            const payload = {
+                ...values,
+                img: imageUrl,
+                faceDescriptor: values.faceDescriptor,
+            }
+
+            console.log(payload)
+
+            const response = await fetch(
+                'http://localhost:5000/api/employee/create_employee',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                },
+            )
+
+            const result = await response.json()
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to create employee')
+            }
+
+            toast.push(
+                <Notification type="success">
+                    Employee created successfully!
+                </Notification>,
+                { placement: 'top-center' },
+            )
+            navigate('/employees')
+        } catch (error: any) {
+            console.error('❌ Error submitting form:', error)
+        }
+
         setIsSubmiting(false)
-        toast.push(
-            <Notification type="success">Customer created!</Notification>,
-            { placement: 'top-center' },
-        )
-        navigate('/employees')
     }
 
     const handleConfirmDiscard = () => {
@@ -58,10 +117,7 @@ const EmployeeCreate = () => {
                     img: '',
                     phoneNumber: '',
                     dialCode: '',
-                    country: '',
                     address: '',
-                    city: '',
-                    postcode: '',
                     civilStatus: '',
                     height: '',
                     weight: '',
@@ -69,6 +125,17 @@ const EmployeeCreate = () => {
                     birthday: '',
                     nationalId: '',
                     placeOfBirth: '',
+                    company: '',
+                    department: '',
+                    jobTitle: '',
+                    pin: '',
+                    companyEmail: '',
+                    leaveGroup: '',
+                    employmentType: '',
+                    employmentStatus: '',
+                    officialStartDate: '',
+                    dateRegularized: '',
+                    faceDescriptor: [],
                 }}
                 onFormSubmit={handleFormSubmit}
             >

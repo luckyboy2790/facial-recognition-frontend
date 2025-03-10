@@ -99,9 +99,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 type="text"
                                 autoComplete="off"
                                 placeholder="First Name"
-                                value={field.value}
-                                onChange={field.onChange}
-                                onBlur={field.onBlur}
+                                {...field}
                             />
                         )}
                     />
@@ -119,9 +117,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 type="text"
                                 autoComplete="off"
                                 placeholder="Last Name"
-                                value={field.value}
-                                onChange={field.onChange}
-                                onBlur={field.onBlur}
+                                {...field}
                             />
                         )}
                     />
@@ -141,14 +137,14 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             className="mb-4"
                             placeholder="Please Select"
                             options={genderOptions}
-                            onChange={(value) => field.onChange(value?.value)}
+                            onChange={(option) => field.onChange(option?.value)}
                         />
                     )}
                 />
             </FormItem>
 
             <FormItem
-                label="Sivil Status"
+                label="Civil Status"
                 invalid={Boolean(errors.civilStatus)}
                 errorMessage={errors.civilStatus?.message}
             >
@@ -160,7 +156,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             className="mb-4"
                             placeholder="Please Select"
                             options={CivilStatusOptions}
-                            onChange={(value) => field.onChange(value?.value)}
+                            onChange={(option) => field.onChange(option?.value)}
                         />
                     )}
                 />
@@ -198,7 +194,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             <NumericInput
                                 autoComplete="off"
                                 placeholder="Weight"
-                                {...field}
+                                value={field.value}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
                             />
                         )}
                     />
@@ -218,9 +216,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             type="email"
                             autoComplete="off"
                             placeholder="Email"
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
+                            {...field}
                         />
                     )}
                 />
@@ -316,12 +312,6 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                             ? date.toISOString().split('T')[0]
                                             : '',
                                     )
-
-                                    console.log(
-                                        date
-                                            ? date.toISOString().split('T')[0]
-                                            : '',
-                                    )
                                 }}
                             />
                         )}
@@ -341,9 +331,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             type="text"
                             autoComplete="off"
                             placeholder="City, Province, Country"
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
+                            {...field}
                         />
                     )}
                 />
@@ -361,9 +349,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             type="text"
                             autoComplete="off"
                             placeholder="House/Unit Number, Building, Street, City, Province, Country"
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
+                            {...field}
                         />
                     )}
                 />
@@ -381,9 +367,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             type="text"
                             autoComplete="off"
                             placeholder="Address"
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
+                            {...field}
                         />
                     )}
                 />
