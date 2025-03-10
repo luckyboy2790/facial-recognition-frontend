@@ -51,7 +51,7 @@ export type Filter = {
 
 export type LeaveGroup = {
     _id: string
-    leaveGroupName: string
+    group_name: string
     description: number
     leavePrivilege: string[]
     status: string

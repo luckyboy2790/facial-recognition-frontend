@@ -22,7 +22,7 @@ export async function apiGetCustomer<T, U extends Record<string, unknown>>({
     ...params
 }: U) {
     return ApiService.fetchDataWithAxios<T>({
-        url: `/customers/${id}`,
+        url: `http://localhost:5000/api/employee/${id}`,
         method: 'get',
         params,
     })

@@ -2,15 +2,19 @@ import Card from '@/components/ui/Card'
 import Tabs from '@/components/ui/Tabs'
 import Loading from '@/components/shared/Loading'
 import ProfileSection from './ProfileSection'
-import BillingSection from './BillingSection'
-import ActivitySection from './ActivitySection'
+import BillingSection from './PersonalDataSection'
 import { apiGetCustomer } from '@/services/employeeService'
 import useSWR from 'swr'
 import { useParams } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
-import type { Customer } from '../EmployeeList/types'
+import type { Employee } from '../EmployeeList/types'
+import DesignationSection from './DesignationSection'
 
 const { TabNav, TabList, TabContent } = Tabs
+
+type ProfileSectionProps = {
+    data: Employee
+}
 
 const CustomerDetails = () => {
     const { id } = useParams()
@@ -18,7 +22,8 @@ const CustomerDetails = () => {
     const { data, isLoading } = useSWR(
         ['/api/customers', { id: id as string }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([_, params]) => apiGetCustomer<Customer, { id: string }>(params),
+        ([_, params]) =>
+            apiGetCustomer<ProfileSectionProps, { id: string }>(params),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
@@ -31,25 +36,22 @@ const CustomerDetails = () => {
             {!isEmpty(data) && (
                 <div className="flex flex-col xl:flex-row gap-4">
                     <div className="min-w-[330px] 2xl:min-w-[400px]">
-                        <ProfileSection data={data} />
+                        <ProfileSection data={data.data} />
                     </div>
                     <Card className="w-full">
-                        <Tabs defaultValue="billing">
+                        <Tabs defaultValue="personal">
                             <TabList>
-                                <TabNav value="billing">
+                                <TabNav value="personal">
                                     Personal Information
                                 </TabNav>
-                                <TabNav value="activity">Designation</TabNav>
+                                <TabNav value="designation">Designation</TabNav>
                             </TabList>
                             <div className="p-4">
                                 <TabContent value="personal">
-                                    {/* <BillingSection data={data} /> */}
+                                    <BillingSection data={data.data} />
                                 </TabContent>
                                 <TabContent value="designation">
-                                    {/* <ActivitySection
-                                        customerName={data.name}
-                                        id={id as string}
-                                    /> */}
+                                    <DesignationSection data={data.data} />
                                 </TabContent>
                             </div>
                         </Tabs>
