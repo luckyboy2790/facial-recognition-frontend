@@ -99,7 +99,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 type="text"
                                 autoComplete="off"
                                 placeholder="First Name"
-                                {...field}
+                                value={field.value}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
                             />
                         )}
                     />
@@ -117,7 +119,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 type="text"
                                 autoComplete="off"
                                 placeholder="Last Name"
-                                {...field}
+                                value={field.value}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
                             />
                         )}
                     />
@@ -137,6 +141,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             className="mb-4"
                             placeholder="Please Select"
                             options={genderOptions}
+                            value={genderOptions.find(
+                                (option) => option.value === field.value,
+                            )}
                             onChange={(option) => field.onChange(option?.value)}
                         />
                     )}
@@ -156,6 +163,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             className="mb-4"
                             placeholder="Please Select"
                             options={CivilStatusOptions}
+                            value={CivilStatusOptions.find(
+                                (option) => option.value === field.value,
+                            )}
                             onChange={(option) => field.onChange(option?.value)}
                         />
                     )}
@@ -216,7 +226,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             type="email"
                             autoComplete="off"
                             placeholder="Email"
-                            {...field}
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
                         />
                     )}
                 />
@@ -306,6 +318,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 placeholder="Birthday"
+                                value={
+                                    field.value ? new Date(field.value) : null
+                                }
                                 onChange={(date) => {
                                     field.onChange(
                                         date

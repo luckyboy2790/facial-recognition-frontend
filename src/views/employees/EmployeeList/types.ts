@@ -62,6 +62,8 @@ export type FaceInfo = {
 
 export type Employee = {
     _id: string
+    first_name: string
+    last_name: string
     full_name: string
     img: string
     email: string

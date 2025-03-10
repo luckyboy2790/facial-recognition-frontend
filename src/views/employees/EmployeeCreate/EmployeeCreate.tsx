@@ -108,7 +108,7 @@ const EmployeeCreate = () => {
     return (
         <>
             <CustomerForm
-                newCustomer
+                newCustomer={true}
                 defaultValues={{
                     firstName: '',
                     lastName: '',

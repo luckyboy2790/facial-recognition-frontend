@@ -16,7 +16,7 @@ import type { CustomerFormSchema } from './types'
 type CustomerFormProps = {
     onFormSubmit: (values: CustomerFormSchema) => void
     defaultValues?: CustomerFormSchema
-    newCustomer?: boolean
+    newCustomer: boolean
 } & CommonProps
 
 const validationSchema: ZodType<any> = z.object({
@@ -100,7 +100,7 @@ const validationSchema: ZodType<any> = z.object({
 })
 
 const CustomerForm = (props: CustomerFormProps) => {
-    const { onFormSubmit, defaultValues = {}, children } = props
+    const { onFormSubmit, defaultValues = {}, children, newCustomer } = props
 
     const {
         handleSubmit,
@@ -138,6 +138,7 @@ const CustomerForm = (props: CustomerFormProps) => {
                             control={control}
                             errors={errors}
                             setValue={setValue}
+                            newCustomer={newCustomer}
                         />
                         <PersonalInfomationSection
                             control={control}

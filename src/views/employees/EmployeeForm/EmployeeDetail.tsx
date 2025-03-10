@@ -112,6 +112,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                                 className="mb-4"
                                 placeholder="Please Select"
                                 options={companyOptions}
+                                value={companyOptions.find(
+                                    (option) => option.value === field.value,
+                                )}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
@@ -133,6 +136,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                                 className="mb-4"
                                 placeholder="Please Select"
                                 options={departmentOptions}
+                                value={departmentOptions.find(
+                                    (option) => option.value === field.value,
+                                )}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
@@ -154,6 +160,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                                 className="mb-4"
                                 placeholder="Please Select"
                                 options={jobTitleOptions}
+                                value={jobTitleOptions.find(
+                                    (option) => option.value === field.value,
+                                )}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
@@ -212,6 +221,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                                 className="mb-4"
                                 placeholder="Please Select"
                                 options={leaveGroupOptions}
+                                value={leaveGroupOptions.find(
+                                    (option) => option.value === field.value,
+                                )}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
@@ -236,6 +248,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                                 className="mb-4"
                                 placeholder="Please Select"
                                 options={employmentTypeOption}
+                                value={employmentTypeOption.find(
+                                    (option) => option.value === field.value,
+                                )}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
@@ -257,6 +272,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                                 className="mb-4"
                                 placeholder="Please Select"
                                 options={employmentStatusOption}
+                                value={employmentStatusOption.find(
+                                    (option) => option.value === field.value,
+                                )}
                                 onChange={(option) =>
                                     field.onChange(option?.value)
                                 }
@@ -276,6 +294,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 placeholder="DATE"
+                                value={
+                                    field.value ? new Date(field.value) : null
+                                }
                                 onChange={(date) => {
                                     field.onChange(
                                         date
@@ -299,6 +320,9 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                         render={({ field }) => (
                             <DatePicker
                                 placeholder="DATE"
+                                value={
+                                    field.value ? new Date(field.value) : null
+                                }
                                 onChange={(date) => {
                                     field.onChange(
                                         date

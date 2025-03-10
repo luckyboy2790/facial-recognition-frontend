@@ -12,7 +12,11 @@ import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
 import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import type { CustomerFormSchema } from '../EmployeeForm'
-import type { Customer } from '../EmployeeList/types'
+import type { Employee } from '../EmployeeList/types'
+
+type ProfileSectionProps = {
+    data: Employee
+}
 
 const CustomerEdit = () => {
     const { id } = useParams()
@@ -20,9 +24,9 @@ const CustomerEdit = () => {
     const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
-        [`/api/customers${id}`, { id: id as string }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([_, params]) => apiGetCustomer<Customer, { id: string }>(params),
+        [`/api/customers/${id}`, { id: id as string }],
+        ([_, params]) =>
+            apiGetCustomer<ProfileSectionProps, { id: string }>(params),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
@@ -35,34 +39,73 @@ const CustomerEdit = () => {
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
-        await sleep(800)
-        setIsSubmiting(false)
-        toast.push(<Notification type="success">Changes Saved!</Notification>, {
-            placement: 'top-center',
-        })
-        navigate('/employees')
-    }
 
-    const getDefaultValues = () => {
-        if (data) {
-            const { firstName, lastName, email, personalInfo, img } = data
+        try {
+            let imageUrl = values.img
 
-            return {
-                firstName,
-                lastName,
-                email,
-                img,
-                phoneNumber: personalInfo.phoneNumber,
-                dialCode: personalInfo.dialCode,
-                country: personalInfo.country,
-                address: personalInfo.address,
-                city: personalInfo.city,
-                postcode: personalInfo.postcode,
-                tags: [],
+            if (values.img && values.img.startsWith('blob:')) {
+                const formData = new FormData()
+                const response = await fetch(values.img)
+                const blob = await response.blob()
+                formData.append('image', blob, 'profile.jpg')
+
+                const uploadResponse = await fetch(
+                    'http://localhost:5000/api/upload-image',
+                    {
+                        method: 'POST',
+                        body: formData,
+                    },
+                )
+                const uploadResult = await uploadResponse.json()
+
+                if (!uploadResult.success) {
+                    console.error(
+                        '❌ Failed to upload image:',
+                        uploadResult.message,
+                    )
+                    setIsSubmiting(false)
+                    return
+                }
+
+                imageUrl = uploadResult.imageUrl
             }
+
+            const payload = {
+                ...values,
+                img: imageUrl,
+                faceDescriptor: values.faceDescriptor,
+                _id: id,
+            }
+
+            console.log(payload)
+
+            const response = await fetch(
+                'http://localhost:5000/api/employee/update_employee',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                },
+            )
+
+            const result = await response.json()
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to create employee')
+            }
+
+            toast.push(
+                <Notification type="success">
+                    Employee created successfully!
+                </Notification>,
+                { placement: 'top-center' },
+            )
+            navigate('/employees')
+        } catch (error: any) {
+            console.error('❌ Error submitting form:', error)
         }
 
-        return {}
+        setIsSubmiting(false)
     }
 
     const handleConfirmDelete = () => {
@@ -86,6 +129,73 @@ const CustomerEdit = () => {
         history.back()
     }
 
+    const mapEmployeeToCustomerForm = (
+        employee: Employee,
+    ): CustomerFormSchema => {
+        return {
+            firstName: employee.first_name,
+            lastName: employee.last_name,
+            email: employee.email,
+            dialCode: employee.dial_code,
+            phoneNumber: employee.phone_number,
+            address: employee.address,
+            gender: employee.gender,
+            civilStatus: employee.civil_status,
+            height: employee.height,
+            weight: employee.weight,
+            age: employee.age,
+            birthday: employee.birthday,
+            nationalId: employee.national_id,
+            placeOfBirth: employee.place_of_birth,
+            img: employee.img,
+            company: employee.company_id,
+            department: employee.department_id,
+            jobTitle: String(employee.job_title_id),
+            pin: employee.pin,
+            companyEmail: employee.company_email,
+            leaveGroup: employee.leave_group_id,
+            employmentType: employee.employee_type,
+            employmentStatus: employee.employee_status,
+            officialStartDate: employee.official_start_date,
+            dateRegularized: employee.date_regularized,
+            faceDescriptor: Array.isArray(employee.face_info?.descriptors[0])
+                ? employee.face_info?.descriptors[0].map(String)
+                : [],
+        }
+    }
+
+    const defaultFormValues: CustomerFormSchema =
+        data && data.data
+            ? mapEmployeeToCustomerForm(data.data)
+            : {
+                  firstName: '',
+                  lastName: '',
+                  email: '',
+                  gender: '',
+                  img: '',
+                  phoneNumber: '',
+                  dialCode: '',
+                  address: '',
+                  civilStatus: '',
+                  height: '',
+                  weight: '',
+                  age: '',
+                  birthday: '',
+                  nationalId: '',
+                  placeOfBirth: '',
+                  company: '',
+                  department: '',
+                  jobTitle: '',
+                  pin: '',
+                  companyEmail: '',
+                  leaveGroup: '',
+                  employmentType: '',
+                  employmentStatus: '',
+                  officialStartDate: '',
+                  dateRegularized: '',
+                  faceDescriptor: [],
+              }
+
     return (
         <>
             {!isLoading && !data && (
@@ -97,7 +207,7 @@ const CustomerEdit = () => {
             {!isLoading && data && (
                 <>
                     <CustomerForm
-                        defaultValues={getDefaultValues() as CustomerFormSchema}
+                        defaultValues={defaultFormValues}
                         newCustomer={false}
                         onFormSubmit={handleFormSubmit}
                     >

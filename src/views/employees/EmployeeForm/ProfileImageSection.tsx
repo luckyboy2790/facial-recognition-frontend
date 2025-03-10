@@ -11,11 +11,18 @@ import type { FormSectionBaseProps } from './types'
 
 type ProfileImageSectionProps = FormSectionBaseProps & {
     setValue: UseFormSetValue<any>
+    newCustomer: boolean
 }
 
-const ProfileImage = ({ control, setValue }: ProfileImageSectionProps) => {
+const ProfileImage = ({
+    control,
+    setValue,
+    newCustomer,
+}: ProfileImageSectionProps) => {
     const [faceDescriptor, setFaceDescriptor] = useState<number[] | null>(null)
     const [modelsLoaded, setModelsLoaded] = useState(false)
+
+    const [isUpdateImage, setIsUpdateImage] = useState(false)
 
     useEffect(() => {
         const loadModels = async () => {
@@ -95,16 +102,16 @@ const ProfileImage = ({ control, setValue }: ProfileImageSectionProps) => {
                             <>
                                 <div className="flex items-center justify-center">
                                     {field.value ? (
-                                        faceDescriptor ? (
-                                            <Avatar
-                                                size={100}
-                                                className="border-4 border-white bg-gray-100 text-gray-300 shadow-lg"
-                                                icon={<HiOutlineUser />}
-                                                src={field.value}
-                                            />
-                                        ) : (
-                                            <Spinner size={100} />
-                                        )
+                                        <Avatar
+                                            size={100}
+                                            className="border-4 border-white bg-gray-100 text-gray-300 shadow-lg"
+                                            icon={<HiOutlineUser />}
+                                            src={
+                                                !newCustomer && !isUpdateImage
+                                                    ? `http://localhost:5000${field.value}`
+                                                    : field.value
+                                            }
+                                        />
                                     ) : (
                                         <DoubleSidedImage
                                             src="/img/others/upload.png"
@@ -131,6 +138,7 @@ const ProfileImage = ({ control, setValue }: ProfileImageSectionProps) => {
                                         className="mt-4"
                                         type="button"
                                         disabled={!modelsLoaded}
+                                        onClick={() => setIsUpdateImage(true)}
                                     >
                                         {modelsLoaded
                                             ? 'Upload Image'
