@@ -9,6 +9,7 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import { HiPencil, HiOutlineTrash } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import { Employee } from '../EmployeeList/types'
+import { apiDeleteEmployees } from '@/services/employeeService'
 
 type CustomerInfoFieldProps = {
     title?: string
@@ -17,6 +18,10 @@ type CustomerInfoFieldProps = {
 
 type ProfileSectionProps = {
     data: Employee
+}
+
+type LeaveTypeData = {
+    employeeIds: string[]
 }
 
 function formatDate(dateString: string) {
@@ -53,8 +58,15 @@ const ProfileSection = ({ data }: ProfileSectionProps) => {
         setDialogOpen(true)
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         setDialogOpen(false)
+
+        const employeeIds: string[] = [data._id]
+
+        await apiDeleteEmployees<string[], LeaveTypeData>({
+            employeeIds,
+        })
+
         navigate('/employees')
         toast.push(
             <Notification title={'Successfully Deleted'} type="success">
