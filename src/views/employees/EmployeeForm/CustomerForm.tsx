@@ -34,7 +34,7 @@ const validationSchema: ZodType<any> = z.object({
         .string()
         .min(1, { message: 'Please input your mobile number' }),
     address: z.string().min(1, { message: 'Addrress required' }),
-    img: z.string(),
+    img: z.string().min(1, { message: 'Civil Status required' }),
     height: z
         .string()
         .regex(/^\d+$/, { message: 'Height must be a numeric value' })
@@ -96,7 +96,14 @@ const validationSchema: ZodType<any> = z.object({
         .regex(/^\d{4}-\d{2}-\d{2}$/, {
             message: 'Invalid date format (YYYY-MM-DD)',
         }),
-    faceDescriptor: z.array(z.number()),
+    faceDescriptor: z
+        .array(z.number(), {
+            message: 'Face descriptor must be an array of numbers',
+        })
+        .nonempty({ message: 'Face descriptor is required' })
+        .refine((arr) => arr.length === 128, {
+            message: 'Face descriptor must have exactly 128 values',
+        }),
 })
 
 const CustomerForm = (props: CustomerFormProps) => {

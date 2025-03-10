@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Card from '@/components/ui/Card'
 import Avatar from '@/components/ui/Avatar'
 import Upload from '@/components/ui/Upload'
-import { Button, Spinner } from '@/components/ui'
+import { Button, FormItem, Spinner } from '@/components/ui'
 import DoubleSidedImage from '@/components/shared/DoubleSidedImage'
 import { Controller, UseFormSetValue } from 'react-hook-form'
 import { HiOutlineUser } from 'react-icons/hi'
@@ -18,11 +18,24 @@ const ProfileImage = ({
     control,
     setValue,
     newCustomer,
+    errors,
 }: ProfileImageSectionProps) => {
     const [faceDescriptor, setFaceDescriptor] = useState<number[] | null>(null)
     const [modelsLoaded, setModelsLoaded] = useState(false)
 
     const [isUpdateImage, setIsUpdateImage] = useState(false)
+
+    useEffect(() => {
+        if (!newCustomer && control._formValues.faceDescriptor) {
+            const faceDescriptorData = control._formValues.faceDescriptor.map(
+                (item: any) => Number(item),
+            )
+
+            setFaceDescriptor(faceDescriptorData)
+            setValue('faceDescriptor', faceDescriptorData)
+            setValue('img', control._formValues.img)
+        }
+    }, [newCustomer, control._formValues.faceDescriptor])
 
     useEffect(() => {
         const loadModels = async () => {
@@ -65,6 +78,8 @@ const ProfileImage = ({
 
         const imgURL = URL.createObjectURL(file)
         onChange(imgURL)
+        setIsUpdateImage(true)
+
         const img = new Image()
         img.src = imgURL
         img.onload = async () => {
@@ -76,10 +91,12 @@ const ProfileImage = ({
 
                 if (detections) {
                     console.log('Face Descriptor:', detections.descriptor)
-                    const descriptorArray = Array.from(detections.descriptor)
-                    setValue('faceDescriptor', descriptorArray)
+                    const descriptorArray = Array.from(
+                        detections.descriptor,
+                    ).map((item) => Number(item))
 
-                    setFaceDescriptor(Array.from(detections.descriptor))
+                    setValue('faceDescriptor', descriptorArray)
+                    setFaceDescriptor(descriptorArray)
                 } else {
                     console.log('No face detected')
                     setValue('faceDescriptor', [])
@@ -107,9 +124,11 @@ const ProfileImage = ({
                                             className="border-4 border-white bg-gray-100 text-gray-300 shadow-lg"
                                             icon={<HiOutlineUser />}
                                             src={
-                                                !newCustomer && !isUpdateImage
-                                                    ? `http://localhost:5000${field.value}`
-                                                    : field.value
+                                                field.value
+                                                    ? isUpdateImage
+                                                        ? field.value // Show new image if uploaded
+                                                        : `http://localhost:5000${field.value}` // Show original image
+                                                    : ''
                                             }
                                         />
                                     ) : (
@@ -145,7 +164,7 @@ const ProfileImage = ({
                                             : 'Loading Models...'}
                                     </Button>
                                 </Upload>
-                                {faceDescriptor && (
+                                {faceDescriptor && newCustomer && (
                                     <p className="mt-2 text-sm text-green-600">
                                         Image uploaded successfully.
                                     </p>

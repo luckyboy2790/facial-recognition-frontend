@@ -7,6 +7,8 @@ export async function apiGetProjectTasks<T>() {
     })
 }
 
+//-------------------------------------------------------------------------------
+
 export async function apiGetCustomersList<T, U extends Record<string, unknown>>(
     params: U,
 ) {
@@ -37,6 +39,18 @@ export async function apiDeleteEmployees<T, U extends Record<string, unknown>>(
         data,
     })
 }
+
+export async function apiArchiveEmployee<T, U extends Record<string, unknown>>(
+    data: U,
+) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: 'http://localhost:5000/api/employee/archive_employee',
+        method: 'post',
+        data,
+    })
+}
+
+// --------------------------------------------------------------------------------
 
 export async function apiGetRolesPermissionsRoles<T>() {
     return ApiService.fetchDataWithAxios<T>({

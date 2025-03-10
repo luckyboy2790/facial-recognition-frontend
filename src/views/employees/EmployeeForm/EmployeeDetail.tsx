@@ -74,8 +74,6 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                         value: item._id,
                     })),
                 )
-
-                console.log(data)
             } catch (error) {
                 console.error('Error fetching data:', error)
             }

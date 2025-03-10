@@ -27,10 +27,6 @@ const CustomerEdit = () => {
         [`/api/customers/${id}`, { id: id as string }],
         ([_, params]) =>
             apiGetCustomer<ProfileSectionProps, { id: string }>(params),
-        {
-            revalidateOnFocus: false,
-            revalidateIfStale: false,
-        },
     )
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
@@ -100,7 +96,7 @@ const CustomerEdit = () => {
                 </Notification>,
                 { placement: 'top-center' },
             )
-            navigate('/employees')
+            window.location.href = '/employees'
         } catch (error: any) {
             console.error('❌ Error submitting form:', error)
         }

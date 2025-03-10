@@ -80,7 +80,7 @@ const EmployeeCreate = () => {
                 </Notification>,
                 { placement: 'top-center' },
             )
-            navigate('/employees')
+            window.location.href = '/employees'
         } catch (error: any) {
             console.error('❌ Error submitting form:', error)
         }
