@@ -28,6 +28,16 @@ export async function apiGetCustomer<T, U extends Record<string, unknown>>({
     })
 }
 
+export async function apiDeleteEmployees<T, U extends Record<string, unknown>>(
+    data: U,
+) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: 'http://localhost:5000/api/employee/delete_employee',
+        method: 'post',
+        data,
+    })
+}
+
 export async function apiGetRolesPermissionsRoles<T>() {
     return ApiService.fetchDataWithAxios<T>({
         url: '/rbac/roles',

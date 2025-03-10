@@ -1,28 +1,14 @@
 import { useState } from 'react'
 import StickyFooter from '@/components/shared/StickyFooter'
 import Button from '@/components/ui/Button'
-import Dialog from '@/components/ui/Dialog'
-import Avatar from '@/components/ui/Avatar'
-import Tooltip from '@/components/ui/Tooltip'
-import Notification from '@/components/ui/Notification'
-import toast from '@/components/ui/toast'
-import RichTextEditor from '@/components/shared/RichTextEditor'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useEmployeeList'
 import { TbChecks } from 'react-icons/tb'
 
 const CustomerListSelected = () => {
-    const {
-        selectedCustomer,
-        customerList,
-        mutate,
-        customerListTotal,
-        setSelectAllCustomer,
-    } = useEmployeeList()
+    const { selectedCustomer, mutate, deleteEmployees } = useEmployeeList()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
-    const [sendMessageDialogOpen, setSendMessageDialogOpen] = useState(false)
-    const [sendMessageLoading, setSendMessageLoading] = useState(false)
 
     const handleDelete = () => {
         setDeleteConfirmationOpen(true)
@@ -32,34 +18,23 @@ const CustomerListSelected = () => {
         setDeleteConfirmationOpen(false)
     }
 
-    const handleConfirmDelete = () => {
-        const newCustomerList = customerList.filter((customer) => {
-            return !selectedCustomer.some(
-                (selected) => selected.id === customer.id,
-            )
-        })
-        setSelectAllCustomer([])
-        mutate(
-            {
-                list: newCustomerList,
-                total: customerListTotal - selectedCustomer.length,
-            },
-            false,
-        )
-        setDeleteConfirmationOpen(false)
-    }
+    const handleConfirmDelete = async () => {
+        const leaveGroupIds: string[] = selectedCustomer
+            .map((employee) => employee._id)
+            .filter((id): id is string => id !== undefined)
 
-    const handleSend = () => {
-        setSendMessageLoading(true)
-        setTimeout(() => {
-            toast.push(
-                <Notification type="success">Message sent!</Notification>,
-                { placement: 'top-center' },
-            )
-            setSendMessageLoading(false)
-            setSendMessageDialogOpen(false)
-            setSelectAllCustomer([])
-        }, 500)
+        if (leaveGroupIds.length === 0) {
+            console.error('No valid employee IDs to delete')
+            return
+        }
+
+        try {
+            await deleteEmployees(leaveGroupIds)
+            setDeleteConfirmationOpen(false)
+            mutate()
+        } catch (error) {
+            console.error('Error deleting companies:', error)
+        }
     }
 
     return (
@@ -101,15 +76,6 @@ const CustomerListSelected = () => {
                                 >
                                     Delete
                                 </Button>
-                                <Button
-                                    size="sm"
-                                    variant="solid"
-                                    onClick={() =>
-                                        setSendMessageDialogOpen(true)
-                                    }
-                                >
-                                    Message
-                                </Button>
                             </div>
                         </div>
                     </div>
@@ -130,46 +96,6 @@ const CustomerListSelected = () => {
                     can&apos;t be undo.{' '}
                 </p>
             </ConfirmDialog>
-            <Dialog
-                isOpen={sendMessageDialogOpen}
-                onRequestClose={() => setSendMessageDialogOpen(false)}
-                onClose={() => setSendMessageDialogOpen(false)}
-            >
-                <h5 className="mb-2">Send Message</h5>
-                <p>Send message to the following customers</p>
-                <Avatar.Group
-                    chained
-                    omittedAvatarTooltip
-                    className="mt-4"
-                    maxCount={4}
-                    omittedAvatarProps={{ size: 30 }}
-                >
-                    {selectedCustomer.map((customer) => (
-                        <Tooltip key={customer.id} title={customer.name}>
-                            <Avatar size={30} src={customer.img} alt="" />
-                        </Tooltip>
-                    ))}
-                </Avatar.Group>
-                <div className="my-4">
-                    <RichTextEditor content={''} />
-                </div>
-                <div className="ltr:justify-end flex items-center gap-2">
-                    <Button
-                        size="sm"
-                        onClick={() => setSendMessageDialogOpen(false)}
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="solid"
-                        loading={sendMessageLoading}
-                        onClick={handleSend}
-                    >
-                        Send
-                    </Button>
-                </div>
-            </Dialog>
         </>
     )
 }

@@ -1,8 +1,15 @@
-import { apiGetCustomersList } from '@/services/employeeService'
+import {
+    apiDeleteEmployees,
+    apiGetCustomersList,
+} from '@/services/employeeService'
 import useSWR from 'swr'
 import { useCustomerListStore } from '../store/employeeListStore'
 import type { GetCustomersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+
+type LeaveTypeData = {
+    employeeIds: string[]
+}
 
 export default function useCustomerList() {
     const {
@@ -22,6 +29,14 @@ export default function useCustomerList() {
         },
     )
 
+    const deleteEmployees = async (employeeIds: string[]) => {
+        await apiDeleteEmployees<string[], LeaveTypeData>({
+            employeeIds,
+        })
+        mutate()
+        setSelectAllCustomer([])
+    }
+
     const customerList = data?.list || []
 
     const customerListTotal = data?.total || 0
@@ -35,6 +50,7 @@ export default function useCustomerList() {
         mutate,
         setTableData,
         selectedCustomer,
+        deleteEmployees,
         setSelectedCustomer,
         setSelectAllCustomer,
     }
