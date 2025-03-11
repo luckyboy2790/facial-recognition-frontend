@@ -10,9 +10,9 @@ export type OverviewFields = {
     rest_days: string[]
 }
 
-export type CustomerFormSchema = OverviewFields
+export type ScheduleFormSchema = OverviewFields
 
 export type FormSectionBaseProps = {
-    control: Control<CustomerFormSchema>
-    errors: FieldErrors<CustomerFormSchema>
+    control: Control<ScheduleFormSchema>
+    errors: FieldErrors<ScheduleFormSchema>
 }

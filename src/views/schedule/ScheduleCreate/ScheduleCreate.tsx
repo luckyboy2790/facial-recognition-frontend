@@ -3,12 +3,12 @@ import Container from '@/components/shared/Container'
 import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
-import CustomerForm from '../ScheduleForm'
+import ScheduleForm from '../ScheduleForm'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
-import type { CustomerFormSchema } from '../ScheduleForm'
+import type { ScheduleFormSchema } from '../ScheduleForm'
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
@@ -17,7 +17,7 @@ const EmployeeCreate = () => {
         useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
-    const handleFormSubmit = async (values: CustomerFormSchema) => {
+    const handleFormSubmit = async (values: ScheduleFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
 
@@ -34,7 +34,7 @@ const EmployeeCreate = () => {
 
         setIsSubmiting(false)
         toast.push(
-            <Notification type="success">Customer created!</Notification>,
+            <Notification type="success">Schedule created!</Notification>,
             { placement: 'top-center' },
         )
         window.location.href = '/schedule'
@@ -43,7 +43,7 @@ const EmployeeCreate = () => {
     const handleConfirmDiscard = () => {
         setDiscardConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Customer discardd!</Notification>,
+            <Notification type="success">Schedule discardd!</Notification>,
             { placement: 'top-center' },
         )
         navigate('/schedule')
@@ -59,8 +59,8 @@ const EmployeeCreate = () => {
 
     return (
         <>
-            <CustomerForm
-                newCustomer
+            <ScheduleForm
+                newSchedule
                 defaultValues={{
                     employee: '',
                     start_time: '',
@@ -97,7 +97,7 @@ const EmployeeCreate = () => {
                         </div>
                     </div>
                 </Container>
-            </CustomerForm>
+            </ScheduleForm>
             <ConfirmDialog
                 isOpen={discardConfirmationOpen}
                 type="danger"

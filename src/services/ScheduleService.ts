@@ -9,3 +9,14 @@ export async function apiScheduleList<T, U extends Record<string, unknown>>(
         params,
     })
 }
+
+export async function apiScheduleDetail<T, U extends Record<string, unknown>>({
+    id,
+    ...params
+}: U) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: `http://localhost:5000/api/schedule/get_schedule/${id}`,
+        method: 'get',
+        params,
+    })
+}

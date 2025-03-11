@@ -93,6 +93,11 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         control={control}
                         render={({ field }) => (
                             <TimeInput
+                                value={
+                                    field.value
+                                        ? new Date(`1970-01-01T${field.value}`)
+                                        : null
+                                }
                                 onChange={(date) => {
                                     field.onChange(
                                         date
@@ -114,6 +119,11 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         control={control}
                         render={({ field }) => (
                             <TimeInput
+                                value={
+                                    field.value
+                                        ? new Date(`1970-01-01T${field.value}`)
+                                        : null
+                                }
                                 onChange={(date) => {
                                     field.onChange(
                                         date

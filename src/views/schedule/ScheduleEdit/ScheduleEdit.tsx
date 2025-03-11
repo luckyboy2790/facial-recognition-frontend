@@ -4,25 +4,31 @@ import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
-import { apiGetCustomer } from '@/services/employeeService'
-import CustomerForm from '../ScheduleForm'
+import { apiScheduleDetail } from '@/services/ScheduleService'
+import ScheduleForm from '../ScheduleForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
 import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
-import type { CustomerFormSchema } from '../ScheduleForm'
-import type { Customer } from '../ScheduleList/types'
+import type { ScheduleFormSchema } from '../ScheduleForm'
+import type { Schedule } from '../ScheduleList/types'
 
-const CustomerEdit = () => {
+type ScheduleDetailResponse = {
+    message: string
+    schedule: Schedule
+}
+
+const ScheduleEdit = () => {
     const { id } = useParams()
 
     const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
-        [`/api/customers${id}`, { id: id as string }],
+        [`/api/schedule${id}`, { id: id as string }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([_, params]) => apiGetCustomer<Customer, { id: string }>(params),
+        ([_, params]) =>
+            apiScheduleDetail<ScheduleDetailResponse, { id: string }>(params),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
@@ -32,33 +38,51 @@ const CustomerEdit = () => {
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
-    const handleFormSubmit = async (values: CustomerFormSchema) => {
+    const handleFormSubmit = async (values: ScheduleFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
         await sleep(800)
+
+        const response = await fetch(
+            `http://localhost:5000/api/schedule/update_schedule/${id}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+            },
+        )
+
+        console.log(response)
+
         setIsSubmiting(false)
         toast.push(<Notification type="success">Changes Saved!</Notification>, {
             placement: 'top-center',
         })
-        navigate('/employees')
+        window.location.href = '/schedule'
     }
 
     const getDefaultValues = () => {
+        console.log(data)
+
         if (data) {
-            const { firstName, lastName, email, personalInfo, img } = data
+            const {
+                employee,
+                start_time,
+                off_time,
+                rest_days,
+                from,
+                to,
+                total_hours,
+            } = data.schedule
 
             return {
-                firstName,
-                lastName,
-                email,
-                img,
-                phoneNumber: personalInfo.phoneNumber,
-                dialCode: personalInfo.dialCode,
-                country: personalInfo.country,
-                address: personalInfo.address,
-                city: personalInfo.city,
-                postcode: personalInfo.postcode,
-                tags: [],
+                employee,
+                start_time,
+                off_time,
+                rest_days,
+                from,
+                to,
+                total_hours,
             }
         }
 
@@ -68,7 +92,7 @@ const CustomerEdit = () => {
     const handleConfirmDelete = () => {
         setDeleteConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Customer deleted!</Notification>,
+            <Notification type="success">Schedule deleted!</Notification>,
             { placement: 'top-center' },
         )
         navigate('/concepts/customers/customer-list')
@@ -96,9 +120,9 @@ const CustomerEdit = () => {
             )}
             {!isLoading && data && (
                 <>
-                    <CustomerForm
-                        defaultValues={getDefaultValues() as CustomerFormSchema}
-                        newCustomer={false}
+                    <ScheduleForm
+                        defaultValues={getDefaultValues() as ScheduleFormSchema}
+                        newSchedule={false}
                         onFormSubmit={handleFormSubmit}
                     >
                         <Container>
@@ -134,7 +158,7 @@ const CustomerEdit = () => {
                                 </div>
                             </div>
                         </Container>
-                    </CustomerForm>
+                    </ScheduleForm>
                     <ConfirmDialog
                         isOpen={deleteConfirmationOpen}
                         type="danger"
@@ -155,4 +179,4 @@ const CustomerEdit = () => {
     )
 }
 
-export default CustomerEdit
+export default ScheduleEdit

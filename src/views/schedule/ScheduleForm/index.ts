@@ -1,5 +1,5 @@
-import CustomerForm from './ScheduleForm'
-import type { CustomerFormSchema } from './types'
+import ScheduleForm from './ScheduleForm'
+import type { ScheduleFormSchema } from './types'
 
-export type { CustomerFormSchema }
-export default CustomerForm
+export type { ScheduleFormSchema }
+export default ScheduleForm

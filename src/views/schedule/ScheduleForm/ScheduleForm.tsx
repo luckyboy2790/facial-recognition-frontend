@@ -9,15 +9,15 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import type { ZodType } from 'zod'
 import type { CommonProps } from '@/@types/common'
-import type { CustomerFormSchema } from './types'
+import type { ScheduleFormSchema } from './types'
 
-type CustomerFormProps = {
-    onFormSubmit: (values: CustomerFormSchema) => void
-    defaultValues?: CustomerFormSchema
-    newCustomer?: boolean
+type ScheduleFormProps = {
+    onFormSubmit: (values: ScheduleFormSchema) => void
+    defaultValues?: ScheduleFormSchema
+    newSchedule?: boolean
 } & CommonProps
 
-const validationSchema: ZodType<CustomerFormSchema> = z.object({
+const validationSchema: ZodType<ScheduleFormSchema> = z.object({
     employee: z.string().min(1, { message: 'First name required' }),
     start_time: z
         .string()
@@ -46,7 +46,7 @@ const validationSchema: ZodType<CustomerFormSchema> = z.object({
     rest_days: z.array(z.string()),
 })
 
-const CustomerForm = (props: CustomerFormProps) => {
+const ScheduleForm = (props: ScheduleFormProps) => {
     const { onFormSubmit, defaultValues = {}, children } = props
 
     const {
@@ -54,7 +54,7 @@ const CustomerForm = (props: CustomerFormProps) => {
         reset,
         formState: { errors },
         control,
-    } = useForm<CustomerFormSchema>({
+    } = useForm<ScheduleFormSchema>({
         defaultValues: {
             ...defaultValues,
         },
@@ -67,7 +67,7 @@ const CustomerForm = (props: CustomerFormProps) => {
         }
     }, [JSON.stringify(defaultValues)])
 
-    const onSubmit = (values: CustomerFormSchema) => {
+    const onSubmit = (values: ScheduleFormSchema) => {
         onFormSubmit?.(values)
     }
 
@@ -89,4 +89,4 @@ const CustomerForm = (props: CustomerFormProps) => {
     )
 }
 
-export default CustomerForm
+export default ScheduleForm
