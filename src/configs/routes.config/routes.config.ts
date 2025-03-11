@@ -45,6 +45,12 @@ export const protectedRoutes: Routes = [
     },
     {
         key: 'attendance',
+        path: '/attendance-create',
+        component: lazy(() => import('@/views/attendances/AttendanceCreate')),
+        authority: [],
+    },
+    {
+        key: 'attendance',
         path: '/attendance-edit/:id',
         component: lazy(() => import('@/views/attendances/AttendanceEdit')),
         authority: [],

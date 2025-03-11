@@ -3,12 +3,12 @@ import Container from '@/components/shared/Container'
 import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
-import ScheduleForm from '../ScheduleForm'
+import AttendanceForm from '../AttendanceForm'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
-import type { ScheduleFormSchema } from '../ScheduleForm'
+import { AttendanceFormSchema } from '../AttendanceForm/types'
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
@@ -17,12 +17,12 @@ const EmployeeCreate = () => {
         useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
-    const handleFormSubmit = async (values: ScheduleFormSchema) => {
+    const handleFormSubmit = async (values: AttendanceFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
 
-        const response: any = await fetch(
-            'http://localhost:5000/api/schedule/create_schedule',
+        const response = await fetch(
+            'http://localhost:5000/api/attendance/create_attendance',
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -30,26 +30,20 @@ const EmployeeCreate = () => {
             },
         )
 
-        const data = await response.json()
-
-        const toastStatus = response.ok ? 'success' : 'warning'
-
-        await sleep(700)
+        console.log(await response.json())
 
         setIsSubmiting(false)
         toast.push(
-            <Notification type={toastStatus}>{data.message}</Notification>,
-            {
-                placement: 'top-center',
-            },
+            <Notification type="success">Attendance created!</Notification>,
+            { placement: 'top-center' },
         )
-        window.location.href = '/schedule'
+        window.location.href = '/attendance'
     }
 
     const handleConfirmDiscard = () => {
         setDiscardConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Schedule discardd!</Notification>,
+            <Notification type="success">Attendance discardd!</Notification>,
             { placement: 'top-center' },
         )
         navigate('/schedule')
@@ -65,16 +59,13 @@ const EmployeeCreate = () => {
 
     return (
         <>
-            <ScheduleForm
-                newSchedule
+            <AttendanceForm
+                newAttendance
                 defaultValues={{
                     employee: '',
-                    start_time: '',
-                    off_time: '',
-                    from: '',
-                    to: '',
-                    total_hours: '',
-                    rest_days: [],
+                    date: '',
+                    time_in: '',
+                    time_out: '',
                 }}
                 onFormSubmit={handleFormSubmit}
             >
@@ -103,7 +94,7 @@ const EmployeeCreate = () => {
                         </div>
                     </div>
                 </Container>
-            </ScheduleForm>
+            </AttendanceForm>
             <ConfirmDialog
                 isOpen={discardConfirmationOpen}
                 type="danger"
