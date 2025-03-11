@@ -6,13 +6,7 @@ import useEmployeeList from '../hooks/useScheduleList'
 import { TbChecks } from 'react-icons/tb'
 
 const ScheduleListSelected = () => {
-    const {
-        selectedSchedule,
-        scheduleList,
-        mutate,
-        scheduleListTotal,
-        setSelectAllSchedule,
-    } = useEmployeeList()
+    const { selectedSchedule, mutate, deleteSchedules } = useEmployeeList()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -24,21 +18,23 @@ const ScheduleListSelected = () => {
         setDeleteConfirmationOpen(false)
     }
 
-    const handleConfirmDelete = () => {
-        const newScheduleList = scheduleList.filter((schedule) => {
-            return !selectedSchedule.some(
-                (selected) => selected._id === schedule._id,
-            )
-        })
-        setSelectAllSchedule([])
-        mutate(
-            {
-                list: newScheduleList,
-                total: scheduleListTotal - selectedSchedule.length,
-            },
-            false,
-        )
-        setDeleteConfirmationOpen(false)
+    const handleConfirmDelete = async () => {
+        const scheduleIds: string[] = selectedSchedule
+            .map((employee) => employee._id)
+            .filter((id): id is string => id !== undefined)
+
+        if (scheduleIds.length === 0) {
+            console.error('No valid employee IDs to delete')
+            return
+        }
+
+        try {
+            await deleteSchedules(scheduleIds)
+            setDeleteConfirmationOpen(false)
+            mutate()
+        } catch (error) {
+            console.error('Error deleting companies:', error)
+        }
     }
 
     return (

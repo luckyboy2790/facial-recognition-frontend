@@ -80,7 +80,11 @@ const ScheduleForm = (props: ScheduleFormProps) => {
             <Container>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="gap-4 flex flex-col flex-auto">
-                        <OverviewSection control={control} errors={errors} />
+                        <OverviewSection
+                            control={control}
+                            errors={errors}
+                            defaultValues={defaultValues}
+                        />
                     </div>
                 </div>
             </Container>

@@ -4,7 +4,10 @@ import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
-import { apiScheduleDetail } from '@/services/ScheduleService'
+import {
+    apiDeleteSchedules,
+    apiScheduleDetail,
+} from '@/services/ScheduleService'
 import ScheduleForm from '../ScheduleForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
@@ -17,6 +20,10 @@ import type { Schedule } from '../ScheduleList/types'
 type ScheduleDetailResponse = {
     message: string
     schedule: Schedule
+}
+
+type ScheduleData = {
+    scheduleIds: string[]
 }
 
 const ScheduleEdit = () => {
@@ -89,13 +96,20 @@ const ScheduleEdit = () => {
         return {}
     }
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setDeleteConfirmationOpen(true)
+
+        const scheduleIds: string[] = [id!]
+
+        await apiDeleteSchedules<string[], ScheduleData>({
+            scheduleIds,
+        })
+
         toast.push(
             <Notification type="success">Schedule deleted!</Notification>,
             { placement: 'top-center' },
         )
-        navigate('/concepts/customers/customer-list')
+        window.location.href = '/schedule'
     }
 
     const handleDelete = () => {

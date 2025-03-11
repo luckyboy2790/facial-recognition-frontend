@@ -2,7 +2,11 @@ import useSWR from 'swr'
 import { useScheduleListStore } from '../store/employeeListStore'
 import type { GetSchedulesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { apiScheduleList } from '@/services/ScheduleService'
+import { apiDeleteSchedules, apiScheduleList } from '@/services/ScheduleService'
+
+type ScheduleData = {
+    scheduleIds: string[]
+}
 
 export default function useScheduleList() {
     const {
@@ -22,6 +26,14 @@ export default function useScheduleList() {
         },
     )
 
+    const deleteSchedules = async (scheduleIds: string[]) => {
+        await apiDeleteSchedules<string[], ScheduleData>({
+            scheduleIds,
+        })
+        mutate()
+        setSelectAllSchedule([])
+    }
+
     const scheduleList = data?.list || []
 
     const scheduleListTotal = data?.total || 0
@@ -34,6 +46,7 @@ export default function useScheduleList() {
         tableData,
         mutate,
         setTableData,
+        deleteSchedules,
         selectedSchedule,
         setSelectedSchedule,
         setSelectAllSchedule,
