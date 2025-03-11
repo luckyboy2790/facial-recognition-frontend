@@ -19,6 +19,13 @@ export async function apiGetCustomersList<T, U extends Record<string, unknown>>(
     })
 }
 
+export async function apiGetTotalEmployeeList<T>() {
+    return ApiService.fetchDataWithAxios<T>({
+        url: 'http://localhost:5000/api/employee/total_employee',
+        method: 'get',
+    })
+}
+
 export async function apiGetCustomer<T, U extends Record<string, unknown>>({
     id,
     ...params

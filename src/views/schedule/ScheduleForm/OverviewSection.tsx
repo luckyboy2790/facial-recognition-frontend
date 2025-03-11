@@ -1,184 +1,228 @@
-import { useMemo } from 'react'
 import Card from '@/components/ui/Card'
-import Input from '@/components/ui/Input'
 import Select, { Option as DefaultOption } from '@/components/ui/Select'
-import Avatar from '@/components/ui/Avatar'
 import { FormItem } from '@/components/ui/Form'
-import { countryList } from '@/constants/countries.constant'
 import { Controller } from 'react-hook-form'
-import { components } from 'react-select'
 import type { FormSectionBaseProps } from './types'
-import type { OptionProps } from 'react-select'
+import { DatePicker, TimeInput } from '@/components/ui'
+import { NumericInput } from '@/components/shared'
+import { useEffect, useState } from 'react'
+import { apiGetTotalEmployeeList } from '@/services/employeeService'
+import { Employee } from '@/views/employees/EmployeeList/types'
 
 type OverviewSectionProps = FormSectionBaseProps
 
-type CountryOption = {
-    label: string
-    dialCode: string
+type OptionType = {
     value: string
+    label: string
 }
 
-const { Control } = components
-
-const CustomSelectOption = (props: OptionProps<CountryOption>) => {
-    return (
-        <DefaultOption<CountryOption>
-            {...props}
-            customLabel={(data) => (
-                <span className="flex items-center gap-2">
-                    <Avatar
-                        shape="circle"
-                        size={20}
-                        src={`/img/countries/${data.value}.png`}
-                    />
-                    <span>{data.dialCode}</span>
-                </span>
-            )}
-        />
-    )
+type EmployeeListResponse = {
+    employeeData: Employee[]
 }
 
-const colourOptions = [
-    { value: 'monday', label: 'Monday', color: '#00B8D9' },
-    { value: 'tuesday', label: 'Tuesday', color: '#0052CC' },
-    { value: 'wednesday', label: 'Wednesday', color: '#5243AA' },
-    { value: 'thursday', label: 'Thursday', color: '#FF5630' },
-    { value: 'friday', label: 'Friday', color: '#FF8B00' },
-    { value: 'saturday', label: 'Saturday', color: '#FFC400' },
-    { value: 'sunday', label: 'Sunday', color: '#36B37E' },
+const dayOptions: OptionType[] = [
+    { value: 'monday', label: 'Monday' },
+    { value: 'tuesday', label: 'Tuesday' },
+    { value: 'wednesday', label: 'Wednesday' },
+    { value: 'thursday', label: 'Thursday' },
+    { value: 'friday', label: 'Friday' },
+    { value: 'saturday', label: 'Saturday' },
+    { value: 'sunday', label: 'Sunday' },
 ]
 
 const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
-    const dialCodeList = useMemo(() => {
-        const newCountryList: Array<CountryOption> = JSON.parse(
-            JSON.stringify(countryList),
-        )
+    const [employeeOptions, setEmployeeOptions] = useState<OptionType[]>([])
 
-        return newCountryList.map((country) => {
-            country.label = country.dialCode
-            return country
-        })
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data: EmployeeListResponse =
+                    await apiGetTotalEmployeeList()
+
+                const options: OptionType[] = data.employeeData.map(
+                    (item: Employee) => {
+                        return {
+                            value: item._id,
+                            label: item.full_name,
+                        }
+                    },
+                )
+
+                setEmployeeOptions(options)
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData()
     }, [])
 
     return (
         <Card>
             <h4 className="mb-6">Schedule Edit</h4>
             <FormItem
-                label="First Name"
-                invalid={Boolean(errors.firstName)}
-                errorMessage={errors.firstName?.message}
+                label="Employee"
+                invalid={Boolean(errors.employee)}
+                errorMessage={errors.employee?.message}
             >
                 <Controller
-                    name="firstName"
+                    name="employee"
                     control={control}
-                    render={({ field }) => <Select />}
+                    render={({ field }) => (
+                        <Select
+                            className="mb-4"
+                            placeholder="Please Select"
+                            options={employeeOptions}
+                            value={employeeOptions.find(
+                                (option) => option.value === field.value,
+                            )}
+                            onChange={(option) => field.onChange(option?.value)}
+                        />
+                    )}
                 />
             </FormItem>
+
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="First Name"
-                    invalid={Boolean(errors.firstName)}
-                    errorMessage={errors.firstName?.message}
+                    label="Start time"
+                    invalid={Boolean(errors.start_time)}
+                    errorMessage={errors.start_time?.message}
                 >
                     <Controller
-                        name="firstName"
+                        name="start_time"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                type="text"
-                                autoComplete="off"
-                                placeholder="First Name"
-                                {...field}
+                            <TimeInput
+                                onChange={(date) => {
+                                    field.onChange(
+                                        date
+                                            ? date.toISOString().split('T')[1]
+                                            : '',
+                                    )
+                                }}
                             />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="User Name"
-                    invalid={Boolean(errors.lastName)}
-                    errorMessage={errors.lastName?.message}
+                    label="Off time"
+                    invalid={Boolean(errors.off_time)}
+                    errorMessage={errors.off_time?.message}
                 >
                     <Controller
-                        name="lastName"
+                        name="off_time"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                type="text"
+                            <TimeInput
+                                onChange={(date) => {
+                                    field.onChange(
+                                        date
+                                            ? date.toISOString().split('T')[1]
+                                            : '',
+                                    )
+                                }}
+                            />
+                        )}
+                    />
+                </FormItem>
+            </div>
+
+            <FormItem
+                label="From"
+                invalid={Boolean(errors.from)}
+                errorMessage={errors.from?.message}
+            >
+                <Controller
+                    name="from"
+                    control={control}
+                    render={({ field }) => (
+                        <DatePicker
+                            placeholder="Date"
+                            value={field.value ? new Date(field.value) : null}
+                            onChange={(date) => {
+                                field.onChange(
+                                    date
+                                        ? date.toISOString().split('T')[0]
+                                        : '',
+                                )
+                            }}
+                        />
+                    )}
+                />
+            </FormItem>
+
+            <FormItem
+                label="To"
+                invalid={Boolean(errors.to)}
+                errorMessage={errors.to?.message}
+            >
+                <Controller
+                    name="to"
+                    control={control}
+                    render={({ field }) => (
+                        <DatePicker
+                            placeholder="Date"
+                            value={field.value ? new Date(field.value) : null}
+                            onChange={(date) => {
+                                field.onChange(
+                                    date
+                                        ? date.toISOString().split('T')[0]
+                                        : '',
+                                )
+                            }}
+                        />
+                    )}
+                />
+            </FormItem>
+
+            <div className="grid md:grid-cols-2 gap-4">
+                <FormItem
+                    label="Total hours"
+                    invalid={Boolean(errors.total_hours)}
+                    errorMessage={errors.total_hours?.message}
+                >
+                    <Controller
+                        name="total_hours"
+                        control={control}
+                        render={({ field }) => (
+                            <NumericInput
                                 autoComplete="off"
-                                placeholder="Last Name"
+                                placeholder="0"
                                 {...field}
                             />
                         )}
                     />
                 </FormItem>
             </div>
-            <FormItem
-                label="Email"
-                invalid={Boolean(errors.email)}
-                errorMessage={errors.email?.message}
-            >
-                <Controller
-                    name="email"
-                    control={control}
-                    render={({ field }) => (
-                        <Input
-                            type="email"
-                            autoComplete="off"
-                            placeholder="Email"
-                            {...field}
-                        />
-                    )}
-                />
-            </FormItem>
-            <FormItem
-                label="Email"
-                invalid={Boolean(errors.email)}
-                errorMessage={errors.email?.message}
-            >
-                <Controller
-                    name="email"
-                    control={control}
-                    render={({ field }) => (
-                        <Input
-                            type="email"
-                            autoComplete="off"
-                            placeholder="Email"
-                            {...field}
-                        />
-                    )}
-                />
-            </FormItem>
+
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="First Name"
-                    invalid={Boolean(errors.firstName)}
-                    errorMessage={errors.firstName?.message}
+                    label="Choose Rest days"
+                    invalid={Boolean(errors.rest_days)}
+                    errorMessage={errors.rest_days?.message}
                 >
                     <Controller
-                        name="firstName"
+                        name="rest_days"
                         control={control}
                         render={({ field }) => (
-                            <Input
-                                type="text"
-                                autoComplete="off"
-                                placeholder="First Name"
-                                {...field}
+                            <Select
+                                isMulti
+                                className="mb-4"
+                                placeholder="Please Select"
+                                options={dayOptions}
+                                value={dayOptions.filter((option) =>
+                                    field.value.includes(option.value),
+                                )}
+                                onChange={(selectedOptions) => {
+                                    const selectedValues = selectedOptions
+                                        ? selectedOptions.map(
+                                              (option) => option.value,
+                                          )
+                                        : []
+                                    field.onChange(selectedValues)
+                                }}
                             />
                         )}
-                    />
-                </FormItem>
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-                <FormItem
-                    label="First Name"
-                    invalid={Boolean(errors.firstName)}
-                    errorMessage={errors.firstName?.message}
-                >
-                    <Select
-                        isMulti
-                        placeholder="Please Select"
-                        defaultValue={[colourOptions[2], colourOptions[3]]}
-                        options={colourOptions}
                     />
                 </FormItem>
             </div>

@@ -20,13 +20,24 @@ const EmployeeCreate = () => {
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
-        await sleep(800)
+
+        const response = await fetch(
+            'http://localhost:5000/api/schedule/create_schedule',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+            },
+        )
+
+        console.log(response)
+
         setIsSubmiting(false)
         toast.push(
             <Notification type="success">Customer created!</Notification>,
             { placement: 'top-center' },
         )
-        navigate('/employees')
+        window.location.href = '/schedule'
     }
 
     const handleConfirmDiscard = () => {
@@ -51,17 +62,13 @@ const EmployeeCreate = () => {
             <CustomerForm
                 newCustomer
                 defaultValues={{
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    img: '',
-                    phoneNumber: '',
-                    dialCode: '',
-                    country: '',
-                    address: '',
-                    city: '',
-                    postcode: '',
-                    tags: [],
+                    employee: '',
+                    start_time: '',
+                    off_time: '',
+                    from: '',
+                    to: '',
+                    total_hours: '',
+                    rest_days: [],
                 }}
                 onFormSubmit={handleFormSubmit}
             >

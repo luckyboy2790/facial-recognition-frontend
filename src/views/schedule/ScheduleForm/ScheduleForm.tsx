@@ -18,31 +18,36 @@ type CustomerFormProps = {
 } & CommonProps
 
 const validationSchema: ZodType<CustomerFormSchema> = z.object({
-    firstName: z.string().min(1, { message: 'First name required' }),
-    lastName: z.string().min(1, { message: 'Last name required' }),
-    email: z
+    employee: z.string().min(1, { message: 'First name required' }),
+    start_time: z
         .string()
-        .min(1, { message: 'Email required' })
-        .email({ message: 'Invalid email' }),
-    dialCode: z.string().min(1, { message: 'Please select your country code' }),
-    phoneNumber: z
+        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?Z$/, {
+            message: 'Invalid time format (HH:mm:ss.SSSZ)',
+        }),
+
+    off_time: z
         .string()
-        .min(1, { message: 'Please input your mobile number' }),
-    country: z.string().min(1, { message: 'Please select a country' }),
-    address: z.string().min(1, { message: 'Addrress required' }),
-    postcode: z.string().min(1, { message: 'Postcode required' }),
-    city: z.string().min(1, { message: 'City required' }),
-    img: z.string(),
-    tags: z.array(z.object({ value: z.string(), label: z.string() })),
+        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?Z$/, {
+            message: 'Invalid time format (HH:mm:ss.SSSZ)',
+        }),
+    from: z
+        .string()
+        .min(1, { message: 'Official Start Date is required' })
+        .regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: 'Invalid date format (YYYY-MM-DD)',
+        }),
+    to: z
+        .string()
+        .min(1, { message: 'Official Start Date is required' })
+        .regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: 'Invalid date format (YYYY-MM-DD)',
+        }),
+    total_hours: z.string().min(1, { message: 'Total hours required' }),
+    rest_days: z.array(z.string()),
 })
 
 const CustomerForm = (props: CustomerFormProps) => {
-    const {
-        onFormSubmit,
-        defaultValues = {},
-        newCustomer = false,
-        children,
-    } = props
+    const { onFormSubmit, defaultValues = {}, children } = props
 
     const {
         handleSubmit,
@@ -51,10 +56,6 @@ const CustomerForm = (props: CustomerFormProps) => {
         control,
     } = useForm<CustomerFormSchema>({
         defaultValues: {
-            ...{
-                banAccount: false,
-                accountVerified: true,
-            },
             ...defaultValues,
         },
         resolver: zodResolver(validationSchema),
@@ -64,7 +65,6 @@ const CustomerForm = (props: CustomerFormProps) => {
         if (!isEmpty(defaultValues)) {
             reset(defaultValues)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(defaultValues)])
 
     const onSubmit = (values: CustomerFormSchema) => {
