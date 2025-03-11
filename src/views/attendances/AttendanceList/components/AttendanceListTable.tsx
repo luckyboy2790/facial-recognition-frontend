@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 import Tooltip from '@/components/ui/Tooltip'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useEmployeeList'
+import useAttendanceList from '../hooks/useAttendanceList'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import { TbPencil } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
@@ -25,33 +25,57 @@ const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     )
 }
 
-const CustomerListTable = () => {
+const AttendanceListTable = () => {
     const navigate = useNavigate()
 
     const {
-        customerList,
-        customerListTotal,
+        attendanceList,
+        attendanceListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllAttendance,
+        setSelectedAttendance,
+        selectedAttendance,
+    } = useAttendanceList()
 
-    const handleEdit = (customer: Customer) => {
-        navigate(`/attendance-edit/${customer.id}`)
+    console.log(attendanceList)
+
+    const handleEdit = (attendance: Attendance) => {
+        navigate(`/attendance-edit/${attendance._id}`)
     }
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<Attendance>[] = useMemo(
         () => [
             {
-                header: 'Email',
-                accessorKey: 'email',
+                header: 'Date',
+                accessorKey: 'date',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Employee',
+                accessorKey: 'employeeData.full_name',
+            },
+            {
+                header: 'Time In',
+                accessorKey: 'time_in',
+            },
+            {
+                header: 'Time Out',
+                accessorKey: 'time_out',
+            },
+            {
+                header: 'Total Hours',
+                accessorKey: 'total_hours',
+            },
+            {
+                header: 'Status (In/Out)',
+                id: 'status',
+                cell: (props) => (
+                    <div>
+                        {props.row.original.status_timein} /{' '}
+                        {props.row.original.status_timeout}
+                    </div>
+                ),
             },
             {
                 header: '',
@@ -68,8 +92,8 @@ const CustomerListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedAttendance.length > 0) {
+            setSelectAllAttendance([])
         }
     }
 
@@ -92,16 +116,16 @@ const CustomerListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: Attendance) => {
+        setSelectedAttendance(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Attendance>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllAttendance(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllAttendance([])
         }
     }
 
@@ -109,18 +133,18 @@ const CustomerListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={customerList}
-            noData={!isLoading && customerList.length === 0}
+            data={attendanceList}
+            noData={!isLoading && attendanceList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: attendanceListTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedAttendance.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
@@ -131,4 +155,4 @@ const CustomerListTable = () => {
     )
 }
 
-export default CustomerListTable
+export default AttendanceListTable

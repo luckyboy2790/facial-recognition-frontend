@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { TableQueries } from '@/@types/common'
-import type { Customer, Filter } from '../types'
+import type { Attendance, Filter } from '../types'
 
 export const initialTableData: TableQueries = {
     pageIndex: 1,
@@ -23,48 +23,50 @@ export const initialFilterData = {
     ],
 }
 
-export type CustomersListState = {
+export type AttendancesListState = {
     tableData: TableQueries
     filterData: Filter
-    selectedCustomer: Partial<Customer>[]
+    selectedAttendance: Partial<Attendance>[]
 }
 
-type CustomersListAction = {
+type AttendancesListAction = {
     setFilterData: (payload: Filter) => void
     setTableData: (payload: TableQueries) => void
-    setSelectedCustomer: (checked: boolean, customer: Customer) => void
-    setSelectAllCustomer: (customer: Customer[]) => void
+    setSelectedAttendance: (checked: boolean, attendance: Attendance) => void
+    setSelectAllAttendance: (attendance: Attendance[]) => void
 }
 
-const initialState: CustomersListState = {
+const initialState: AttendancesListState = {
     tableData: initialTableData,
     filterData: initialFilterData,
-    selectedCustomer: [],
+    selectedAttendance: [],
 }
 
-export const useCustomerListStore = create<
-    CustomersListState & CustomersListAction
+export const useAttendanceListStore = create<
+    AttendancesListState & AttendancesListAction
 >((set) => ({
     ...initialState,
     setFilterData: (payload) => set(() => ({ filterData: payload })),
     setTableData: (payload) => set(() => ({ tableData: payload })),
-    setSelectedCustomer: (checked, row) =>
+    setSelectedAttendance: (checked, row) =>
         set((state) => {
-            const prevData = state.selectedCustomer
+            const prevData = state.selectedAttendance
             if (checked) {
-                return { selectedCustomer: [...prevData, ...[row]] }
+                return { selectedAttendance: [...prevData, ...[row]] }
             } else {
                 if (
-                    prevData.some((prevCustomer) => row.id === prevCustomer.id)
+                    prevData.some(
+                        (prevAttendance) => row._id === prevAttendance._id,
+                    )
                 ) {
                     return {
-                        selectedCustomer: prevData.filter(
-                            (prevCustomer) => prevCustomer.id !== row.id,
+                        selectedAttendance: prevData.filter(
+                            (prevAttendance) => prevAttendance._id !== row._id,
                         ),
                     }
                 }
-                return { selectedCustomer: prevData }
+                return { selectedAttendance: prevData }
             }
         }),
-    setSelectAllCustomer: (row) => set(() => ({ selectedCustomer: row })),
+    setSelectAllAttendance: (row) => set(() => ({ selectedAttendance: row })),
 }))

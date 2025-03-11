@@ -30,13 +30,21 @@ const EmployeeCreate = () => {
             },
         )
 
-        console.log(await response.json())
+        const data = await response.json()
+
+        const toastStatus = response.ok ? 'success' : 'warning'
 
         setIsSubmiting(false)
+
         toast.push(
-            <Notification type="success">Attendance created!</Notification>,
-            { placement: 'top-center' },
+            <Notification type={toastStatus}>{data.message}</Notification>,
+            {
+                placement: 'top-center',
+            },
         )
+
+        await sleep(700)
+
         window.location.href = '/attendance'
     }
 

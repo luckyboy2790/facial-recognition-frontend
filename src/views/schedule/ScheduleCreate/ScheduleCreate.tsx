@@ -37,12 +37,16 @@ const EmployeeCreate = () => {
         await sleep(700)
 
         setIsSubmiting(false)
+
         toast.push(
             <Notification type={toastStatus}>{data.message}</Notification>,
             {
                 placement: 'top-center',
             },
         )
+
+        await sleep(700)
+
         window.location.href = '/schedule'
     }
 

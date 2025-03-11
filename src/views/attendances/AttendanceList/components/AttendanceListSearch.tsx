@@ -1,25 +1,29 @@
-import DebouceInput from '@/components/shared/DebouceInput'
-import { TbSearch } from 'react-icons/tb'
-import { Ref } from 'react'
+import { Ref, useState } from 'react'
 import DatePickerRange from '@/components/ui/DatePicker/DatePickerRange'
 
+type DatePickerRangeValue = [Date | null, Date | null] // Ensure compatibility with DatePickerRange
 type CustomerListSearchProps = {
-    onInputChange: (value: object) => void
+    onInputChange: (value: string) => void
     ref?: Ref<HTMLInputElement>
 }
 
 const CustomerListSearch = (props: CustomerListSearchProps) => {
     const { onInputChange, ref } = props
 
+    const handleDateChange = (dates: DatePickerRangeValue) => {
+        if (dates[0] && dates[1]) {
+            onInputChange(JSON.stringify([dates[0], dates[1]]))
+        } else {
+            onInputChange('')
+        }
+    }
+
     return (
         <>
             <DatePickerRange
                 ref={ref}
                 placeholder="Select date"
-                onChange={(e) => {
-                    console.log(typeof e)
-                    onInputChange(e)
-                }}
+                onChange={handleDateChange}
             />
         </>
     )

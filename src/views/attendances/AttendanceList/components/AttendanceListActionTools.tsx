@@ -2,7 +2,7 @@ import Button from '@/components/ui/Button'
 import { TbUserPlus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 
-const CustomerListActionTools = () => {
+const AttendanceListActionTools = () => {
     const navigate = useNavigate()
 
     return (
@@ -18,4 +18,4 @@ const CustomerListActionTools = () => {
     )
 }
 
-export default CustomerListActionTools
+export default AttendanceListActionTools
