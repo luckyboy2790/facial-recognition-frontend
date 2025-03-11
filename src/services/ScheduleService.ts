@@ -30,3 +30,13 @@ export async function apiDeleteSchedules<T, U extends Record<string, unknown>>(
         data,
     })
 }
+
+export async function apiArchiveSchedule<T, U extends Record<string, unknown>>(
+    data: U,
+) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: 'http://localhost:5000/api/schedule/archive_schedule',
+        method: 'post',
+        data,
+    })
+}

@@ -11,7 +11,7 @@ import { IoArchiveOutline } from 'react-icons/io5'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Schedule } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { Notification, toast } from '@/components/ui'
+import { apiArchiveSchedule } from '@/services/ScheduleService'
 
 const statusColor: Record<string, string> = {
     Previous:
@@ -19,13 +19,17 @@ const statusColor: Record<string, string> = {
     Present: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
+type ArchiveResponse = {
+    schedule: Schedule
+}
+
 const ActionColumn = ({
     onEdit,
-    onViewDetail,
+    onArchive,
     row,
 }: {
     onEdit: () => void
-    onViewDetail: () => void
+    onArchive: () => void
     row: Schedule
 }) => {
     return (
@@ -45,7 +49,7 @@ const ActionColumn = ({
                         <div
                             className={`text-xl cursor-pointer select-none font-semibold`}
                             role="button"
-                            onClick={onViewDetail}
+                            onClick={onArchive}
                         >
                             <IoArchiveOutline />
                         </div>
@@ -68,6 +72,7 @@ const ScheduleListTable = () => {
         setSelectAllSchedule,
         setSelectedSchedule,
         selectedSchedule,
+        mutate,
     } = useScheduleList()
 
     console.log(scheduleList)
@@ -76,23 +81,25 @@ const ScheduleListTable = () => {
         navigate(`/schedule-edit/${schedule._id}`)
     }
 
-    const handleViewDetails = (
-        type: 'success' | 'warning' | 'danger' | 'info',
-    ) => {
-        toast.push(
-            <Notification
-                title={type.charAt(0).toUpperCase() + type.slice(1)}
-                type={type}
-            >
-                User archived successfully
-            </Notification>,
-        )
+    const handleArchiveSchedule = async (scheduleId: string) => {
+        try {
+            console.log(scheduleId)
+            const schedule: ArchiveResponse = await apiArchiveSchedule({
+                scheduleId,
+            })
+
+            if (schedule.schedule) {
+                mutate()
+            }
+        } catch (error) {
+            console.error('Error archiving schedule:', error)
+        }
     }
 
     const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
-                header: 'Employee',
+                header: 'Schedule',
                 accessorKey: 'employee_name',
             },
             {
@@ -135,7 +142,9 @@ const ScheduleListTable = () => {
                 cell: (props) => (
                     <ActionColumn
                         onEdit={() => handleEdit(props.row.original)}
-                        onViewDetail={() => handleViewDetails('success')}
+                        onArchive={() =>
+                            handleArchiveSchedule(props.row.original._id)
+                        }
                         row={props.row.original}
                     />
                 ),
