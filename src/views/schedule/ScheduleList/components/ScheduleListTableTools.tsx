@@ -1,10 +1,9 @@
-import useCustomerList from '../hooks/useEmployeeList'
-import CustomerListSearch from './ScheduleListSearch'
-import CustomerTableFilter from './ScheduleListTableFilter'
+import useScheduleList from '../hooks/useScheduleList'
+import ScheduleListSearch from './ScheduleListSearch'
 import cloneDeep from 'lodash/cloneDeep'
 
-const CustomersListTableTools = () => {
-    const { tableData, setTableData } = useCustomerList()
+const SchedulesListTableTools = () => {
+    const { tableData, setTableData } = useScheduleList()
 
     const handleInputChange = (val: string) => {
         const newTableData = cloneDeep(tableData)
@@ -21,10 +20,9 @@ const CustomersListTableTools = () => {
 
     return (
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <CustomerListSearch onInputChange={handleInputChange} />
-            <CustomerTableFilter />
+            <ScheduleListSearch onInputChange={handleInputChange} />
         </div>
     )
 }
 
-export default CustomersListTableTools
+export default SchedulesListTableTools

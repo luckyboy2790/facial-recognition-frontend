@@ -3,81 +3,77 @@ import Avatar from '@/components/ui/Avatar'
 import Tag from '@/components/ui/Tag'
 import Tooltip from '@/components/ui/Tooltip'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useEmployeeList'
+import useScheduleList from '../hooks/useScheduleList'
 import { Link, useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import { TbPencil } from 'react-icons/tb'
 import { IoArchiveOutline } from 'react-icons/io5'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Schedule } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { Notification, toast } from '@/components/ui'
 
 const statusColor: Record<string, string> = {
-    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
-}
-
-const NameColumn = ({ row }: { row: Customer }) => {
-    return (
-        <div className="flex items-center">
-            <Avatar size={40} shape="circle" src={row.img} />
-            <div
-                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-            >
-                {row.name}
-            </div>
-        </div>
-    )
+    Previous:
+        'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Present: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
 const ActionColumn = ({
     onEdit,
     onViewDetail,
+    row,
 }: {
     onEdit: () => void
     onViewDetail: () => void
+    row: Schedule
 }) => {
     return (
         <div className="flex items-center gap-3">
-            <Tooltip title="Edit">
-                <div
-                    className={`text-xl cursor-pointer select-none font-semibold`}
-                    role="button"
-                    onClick={onEdit}
-                >
-                    <TbPencil />
-                </div>
-            </Tooltip>
-            <Tooltip title="Archive">
-                <div
-                    className={`text-xl cursor-pointer select-none font-semibold`}
-                    role="button"
-                    onClick={onViewDetail}
-                >
-                    <IoArchiveOutline />
-                </div>
-            </Tooltip>
+            {row.status === 'Present' && (
+                <>
+                    <Tooltip title="Edit">
+                        <div
+                            className={`text-xl cursor-pointer select-none font-semibold`}
+                            role="button"
+                            onClick={onEdit}
+                        >
+                            <TbPencil />
+                        </div>
+                    </Tooltip>
+                    <Tooltip title="Archive">
+                        <div
+                            className={`text-xl cursor-pointer select-none font-semibold`}
+                            role="button"
+                            onClick={onViewDetail}
+                        >
+                            <IoArchiveOutline />
+                        </div>
+                    </Tooltip>
+                </>
+            )}
         </div>
     )
 }
 
-const CustomerListTable = () => {
+const ScheduleListTable = () => {
     const navigate = useNavigate()
 
     const {
-        customerList,
-        customerListTotal,
+        scheduleList,
+        scheduleListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllSchedule,
+        setSelectedSchedule,
+        selectedSchedule,
+    } = useScheduleList()
 
-    const handleEdit = (customer: Customer) => {
-        navigate(`/schedule-edit/${customer.id}`)
+    console.log(scheduleList)
+
+    const handleEdit = (schedule: Schedule) => {
+        navigate(`/schedule-edit/${schedule._id}`)
     }
 
     const handleViewDetails = (
@@ -93,23 +89,31 @@ const CustomerListTable = () => {
         )
     }
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
-                header: 'Name',
-                accessorKey: 'name',
-                cell: (props) => {
-                    const row = props.row.original
-                    return <NameColumn row={row} />
-                },
+                header: 'Employee',
+                accessorKey: 'employee_name',
             },
             {
-                header: 'Email',
-                accessorKey: 'email',
+                header: 'Time (Start-Off)',
+                accessorKey: 'formattedTime',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Hours',
+                accessorKey: 'total_hours',
+            },
+            {
+                header: 'Rest Days',
+                accessorKey: 'rest_days',
+            },
+            {
+                header: 'From (Date)',
+                accessorKey: 'formattedFromDate',
+            },
+            {
+                header: 'To (Date)',
+                accessorKey: 'formattedToDate',
             },
             {
                 header: 'Status',
@@ -126,31 +130,24 @@ const CustomerListTable = () => {
                 },
             },
             {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
-                },
-            },
-            {
                 header: '',
                 id: 'action',
                 cell: (props) => (
                     <ActionColumn
                         onEdit={() => handleEdit(props.row.original)}
                         onViewDetail={() => handleViewDetails('success')}
+                        row={props.row.original}
                     />
                 ),
             },
         ],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     )
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedSchedule.length > 0) {
+            setSelectAllSchedule([])
         }
     }
 
@@ -173,16 +170,16 @@ const CustomerListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: Schedule) => {
+        setSelectedSchedule(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Schedule>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllSchedule(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllSchedule([])
         }
     }
 
@@ -190,18 +187,18 @@ const CustomerListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={customerList}
-            noData={!isLoading && customerList.length === 0}
+            data={scheduleList}
+            noData={!isLoading && scheduleList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: scheduleListTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedSchedule.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
@@ -212,4 +209,4 @@ const CustomerListTable = () => {
     )
 }
 
-export default CustomerListTable
+export default ScheduleListTable

@@ -1,11 +1,11 @@
 import AdaptiveCard from '@/components/shared/AdaptiveCard'
 import Container from '@/components/shared/Container'
-import EmployeeListTable from './components/ScheduleListTable'
-import EmployeeListActionTools from './components/ScheduleListActionTools'
+import ScheduleListTable from './components/ScheduleListTable'
+import ScheduleListActionTools from './components/ScheduleListActionTools'
 import CustomersListTableTools from './components/ScheduleListTableTools'
-import EmployeeListSelected from './components/ScheduleListSelected'
+import ScheduleListSelected from './components/ScheduleListSelected'
 
-const EmployeeList = () => {
+const ScheduleList = () => {
     return (
         <>
             <Container>
@@ -13,16 +13,16 @@ const EmployeeList = () => {
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                             <h3>Schedules</h3>
-                            <EmployeeListActionTools />
+                            <ScheduleListActionTools />
                         </div>
                         <CustomersListTableTools />
-                        <EmployeeListTable />
+                        <ScheduleListTable />
                     </div>
                 </AdaptiveCard>
             </Container>
-            <EmployeeListSelected />
+            <ScheduleListSelected />
         </>
     )
 }
 
-export default EmployeeList
+export default ScheduleList
