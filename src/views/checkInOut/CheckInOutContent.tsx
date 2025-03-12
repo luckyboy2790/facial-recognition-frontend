@@ -38,9 +38,11 @@ const CheckInOutContent = () => {
                     <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6">
                         {btns.map((item, index) => (
                             <ClockButton
+                                key={index}
                                 title={item.title}
                                 description={item.description}
                                 icon={item.icon}
+                                timezone="America/Iqaluit"
                             />
                         ))}
                     </div>

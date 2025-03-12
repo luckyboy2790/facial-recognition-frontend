@@ -57,6 +57,13 @@ export async function apiArchiveEmployee<T, U extends Record<string, unknown>>(
     })
 }
 
+export async function apiGetTotalEmployeeDescriptor<T>() {
+    return ApiService.fetchDataWithAxios<T>({
+        url: 'http://localhost:5000/api/employee/total_employee_descriptor',
+        method: 'get',
+    })
+}
+
 // --------------------------------------------------------------------------------
 
 export async function apiGetRolesPermissionsRoles<T>() {

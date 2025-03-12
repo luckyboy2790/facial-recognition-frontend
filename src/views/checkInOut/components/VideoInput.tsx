@@ -3,8 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import Webcam from 'react-webcam'
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face'
 
-// Import face profile
 import JSON_PROFILE from '../descriptors/bnk48.json'
+import { apiGetTotalEmployeeDescriptor } from '@/services/employeeService'
+import {
+    apiAttendanceCheckOut,
+    apiAttendanceDetail,
+} from '@/services/AttendanceService'
+import { Attendance } from '@/views/attendances/AttendanceList/types'
+import { Notification, toast } from '@/components/ui'
+import sleep from '@/utils/sleep'
 
 const WIDTH = 420
 const HEIGHT = 420
@@ -18,6 +25,10 @@ interface Match {
     _label: string
 }
 
+interface FaceDescriptorData {
+    [key: string]: FaceDescriptorData
+}
+
 interface State {
     fullDesc: any
     detections: Detection[] | null
@@ -25,13 +36,21 @@ interface State {
     faceMatcher: any
     match: Match[] | null
     facingMode: string | { exact: string } | null
+    requestSent: boolean
 }
 
-class VideoInput extends Component<{}, State> {
+class VideoInput extends Component<
+    { onCloseDialog: () => void; type: string; timezone: string },
+    State
+> {
     private webcam = createRef<Webcam>()
     private interval: NodeJS.Timeout | null = null
 
-    constructor(props: {}) {
+    constructor(props: {
+        onCloseDialog: () => void
+        type: string
+        timezone: string
+    }) {
         super(props)
         this.state = {
             fullDesc: null,
@@ -40,12 +59,17 @@ class VideoInput extends Component<{}, State> {
             faceMatcher: null,
             match: null,
             facingMode: null,
+            requestSent: false,
         }
     }
 
     async componentDidMount() {
+        const data: FaceDescriptorData = await apiGetTotalEmployeeDescriptor()
+
+        console.log(data)
+
         await loadModels()
-        this.setState({ faceMatcher: await createMatcher(JSON_PROFILE) })
+        this.setState({ faceMatcher: await createMatcher(data) })
         this.setInputDevice()
     }
 
@@ -95,11 +119,133 @@ class VideoInput extends Component<{}, State> {
                 }
             }
 
-            if (this.state.descriptors && this.state.faceMatcher) {
+            if (
+                this.state.descriptors &&
+                this.state.faceMatcher &&
+                !this.state.requestSent
+            ) {
                 const match = this.state.descriptors.map((descriptor) =>
                     this.state.faceMatcher.findBestMatch(descriptor),
                 )
-                this.setState({ match })
+                this.setState({ match }, () => this.handleMatch(match))
+            }
+        }
+    }
+
+    handleMatch = async (match: Match[]) => {
+        if (
+            match.length > 0 &&
+            match[0]._label !== 'unknown' &&
+            !this.state.requestSent
+        ) {
+            this.setState({ requestSent: true })
+
+            const now = new Date()
+
+            const date = now.toISOString().split('T')[0]
+
+            const timeWithTimezone =
+                new Intl.DateTimeFormat('en-US', {
+                    timeZone: this.props.timezone,
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    fractionalSecondDigits: 3,
+                }).format(now) + 'Z'
+
+            let time_in: string | undefined = ''
+            let attendanceId: string = ''
+
+            if (this.props.type === 'time_out') {
+                const attendanceData: Attendance = await apiAttendanceCheckOut({
+                    id: match[0]._label,
+                })
+
+                if (attendanceData && attendanceData.time_in) {
+                    const date = new Date(attendanceData.time_in)
+
+                    time_in =
+                        new Intl.DateTimeFormat('en-US', {
+                            timeZone: this.props.timezone,
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date) + 'Z'
+
+                    attendanceId = attendanceData._id
+                }
+            }
+
+            let reqData = {}
+
+            if (this.props.type === 'time_in') {
+                reqData = {
+                    employee: match[0]._label,
+                    date: date,
+                    time_in: timeWithTimezone, // ✅ Time with timezone
+                    time_out: '',
+                }
+            } else {
+                reqData = {
+                    employee: match[0]._label,
+                    date: date,
+                    time_in: time_in,
+                    time_out: timeWithTimezone,
+                }
+            }
+
+            // const domain = process.env.VITE_BACKEND_ENDPOINT
+
+            const endpoint =
+                this.props.type === 'time_in'
+                    ? 'http://localhost:5000/api/attendance/create_attendance'
+                    : `http://localhost:5000/api/attendance/update_attendance/${attendanceId}`
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(reqData),
+                })
+
+                const responseData = await response.json()
+
+                if (response.ok) {
+                    console.log('Successfully sent matched user data')
+                    this.props.onCloseDialog()
+
+                    toast.push(
+                        <Notification type="success">
+                            Face recognized!
+                        </Notification>,
+                        {
+                            placement: 'top-center',
+                        },
+                    )
+
+                    await sleep(1000)
+                } else {
+                    this.props.onCloseDialog()
+
+                    toast.push(
+                        <Notification type="warning">
+                            {responseData.message}
+                        </Notification>,
+                        {
+                            placement: 'top-center',
+                        },
+                    )
+
+                    await sleep(1000)
+                    console.error('Failed to send user data')
+                }
+            } catch (error) {
+                console.error('Error sending request:', error)
             }
         }
     }
@@ -110,8 +256,6 @@ class VideoInput extends Component<{}, State> {
             ? { width: WIDTH, height: HEIGHT, facingMode }
             : null
         const camera = facingMode === 'user' ? 'Front' : 'Back'
-
-        console.log(this.state)
 
         return (
             <div
@@ -173,7 +317,20 @@ class VideoInput extends Component<{}, State> {
     }
 }
 
-export default function VideoInputWithRouter() {
-    const navigate = useNavigate()
-    return <VideoInput />
+export default function VideoInputWithRouter({
+    onCloseDialog,
+    type,
+    timezone,
+}: {
+    onCloseDialog: () => void
+    type: string
+    timezone: string
+}) {
+    return (
+        <VideoInput
+            onCloseDialog={onCloseDialog}
+            type={type}
+            timezone={timezone}
+        />
+    )
 }

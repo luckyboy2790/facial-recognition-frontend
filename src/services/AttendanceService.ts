@@ -21,6 +21,17 @@ export async function apiAttendanceDetail<
     })
 }
 
+export async function apiAttendanceCheckOut<
+    T,
+    U extends Record<string, unknown>,
+>({ id, ...params }: U) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: `http://localhost:5000/api/attendance/checkout_attendance/${id}`,
+        method: 'get',
+        params,
+    })
+}
+
 export async function apiDeleteAttendances<
     T,
     U extends Record<string, unknown>,

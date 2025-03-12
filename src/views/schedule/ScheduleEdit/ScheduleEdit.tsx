@@ -12,7 +12,7 @@ import ScheduleForm from '../ScheduleForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { ScheduleFormSchema } from '../ScheduleForm'
 import type { Schedule } from '../ScheduleList/types'
@@ -28,8 +28,6 @@ type ScheduleData = {
 
 const ScheduleEdit = () => {
     const { id } = useParams()
-
-    const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
         [`/api/schedule${id}`, { id: id as string }],

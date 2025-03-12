@@ -8,10 +8,11 @@ interface BoardCardProps {
     title: String
     description: String
     icon: ReactElement
+    timezone: string
 }
 
 const ClockButton = (props: BoardCardProps) => {
-    const { title, description, icon } = props
+    const { title, description, icon, timezone } = props
 
     const [dialogIsOpen, setIsOpen] = useState(false)
 
@@ -48,14 +49,12 @@ const ClockButton = (props: BoardCardProps) => {
                 onClose={(e: any) => onDialogClose(e)}
                 onRequestClose={(e: any) => onDialogClose(e)}
             >
-                <h5 className="mb-4">Dialog Title</h5>
-                {/* <p>
-                    There are many variations of passages of Lorem Ipsum
-                    available, but the majority have suffered alteration in some
-                    form, by injected humour, or randomised words which dont
-                    look even slightly believable.
-                </p> */}
-                <VideoInputWithRouter />
+                <h5 className="mb-4">{title}</h5>
+                <VideoInputWithRouter
+                    onCloseDialog={() => setIsOpen(false)}
+                    type={`${title === 'Check In' ? 'time_in' : 'time_out'}`}
+                    timezone={timezone}
+                />
                 <div className="text-right mt-6">
                     <Button
                         className="ltr:mr-2 rtl:ml-2"
