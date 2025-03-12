@@ -8,10 +8,13 @@ import AttendanceForm from '../AttendanceForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { Attendance } from '../AttendanceList/types'
-import { apiAttendanceDetail } from '@/services/AttendanceService'
+import {
+    apiAttendanceDetail,
+    apiDeleteAttendances,
+} from '@/services/AttendanceService'
 import { AttendanceFormSchema } from '../AttendanceForm/types'
 
 type AttendanceDetailResponse = {
@@ -19,14 +22,15 @@ type AttendanceDetailResponse = {
     attendance: Attendance
 }
 
+type AttendanceData = {
+    attendanceIds: string[]
+}
+
 const AttendanceEdit = () => {
     const { id } = useParams()
 
-    const navigate = useNavigate()
-
     const { data, isLoading } = useSWR(
         [`/api/attendances${id}`, { id: id as string }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
             apiAttendanceDetail<AttendanceDetailResponse, { id: string }>(
                 params,
@@ -121,13 +125,23 @@ const AttendanceEdit = () => {
         return {}
     }
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setDeleteConfirmationOpen(true)
+
+        const attendanceIds: string[] = [id!]
+
+        await apiDeleteAttendances<string[], AttendanceData>({
+            attendanceIds,
+        })
+
         toast.push(
-            <Notification type="success">Attendance deleted!</Notification>,
+            <Notification type="success">Schedule deleted!</Notification>,
             { placement: 'top-center' },
         )
-        navigate('/attendance-list')
+
+        await sleep(1000)
+
+        window.location.href = '/attendance'
     }
 
     const handleDelete = () => {
