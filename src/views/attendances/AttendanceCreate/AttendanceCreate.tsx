@@ -43,7 +43,7 @@ const EmployeeCreate = () => {
             },
         )
 
-        await sleep(700)
+        await sleep(1500)
 
         window.location.href = '/attendance'
     }

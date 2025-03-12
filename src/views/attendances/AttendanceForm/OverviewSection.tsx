@@ -6,7 +6,7 @@ import type { AttendanceFormSchema, FormSectionBaseProps } from './types'
 import TimeInput from '@/components/ui/TimeInput/TimeInput'
 import { Employee } from '@/views/employees/EmployeeList/types'
 import { apiGetTotalEmployeeList } from '@/services/employeeService'
-import { DatePicker, Select } from '@/components/ui'
+import { DatePicker, Input, Select } from '@/components/ui'
 import { format } from 'date-fns'
 
 type OverviewSectionProps = FormSectionBaseProps
@@ -24,6 +24,7 @@ const OverviewSection = ({
     control,
     errors,
     defaultValues,
+    newAttendance,
 }: OverviewSectionProps & {
     defaultValues?: Partial<AttendanceFormSchema>
 }) => {
@@ -169,6 +170,27 @@ const OverviewSection = ({
                     )}
                 />
             </FormItem>
+
+            {!newAttendance && (
+                <FormItem label="Reason">
+                    <Controller
+                        name="reason"
+                        control={control}
+                        defaultValue={defaultValues?.reason || ''}
+                        render={({ field }) => (
+                            <Input
+                                type="text"
+                                textArea
+                                autoComplete="off"
+                                placeholder="Reason"
+                                value={field.value}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                            />
+                        )}
+                    />
+                </FormItem>
+            )}
         </Card>
     )
 }

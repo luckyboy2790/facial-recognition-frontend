@@ -5,10 +5,12 @@ export type OverviewFields = {
     date: string
     time_in: string
     time_out: string
+    reason?: string
 }
 export type AttendanceFormSchema = OverviewFields
 
 export type FormSectionBaseProps = {
     control: Control<AttendanceFormSchema>
     errors: FieldErrors<AttendanceFormSchema>
+    newAttendance?: boolean
 }

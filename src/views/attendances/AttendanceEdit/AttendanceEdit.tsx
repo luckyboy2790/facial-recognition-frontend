@@ -4,61 +4,117 @@ import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
-import { apiGetCustomer } from '@/services/employeeService'
-import CustomerForm from '../AttendanceForm'
+import AttendanceForm from '../AttendanceForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
 import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
-import type { CustomerFormSchema } from '../AttendanceForm'
-import type { Customer } from '../AttendanceList/types'
+import type { Attendance } from '../AttendanceList/types'
+import { apiAttendanceDetail } from '@/services/AttendanceService'
+import { AttendanceFormSchema } from '../AttendanceForm/types'
 
-const CustomerEdit = () => {
+type AttendanceDetailResponse = {
+    message: string
+    attendance: Attendance
+}
+
+const AttendanceEdit = () => {
     const { id } = useParams()
 
     const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
-        [`/api/customers${id}`, { id: id as string }],
+        [`/api/attendances${id}`, { id: id as string }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([_, params]) => apiGetCustomer<Customer, { id: string }>(params),
+        ([_, params]) =>
+            apiAttendanceDetail<AttendanceDetailResponse, { id: string }>(
+                params,
+            ),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
         },
     )
 
+    const convertToUTCFormat = (input: string): string => {
+        if (!input) return ''
+
+        const date = new Date(input)
+
+        if (isNaN(date.getTime())) {
+            throw new Error('Invalid date format')
+        }
+
+        return date.toISOString().split('T')[1]
+    }
+
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
-    const handleFormSubmit = async (values: CustomerFormSchema) => {
+    const handleFormSubmit = async (values: AttendanceFormSchema) => {
         console.log('Submitted values', values)
+
+        if (values.reason === '') {
+            toast.push(
+                <Notification type="warning">Please write reason</Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
+
         setIsSubmiting(true)
-        await sleep(800)
+
+        const response = await fetch(
+            `http://localhost:5000/api/attendance/update_attendance/${id}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(values),
+            },
+        )
+
+        const data = await response.json()
+
+        const toastStatus = response.ok ? 'success' : 'warning'
+
         setIsSubmiting(false)
-        toast.push(<Notification type="success">Changes Saved!</Notification>, {
-            placement: 'top-center',
-        })
-        navigate('/attendance')
+
+        toast.push(
+            <Notification type={toastStatus}>{data.message}</Notification>,
+            {
+                placement: 'top-center',
+            },
+        )
+
+        await sleep(1500)
+
+        window.location.href = '/attendance'
     }
 
     const getDefaultValues = () => {
+        console.log(data)
+
         if (data) {
-            const { firstName, lastName, email, personalInfo, img } = data
+            const { employee, date, time_in, time_out, reason } =
+                data.attendance
+
+            console.log({
+                employee,
+                date,
+                time_in: convertToUTCFormat(time_in || ''),
+                time_out: convertToUTCFormat(time_out || ''),
+            })
 
             return {
-                firstName,
-                lastName,
-                email,
-                img,
-                phoneNumber: personalInfo.phoneNumber,
-                dialCode: personalInfo.dialCode,
-                country: personalInfo.country,
-                address: personalInfo.address,
-                city: personalInfo.city,
-                postcode: personalInfo.postcode,
-                tags: [],
+                employee,
+                date,
+                time_in: convertToUTCFormat(time_in || ''),
+                time_out: convertToUTCFormat(time_out || ''),
+                reason: reason,
             }
         }
 
@@ -68,7 +124,7 @@ const CustomerEdit = () => {
     const handleConfirmDelete = () => {
         setDeleteConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Customer deleted!</Notification>,
+            <Notification type="success">Attendance deleted!</Notification>,
             { placement: 'top-center' },
         )
         navigate('/attendance-list')
@@ -96,9 +152,11 @@ const CustomerEdit = () => {
             )}
             {!isLoading && data && (
                 <>
-                    <CustomerForm
-                        defaultValues={getDefaultValues() as CustomerFormSchema}
-                        newCustomer={false}
+                    <AttendanceForm
+                        defaultValues={
+                            getDefaultValues() as AttendanceFormSchema
+                        }
+                        newAttendance={false}
                         onFormSubmit={handleFormSubmit}
                     >
                         <Container>
@@ -134,19 +192,19 @@ const CustomerEdit = () => {
                                 </div>
                             </div>
                         </Container>
-                    </CustomerForm>
+                    </AttendanceForm>
                     <ConfirmDialog
                         isOpen={deleteConfirmationOpen}
                         type="danger"
-                        title="Remove customers"
+                        title="Remove attendances"
                         onClose={handleCancel}
                         onRequestClose={handleCancel}
                         onCancel={handleCancel}
                         onConfirm={handleConfirmDelete}
                     >
                         <p>
-                            Are you sure you want to remove this customer? This
-                            action can&apos;t be undo.{' '}
+                            Are you sure you want to remove this attendance?
+                            This action can&apos;t be undo.{' '}
                         </p>
                     </ConfirmDialog>
                 </>
@@ -155,4 +213,4 @@ const CustomerEdit = () => {
     )
 }
 
-export default CustomerEdit
+export default AttendanceEdit

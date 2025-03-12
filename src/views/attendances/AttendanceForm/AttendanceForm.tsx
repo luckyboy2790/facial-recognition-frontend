@@ -4,10 +4,7 @@ import Container from '@/components/shared/Container'
 import BottomStickyBar from '@/components/template/BottomStickyBar'
 import OverviewSection from './OverviewSection'
 import isEmpty from 'lodash/isEmpty'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import type { ZodType } from 'zod'
 import type { CommonProps } from '@/@types/common'
 import type { AttendanceFormSchema } from './types'
 
@@ -18,7 +15,7 @@ type AttendanceFormProps = {
 } & CommonProps
 
 const AttendanceForm = (props: AttendanceFormProps) => {
-    const { onFormSubmit, defaultValues = {}, children } = props
+    const { onFormSubmit, defaultValues = {}, children, newAttendance } = props
 
     const {
         handleSubmit,
@@ -50,7 +47,11 @@ const AttendanceForm = (props: AttendanceFormProps) => {
             <Container>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="gap-4 flex flex-col flex-auto">
-                        <OverviewSection control={control} errors={errors} />
+                        <OverviewSection
+                            control={control}
+                            errors={errors}
+                            newAttendance={newAttendance}
+                        />
                     </div>
                 </div>
             </Container>

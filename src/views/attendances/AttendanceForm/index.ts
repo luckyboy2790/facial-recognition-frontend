@@ -1,5 +1,5 @@
-import CustomerForm from './CustomerForm'
-import type { CustomerFormSchema } from './types'
+import AttendanceForm from './AttendanceForm'
+import type { AttendanceFormSchema } from './types'
 
-export type { CustomerFormSchema }
-export default CustomerForm
+export type { AttendanceFormSchema }
+export default AttendanceForm
