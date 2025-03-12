@@ -13,6 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import type { CustomerFormSchema } from '../EmployeeForm'
 import type { Employee } from '../EmployeeList/types'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ProfileSectionProps = {
     data: Employee
@@ -46,7 +47,7 @@ const CustomerEdit = () => {
                 formData.append('image', blob, 'profile.jpg')
 
                 const uploadResponse = await fetch(
-                    'http://localhost:5000/api/upload-image',
+                    `${domain}/api/upload-image`,
                     {
                         method: 'POST',
                         body: formData,
@@ -76,7 +77,7 @@ const CustomerEdit = () => {
             console.log(payload)
 
             const response = await fetch(
-                'http://localhost:5000/api/employee/update_employee',
+                `${domain}/api/employee/update_employee`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import { AttendanceFormSchema } from '../AttendanceForm/types'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
@@ -22,7 +23,7 @@ const EmployeeCreate = () => {
         setIsSubmiting(true)
 
         const response = await fetch(
-            'http://localhost:5000/api/attendance/create_attendance',
+            `${domain}/api/attendance/create_attendance`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

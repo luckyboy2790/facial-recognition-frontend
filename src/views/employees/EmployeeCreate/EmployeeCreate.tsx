@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { CustomerFormSchema } from '../EmployeeForm'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
@@ -31,7 +32,7 @@ const EmployeeCreate = () => {
                 formData.append('image', blob, 'profile.jpg')
 
                 const uploadResponse = await fetch(
-                    'http://localhost:5000/api/upload-image',
+                    `${domain}/api/upload-image`,
                     {
                         method: 'POST',
                         body: formData,
@@ -60,7 +61,7 @@ const EmployeeCreate = () => {
             console.log(payload)
 
             const response = await fetch(
-                'http://localhost:5000/api/employee/create_employee',
+                `${domain}/api/employee/create_employee`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

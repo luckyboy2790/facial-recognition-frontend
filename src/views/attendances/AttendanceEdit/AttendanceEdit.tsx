@@ -16,6 +16,7 @@ import {
     apiDeleteAttendances,
 } from '@/services/AttendanceService'
 import { AttendanceFormSchema } from '../AttendanceForm/types'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type AttendanceDetailResponse = {
     message: string
@@ -73,7 +74,7 @@ const AttendanceEdit = () => {
         setIsSubmiting(true)
 
         const response = await fetch(
-            `http://localhost:5000/api/attendance/update_attendance/${id}`,
+            `${domain}/api/attendance/update_attendance/${id}`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

@@ -1,10 +1,13 @@
+import { Domain } from 'node:domain'
 import ApiService from './ApiService'
+
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 export async function apiAttendanceList<T, U extends Record<string, unknown>>(
     params: U,
 ) {
     return ApiService.fetchDataWithAxios<T>({
-        url: 'http://localhost:5000/api/attendance/get_attendance',
+        url: `${Domain}/api/attendance/get_attendance`,
         method: 'get',
         params,
     })
@@ -15,7 +18,7 @@ export async function apiAttendanceDetail<
     U extends Record<string, unknown>,
 >({ id, ...params }: U) {
     return ApiService.fetchDataWithAxios<T>({
-        url: `http://localhost:5000/api/attendance/get_attendance/${id}`,
+        url: `${domain}/api/attendance/get_attendance/${id}`,
         method: 'get',
         params,
     })
@@ -26,7 +29,7 @@ export async function apiAttendanceCheckOut<
     U extends Record<string, unknown>,
 >({ id, ...params }: U) {
     return ApiService.fetchDataWithAxios<T>({
-        url: `http://localhost:5000/api/attendance/checkout_attendance/${id}`,
+        url: `${domain}/api/attendance/checkout_attendance/${id}`,
         method: 'get',
         params,
     })
@@ -37,7 +40,7 @@ export async function apiDeleteAttendances<
     U extends Record<string, unknown>,
 >(data: U) {
     return ApiService.fetchDataWithAxios<T>({
-        url: 'http://localhost:5000/api/attendance/delete_attendance',
+        url: `${domain}/api/attendance/delete_attendance`,
         method: 'post',
         data,
     })
@@ -48,7 +51,7 @@ export async function apiArchiveAttendance<
     U extends Record<string, unknown>,
 >(data: U) {
     return ApiService.fetchDataWithAxios<T>({
-        url: 'http://localhost:5000/api/attendance/archive_attendance',
+        url: `${domain}/api/attendance/archive_attendance`,
         method: 'post',
         data,
     })

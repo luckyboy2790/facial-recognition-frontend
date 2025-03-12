@@ -11,6 +11,7 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Employee } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { apiArchiveEmployee } from '@/services/employeeService'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusColor: Record<string, string> = {
     Active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
@@ -24,11 +25,7 @@ type ArchiveResponse = {
 const NameColumn = ({ row }: { row: Employee }) => {
     return (
         <div className="flex items-center">
-            <Avatar
-                size={40}
-                shape="circle"
-                src={`http://localhost:5000${row.img}`}
-            />
+            <Avatar size={40} shape="circle" src={`${domain}${row.img}`} />
             <Link
                 className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
                 to={`/employee-details/${row._id}`}

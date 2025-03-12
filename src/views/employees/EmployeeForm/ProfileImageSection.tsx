@@ -8,6 +8,7 @@ import { Controller, UseFormSetValue } from 'react-hook-form'
 import { HiOutlineUser } from 'react-icons/hi'
 import * as faceapi from 'face-api.js'
 import type { FormSectionBaseProps } from './types'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ProfileImageSectionProps = FormSectionBaseProps & {
     setValue: UseFormSetValue<any>
@@ -127,7 +128,7 @@ const ProfileImage = ({
                                                 field.value
                                                     ? isUpdateImage
                                                         ? field.value // Show new image if uploaded
-                                                        : `http://localhost:5000${field.value}` // Show original image
+                                                        : `${domain}${field.value}` // Show original image
                                                     : ''
                                             }
                                         />

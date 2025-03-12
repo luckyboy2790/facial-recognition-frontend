@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { ScheduleFormSchema } from '../ScheduleForm'
 import type { Schedule } from '../ScheduleList/types'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ScheduleDetailResponse = {
     message: string
@@ -49,7 +50,7 @@ const ScheduleEdit = () => {
         await sleep(800)
 
         const response = await fetch(
-            `http://localhost:5000/api/schedule/update_schedule/${id}`,
+            `${domain}/api/schedule/update_schedule/${id}`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

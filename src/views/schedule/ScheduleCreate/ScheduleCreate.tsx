@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { ScheduleFormSchema } from '../ScheduleForm'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
@@ -22,7 +23,7 @@ const EmployeeCreate = () => {
         setIsSubmiting(true)
 
         const response: any = await fetch(
-            'http://localhost:5000/api/schedule/create_schedule',
+            `${domain}/api/schedule/create_schedule`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

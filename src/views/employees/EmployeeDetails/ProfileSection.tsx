@@ -10,6 +10,7 @@ import { HiPencil, HiOutlineTrash } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import { Employee } from '../EmployeeList/types'
 import { apiDeleteEmployees } from '@/services/employeeService'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type CustomerInfoFieldProps = {
     title?: string
@@ -97,7 +98,7 @@ const ProfileSection = ({ data }: ProfileSectionProps) => {
                     <Avatar
                         size={90}
                         shape="circle"
-                        src={`http://localhost:5000${data.img}`}
+                        src={`${domain}${data.img}`}
                     />
                     <h4 className="font-bold">{data.full_name}</h4>
                 </div>

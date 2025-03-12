@@ -197,12 +197,12 @@ class VideoInput extends Component<
                 }
             }
 
-            // const domain = process.env.VITE_BACKEND_ENDPOINT
+            const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
             const endpoint =
                 this.props.type === 'time_in'
-                    ? 'http://localhost:5000/api/attendance/create_attendance'
-                    : `http://localhost:5000/api/attendance/update_attendance/${attendanceId}`
+                    ? `${domain}/api/attendance/create_attendance`
+                    : `${domain}/api/attendance/update_attendance/${attendanceId}`
 
             try {
                 const response = await fetch(endpoint, {
