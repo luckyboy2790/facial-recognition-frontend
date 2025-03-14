@@ -5,25 +5,13 @@ import useCustomerList from '../hooks/useEmployeeList'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Employee } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
 
 const statusColor: Record<string, string> = {
     active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
     archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
-}
-
-const NameColumn = ({ row }: { row: Customer }) => {
-    return (
-        <div className="flex items-center">
-            <div
-                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-            >
-                {row.name}
-            </div>
-        </div>
-    )
 }
 
 const CustomerListTable = () => {
@@ -37,44 +25,35 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    console.log(customerList)
+
+    const columns: ColumnDef<Employee>[] = useMemo(
         () => [
             {
-                header: 'Name',
-                accessorKey: 'name',
-                cell: (props) => {
-                    const row = props.row.original
-                    return <NameColumn row={row} />
-                },
+                header: 'Employee Name',
+                accessorKey: 'full_name',
             },
             {
-                header: 'Email',
-                accessorKey: 'email',
+                header: 'Department',
+                accessorKey: 'department.department_name',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Position',
+                accessorKey: 'job_title.job_title',
             },
             {
-                header: 'Status',
-                accessorKey: 'status',
-                cell: (props) => {
-                    const row = props.row.original
-                    return (
-                        <div className="flex items-center">
-                            <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
-                            </Tag>
-                        </div>
-                    )
-                },
+                header: 'Birthday',
+                accessorKey: 'birthday',
             },
             {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
-                },
+                header: 'Conttact Number',
+                id: 'contactNumber',
+                cell: (props) => (
+                    <div>
+                        {props.row.original.dial_code}{' '}
+                        {props.row.original.phone_number}
+                    </div>
+                ),
             },
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,7 +101,7 @@ const CustomerListTable = () => {
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedCustomer.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}

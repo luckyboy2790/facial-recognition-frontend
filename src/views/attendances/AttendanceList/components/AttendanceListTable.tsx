@@ -39,8 +39,6 @@ const AttendanceListTable = () => {
         selectedAttendance,
     } = useAttendanceList()
 
-    console.log(attendanceList)
-
     const handleEdit = (attendance: Attendance) => {
         navigate(`/attendance-edit/${attendance._id}`)
     }
