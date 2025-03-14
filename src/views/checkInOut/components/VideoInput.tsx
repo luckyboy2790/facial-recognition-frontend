@@ -2,13 +2,8 @@ import React, { Component, createRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Webcam from 'react-webcam'
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face'
-
-import JSON_PROFILE from '../descriptors/bnk48.json'
 import { apiGetTotalEmployeeDescriptor } from '@/services/employeeService'
-import {
-    apiAttendanceCheckOut,
-    apiAttendanceDetail,
-} from '@/services/AttendanceService'
+import { apiAttendanceCheckOut } from '@/services/AttendanceService'
 import { Attendance } from '@/views/attendances/AttendanceList/types'
 import { Notification, toast } from '@/components/ui'
 import sleep from '@/utils/sleep'
@@ -64,9 +59,25 @@ class VideoInput extends Component<
     }
 
     async componentDidMount() {
+        const navigate = useNavigate()
+
         const data: FaceDescriptorData = await apiGetTotalEmployeeDescriptor()
 
         console.log(data)
+
+        if (Object.keys(data).length <= 0) {
+            toast.push(
+                <Notification type="warning">
+                    Employees are not exist!
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            navigate('/employee')
+            return
+        }
 
         await loadModels()
         this.setState({ faceMatcher: await createMatcher(data) })
@@ -185,7 +196,7 @@ class VideoInput extends Component<
                 reqData = {
                     employee: match[0]._label,
                     date: date,
-                    time_in: timeWithTimezone, // ✅ Time with timezone
+                    time_in: timeWithTimezone,
                     time_out: '',
                 }
             } else {

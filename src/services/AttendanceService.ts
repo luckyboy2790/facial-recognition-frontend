@@ -1,4 +1,3 @@
-import { Domain } from 'node:domain'
 import ApiService from './ApiService'
 
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
@@ -7,7 +6,7 @@ export async function apiAttendanceList<T, U extends Record<string, unknown>>(
     params: U,
 ) {
     return ApiService.fetchDataWithAxios<T>({
-        url: `${Domain}/api/attendance/get_attendance`,
+        url: `${domain}/api/attendance/get_attendance`,
         method: 'get',
         params,
     })
