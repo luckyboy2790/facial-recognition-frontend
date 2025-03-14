@@ -1,28 +1,10 @@
 import { useMemo } from 'react'
-import Tag from '@/components/ui/Tag'
 import useCustomerList from '../hooks/useEmployeeList'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Customer } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
-
-const statusColor: Record<string, string> = {
-    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
-}
-
-const NameColumn = ({ row }: { row: Customer }) => {
-    return (
-        <div className="flex items-center">
-            <div
-                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-            >
-                {row.name}
-            </div>
-        </div>
-    )
-}
 
 const CustomerListTable = () => {
     const {
@@ -35,47 +17,31 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
+    console.log(customerList)
+
     const columns: ColumnDef<Customer>[] = useMemo(
         () => [
             {
-                header: 'Name',
-                accessorKey: 'name',
-                cell: (props) => {
-                    const row = props.row.original
-                    return <NameColumn row={row} />
-                },
+                header: 'Date',
+                accessorKey: 'date',
             },
             {
-                header: 'Email',
-                accessorKey: 'email',
+                header: 'Employee Name',
+                accessorKey: 'employeeData.full_name',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Time In',
+                accessorKey: 'time_in',
             },
             {
-                header: 'Status',
-                accessorKey: 'status',
-                cell: (props) => {
-                    const row = props.row.original
-                    return (
-                        <div className="flex items-center">
-                            <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
-                            </Tag>
-                        </div>
-                    )
-                },
+                header: 'Time Out',
+                accessorKey: 'time_out',
             },
             {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
-                },
+                header: 'Total Hours',
+                accessorKey: 'total_hours',
             },
         ],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     )
 

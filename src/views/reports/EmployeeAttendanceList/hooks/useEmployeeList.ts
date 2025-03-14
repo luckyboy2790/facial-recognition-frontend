@@ -1,25 +1,24 @@
 import { apiGetCustomersList } from '@/services/employeeService'
 import useSWR from 'swr'
 import { useCustomerListStore } from '../store/employeeListStore'
-import type { GetCustomersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { GetAttendancesListResponse } from '@/views/attendances/AttendanceList/types'
+import { apiAttendanceList } from '@/services/AttendanceService'
 
 export default function useCustomerList() {
     const {
         tableData,
-        filterData,
         setTableData,
         selectedCustomer,
         setSelectedCustomer,
         setSelectAllCustomer,
-        setFilterData,
     } = useCustomerListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/customers', { ...tableData, ...filterData }],
+        ['/api/customers', { ...tableData }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
-            apiGetCustomersList<GetCustomersListResponse, TableQueries>(params),
+            apiAttendanceList<GetAttendancesListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
@@ -35,12 +34,10 @@ export default function useCustomerList() {
         error,
         isLoading,
         tableData,
-        filterData,
         mutate,
         setTableData,
         selectedCustomer,
         setSelectedCustomer,
         setSelectAllCustomer,
-        setFilterData,
     }
 }
