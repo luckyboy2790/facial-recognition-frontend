@@ -2,6 +2,7 @@ import AdaptiveCard from '@/components/shared/AdaptiveCard'
 import Container from '@/components/shared/Container'
 import EmployeeListTable from './components/EmployeeListTable'
 import EmployeeListActionTools from './components/EmployeeListActionTools'
+import EmployeesListTableTools from './components/EmployeeListTableTools'
 
 const EmployeeList = () => {
     return (
@@ -13,6 +14,7 @@ const EmployeeList = () => {
                             <h3>Employee List Report</h3>
                             <EmployeeListActionTools />
                         </div>
+                        <EmployeesListTableTools />
                         <EmployeeListTable />
                     </div>
                 </AdaptiveCard>

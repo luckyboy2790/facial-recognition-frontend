@@ -46,7 +46,7 @@ const CustomerListTable = () => {
                 accessorKey: 'birthday',
             },
             {
-                header: 'Conttact Number',
+                header: 'Contact Number',
                 id: 'contactNumber',
                 cell: (props) => (
                     <div>
