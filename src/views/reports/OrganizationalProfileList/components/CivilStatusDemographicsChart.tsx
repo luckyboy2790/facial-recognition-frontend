@@ -1,22 +1,21 @@
 import Chart from 'react-apexcharts'
 import { COLORS } from '@/constants/chart.constant'
 
-const CivilStatusDemographics = () => {
+const CivilStatusDemographics = ({
+    civilStatusChartData,
+}: {
+    civilStatusChartData: {
+        labels: string[]
+        series: number[]
+    }
+}) => {
     return (
         <>
-            <div>Company Population</div>
+            <div>Civil Status Demographics</div>
             <Chart
                 options={{
                     colors: COLORS,
-                    labels: [
-                        'Team A',
-                        'Team B',
-                        'Team C',
-                        'Team D',
-                        'Team E',
-                        'Team F',
-                        'Team G',
-                    ],
+                    labels: civilStatusChartData.labels,
                     responsive: [
                         {
                             breakpoint: 480,
@@ -31,7 +30,7 @@ const CivilStatusDemographics = () => {
                         },
                     ],
                 }}
-                series={[44, 55, 13, 43, 22, 60, 80]}
+                series={civilStatusChartData.series}
                 height={300}
                 type="donut"
             />

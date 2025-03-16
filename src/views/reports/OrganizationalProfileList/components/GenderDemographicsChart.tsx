@@ -1,22 +1,21 @@
 import Chart from 'react-apexcharts'
 import { COLORS } from '@/constants/chart.constant'
 
-const GenderDemographics = () => {
+const GenderDemographics = ({
+    genderChartData,
+}: {
+    genderChartData: {
+        labels: string[]
+        series: number[]
+    }
+}) => {
     return (
         <div className="flex flex-col justify-between">
             <div>Company Population</div>
             <Chart
                 options={{
                     colors: COLORS,
-                    labels: [
-                        'Team A',
-                        'Team B',
-                        'Team C',
-                        'Team D',
-                        'Team E',
-                        'Team F',
-                        'Team G',
-                    ],
+                    labels: genderChartData.labels,
                     responsive: [
                         {
                             breakpoint: 480,
@@ -31,7 +30,7 @@ const GenderDemographics = () => {
                         },
                     ],
                 }}
-                series={[44, 55, 13, 43, 22, 60, 80]}
+                series={genderChartData.series}
                 height={300}
                 type="pie"
             />

@@ -1,36 +1,22 @@
 import { Chart } from '@/components/shared'
 import { COLORS } from '@/constants/chart.constant'
 
-interface LeadPerformanceData {
-    categories: string[]
-    series: number[]
+interface AgeDemographicsProps {
+    ageChartData: {
+        labels: string[]
+        series: number[]
+    }
 }
 
-const data: LeadPerformanceData = {
-    categories: [
-        'Headcount1',
-        'Headcount2',
-        'Headcount3',
-        'Headcount4',
-        'Headcount5',
-    ],
-    series: [1, 4, 2, 0, 3],
-}
-
-const AgeDemographics = () => {
+const AgeDemographics = ({ ageChartData }: AgeDemographicsProps) => {
     return (
         <div className="flex flex-col justify-between">
-            <div>Company Population</div>
+            <div>Age Demographics</div>
             <Chart
                 type="radar"
                 customOptions={{
                     xaxis: {
-                        categories: data.categories,
-                        labels: {
-                            formatter: (val) => {
-                                return `${data.categories.indexOf(val) + 1}`
-                            },
-                        },
+                        categories: ageChartData.labels,
                     },
                     yaxis: {
                         show: false,
@@ -38,20 +24,22 @@ const AgeDemographics = () => {
                     tooltip: {
                         custom: function ({ dataPointIndex }) {
                             return `
-                                    <div class="py-2 px-4 rounded-xl">
-                                        <div class="flex items-center gap-2">
-                                            <div class="h-[10px] w-[10px] rounded-full" style="background-color: ${COLORS[0]}"></div>
-                                            <div class="flex gap-2">${data.categories[dataPointIndex]}: <span class="font-bold">${data.series[dataPointIndex]}</span></div>
+                                <div class="py-2 px-4 rounded-xl">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-[10px] w-[10px] rounded-full" style="background-color: ${COLORS[0]}"></div>
+                                        <div class="flex gap-2">${ageChartData.labels[dataPointIndex]}:
+                                            <span class="font-bold">${ageChartData.series[dataPointIndex]}</span>
                                         </div>
                                     </div>
-                                `
+                                </div>
+                            `
                         },
                     },
                 }}
                 series={[
                     {
-                        name: 'Lead performance score',
-                        data: data.series,
+                        name: 'Age Group Count',
+                        data: ageChartData.series,
                     },
                 ]}
             />
