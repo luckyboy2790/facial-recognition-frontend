@@ -14,7 +14,6 @@ import type { ReactNode } from 'react'
 
 interface SignInFormProps extends CommonProps {
     disableSubmit?: boolean
-    passwordHint?: string | ReactNode
     setMessage?: (message: string) => void
 }
 
@@ -35,7 +34,7 @@ const validationSchema: ZodType<SignInFormSchema> = z.object({
 const SignInForm = (props: SignInFormProps) => {
     const [isSubmitting, setSubmitting] = useState<boolean>(false)
 
-    const { disableSubmit = false, className, setMessage, passwordHint } = props
+    const { disableSubmit = false, className, setMessage } = props
 
     const {
         handleSubmit,
@@ -93,7 +92,6 @@ const SignInForm = (props: SignInFormProps) => {
                     invalid={Boolean(errors.password)}
                     errorMessage={errors.password?.message}
                     className={classNames(
-                        passwordHint ? 'mb-0' : '',
                         errors.password?.message ? 'mb-8' : '',
                     )}
                 >
@@ -111,7 +109,6 @@ const SignInForm = (props: SignInFormProps) => {
                         )}
                     />
                 </FormItem>
-                {passwordHint}
                 <Button
                     block
                     loading={isSubmitting}

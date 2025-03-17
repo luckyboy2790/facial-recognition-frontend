@@ -92,7 +92,7 @@ const RolesPermissionsGroups = ({
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove customers"
+                title="Remove Role"
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
@@ -100,7 +100,7 @@ const RolesPermissionsGroups = ({
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these customers? This action
+                    Are you sure you want to remove these role? This action
                     can&apos;t be undo.{' '}
                 </p>
             </ConfirmDialog>
