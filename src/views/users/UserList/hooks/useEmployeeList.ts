@@ -1,46 +1,42 @@
-import { apiGetCustomersList } from '@/services/employeeService'
+import { apiGetUsersList } from '@/services/employeeService'
 import useSWR from 'swr'
-import { useCustomerListStore } from '../store/employeeListStore'
-import type { GetCustomersListResponse } from '../types'
+import { useUserListStore } from '../store/employeeListStore'
+import type { GetUsersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 
-export default function useCustomerList() {
+export default function useUserList() {
     const {
         tableData,
-        filterData,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-        setFilterData,
-    } = useCustomerListStore((state) => state)
+        selectedUser,
+        setSelectedUser,
+        setSelectAllUser,
+    } = useUserListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/customers', { ...tableData, ...filterData }],
+        ['/api/users', { ...tableData }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
-            apiGetCustomersList<GetCustomersListResponse, TableQueries>(params),
+            apiGetUsersList<GetUsersListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
 
-    const customerList = data?.list || []
+    const userList = data?.list || []
 
-    const customerListTotal = data?.total || 0
+    const userListTotal = data?.total || 0
 
     return {
-        customerList,
-        customerListTotal,
+        userList,
+        userListTotal,
         error,
         isLoading,
         tableData,
-        filterData,
         mutate,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-        setFilterData,
+        selectedUser,
+        setSelectedUser,
+        setSelectAllUser,
     }
 }

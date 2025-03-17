@@ -150,8 +150,8 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             value={field.value}
                             onChange={field.onChange}
                         >
-                            <Radio value={'Monthly'}>Monthly</Radio>
-                            <Radio value={'Yearly'}>Yearly</Radio>
+                            <Radio value={'Employee'}>Employee</Radio>
+                            <Radio value={'Admin'}>Admin</Radio>
                         </Radio.Group>
                     )}
                 />

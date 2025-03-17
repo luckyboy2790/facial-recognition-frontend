@@ -80,3 +80,13 @@ export async function apiGetAllData<T>() {
         method: 'get',
     })
 }
+
+export async function apiGetUsersList<T, U extends Record<string, unknown>>(
+    params: U,
+) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/user/get_users`,
+        method: 'get',
+        params,
+    })
+}

@@ -3,31 +3,18 @@ import Avatar from '@/components/ui/Avatar'
 import Tag from '@/components/ui/Tag'
 import Tooltip from '@/components/ui/Tooltip'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useEmployeeList'
+import useUserList from '../hooks/useEmployeeList'
 import { Link, useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import { TbPencil, TbEye } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { User } from '../types'
 import type { TableQueries } from '@/@types/common'
 
 const statusColor: Record<string, string> = {
-    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
-}
-
-const NameColumn = ({ row }: { row: Customer }) => {
-    return (
-        <div className="flex items-center">
-            <Avatar size={40} shape="circle" src={row.img} />
-            <Link
-                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-                to={`/users-details/${row.id}`}
-            >
-                {row.name}
-            </Link>
-        </div>
-    )
+    Enabled:
+        'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Disabled: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
 const ActionColumn = ({
@@ -61,45 +48,45 @@ const ActionColumn = ({
     )
 }
 
-const CustomerListTable = () => {
+const UserListTable = () => {
     const navigate = useNavigate()
 
     const {
-        customerList,
-        customerListTotal,
+        userList,
+        userListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllUser,
+        setSelectedUser,
+        selectedUser,
+    } = useUserList()
 
-    const handleEdit = (customer: Customer) => {
-        navigate(`/users-edit/${customer.id}`)
+    const handleEdit = (user: User) => {
+        navigate(`/users-edit/${user._id}`)
     }
 
-    const handleViewDetails = (customer: Customer) => {
-        navigate(`/users-details/${customer.id}`)
+    const handleViewDetails = (user: User) => {
+        navigate(`/users-details/${user._id}`)
     }
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<User>[] = useMemo(
         () => [
             {
                 header: 'Name',
-                accessorKey: 'name',
-                cell: (props) => {
-                    const row = props.row.original
-                    return <NameColumn row={row} />
-                },
+                accessorKey: 'employeeData.full_name',
             },
             {
                 header: 'Email',
                 accessorKey: 'email',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Role',
+                accessorKey: 'roleData.name',
+            },
+            {
+                header: 'Type',
+                accessorKey: 'account_type',
             },
             {
                 header: 'Status',
@@ -113,13 +100,6 @@ const CustomerListTable = () => {
                             </Tag>
                         </div>
                     )
-                },
-            },
-            {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
                 },
             },
             {
@@ -141,8 +121,8 @@ const CustomerListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedUser.length > 0) {
+            setSelectAllUser([])
         }
     }
 
@@ -165,16 +145,16 @@ const CustomerListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: User) => {
+        setSelectedUser(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<User>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllUser(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllUser([])
         }
     }
 
@@ -182,18 +162,18 @@ const CustomerListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={customerList}
-            noData={!isLoading && customerList.length === 0}
+            data={userList}
+            noData={!isLoading && userList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: userListTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedUser.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
@@ -204,4 +184,4 @@ const CustomerListTable = () => {
     )
 }
 
-export default CustomerListTable
+export default UserListTable

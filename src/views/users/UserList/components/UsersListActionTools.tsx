@@ -7,19 +7,15 @@ import RolesPermissionsGroupsAction from './RolesPermissionsGroupsAction'
 import RolesPermissionsAccessDialogComponent from './RolesPermissionsAccessDialog'
 import useRolePermissonsRoles from '../hooks/useRolePermissonsRoles'
 
-const CustomerListActionTools = () => {
+const UserListActionTools = () => {
     const navigate = useNavigate()
 
-    const { customerList } = useEmployeeList()
+    const { userList } = useEmployeeList()
     const { roleList, mutate: roleMutate } = useRolePermissonsRoles()
 
     return (
         <div className="flex flex-col md:flex-row gap-3">
-            <CSVLink
-                className="w-full"
-                filename="customerList.csv"
-                data={customerList}
-            >
+            <CSVLink className="w-full" filename="userList.csv" data={userList}>
                 <Button
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
@@ -43,4 +39,4 @@ const CustomerListActionTools = () => {
     )
 }
 
-export default CustomerListActionTools
+export default UserListActionTools
