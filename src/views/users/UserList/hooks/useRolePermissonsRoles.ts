@@ -1,6 +1,6 @@
-import { apiGetRolesPermissionsRoles } from '@/services/employeeService'
 import useSWR from 'swr'
 import type { GetPermissionsRolesResponse } from '../types'
+import { apiGetRolesPermissionsRoles } from '@/services/UserService'
 
 export default function useRolePermissonsRoles() {
     const { data, isLoading, error, mutate } = useSWR(

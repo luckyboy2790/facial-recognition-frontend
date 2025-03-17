@@ -4,7 +4,6 @@ import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
-import { apiGetCustomer } from '@/services/employeeService'
 import CustomerForm from '../UserForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
@@ -12,7 +11,13 @@ import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
 import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import type { CustomerFormSchema } from '../UserForm'
-import type { Customer } from '../UserList/types'
+import type { User } from '../UserList/types'
+import { apiGetUserDetail } from '@/services/UserService'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
+
+type UserDetailType = {
+    userDetail: User
+}
 
 const CustomerEdit = () => {
     const { id } = useParams()
@@ -20,9 +25,9 @@ const CustomerEdit = () => {
     const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
-        [`/api/customers${id}`, { id: id as string }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([_, params]) => apiGetCustomer<Customer, { id: string }>(params),
+        [`/api/user/${id}`, { id: id as string }],
+        ([_, params]) =>
+            apiGetUserDetail<UserDetailType, { id: string }>(params),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
@@ -35,30 +40,47 @@ const CustomerEdit = () => {
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
-        await sleep(800)
+
+        const response = await fetch(`${domain}/api/user/update_user/${id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values),
+        })
+
+        if (!response.ok) {
+            toast.push(
+                <Notification type="warning">
+                    Something went wrong!
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
+
         setIsSubmiting(false)
         toast.push(<Notification type="success">Changes Saved!</Notification>, {
             placement: 'top-center',
         })
-        navigate('/employees')
+        await sleep(800)
+        window.location.href = '/users'
     }
 
     const getDefaultValues = () => {
+        console.log(data)
+
         if (data) {
-            const { firstName, lastName, email, personalInfo, img } = data
+            const { employee, email, account_type, status, role } =
+                data.userDetail
 
             return {
-                firstName,
-                lastName,
+                employee,
                 email,
-                img,
-                phoneNumber: personalInfo.phoneNumber,
-                dialCode: personalInfo.dialCode,
-                country: personalInfo.country,
-                address: personalInfo.address,
-                city: personalInfo.city,
-                postcode: personalInfo.postcode,
-                tags: [],
+                account_type,
+                status,
+                role,
             }
         }
 

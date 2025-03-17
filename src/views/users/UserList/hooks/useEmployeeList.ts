@@ -1,8 +1,8 @@
-import { apiGetUsersList } from '@/services/employeeService'
 import useSWR from 'swr'
 import { useUserListStore } from '../store/employeeListStore'
 import type { GetUsersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { apiGetUsersList } from '@/services/UserService'
 
 export default function useUserList() {
     const {

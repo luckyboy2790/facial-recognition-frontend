@@ -47,7 +47,6 @@ const ScheduleEdit = () => {
     const handleFormSubmit = async (values: ScheduleFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
-        await sleep(800)
 
         const response = await fetch(
             `${domain}/api/schedule/update_schedule/${id}`,
@@ -58,12 +57,24 @@ const ScheduleEdit = () => {
             },
         )
 
-        console.log(response)
+        if (!response.ok) {
+            toast.push(
+                <Notification type="warning">
+                    Something went wrong!
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
 
         setIsSubmiting(false)
         toast.push(<Notification type="success">Changes Saved!</Notification>, {
             placement: 'top-center',
         })
+        await sleep(800)
         window.location.href = '/schedule'
     }
 

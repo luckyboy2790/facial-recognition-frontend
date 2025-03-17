@@ -65,28 +65,9 @@ export async function apiGetTotalEmployeeDescriptor<T>() {
     })
 }
 
-// --------------------------------------------------------------------------------
-
-export async function apiGetRolesPermissionsRoles<T>() {
-    return ApiService.fetchDataWithAxios<T>({
-        url: `${domain}/api/user/get_role`,
-        method: 'get',
-    })
-}
-
 export async function apiGetAllData<T>() {
     return ApiService.fetchDataWithAxios<T>({
         url: `${domain}/api/employee/total_field`,
         method: 'get',
-    })
-}
-
-export async function apiGetUsersList<T, U extends Record<string, unknown>>(
-    params: U,
-) {
-    return ApiService.fetchDataWithAxios<T>({
-        url: `${domain}/api/user/get_users`,
-        method: 'get',
-        params,
     })
 }

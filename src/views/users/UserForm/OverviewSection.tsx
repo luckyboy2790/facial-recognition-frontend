@@ -5,12 +5,10 @@ import { Controller, useFormContext } from 'react-hook-form'
 import type { FormSectionBaseProps } from './types'
 import { Radio, Select } from '@/components/ui'
 import { useEffect, useState } from 'react'
-import {
-    apiGetRolesPermissionsRoles,
-    apiGetTotalEmployeeList,
-} from '@/services/employeeService'
+import { apiGetTotalEmployeeList } from '@/services/employeeService'
 import { Employee } from '@/views/employees/EmployeeList/types'
 import { Role } from '../UserList/types'
+import { apiGetRolesPermissionsRoles } from '@/services/UserService'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -66,10 +64,12 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                     await apiGetRolesPermissionsRoles()
 
                 setRoleOptions(
-                    role_list.roleList.map((item) => ({
-                        label: item.name,
-                        value: item._id,
-                    })),
+                    role_list.roleList
+                        .filter((item) => item.status === 'Active')
+                        .map((item) => ({
+                            label: item.name,
+                            value: item._id,
+                        })),
                 )
             } catch (error) {
                 console.error('Error fetching data:', error)
