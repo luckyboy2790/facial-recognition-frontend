@@ -17,13 +17,7 @@ const statusColor: Record<string, string> = {
     Disabled: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
-const ActionColumn = ({
-    onEdit,
-    onViewDetail,
-}: {
-    onEdit: () => void
-    onViewDetail: () => void
-}) => {
+const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
         <div className="flex items-center gap-3">
             <Tooltip title="Edit">
@@ -33,15 +27,6 @@ const ActionColumn = ({
                     onClick={onEdit}
                 >
                     <TbPencil />
-                </div>
-            </Tooltip>
-            <Tooltip title="View">
-                <div
-                    className={`text-xl cursor-pointer select-none font-semibold`}
-                    role="button"
-                    onClick={onViewDetail}
-                >
-                    <TbEye />
                 </div>
             </Tooltip>
         </div>
@@ -64,10 +49,6 @@ const UserListTable = () => {
 
     const handleEdit = (user: User) => {
         navigate(`/users-edit/${user._id}`)
-    }
-
-    const handleViewDetails = (user: User) => {
-        navigate(`/users-details/${user._id}`)
     }
 
     const columns: ColumnDef<User>[] = useMemo(
@@ -108,9 +89,6 @@ const UserListTable = () => {
                 cell: (props) => (
                     <ActionColumn
                         onEdit={() => handleEdit(props.row.original)}
-                        onViewDetail={() =>
-                            handleViewDetails(props.row.original)
-                        }
                     />
                 ),
             },

@@ -26,3 +26,13 @@ export async function apiGetUserDetail<T, U extends Record<string, unknown>>({
         method: 'get',
     })
 }
+
+export async function apiDeleteUsers<T, U extends Record<string, unknown>>(
+    data: U,
+) {
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/user/delete_user`,
+        method: 'post',
+        data,
+    })
+}

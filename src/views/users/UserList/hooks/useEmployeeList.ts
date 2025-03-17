@@ -2,7 +2,11 @@ import useSWR from 'swr'
 import { useUserListStore } from '../store/employeeListStore'
 import type { GetUsersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { apiGetUsersList } from '@/services/UserService'
+import { apiDeleteUsers, apiGetUsersList } from '@/services/UserService'
+
+type UserData = {
+    userIds: string[]
+}
 
 export default function useUserList() {
     const {
@@ -15,13 +19,20 @@ export default function useUserList() {
 
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/users', { ...tableData }],
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
             apiGetUsersList<GetUsersListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
+
+    const deleteUsers = async (userIds: string[]) => {
+        await apiDeleteUsers<string[], UserData>({
+            userIds,
+        })
+        mutate()
+        setSelectAllUser([])
+    }
 
     const userList = data?.list || []
 
@@ -34,6 +45,7 @@ export default function useUserList() {
         isLoading,
         tableData,
         mutate,
+        deleteUsers,
         setTableData,
         selectedUser,
         setSelectedUser,
