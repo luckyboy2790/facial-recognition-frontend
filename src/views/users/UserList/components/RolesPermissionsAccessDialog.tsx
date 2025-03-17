@@ -1,29 +1,18 @@
-import { useMemo, useState, useRef } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import Button from '@/components/ui/Button'
-import Avatar from '@/components/ui/Avatar'
 import Segment from '@/components/ui/Segment'
 import Dialog from '@/components/ui/Dialog'
 import Input from '@/components/ui/Input'
 import ScrollBar from '@/components/ui/ScrollBar'
 import { FormItem } from '@/components/ui/Form'
-import hooks from '@/components/ui/hooks'
 import { useRolePermissionsStore } from '../store/rolePermissionsStore'
 import { accessModules } from '../constants'
 import classNames from '@/utils/classNames'
 import isLastChild from '@/utils/isLastChild'
-import sleep from '@/utils/sleep'
-import {
-    TbUserCog,
-    TbBox,
-    TbSettings,
-    TbFiles,
-    TbFileChart,
-    TbCheck,
-} from 'react-icons/tb'
+import { TbCheck } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
-import type { ReactNode } from 'react'
 import { Select } from '@/components/ui'
-import Checkbox from '@/components/ui/Checkbox/Checkbox'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusOptions = [
     { value: 'Active', label: 'Active' },
@@ -45,9 +34,17 @@ const RolesPermissionsAccessDialogComponent = ({
     const [accessRight, setAccessRight] = useState<Record<string, string[]>>({})
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
 
-    const roleNameRef = useRef<HTMLInputElement>(null)
+    const [roleName, setRoleName] = useState('')
 
     const handleClose = () => {
+        setRoleName('')
+
+        setSelectedStatus('Active')
+
+        setAccessRight({})
+
+        setSelectedRole('')
+
         setRoleDialog({
             type: '',
             open: false,
@@ -56,14 +53,14 @@ const RolesPermissionsAccessDialogComponent = ({
 
     const handleSubmit = async () => {
         const newRole = {
-            name: roleNameRef.current?.value || 'Untitled Role',
+            name: roleName || 'Untitled Role',
             status: selectedStatus || '',
             accessRight,
         }
 
         try {
             const response = await fetch(
-                'http://localhost:5000/api/user/create_role',
+                `${domain}/api/user/${roleDialog.type === 'new' ? 'create_role' : `update_role/${selectedRole}`}`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -76,6 +73,7 @@ const RolesPermissionsAccessDialogComponent = ({
             }
 
             mutate()
+
             handleClose()
         } catch (error) {
             console.error('Error creating role:', error)
@@ -118,6 +116,16 @@ const RolesPermissionsAccessDialogComponent = ({
         return 'indeterminate'
     }
 
+    useEffect(() => {
+        if (modules) {
+            setRoleName(modules.name || '')
+
+            setSelectedStatus(modules.status || null)
+
+            setAccessRight(modules.accessRight || {})
+        }
+    }, [modules])
+
     return (
         <Dialog
             isOpen={roleDialog.open}
@@ -129,7 +137,10 @@ const RolesPermissionsAccessDialogComponent = ({
             <ScrollBar className="mt-6 max-h-[600px] overflow-y-auto">
                 <div className="px-4">
                     <FormItem label="Role name">
-                        <Input ref={roleNameRef} />
+                        <Input
+                            value={roleName}
+                            onChange={(e) => setRoleName(e.target.value)}
+                        />
                     </FormItem>
                     <FormItem label="Status">
                         <Select
@@ -242,14 +253,7 @@ const RolesPermissionsAccessDialogComponent = ({
                         >
                             Cancel
                         </Button>
-                        <Button
-                            variant="solid"
-                            onClick={
-                                roleDialog.type === 'edit'
-                                    ? handleClose
-                                    : handleSubmit
-                            }
-                        >
+                        <Button variant="solid" onClick={handleSubmit}>
                             {roleDialog.type === 'edit' ? 'Update' : 'Create'}
                         </Button>
                     </div>
