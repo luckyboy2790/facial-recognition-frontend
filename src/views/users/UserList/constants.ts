@@ -1,16 +1,47 @@
 export const accessModules = [
     {
-        id: 'users',
-        name: 'User management',
-        description: 'Access control for user management',
+        id: 'dahsboard',
+        name: 'DASHBOARD',
         accessor: [
             {
                 label: 'Read',
                 value: 'read',
             },
+        ],
+    },
+    {
+        id: 'employee',
+        name: 'EMPLOYEES',
+        accessor: [
             {
-                label: 'Write',
-                value: 'write',
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Read',
+                value: 'read',
+            },
+            {
+                label: 'Update',
+                value: 'update',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+            {
+                label: 'Archive',
+                value: 'archive',
+            },
+        ],
+    },
+    {
+        id: 'attendance',
+        name: 'ATTENDANCES',
+        accessor: [
+            {
+                label: 'Update',
+                value: 'update',
             },
             {
                 label: 'Delete',
@@ -19,17 +50,20 @@ export const accessModules = [
         ],
     },
     {
-        id: 'products',
-        name: 'Products authority',
-        description: 'Access control for product operations',
+        id: 'schedule',
+        name: 'SCHEDULES',
         accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
             {
                 label: 'Read',
                 value: 'read',
             },
             {
-                label: 'Write',
-                value: 'write',
+                label: 'Update',
+                value: 'update',
             },
             {
                 label: 'Delete',
@@ -38,17 +72,12 @@ export const accessModules = [
         ],
     },
     {
-        id: 'configurations',
-        name: 'System configurations',
-        description: 'Access control for system settings',
+        id: 'leave',
+        name: 'LEAVE',
         accessor: [
             {
-                label: 'Read',
-                value: 'read',
-            },
-            {
-                label: 'Write',
-                value: 'write',
+                label: 'Update',
+                value: 'update',
             },
             {
                 label: 'Delete',
@@ -57,17 +86,36 @@ export const accessModules = [
         ],
     },
     {
-        id: 'files',
-        name: 'File management',
-        description: 'Access control for file management',
+        id: 'setting',
+        name: 'SETTINGS',
+        accessor: [
+            {
+                label: 'Update',
+                value: 'update',
+            },
+        ],
+    },
+    {
+        id: 'report',
+        name: 'REPORTS',
         accessor: [
             {
                 label: 'Read',
                 value: 'read',
             },
+        ],
+    },
+    {
+        id: 'user',
+        name: 'USERS',
+        accessor: [
             {
-                label: 'Write',
-                value: 'write',
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Update',
+                value: 'update',
             },
             {
                 label: 'Delete',
@@ -76,17 +124,94 @@ export const accessModules = [
         ],
     },
     {
-        id: 'reports',
-        name: 'Reports',
-        description: 'Access control for generating reports',
+        id: 'role',
+        name: 'USER ROLES',
         accessor: [
             {
-                label: 'Read',
-                value: 'read',
+                label: 'Create',
+                value: 'create',
             },
             {
-                label: 'Write',
-                value: 'write',
+                label: 'Update',
+                value: 'update',
+            },
+            {
+                label: 'setPermission',
+                value: 'Set Permission',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+        ],
+    },
+    {
+        id: 'company',
+        name: 'COMPANIES',
+        accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+        ],
+    },
+    {
+        id: 'department',
+        name: 'DEPARTMENTS',
+        accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+        ],
+    },
+    {
+        id: 'jobTitles',
+        name: 'JOB TITLES',
+        accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+        ],
+    },
+    {
+        id: 'leaveType',
+        name: 'LEAVE TYPES',
+        accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+        ],
+    },
+    {
+        id: 'leaveGroup',
+        name: 'LEAVE GROUPS',
+        accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Update',
+                value: 'update',
             },
             {
                 label: 'Delete',

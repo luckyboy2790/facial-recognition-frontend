@@ -22,23 +22,20 @@ import {
 } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import type { ReactNode } from 'react'
+import { Select } from '@/components/ui'
+import Checkbox from '@/components/ui/Checkbox/Checkbox'
+
+const statusOptions = [
+    { value: 'Active', label: 'Active' },
+    { value: 'Disable', label: 'Disable' },
+]
 
 type RolesPermissionsAccessDialog = {
     roleList: Roles
     mutate: MutateRolesPermissionsRolesResponse
 }
 
-const moduleIcon: Record<string, ReactNode> = {
-    users: <TbUserCog />,
-    products: <TbBox />,
-    configurations: <TbSettings />,
-    files: <TbFiles />,
-    reports: <TbFileChart />,
-}
-
-const { useUniqueId } = hooks
-
-const RolesPermissionsAccessDialog = ({
+const RolesPermissionsAccessDialogComponent = ({
     roleList,
     mutate,
 }: RolesPermissionsAccessDialog) => {
@@ -46,11 +43,9 @@ const RolesPermissionsAccessDialog = ({
         useRolePermissionsStore()
 
     const [accessRight, setAccessRight] = useState<Record<string, string[]>>({})
+    const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
 
     const roleNameRef = useRef<HTMLInputElement>(null)
-    const descriptionRef = useRef<HTMLTextAreaElement>(null)
-
-    const newId = useUniqueId('role-')
 
     const handleClose = () => {
         setRoleDialog({
@@ -59,48 +54,70 @@ const RolesPermissionsAccessDialog = ({
         })
     }
 
-    const handleUpdate = async () => {
-        handleClose()
-        await sleep(300)
-        setSelectedRole('')
-    }
-
     const handleSubmit = async () => {
-        const newRoleList = structuredClone(roleList)
-        newRoleList.push({
-            id: newId,
-            name: roleNameRef.current?.value || `Untitle-${newId}`,
-            description: descriptionRef.current?.value || '',
-            users: [],
+        const newRole = {
+            name: roleNameRef.current?.value || 'Untitled Role',
+            status: selectedStatus || '',
             accessRight,
-        })
-        mutate(newRoleList, false)
-        handleClose()
+        }
+
+        try {
+            const response = await fetch(
+                'http://localhost:5000/api/user/create_permission',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newRole),
+                },
+            )
+
+            if (!response.ok) {
+                throw new Error(
+                    `Failed to create permission: ${response.statusText}`,
+                )
+            }
+
+            mutate()
+            handleClose()
+        } catch (error) {
+            console.error('Error creating permission:', error)
+            alert('Failed to create permission. Please try again.')
+        }
     }
 
     const modules = useMemo(() => {
-        return roleList.find((role) => role.id === selectedRole)
+        return roleList.find((role) => role._id === selectedRole)
     }, [selectedRole, roleList])
 
-    const handleChange = (accessRight: string[], key: string) => {
-        if (roleDialog.type === 'new') {
-            setAccessRight((value) => {
-                value[key] = accessRight
-                return value
-            })
-        }
+    const toggleAllPermissions = (moduleId: string, checked: boolean) => {
+        const modulePermissions =
+            accessModules
+                .find((m) => m.id === moduleId)
+                ?.accessor.map((access) => access.value) || []
 
-        if (roleDialog.type === 'edit') {
-            const newRoleList = structuredClone(roleList).map((role) => {
-                if (role.id === selectedRole) {
-                    role.accessRight[key] = accessRight
-                }
+        setAccessRight((prev) => {
+            const updatedAccessRight = { ...prev }
+            updatedAccessRight[moduleId] = checked ? modulePermissions : []
+            return { ...updatedAccessRight }
+        })
+    }
 
-                return role
-            })
+    const handleChange = (accessRightValues: string[], moduleId: string) => {
+        setAccessRight((prev) => ({
+            ...prev,
+            [moduleId]: accessRightValues,
+        }))
+    }
 
-            mutate(newRoleList, false)
-        }
+    const getCheckboxState = (moduleId: string) => {
+        const module = accessModules.find((m) => m.id === moduleId)
+        const selectedPermissions = accessRight[moduleId] || []
+        const totalPermissions =
+            module?.accessor.map((access) => access.value) || []
+
+        if (selectedPermissions.length === 0) return false
+        if (selectedPermissions.length === totalPermissions.length) return true
+        return 'indeterminate'
     }
 
     return (
@@ -113,19 +130,24 @@ const RolesPermissionsAccessDialog = ({
             <h4>{roleDialog.type === 'new' ? 'Create role' : modules?.name}</h4>
             <ScrollBar className="mt-6 max-h-[600px] overflow-y-auto">
                 <div className="px-4">
-                    {roleDialog.type === 'new' && (
-                        <>
-                            <FormItem label="Role name">
-                                <Input ref={roleNameRef} />
-                            </FormItem>
-                            <FormItem label="Description">
-                                <Input ref={descriptionRef} textArea />
-                            </FormItem>
-                            <span className="font-semibold mb-2">
-                                Permission
-                            </span>
-                        </>
-                    )}
+                    <FormItem label="Role name">
+                        <Input ref={roleNameRef} />
+                    </FormItem>
+                    <FormItem label="Status">
+                        <Select
+                            className="mb-4"
+                            placeholder="Select status"
+                            options={statusOptions}
+                            value={statusOptions.find(
+                                (option) => option.value === selectedStatus,
+                            )}
+                            onChange={(selectedOption) =>
+                                setSelectedStatus(selectedOption?.value || null)
+                            }
+                        />
+                    </FormItem>
+                    <span className="font-semibold mb-2">Roles</span>
+
                     {accessModules.map((module, index) => (
                         <div
                             key={module.id}
@@ -136,22 +158,38 @@ const RolesPermissionsAccessDialog = ({
                             )}
                         >
                             <div className="flex items-center gap-4">
-                                <Avatar
-                                    className="bg-transparent dark:bg-transparent p-2 border-2 border-gray-200 dark:border-gray-600 text-primary"
-                                    size={50}
-                                    icon={moduleIcon[module.id]}
-                                    shape="round"
-                                />
-                                <div>
-                                    <h6 className="font-bold">{module.name}</h6>
-                                    <span>{module.description}</span>
-                                </div>
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            getCheckboxState(module.id) === true
+                                        }
+                                        ref={(el) => {
+                                            if (el)
+                                                el.indeterminate =
+                                                    getCheckboxState(
+                                                        module.id,
+                                                    ) === 'indeterminate'
+                                        }}
+                                        onChange={(e) =>
+                                            toggleAllPermissions(
+                                                module.id,
+                                                e.target.checked,
+                                            )
+                                        }
+                                        className="cursor-pointer"
+                                    />
+                                    <h6 className="font-bold text-sm">
+                                        {module.name}
+                                    </h6>
+                                </label>
                             </div>
+
                             <div className="flex items-center gap-4">
                                 <Segment
                                     className="bg-transparent dark:bg-transparent"
                                     selectionType="multiple"
-                                    value={modules?.accessRight[module.id]}
+                                    value={accessRight[module.id] || []}
                                     onChange={(val) =>
                                         handleChange(val as string[], module.id)
                                     }
@@ -164,43 +202,40 @@ const RolesPermissionsAccessDialog = ({
                                             {({
                                                 active,
                                                 onSegmentItemClick,
-                                            }) => {
-                                                return (
-                                                    <Button
-                                                        variant="default"
-                                                        icon={
-                                                            active ? (
-                                                                <TbCheck className="text-primary text-xl" />
-                                                            ) : (
-                                                                <></>
-                                                            )
-                                                        }
-                                                        active={active}
-                                                        type="button"
-                                                        className="md:min-w-[100px]"
-                                                        size="sm"
-                                                        customColorClass={({
-                                                            active,
-                                                        }) =>
-                                                            classNames(
-                                                                active &&
-                                                                    'bg-transparent dark:bg-transparent text-primary border-primary ring-1 ring-primary',
-                                                            )
-                                                        }
-                                                        onClick={
-                                                            onSegmentItemClick
-                                                        }
-                                                    >
-                                                        {access.label}
-                                                    </Button>
-                                                )
-                                            }}
+                                            }) => (
+                                                <Button
+                                                    variant="default"
+                                                    icon={
+                                                        active ? (
+                                                            <TbCheck className="text-primary text-xl" />
+                                                        ) : (
+                                                            <></>
+                                                        )
+                                                    }
+                                                    active={active}
+                                                    type="button"
+                                                    className="md:min-w-[100px]"
+                                                    size="sm"
+                                                    customColorClass={({
+                                                        active,
+                                                    }) =>
+                                                        classNames(
+                                                            active &&
+                                                                'bg-transparent dark:bg-transparent text-primary border-primary ring-1 ring-primary',
+                                                        )
+                                                    }
+                                                    onClick={onSegmentItemClick}
+                                                >
+                                                    {access.label}
+                                                </Button>
+                                            )}
                                         </Segment.Item>
                                     ))}
                                 </Segment>
                             </div>
                         </div>
                     ))}
+
                     <div className="flex justify-end mt-6">
                         <Button
                             className="ltr:mr-2 rtl:ml-2"
@@ -213,7 +248,7 @@ const RolesPermissionsAccessDialog = ({
                             variant="solid"
                             onClick={
                                 roleDialog.type === 'edit'
-                                    ? handleUpdate
+                                    ? handleClose
                                     : handleSubmit
                             }
                         >
@@ -226,4 +261,4 @@ const RolesPermissionsAccessDialog = ({
     )
 }
 
-export default RolesPermissionsAccessDialog
+export default RolesPermissionsAccessDialogComponent

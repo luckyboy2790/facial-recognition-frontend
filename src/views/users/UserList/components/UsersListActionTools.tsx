@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import useEmployeeList from '../hooks/useEmployeeList'
 import { CSVLink } from 'react-csv'
 import RolesPermissionsGroupsAction from './RolesPermissionsGroupsAction'
-import RolesPermissionsAccessDialog from './RolesPermissionsAccessDialog'
+import RolesPermissionsAccessDialogComponent from './RolesPermissionsAccessDialog'
 import useRolePermissonsRoles from '../hooks/useRolePermissonsRoles'
 
 const CustomerListActionTools = () => {
@@ -35,7 +35,7 @@ const CustomerListActionTools = () => {
             >
                 Add new
             </Button>
-            <RolesPermissionsAccessDialog
+            <RolesPermissionsAccessDialogComponent
                 roleList={roleList}
                 mutate={roleMutate}
             />

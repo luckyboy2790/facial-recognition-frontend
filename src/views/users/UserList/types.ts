@@ -86,10 +86,9 @@ export type RoleFilter = {
 }
 
 export type Role = {
-    id: string
+    _id: string
     name: string
-    description: string
-    users: Pick<User, 'id' | 'name' | 'email' | 'role' | 'img'>[]
+    status: string
     accessRight: Record<string, string[]>
 }
 
