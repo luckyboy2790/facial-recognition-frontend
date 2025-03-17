@@ -69,7 +69,7 @@ export async function apiGetTotalEmployeeDescriptor<T>() {
 
 export async function apiGetRolesPermissionsRoles<T>() {
     return ApiService.fetchDataWithAxios<T>({
-        url: '/rbac/roles',
+        url: `${domain}/api/user/get_role`,
         method: 'get',
     })
 }

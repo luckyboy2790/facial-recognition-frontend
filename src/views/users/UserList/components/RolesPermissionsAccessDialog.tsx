@@ -63,7 +63,7 @@ const RolesPermissionsAccessDialogComponent = ({
 
         try {
             const response = await fetch(
-                'http://localhost:5000/api/user/create_permission',
+                'http://localhost:5000/api/user/create_role',
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -72,16 +72,14 @@ const RolesPermissionsAccessDialogComponent = ({
             )
 
             if (!response.ok) {
-                throw new Error(
-                    `Failed to create permission: ${response.statusText}`,
-                )
+                throw new Error(`Failed to create role: ${response.statusText}`)
             }
 
             mutate()
             handleClose()
         } catch (error) {
-            console.error('Error creating permission:', error)
-            alert('Failed to create permission. Please try again.')
+            console.error('Error creating role:', error)
+            alert('Failed to create role. Please try again.')
         }
     }
 

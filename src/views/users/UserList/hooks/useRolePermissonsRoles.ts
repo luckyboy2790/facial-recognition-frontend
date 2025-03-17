@@ -13,7 +13,7 @@ export default function useRolePermissonsRoles() {
         },
     )
 
-    const roleList = data || []
+    const roleList = data?.roleList || []
 
     return {
         roleList,

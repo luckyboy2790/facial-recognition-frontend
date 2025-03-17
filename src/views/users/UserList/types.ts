@@ -94,7 +94,10 @@ export type Role = {
 
 export type Roles = Role[]
 
-export type GetRolesPermissionsRolesResponse = Roles
+export type GetRolesPermissionsRolesResponse = {
+    roleList: Role[]
+    message: string
+}
 
 export type MutateRolesPermissionsRolesResponse =
     KeyedMutator<GetRolesPermissionsRolesResponse>

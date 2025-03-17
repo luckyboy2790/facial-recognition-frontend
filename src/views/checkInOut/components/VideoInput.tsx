@@ -35,7 +35,12 @@ interface State {
 }
 
 class VideoInput extends Component<
-    { onCloseDialog: () => void; type: string; timezone: string },
+    {
+        onCloseDialog: () => void
+        type: string
+        timezone: string
+        navigate: any
+    },
     State
 > {
     private webcam = createRef<Webcam>()
@@ -45,6 +50,7 @@ class VideoInput extends Component<
         onCloseDialog: () => void
         type: string
         timezone: string
+        navigate: any
     }) {
         super(props)
         this.state = {
@@ -59,8 +65,6 @@ class VideoInput extends Component<
     }
 
     async componentDidMount() {
-        const navigate = useNavigate()
-
         const data: FaceDescriptorData = await apiGetTotalEmployeeDescriptor()
 
         console.log(data)
@@ -75,7 +79,7 @@ class VideoInput extends Component<
                 },
             )
 
-            navigate('/employee')
+            this.props.navigate('/employee')
             return
         }
 
@@ -332,16 +336,19 @@ export default function VideoInputWithRouter({
     onCloseDialog,
     type,
     timezone,
+    navigate,
 }: {
     onCloseDialog: () => void
     type: string
     timezone: string
+    navigate: any
 }) {
     return (
         <VideoInput
             onCloseDialog={onCloseDialog}
             type={type}
             timezone={timezone}
+            navigate={navigate}
         />
     )
 }

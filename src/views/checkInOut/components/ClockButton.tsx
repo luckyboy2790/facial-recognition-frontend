@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react'
 import Button from '@/components/ui/Button'
 import Dialog from '@/components/ui/Dialog'
 import VideoInputWithRouter from './VideoInput'
+import { useNavigate } from 'react-router-dom'
 
 interface BoardCardProps {
     title: String
@@ -13,6 +14,7 @@ interface BoardCardProps {
 
 const ClockButton = (props: BoardCardProps) => {
     const { title, description, icon, timezone } = props
+    const navigate = useNavigate()
 
     const [dialogIsOpen, setIsOpen] = useState(false)
 
@@ -54,6 +56,7 @@ const ClockButton = (props: BoardCardProps) => {
                     onCloseDialog={() => setIsOpen(false)}
                     type={`${title === 'Check In' ? 'time_in' : 'time_out'}`}
                     timezone={timezone}
+                    navigate={navigate}
                 />
                 <div className="text-right mt-6">
                     <Button
