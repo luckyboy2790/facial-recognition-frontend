@@ -9,7 +9,7 @@ import ProfileImageSection from './ProfileImageSection'
 import AccountSection from './AccountSection'
 import isEmpty from 'lodash/isEmpty'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import type { ZodType } from 'zod'
 import type { CommonProps } from '@/@types/common'
@@ -21,24 +21,53 @@ type CustomerFormProps = {
     newCustomer?: boolean
 } & CommonProps
 
-const validationSchema: ZodType<CustomerFormSchema> = z.object({
-    firstName: z.string().min(1, { message: 'First name required' }),
-    lastName: z.string().min(1, { message: 'Last name required' }),
-    email: z
-        .string()
-        .min(1, { message: 'Email required' })
-        .email({ message: 'Invalid email' }),
-    dialCode: z.string().min(1, { message: 'Please select your country code' }),
-    phoneNumber: z
-        .string()
-        .min(1, { message: 'Please input your mobile number' }),
-    country: z.string().min(1, { message: 'Please select a country' }),
-    address: z.string().min(1, { message: 'Addrress required' }),
-    postcode: z.string().min(1, { message: 'Postcode required' }),
-    city: z.string().min(1, { message: 'City required' }),
-    img: z.string(),
-    tags: z.array(z.object({ value: z.string(), label: z.string() })),
-})
+const validationSchema: ZodType<CustomerFormSchema> = z
+    .object({
+        employee: z.string().min(1, { message: 'Employee name is required' }),
+        account_type: z
+            .string()
+            .min(1, { message: 'Account type is required' }),
+        email: z
+            .string()
+            .min(1, { message: 'Email is required' })
+            .email({ message: 'Invalid email address' }),
+        role: z.string().min(1, { message: 'Please select a role' }),
+        status: z.string().min(1, { message: 'Please select a status' }),
+
+        password: z
+            .string()
+            .min(8, { message: 'Password must be at least 8 characters long' })
+            .regex(/[0-9]/, { message: 'Password must include a number' })
+            .regex(/[a-z]/, {
+                message: 'Password must include a lowercase letter',
+            })
+            .regex(/[A-Z]/, {
+                message: 'Password must include an uppercase letter',
+            })
+            .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+                message: 'Password must include a special character',
+            })
+            .optional(),
+
+        confirm_password: z.string().optional(),
+    })
+    .superRefine(({ password, confirm_password }, ctx) => {
+        if (password && !confirm_password) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['confirm_password'],
+                message: 'Please confirm your password',
+            })
+        }
+
+        if (password && confirm_password && password !== confirm_password) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['confirm_password'],
+                message: "Passwords don't match",
+            })
+        }
+    })
 
 const CustomerForm = (props: CustomerFormProps) => {
     const {
@@ -48,27 +77,24 @@ const CustomerForm = (props: CustomerFormProps) => {
         children,
     } = props
 
-    const {
-        handleSubmit,
-        reset,
-        formState: { errors },
-        control,
-    } = useForm<CustomerFormSchema>({
+    const formMethods = useForm<CustomerFormSchema>({
         defaultValues: {
-            ...{
-                banAccount: false,
-                accountVerified: true,
-            },
             ...defaultValues,
         },
         resolver: zodResolver(validationSchema),
     })
 
+    const {
+        handleSubmit,
+        reset,
+        formState: { errors },
+        control,
+    } = formMethods
+
     useEffect(() => {
         if (!isEmpty(defaultValues)) {
             reset(defaultValues)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(defaultValues)])
 
     const onSubmit = (values: CustomerFormSchema) => {
@@ -76,31 +102,25 @@ const CustomerForm = (props: CustomerFormProps) => {
     }
 
     return (
-        <Form
-            className="flex w-full h-full"
-            containerClassName="flex flex-col w-full justify-between"
-            onSubmit={handleSubmit(onSubmit)}
-        >
-            <Container>
-                <div className="flex flex-col md:flex-row gap-4">
-                    <div className="gap-4 flex flex-col flex-auto">
-                        <OverviewSection control={control} errors={errors} />
-                        <AddressSection control={control} errors={errors} />
+        <FormProvider {...formMethods}>
+            <Form
+                className="flex w-full h-full"
+                containerClassName="flex flex-col w-full justify-between"
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <Container>
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <div className="gap-4 flex flex-col flex-auto">
+                            <OverviewSection
+                                control={control}
+                                errors={errors}
+                            />
+                        </div>
                     </div>
-                    <div className="md:w-[370px] gap-4 flex flex-col">
-                        <ProfileImageSection
-                            control={control}
-                            errors={errors}
-                        />
-                        <TagsSection control={control} errors={errors} />
-                        {!newCustomer && (
-                            <AccountSection control={control} errors={errors} />
-                        )}
-                    </div>
-                </div>
-            </Container>
-            <BottomStickyBar>{children}</BottomStickyBar>
-        </Form>
+                </Container>
+                <BottomStickyBar>{children}</BottomStickyBar>
+            </Form>
+        </FormProvider>
     )
 }
 

@@ -1,114 +1,119 @@
-import { useMemo } from 'react'
 import Card from '@/components/ui/Card'
 import Input from '@/components/ui/Input'
-import Select, { Option as DefaultOption } from '@/components/ui/Select'
-import Avatar from '@/components/ui/Avatar'
 import { FormItem } from '@/components/ui/Form'
-import NumericInput from '@/components/shared/NumericInput'
-import { countryList } from '@/constants/countries.constant'
-import { Controller } from 'react-hook-form'
-import { components } from 'react-select'
+import { Controller, useFormContext } from 'react-hook-form'
 import type { FormSectionBaseProps } from './types'
-import type { ControlProps, OptionProps } from 'react-select'
+import { Radio, Select } from '@/components/ui'
+import { useEffect, useState } from 'react'
+import {
+    apiGetRolesPermissionsRoles,
+    apiGetTotalEmployeeList,
+} from '@/services/employeeService'
+import { Employee } from '@/views/employees/EmployeeList/types'
+import { Role } from '../UserList/types'
 
 type OverviewSectionProps = FormSectionBaseProps
 
-type CountryOption = {
+type optionType = {
     label: string
-    dialCode: string
     value: string
 }
 
-const { Control } = components
-
-const CustomSelectOption = (props: OptionProps<CountryOption>) => {
-    return (
-        <DefaultOption<CountryOption>
-            {...props}
-            customLabel={(data) => (
-                <span className="flex items-center gap-2">
-                    <Avatar
-                        shape="circle"
-                        size={20}
-                        src={`/img/countries/${data.value}.png`}
-                    />
-                    <span>{data.dialCode}</span>
-                </span>
-            )}
-        />
-    )
+type GetCustomersListResponse = {
+    employeeData: Employee[]
+    total: number
 }
 
-const CustomControl = ({ children, ...props }: ControlProps<CountryOption>) => {
-    const selected = props.getValue()[0]
-    return (
-        <Control {...props}>
-            {selected && (
-                <Avatar
-                    className="ltr:ml-4 rtl:mr-4"
-                    shape="circle"
-                    size={20}
-                    src={`/img/countries/${selected.value}.png`}
-                />
-            )}
-            {children}
-        </Control>
-    )
+type GetRolesPermissions = {
+    roleList: Role[]
+    message: string
 }
+
+const statusOptions = [
+    {
+        value: 'Enabled',
+        label: 'Enabled',
+    },
+    {
+        value: 'Disabled',
+        label: 'Disabled',
+    },
+]
 
 const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
-    const dialCodeList = useMemo(() => {
-        const newCountryList: Array<CountryOption> = JSON.parse(
-            JSON.stringify(countryList),
-        )
+    const [employeeOptions, setEmployeeOptions] = useState<optionType[]>([])
+    const [employeeData, setEmployeeData] = useState<Employee[]>([])
+    const [roleOptions, setRoleOptions] = useState<optionType[]>([])
 
-        return newCountryList.map((country) => {
-            country.label = country.dialCode
-            return country
-        })
+    const { setValue } = useFormContext()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const employee_list: GetCustomersListResponse =
+                    await apiGetTotalEmployeeList()
+
+                setEmployeeOptions(
+                    employee_list.employeeData.map((item) => ({
+                        label: item.full_name,
+                        value: item._id,
+                    })),
+                )
+
+                setEmployeeData(employee_list.employeeData)
+
+                const role_list: GetRolesPermissions =
+                    await apiGetRolesPermissionsRoles()
+
+                setRoleOptions(
+                    role_list.roleList.map((item) => ({
+                        label: item.name,
+                        value: item._id,
+                    })),
+                )
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData()
     }, [])
 
     return (
         <Card>
             <h4 className="mb-6">Overview</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-                <FormItem
-                    label="First Name"
-                    invalid={Boolean(errors.firstName)}
-                    errorMessage={errors.firstName?.message}
-                >
-                    <Controller
-                        name="firstName"
-                        control={control}
-                        render={({ field }) => (
-                            <Input
-                                type="text"
-                                autoComplete="off"
-                                placeholder="First Name"
-                                {...field}
-                            />
-                        )}
-                    />
-                </FormItem>
-                <FormItem
-                    label="User Name"
-                    invalid={Boolean(errors.lastName)}
-                    errorMessage={errors.lastName?.message}
-                >
-                    <Controller
-                        name="lastName"
-                        control={control}
-                        render={({ field }) => (
-                            <Input
-                                type="text"
-                                autoComplete="off"
-                                placeholder="Last Name"
-                                {...field}
-                            />
-                        )}
-                    />
-                </FormItem>
-            </div>
+
+            <FormItem
+                label="Employee"
+                invalid={Boolean(errors.employee)}
+                errorMessage={errors.employee?.message}
+            >
+                <Controller
+                    name="employee"
+                    control={control}
+                    render={({ field }) => (
+                        <Select
+                            placeholder="Please Select"
+                            options={employeeOptions}
+                            value={employeeOptions.find(
+                                (option) => option.value === field.value,
+                            )}
+                            onChange={(option) => {
+                                field.onChange(option?.value)
+
+                                const selectedEmployee = employeeData.find(
+                                    (emp) => emp._id === option?.value,
+                                )
+
+                                if (selectedEmployee) {
+                                    setValue('email', selectedEmployee.email)
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </FormItem>
+
             <FormItem
                 label="Email"
                 invalid={Boolean(errors.email)}
@@ -119,61 +124,119 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                     control={control}
                     render={({ field }) => (
                         <Input
-                            type="email"
+                            type="text"
                             autoComplete="off"
-                            placeholder="Email"
-                            {...field}
+                            placeholder="Last Name"
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            disabled
                         />
                     )}
                 />
             </FormItem>
-            <div className="flex items-end gap-4 w-full">
+
+            <FormItem
+                label="Choose Account type"
+                invalid={Boolean(errors.account_type)}
+                errorMessage={errors.account_type?.message}
+            >
+                <Controller
+                    name="account_type"
+                    control={control}
+                    render={({ field }) => (
+                        <Radio.Group
+                            vertical
+                            value={field.value}
+                            onChange={field.onChange}
+                        >
+                            <Radio value={'Monthly'}>Monthly</Radio>
+                            <Radio value={'Yearly'}>Yearly</Radio>
+                        </Radio.Group>
+                    )}
+                />
+            </FormItem>
+
+            <FormItem
+                label="Role"
+                invalid={Boolean(errors.role)}
+                errorMessage={errors.role?.message}
+            >
+                <Controller
+                    name="role"
+                    control={control}
+                    render={({ field }) => (
+                        <Select
+                            placeholder="Please Select"
+                            options={roleOptions}
+                            value={roleOptions.find(
+                                (option) => option.value === field.value,
+                            )}
+                            onChange={(option) => field.onChange(option?.value)}
+                        />
+                    )}
+                />
+            </FormItem>
+
+            <FormItem
+                label="Status"
+                invalid={Boolean(errors.status)}
+                errorMessage={errors.status?.message}
+            >
+                <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                        <Select
+                            placeholder="Please Select"
+                            options={statusOptions}
+                            value={statusOptions.find(
+                                (option) => option.value === field.value,
+                            )}
+                            onChange={(option) => field.onChange(option?.value)}
+                        />
+                    )}
+                />
+            </FormItem>
+
+            <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    invalid={
-                        Boolean(errors.phoneNumber) || Boolean(errors.dialCode)
-                    }
+                    label="Password"
+                    invalid={Boolean(errors.password)}
+                    errorMessage={errors.password?.message}
                 >
-                    <label className="form-label mb-2">Phone number</label>
                     <Controller
-                        name="dialCode"
+                        name="password"
                         control={control}
                         render={({ field }) => (
-                            <Select<CountryOption>
-                                options={dialCodeList}
-                                {...field}
-                                className="w-[150px]"
-                                components={{
-                                    Option: CustomSelectOption,
-                                    Control: CustomControl,
-                                }}
-                                placeholder=""
-                                value={dialCodeList.filter(
-                                    (option) => option.dialCode === field.value,
-                                )}
-                                onChange={(option) =>
-                                    field.onChange(option?.dialCode)
-                                }
+                            <Input
+                                type="password"
+                                autoComplete="off"
+                                placeholder="Password"
+                                value={field.value}
+                                onChange={field.onChange}
                             />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    className="w-full"
-                    invalid={
-                        Boolean(errors.phoneNumber) || Boolean(errors.dialCode)
+                    label="Confirm Password"
+                    invalid={Boolean(errors.confirm_password)}
+                    errorMessage={
+                        errors.confirm_password?.message ||
+                        errors.root?.confirm_password?.message
                     }
-                    errorMessage={errors.phoneNumber?.message}
                 >
                     <Controller
-                        name="phoneNumber"
+                        name="confirm_password"
                         control={control}
                         render={({ field }) => (
-                            <NumericInput
+                            <Input
+                                type="password"
                                 autoComplete="off"
-                                placeholder="Phone Number"
+                                placeholder="Confirm Password"
                                 value={field.value}
                                 onChange={field.onChange}
-                                onBlur={field.onBlur}
                             />
                         )}
                     />

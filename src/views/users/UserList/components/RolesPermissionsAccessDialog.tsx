@@ -52,8 +52,6 @@ const RolesPermissionsAccessDialogComponent = ({
     }
 
     const handleSubmit = async () => {
-        console.log(roleName, selectedStatus)
-
         if (roleName === '' || !selectedStatus) {
             toast.push(
                 <Notification type="warning">Fill All Fields</Notification>,

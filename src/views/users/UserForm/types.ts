@@ -1,39 +1,16 @@
 import type { Control, FieldErrors } from 'react-hook-form'
 
 export type OverviewFields = {
-    firstName: string
-    lastName: string
+    employee: string
     email: string
-    dialCode: string
-    phoneNumber: string
-    img: string
+    account_type: string
+    role: string
+    status: string
+    password?: string
+    confirm_password?: string
 }
 
-export type AddressFields = {
-    country: string
-    address: string
-    postcode: string
-    city: string
-}
-
-export type ProfileImageFields = {
-    img: string
-}
-
-export type TagsFields = {
-    tags: Array<{ value: string; label: string }>
-}
-
-export type AccountField = {
-    banAccount?: boolean
-    accountVerified?: boolean
-}
-
-export type CustomerFormSchema = OverviewFields &
-    AddressFields &
-    ProfileImageFields &
-    TagsFields &
-    AccountField
+export type CustomerFormSchema = OverviewFields
 
 export type FormSectionBaseProps = {
     control: Control<CustomerFormSchema>

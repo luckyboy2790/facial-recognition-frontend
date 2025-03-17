@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { CustomerFormSchema } from '../UserForm'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
@@ -19,14 +20,41 @@ const EmployeeCreate = () => {
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
+        if (values.password !== values.confirm_password) {
+            toast.push(
+                <Notification type="warning">
+                    Passwords don't match
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
         setIsSubmiting(true)
-        await sleep(800)
+
+        const response = await fetch(`${domain}/api/user/create_user`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values),
+        })
+
+        const data = await response.json()
+
+        const toastStatus = response.ok ? 'success' : 'warning'
+
         setIsSubmiting(false)
         toast.push(
-            <Notification type="success">Customer created!</Notification>,
-            { placement: 'top-center' },
+            <Notification type={toastStatus}>{data.message}</Notification>,
+            {
+                placement: 'top-center',
+            },
         )
-        navigate('/employees')
+
+        await sleep(800)
+
+        window.location.href = '/users'
     }
 
     const handleConfirmDiscard = () => {
@@ -51,17 +79,13 @@ const EmployeeCreate = () => {
             <CustomerForm
                 newCustomer
                 defaultValues={{
-                    firstName: '',
-                    lastName: '',
+                    employee: '',
                     email: '',
-                    img: '',
-                    phoneNumber: '',
-                    dialCode: '',
-                    country: '',
-                    address: '',
-                    city: '',
-                    postcode: '',
-                    tags: [],
+                    account_type: '',
+                    role: '',
+                    status: '',
+                    password: '',
+                    confirm_password: '',
                 }}
                 onFormSubmit={handleFormSubmit}
             >

@@ -1,11 +1,11 @@
 import { apiGetRolesPermissionsRoles } from '@/services/employeeService'
 import useSWR from 'swr'
-import type { GetRolesPermissionsRolesResponse } from '../types'
+import type { GetPermissionsRolesResponse } from '../types'
 
 export default function useRolePermissonsRoles() {
     const { data, isLoading, error, mutate } = useSWR(
         ['/api/rbac/roles'],
-        () => apiGetRolesPermissionsRoles<GetRolesPermissionsRolesResponse>(),
+        () => apiGetRolesPermissionsRoles<GetPermissionsRolesResponse>(),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
