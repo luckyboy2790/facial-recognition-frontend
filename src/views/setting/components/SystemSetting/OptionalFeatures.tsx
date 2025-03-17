@@ -1,18 +1,13 @@
 import { AdaptiveCard } from '@/components/shared'
 import { FormItem, Switcher } from '@/components/ui'
 import { useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 const OptionalFeatures = () => {
-    const [checked, setChecked] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const { setValue, watch } = useFormContext()
 
-    const onSwitcherToggle = () => {
-        setIsLoading(true)
-        setTimeout(() => {
-            setChecked((checked) => !checked)
-            setIsLoading(false)
-        }, 1000)
-    }
+    const rfidClock = watch('rfidClock')
+    const timeInComments = watch('timeInComments')
 
     return (
         <div className="flex flex-col gap-4">
@@ -25,9 +20,8 @@ const OptionalFeatures = () => {
                     </p>
                     <div className="flex justify-start gap-4 items-center">
                         <Switcher
-                            checked={checked}
-                            isLoading={isLoading}
-                            onChange={onSwitcherToggle}
+                            checked={rfidClock}
+                            onChange={() => setValue('rfidClock', !rfidClock)}
                         />
                         <p>Toogle Off/On</p>
                     </div>
@@ -36,9 +30,10 @@ const OptionalFeatures = () => {
                     <p>Turn on to require comments when clocking in</p>
                     <div className="flex justify-start gap-4 items-center">
                         <Switcher
-                            checked={checked}
-                            isLoading={isLoading}
-                            onChange={onSwitcherToggle}
+                            checked={timeInComments}
+                            onChange={() =>
+                                setValue('timeInComments', !timeInComments)
+                            }
                         />
                         <p>Toogle Off/On</p>
                     </div>

@@ -2,15 +2,15 @@ import React from 'react'
 import { AdaptiveCard } from '@/components/shared'
 import { FormItem, Select } from '@/components/ui'
 import { countryList, timezoneList } from '@/constants/countries.constant'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useFormContext } from 'react-hook-form'
 import { components, type ControlProps, type OptionProps } from 'react-select'
 import { Option as DefaultOption } from '@/components/ui/Select'
 import Avatar from '@/components/ui/Avatar'
 import CreatableSelect from 'react-select/creatable'
 
 const defaultOptions = [
-    { value: 'am', label: '12 Hour (6:20 pm)' },
-    { value: 'pm', label: '24 Hour (16:20)' },
+    { value: '1', label: '12 Hour (6:20 pm)' },
+    { value: '2', label: '24 Hour (16:20)' },
 ]
 
 type CountryOption = {
@@ -19,7 +19,7 @@ type CountryOption = {
     value: string
 }
 
-type TimeZoneOption = {
+type OptionType = {
     label: string
     value: string
 }
@@ -44,9 +44,9 @@ const CustomCountrySelectOption = (props: OptionProps<CountryOption>) => {
     )
 }
 
-const CustomTimeZoneSelectOption = (props: OptionProps<TimeZoneOption>) => {
+const CustomTimeZoneSelectOption = (props: OptionProps<OptionType>) => {
     return (
-        <DefaultOption<TimeZoneOption>
+        <DefaultOption<OptionType>
             {...props}
             customLabel={(data, label) => (
                 <span className="flex items-center gap-2">{label}</span>
@@ -78,14 +78,14 @@ const CustomCountryControl = ({
 const CustomTimeZoneControl = ({
     children,
     ...props
-}: ControlProps<TimeZoneOption>) => {
+}: ControlProps<OptionType>) => {
     const selected = props.getValue()[0]
 
     return <SelectControl {...props}>{children}</SelectControl>
 }
 
 const LocalizationSetting = () => {
-    const { control } = useForm()
+    const { control } = useFormContext()
 
     return (
         <div className="flex flex-col gap-4">
@@ -119,7 +119,7 @@ const LocalizationSetting = () => {
                         name="timezone"
                         control={control}
                         render={({ field }) => (
-                            <Select<TimeZoneOption>
+                            <Select<OptionType>
                                 options={timezoneList}
                                 {...field}
                                 components={{
@@ -139,7 +139,7 @@ const LocalizationSetting = () => {
                 </FormItem>
                 <FormItem label="Time Format">
                     <Controller
-                        name="tags"
+                        name="timeFormat"
                         control={control}
                         render={({ field }) => (
                             <Select
@@ -147,7 +147,12 @@ const LocalizationSetting = () => {
                                 placeholder="Select time format"
                                 componentAs={CreatableSelect}
                                 options={defaultOptions}
-                                onChange={(option) => field.onChange(option)}
+                                value={defaultOptions.filter(
+                                    (option) => option.value === field.value,
+                                )}
+                                onChange={(option) =>
+                                    field.onChange(option?.value)
+                                }
                             />
                         )}
                     />
