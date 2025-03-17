@@ -11,7 +11,7 @@ import classNames from '@/utils/classNames'
 import isLastChild from '@/utils/isLastChild'
 import { TbCheck } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
-import { Select } from '@/components/ui'
+import { Notification, Select, toast } from '@/components/ui'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusOptions = [
@@ -52,6 +52,19 @@ const RolesPermissionsAccessDialogComponent = ({
     }
 
     const handleSubmit = async () => {
+        console.log(roleName, selectedStatus)
+
+        if (roleName === '' || !selectedStatus) {
+            toast.push(
+                <Notification type="warning">Fill All Fields</Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
+
         const newRole = {
             name: roleName || 'Untitled Role',
             status: selectedStatus || '',
