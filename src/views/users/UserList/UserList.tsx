@@ -20,7 +20,10 @@ const EmployeeList = () => {
                             <EmployeeListActionTools />
                         </div>
                         <div className="mb-10">
-                            <RolesPermissionsGroups roleList={roleList} />
+                            <RolesPermissionsGroups
+                                roleList={roleList}
+                                mutate={roleMutate}
+                            />
                         </div>
                         <CustomersListTableTools />
                         <EmployeeListTable />
