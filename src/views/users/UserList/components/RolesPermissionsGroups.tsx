@@ -5,6 +5,7 @@ import { TbArrowRight } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { ConfirmDialog } from '@/components/shared'
 import { useState } from 'react'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type RolesPermissionsGroupsProps = {
@@ -20,6 +21,8 @@ const RolesPermissionsGroups = ({
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [deleteRole, setDeleteRole] = useState('')
+
+    const { token } = useToken()
 
     const handleDelete = (id: string) => {
         setDeleteConfirmationOpen(true)
@@ -45,7 +48,10 @@ const RolesPermissionsGroups = ({
                 `${domain}/api/user/delete_role/${deleteRole}`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                    },
                 },
             )
 

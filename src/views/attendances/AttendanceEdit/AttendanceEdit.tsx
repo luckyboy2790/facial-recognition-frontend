@@ -16,6 +16,7 @@ import {
     apiDeleteAttendances,
 } from '@/services/AttendanceService'
 import { AttendanceFormSchema } from '../AttendanceForm/types'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type AttendanceDetailResponse = {
@@ -57,6 +58,8 @@ const AttendanceEdit = () => {
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
+    const { token } = useToken()
+
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
         console.log('Submitted values', values)
 
@@ -77,7 +80,10 @@ const AttendanceEdit = () => {
             `${domain}/api/attendance/update_attendance/${id}`,
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
                 body: JSON.stringify(values),
             },
         )

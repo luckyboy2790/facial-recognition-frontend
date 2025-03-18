@@ -13,6 +13,7 @@ import useSWR from 'swr'
 import type { CustomerFormSchema } from '../UserForm'
 import type { User } from '../UserList/types'
 import { apiGetUserDetail } from '@/services/UserService'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type UserDetailType = {
@@ -21,6 +22,8 @@ type UserDetailType = {
 
 const CustomerEdit = () => {
     const { id } = useParams()
+
+    const { token } = useToken()
 
     const navigate = useNavigate()
 
@@ -43,7 +46,10 @@ const CustomerEdit = () => {
 
         const response = await fetch(`${domain}/api/user/update_user/${id}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
             body: JSON.stringify(values),
         })
 

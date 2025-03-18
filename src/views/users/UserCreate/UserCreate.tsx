@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { CustomerFormSchema } from '../UserForm'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
@@ -17,6 +18,8 @@ const EmployeeCreate = () => {
     const [discardConfirmationOpen, setDiscardConfirmationOpen] =
         useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
+
+    const { token } = useToken()
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
@@ -36,7 +39,10 @@ const EmployeeCreate = () => {
 
         const response = await fetch(`${domain}/api/user/create_user`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
             body: JSON.stringify(values),
         })
 

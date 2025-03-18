@@ -12,6 +12,7 @@ import isLastChild from '@/utils/isLastChild'
 import { TbCheck } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { Notification, Select, toast } from '@/components/ui'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusOptions = [
@@ -33,6 +34,8 @@ const RolesPermissionsAccessDialogComponent = ({
 
     const [accessRight, setAccessRight] = useState<Record<string, string[]>>({})
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
+
+    const { token } = useToken()
 
     const [roleName, setRoleName] = useState('')
 
@@ -74,7 +77,10 @@ const RolesPermissionsAccessDialogComponent = ({
                 `${domain}/api/user/${roleDialog.type === 'new' ? 'create_role' : `update_role/${selectedRole}`}`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                    },
                     body: JSON.stringify(newRole),
                 },
             )

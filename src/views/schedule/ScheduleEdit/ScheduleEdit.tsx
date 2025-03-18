@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { ScheduleFormSchema } from '../ScheduleForm'
 import type { Schedule } from '../ScheduleList/types'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ScheduleDetailResponse = {
@@ -44,6 +45,8 @@ const ScheduleEdit = () => {
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
+    const { token } = useToken()
+
     const handleFormSubmit = async (values: ScheduleFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
@@ -52,7 +55,10 @@ const ScheduleEdit = () => {
             `${domain}/api/schedule/update_schedule/${id}`,
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
                 body: JSON.stringify(values),
             },
         )

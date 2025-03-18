@@ -36,10 +36,10 @@ const initialState: AuthState = {
         signedIn: false,
     },
     user: {
-        avatar: '',
-        userName: '',
+        img: '',
+        full_name: '',
         email: '',
-        authority: [],
+        _id: '',
     },
 }
 

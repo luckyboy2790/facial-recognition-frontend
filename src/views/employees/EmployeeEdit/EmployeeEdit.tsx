@@ -13,6 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import type { CustomerFormSchema } from '../EmployeeForm'
 import type { Employee } from '../EmployeeList/types'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ProfileSectionProps = {
@@ -37,6 +38,8 @@ const CustomerEdit = () => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
 
+        const { token } = useToken()
+
         try {
             let imageUrl = values.img
 
@@ -51,6 +54,11 @@ const CustomerEdit = () => {
                     {
                         method: 'POST',
                         body: formData,
+                        headers: {
+                            ...(token
+                                ? { Authorization: `Bearer ${token}` }
+                                : {}),
+                        },
                     },
                 )
                 const uploadResult = await uploadResponse.json()
@@ -80,7 +88,10 @@ const CustomerEdit = () => {
                 `${domain}/api/employee/update_employee`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                    },
                     body: JSON.stringify(payload),
                 },
             )

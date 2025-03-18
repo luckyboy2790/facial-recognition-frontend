@@ -127,8 +127,8 @@ const ProfileImage = ({
                                             src={
                                                 field.value
                                                     ? isUpdateImage
-                                                        ? field.value // Show new image if uploaded
-                                                        : `${domain}${field.value}` // Show original image
+                                                        ? field.value
+                                                        : `${domain}${field.value}`
                                                     : ''
                                             }
                                         />

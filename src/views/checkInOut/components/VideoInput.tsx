@@ -7,6 +7,7 @@ import { apiAttendanceCheckOut } from '@/services/AttendanceService'
 import { Attendance } from '@/views/attendances/AttendanceList/types'
 import { Notification, toast } from '@/components/ui'
 import sleep from '@/utils/sleep'
+import { useToken } from '@/store/authStore'
 
 const WIDTH = 420
 const HEIGHT = 420
@@ -40,6 +41,7 @@ class VideoInput extends Component<
         type: string
         timezone: string
         navigate: any
+        token: string | null
     },
     State
 > {
@@ -51,6 +53,7 @@ class VideoInput extends Component<
         type: string
         timezone: string
         navigate: any
+        token: string | null
     }) {
         super(props)
         this.state = {
@@ -224,6 +227,9 @@ class VideoInput extends Component<
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        ...(this.props.token
+                            ? { Authorization: `Bearer ${this.props.token}` }
+                            : {}),
                     },
                     body: JSON.stringify(reqData),
                 })
@@ -343,12 +349,15 @@ export default function VideoInputWithRouter({
     timezone: string
     navigate: any
 }) {
+    const { token } = useToken()
+
     return (
         <VideoInput
             onCloseDialog={onCloseDialog}
             type={type}
             timezone={timezone}
             navigate={navigate}
+            token={typeof token === 'string' ? token : null}
         />
     )
 }

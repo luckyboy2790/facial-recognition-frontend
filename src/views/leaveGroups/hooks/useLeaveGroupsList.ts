@@ -29,8 +29,7 @@ export default function useLeaveTypeList() {
         mutate: mutateLeaveType,
     } = useSWR(
         ['/api/leaveTypes', { ...tableData }],
-        ([_, params]) =>
-            apiTotalLeaveTypesList<GetLeaveTypesListResponse, TableQueries>(),
+        ([_, params]) => apiTotalLeaveTypesList<GetLeaveTypesListResponse>(),
         {
             revalidateOnFocus: false,
         },

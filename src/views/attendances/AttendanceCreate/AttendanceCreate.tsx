@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import { AttendanceFormSchema } from '../AttendanceForm/types'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
@@ -18,6 +19,8 @@ const EmployeeCreate = () => {
         useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
+    const { token } = useToken()
+
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
@@ -26,7 +29,10 @@ const EmployeeCreate = () => {
             `${domain}/api/attendance/create_attendance`,
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
                 body: JSON.stringify(values),
             },
         )

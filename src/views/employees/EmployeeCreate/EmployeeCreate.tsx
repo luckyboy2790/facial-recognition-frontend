@@ -9,6 +9,7 @@ import sleep from '@/utils/sleep'
 import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { CustomerFormSchema } from '../EmployeeForm'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
@@ -21,6 +22,8 @@ const EmployeeCreate = () => {
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
+
+        const { token } = useToken()
 
         try {
             let imageUrl = values.img
@@ -36,6 +39,11 @@ const EmployeeCreate = () => {
                     {
                         method: 'POST',
                         body: formData,
+                        headers: {
+                            ...(token
+                                ? { Authorization: `Bearer ${token}` }
+                                : {}),
+                        },
                     },
                 )
                 const uploadResult = await uploadResponse.json()
@@ -64,7 +72,10 @@ const EmployeeCreate = () => {
                 `${domain}/api/employee/create_employee`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                    },
                     body: JSON.stringify(payload),
                 },
             )

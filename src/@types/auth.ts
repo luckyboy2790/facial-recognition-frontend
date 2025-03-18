@@ -9,6 +9,7 @@ export type SignInResponse = {
         _id: string
         email: string
         full_name: string
+        img: string
     }
 }
 
@@ -36,11 +37,10 @@ export type AuthResult = Promise<{
 }>
 
 export type User = {
-    userId?: string | null
-    avatar?: string | null
-    userName?: string | null
+    _id?: string | null
+    img?: string | null
+    full_name?: string | null
     email?: string | null
-    authority?: string[]
 }
 
 export type Token = {

@@ -8,6 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { System } from '../../type'
 import { useNavigate } from 'react-router-dom'
+import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const SystemSetting = () => {
@@ -28,9 +29,16 @@ const SystemSetting = () => {
 
     const [settingId, setSettingId] = useState<string>('')
 
+    const { token } = useToken()
+
     useEffect(() => {
         const fetchSettings = async () => {
-            const response = await fetch(`${domain}/api/setting/get_setting`)
+            const response = await fetch(`${domain}/api/setting/get_setting`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+            })
             const data = await response.json()
 
             setValue('country', data.settingData.country || '')
@@ -53,7 +61,10 @@ const SystemSetting = () => {
                 `${domain}/api/setting/set_setting/${settingId}`,
                 {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                    },
                     body: JSON.stringify(formData),
                 },
             )
