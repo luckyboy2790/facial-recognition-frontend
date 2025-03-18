@@ -8,10 +8,11 @@ import type {
     SignInResponse,
     SignUpResponse,
 } from '@/@types/auth'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 export async function apiSignIn(data: SignInCredential) {
     return ApiService.fetchDataWithAxios<SignInResponse>({
-        url: endpointConfig.signIn,
+        url: `${domain}/api/user/login`,
         method: 'post',
         data,
     })

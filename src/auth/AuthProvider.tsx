@@ -75,8 +75,10 @@ function AuthProvider({ children }: AuthProviderProps) {
     const signIn = async (values: SignInCredential): AuthResult => {
         try {
             const resp = await apiSignIn(values)
+            console.log(resp)
+
             if (resp) {
-                handleSignIn({ accessToken: resp.token }, resp.user)
+                handleSignIn({ accessToken: resp.accessToken }, resp.user)
                 redirect()
                 return {
                     status: 'success',
@@ -100,7 +102,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         try {
             const resp = await apiSignUp(values)
             if (resp) {
-                handleSignIn({ accessToken: resp.token }, resp.user)
+                handleSignIn({ accessToken: resp.accessToken }, resp.user)
                 redirect()
                 return {
                     status: 'success',
