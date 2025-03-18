@@ -185,13 +185,14 @@ class VideoInput extends Component<
 
                     time_in =
                         new Intl.DateTimeFormat('en-US', {
-                            timeZone: this.props.timezone,
                             hour12: false,
                             hour: '2-digit',
                             minute: '2-digit',
                             second: '2-digit',
                             fractionalSecondDigits: 3,
                         }).format(date) + 'Z'
+
+                    console.log(time_in)
 
                     attendanceId = attendanceData._id
                 }
