@@ -3,14 +3,10 @@ import Dropdown from '@/components/ui/Dropdown'
 import withHeaderItem from '@/utils/hoc/withHeaderItem'
 import { useSessionUser } from '@/store/authStore'
 import { Link } from 'react-router-dom'
-import {
-    PiUserDuotone,
-    PiGearDuotone,
-    PiPulseDuotone,
-    PiSignOutDuotone,
-} from 'react-icons/pi'
+import { PiUserDuotone, PiGearDuotone, PiSignOutDuotone } from 'react-icons/pi'
 import { useAuth } from '@/auth'
 import type { JSX } from 'react'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type DropdownList = {
     label: string
@@ -36,7 +32,7 @@ const _UserDropdown = () => {
     }
 
     const avatarProps = {
-        ...(img ? { src: img } : { icon: <PiUserDuotone /> }),
+        ...(img ? { src: `${domain}${img}` } : { icon: <PiUserDuotone /> }),
     }
 
     return (

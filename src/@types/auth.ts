@@ -41,6 +41,8 @@ export type User = {
     img?: string | null
     full_name?: string | null
     email?: string | null
+    authority?: string[]
+    account_type?: string
 }
 
 export type Token = {

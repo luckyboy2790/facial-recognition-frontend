@@ -5,15 +5,13 @@ const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 export async function apiGetProjectTasks<T>() {
     const { token } = useToken()
     return ApiService.fetchDataWithAxios<T>({
-        url: '/projects/tasks',
+        url: `${domain}/api/dashboard/admin/get_data`,
         method: 'get',
         headers: {
             Authorization: `Bearer ${token}`,
         },
     })
 }
-
-//-------------------------------------------------------------------------------
 
 export async function apiGetCustomersList<T, U extends Record<string, unknown>>(
     params: U,

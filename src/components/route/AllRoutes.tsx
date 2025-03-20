@@ -21,6 +21,8 @@ const { authenticatedEntryPath } = appConfig
 const AllRoutes = (props: AllRoutesProps) => {
     const { user } = useAuth()
 
+    console.log(user)
+
     return (
         <Routes>
             <Route path="/" element={<ProtectedRoute />}>
@@ -33,10 +35,7 @@ const AllRoutes = (props: AllRoutesProps) => {
                         key={route.key + index}
                         path={route.path}
                         element={
-                            <AuthorityGuard
-                                userAuthority={user.authority}
-                                authority={route.authority}
-                            >
+                            <AuthorityGuard authority={route.authority}>
                                 <PageContainer {...props} {...route.meta}>
                                     <AppRoute
                                         routeKey={route.key}

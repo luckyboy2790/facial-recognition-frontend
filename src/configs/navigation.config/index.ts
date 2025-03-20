@@ -7,7 +7,7 @@ import {
 import { ADMIN, USER } from '@/constants/roles.constant'
 import type { NavigationTree } from '@/@types/navigation'
 
-const navigationConfig: NavigationTree[] = [
+export const navigationConfig: NavigationTree[] = [
     {
         key: '',
         path: '',
@@ -106,4 +106,31 @@ const navigationConfig: NavigationTree[] = [
     },
 ]
 
-export default navigationConfig
+export const personalNavigationConfig: NavigationTree[] = [
+    {
+        key: '',
+        path: '',
+        title: '',
+        translateKey: '',
+        icon: '',
+        type: NAV_ITEM_TYPE_TITLE,
+        authority: [ADMIN, USER],
+        meta: {
+            horizontalMenu: {
+                layout: 'default',
+            },
+        },
+        subMenu: [
+            {
+                key: 'personalDashboard',
+                path: `/personal/dashboard`,
+                title: 'Dashboard',
+                translateKey: 'nav.dashboard.dashboard',
+                icon: 'dashboardDashboard',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+        ],
+    },
+]
