@@ -1,20 +1,20 @@
 import Button from '@/components/ui/Button'
 import { TbCloudDownload, TbUserPlus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
-import useEmployeeList from '../hooks/useEmployeeList'
+import useEmployeeList from '../hooks/useLeaveList'
 import { CSVLink } from 'react-csv'
 
-const CustomerListActionTools = () => {
+const LeaveListActionTools = () => {
     const navigate = useNavigate()
 
-    const { customerList } = useEmployeeList()
+    const { leaveList } = useEmployeeList()
 
     return (
-        <div className="flex flex-col md:flex-row gap-3">
+        <div className="flex flex-col gap-3 md:flex-row">
             <CSVLink
                 className="w-full"
-                filename="customerList.csv"
-                data={customerList}
+                filename="leaveList.csv"
+                data={leaveList}
             >
                 <Button
                     icon={<TbCloudDownload className="text-xl" />}
@@ -34,4 +34,4 @@ const CustomerListActionTools = () => {
     )
 }
 
-export default CustomerListActionTools
+export default LeaveListActionTools

@@ -11,7 +11,10 @@ import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
 import { useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { Leave } from '../LeaveList/types'
-import { apiLeaveDetail, apiDeleteLeaves } from '@/services/LeaveService'
+import {
+    apiDeleteLeaves,
+    apiPersonalLeaveDetail,
+} from '@/services/LeaveService'
 import { LeaveFormSchema } from '../LeaveForm/types'
 import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
@@ -31,7 +34,7 @@ const LeaveEdit = () => {
     const { data, isLoading } = useSWR(
         [`/api/personal/get_personal_leave${id}`, { id: id as string }],
         ([_, params]) =>
-            apiLeaveDetail<LeaveDetailResponse, { id: string }>(params),
+            apiPersonalLeaveDetail<LeaveDetailResponse, { id: string }>(params),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,

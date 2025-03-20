@@ -3,31 +3,19 @@ import Avatar from '@/components/ui/Avatar'
 import Tag from '@/components/ui/Tag'
 import Tooltip from '@/components/ui/Tooltip'
 import DataTable from '@/components/shared/DataTable'
-import useCustomerList from '../hooks/useEmployeeList'
+import useLeaveList from '../hooks/useLeaveList'
 import { Link, useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import { TbPencil, TbEye } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Leave } from '../types'
 import type { TableQueries } from '@/@types/common'
 
 const statusColor: Record<string, string> = {
-    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
-}
-
-const NameColumn = ({ row }: { row: Customer }) => {
-    return (
-        <div className="flex items-center">
-            <Avatar size={40} shape="circle" src={row.img} />
-            <Link
-                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-                to={`/employee-details/${row.id}`}
-            >
-                {row.name}
-            </Link>
-        </div>
-    )
+    Approved:
+        'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Declined: 'bg-red-500 dark:bg-red-500 text-black dark:text-black',
+    Pending: 'bg-red-300 dark:bg-red-300 text-gray-900 dark:text-gray-900',
 }
 
 const ActionColumn = ({
@@ -38,7 +26,7 @@ const ActionColumn = ({
     onViewDetail: () => void
 }) => {
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3 items-center">
             <Tooltip title="Edit">
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
@@ -61,45 +49,54 @@ const ActionColumn = ({
     )
 }
 
-const CustomerListTable = () => {
+const LeaveListTable = () => {
     const navigate = useNavigate()
 
     const {
-        customerList,
-        customerListTotal,
+        leaveList,
+        leaveListTotal,
         tableData,
         isLoading,
         setTableData,
-        setSelectAllCustomer,
-        setSelectedCustomer,
-        selectedCustomer,
-    } = useCustomerList()
+        setSelectAllLeave,
+        setSelectedLeave,
+        selectedLeave,
+    } = useLeaveList()
 
-    const handleEdit = (customer: Customer) => {
-        navigate(`/employee-edit/${customer.id}`)
+    const handleEdit = (leave: Leave) => {
+        navigate(`/employee-edit/${leave._id}`)
     }
 
-    const handleViewDetails = (customer: Customer) => {
-        navigate(`/employee-details/${customer.id}`)
+    const handleViewDetails = (leave: Leave) => {
+        navigate(`/employee-details/${leave._id}`)
     }
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<Leave>[] = useMemo(
         () => [
             {
-                header: 'Name',
-                accessorKey: 'name',
-                cell: (props) => {
-                    const row = props.row.original
-                    return <NameColumn row={row} />
-                },
+                header: 'Leave Type',
+                id: 'leaveTypeData.leave_name',
+                cell: (props) => (
+                    <span>
+                        {props.row.original.leaveTypeData?.leave_name || ''}
+                    </span>
+                ),
             },
             {
-                header: 'Email',
-                accessorKey: 'email',
+                header: 'Leave From',
+                accessorKey: 'leaveFrom',
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Leave To',
+                accessorKey: 'leaveTo',
+            },
+            {
+                header: 'Reason',
+                accessorKey: 'reason',
+            },
+            {
+                header: 'Return Date',
+                accessorKey: 'leaveReturn',
             },
             {
                 header: 'Status',
@@ -113,13 +110,6 @@ const CustomerListTable = () => {
                             </Tag>
                         </div>
                     )
-                },
-            },
-            {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
                 },
             },
             {
@@ -141,8 +131,8 @@ const CustomerListTable = () => {
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
-        if (selectedCustomer.length > 0) {
-            setSelectAllCustomer([])
+        if (selectedLeave.length > 0) {
+            setSelectAllLeave([])
         }
     }
 
@@ -165,16 +155,16 @@ const CustomerListTable = () => {
         handleSetTableData(newTableData)
     }
 
-    const handleRowSelect = (checked: boolean, row: Customer) => {
-        setSelectedCustomer(checked, row)
+    const handleRowSelect = (checked: boolean, row: Leave) => {
+        setSelectedLeave(checked, row)
     }
 
-    const handleAllRowSelect = (checked: boolean, rows: Row<Customer>[]) => {
+    const handleAllRowSelect = (checked: boolean, rows: Row<Leave>[]) => {
         if (checked) {
             const originalRows = rows.map((row) => row.original)
-            setSelectAllCustomer(originalRows)
+            setSelectAllLeave(originalRows)
         } else {
-            setSelectAllCustomer([])
+            setSelectAllLeave([])
         }
     }
 
@@ -182,18 +172,18 @@ const CustomerListTable = () => {
         <DataTable
             selectable
             columns={columns}
-            data={customerList}
-            noData={!isLoading && customerList.length === 0}
+            data={leaveList}
+            noData={!isLoading && leaveList.length === 0}
             skeletonAvatarColumns={[0]}
             skeletonAvatarProps={{ width: 28, height: 28 }}
             loading={isLoading}
             pagingData={{
-                total: customerListTotal,
+                total: leaveListTotal,
                 pageIndex: tableData.pageIndex as number,
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedLeave.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
@@ -204,4 +194,4 @@ const CustomerListTable = () => {
     )
 }
 
-export default CustomerListTable
+export default LeaveListTable

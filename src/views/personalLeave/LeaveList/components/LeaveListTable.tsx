@@ -8,6 +8,14 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Leave } from '../types'
 import type { TableQueries } from '@/@types/common'
 import LeaveDataTable from '@/components/shared/LeaveDataTable'
+import { Tag } from '@/components/ui'
+
+const statusColor: Record<string, string> = {
+    Approved:
+        'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Declined: 'bg-red-500 dark:bg-red-500 text-black dark:text-black',
+    Pending: 'bg-red-300 dark:bg-red-300 text-gray-900 dark:text-gray-900',
+}
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
@@ -73,6 +81,16 @@ const LeaveListTable = () => {
             {
                 header: 'Status',
                 accessorKey: 'status',
+                cell: (props) => {
+                    const row = props.row.original
+                    return (
+                        <div className="flex items-center">
+                            <Tag className={statusColor[row.status]}>
+                                <span className="capitalize">{row.status}</span>
+                            </Tag>
+                        </div>
+                    )
+                },
             },
             {
                 header: '',
