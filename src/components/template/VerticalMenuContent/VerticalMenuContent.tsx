@@ -148,8 +148,6 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
     }
 
     useEffect(() => {
-        console.log(isPersonalRoute())
-
         if (isPersonalRoute()) {
             setIsPersonal(true)
         } else {
@@ -159,7 +157,7 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
 
     return (
         <Menu
-            className="px-4 pb-4"
+            className="pb-4 px-4"
             sideCollapsed={collapsed}
             defaultActiveKeys={activedRoute?.key ? [activedRoute.key] : []}
             defaultExpandedKeys={defaulExpandKey}

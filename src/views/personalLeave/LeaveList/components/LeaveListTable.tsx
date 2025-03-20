@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import Tooltip from '@/components/ui/Tooltip'
-import DataTable from '@/components/shared/DataTable'
 import useLeaveList from '../hooks/useLeaveList'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
@@ -8,6 +7,7 @@ import { TbPencil } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Leave } from '../types'
 import type { TableQueries } from '@/@types/common'
+import LeaveDataTable from '@/components/shared/LeaveDataTable'
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
@@ -47,7 +47,12 @@ const LeaveListTable = () => {
         () => [
             {
                 header: 'Leave Type',
-                accessorKey: 'leaveType.leave_name',
+                id: 'leaveTypeData.leave_name',
+                cell: (props) => (
+                    <span>
+                        {props.row.original.leaveTypeData?.leave_name || ''}
+                    </span>
+                ),
             },
             {
                 header: 'Leave From',
@@ -126,7 +131,7 @@ const LeaveListTable = () => {
     }
 
     return (
-        <DataTable
+        <LeaveDataTable
             selectable
             columns={columns}
             data={leaveList}
