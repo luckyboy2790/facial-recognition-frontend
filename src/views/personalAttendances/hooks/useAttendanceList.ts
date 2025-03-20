@@ -3,8 +3,8 @@ import { useAttendanceListStore } from '../store/AttendanceListStore'
 import type { GetAttendancesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 import {
-    apiAttendanceList,
     apiDeleteAttendances,
+    apiPersonalAttendanceList,
 } from '@/services/AttendanceService'
 
 type AttendanceData = {
@@ -25,7 +25,9 @@ export default function useAttendanceList() {
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/attendance', { ...tableData }],
         ([_, params]) =>
-            apiAttendanceList<GetAttendancesListResponse, TableQueries>(params),
+            apiPersonalAttendanceList<GetAttendancesListResponse, TableQueries>(
+                params,
+            ),
         {
             revalidateOnFocus: false,
         },

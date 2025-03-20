@@ -104,6 +104,7 @@ const _UserDropdown = () => {
                     <a
                         className="flex h-full w-full px-2"
                         href="/personal/dashboard"
+                        target="_blank"
                     >
                         <span className="flex w-full gap-2 items-center">
                             <span className="text-xl">
