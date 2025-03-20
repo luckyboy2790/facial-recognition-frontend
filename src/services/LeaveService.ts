@@ -41,6 +41,8 @@ export async function apiDeleteLeaves<T, U extends Record<string, unknown>>(
     })
 }
 
+// -----------------------Admin-----------------------
+
 export async function apiLeaveList<T, U extends Record<string, unknown>>(
     params: U,
 ) {
