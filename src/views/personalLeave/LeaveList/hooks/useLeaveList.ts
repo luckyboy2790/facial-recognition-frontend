@@ -28,6 +28,8 @@ export default function useLeaveList() {
         },
     )
 
+    console.log(data?.list)
+
     const deleteLeaves = async (leaveIds: string[]) => {
         await apiDeleteLeaves<string[], LeaveData>({
             leaveIds,
