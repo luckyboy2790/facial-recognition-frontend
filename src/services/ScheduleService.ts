@@ -50,3 +50,16 @@ export async function apiArchiveSchedule<T, U extends Record<string, unknown>>(
         headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
 }
+
+export async function apiPersonalScheduleList<
+    T,
+    U extends Record<string, unknown>,
+>(params: U) {
+    const { token } = useToken()
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/schedule/personal/get_schedule`,
+        method: 'get',
+        params,
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+}
