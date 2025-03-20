@@ -131,6 +131,16 @@ export const personalNavigationConfig: NavigationTree[] = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+            {
+                key: 'personalAttendance',
+                path: `/personal/attendance`,
+                title: 'My Attendance',
+                translateKey: 'nav.dashboard.attendance',
+                icon: 'dashboardAttendance',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
         ],
     },
 ]
