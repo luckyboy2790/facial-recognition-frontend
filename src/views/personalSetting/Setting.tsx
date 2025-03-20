@@ -4,11 +4,10 @@ import useResponsive from '@/utils/hooks/useResponsive'
 import { Spinner } from '@/components/ui'
 import { ToggleDrawer } from '@/components/shared'
 import type { ToggleDrawerRef } from '@/components/shared/ToggleDrawer'
-import SystemSetting from './components/SystemSetting'
 import AboutContent from './components/About'
 import Attributions from './components/Attributions'
 
-const defaultNavValue = 'system'
+const defaultNavValue = 'about'
 
 const Setting = () => {
     const [selectedNav, setSelectedNav] = useState(defaultNavValue)
@@ -50,9 +49,6 @@ const Setting = () => {
                                 </div>
                             }
                         >
-                            {selectedNav === defaultNavValue && (
-                                <SystemSetting />
-                            )}
                             {selectedNav === 'about' && <AboutContent />}
                             {selectedNav === 'attributions' && <Attributions />}
                         </Suspense>
