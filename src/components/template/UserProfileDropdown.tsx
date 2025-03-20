@@ -47,8 +47,6 @@ const _UserDropdown = () => {
     }
 
     useEffect(() => {
-        console.log(isPersonalRoute())
-
         if (isPersonalRoute()) {
             setIsPersonal(true)
         } else {

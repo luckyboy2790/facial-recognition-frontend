@@ -169,7 +169,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Date"
+                label="Reason"
                 invalid={Boolean(errors.reason)}
                 errorMessage={errors.reason?.message}
             >
@@ -181,7 +181,7 @@ const OverviewSection = ({
                             type="text"
                             textArea
                             autoComplete="off"
-                            placeholder="First Name"
+                            placeholder="Reason"
                             value={field.value}
                             onChange={field.onChange}
                             onBlur={field.onBlur}

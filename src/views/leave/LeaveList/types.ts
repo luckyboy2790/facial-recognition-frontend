@@ -1,3 +1,6 @@
+import { Employee } from '@/views/employees/EmployeeList/types'
+import { LeaveType } from '@/views/leaveTypes/types'
+
 type PersonalInfo = {
     location: string
     title: string
@@ -39,8 +42,8 @@ type Subscription = {
     amount: number
 }
 
-export type GetCustomersListResponse = {
-    list: Customer[]
+export type GetLeavesListResponse = {
+    list: Leave[]
     total: number
 }
 
@@ -49,19 +52,16 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type Customer = {
-    id: string
-    name: string
-    firstName: string
-    lastName: string
-    email: string
-    img: string
-    role: string
-    lastOnline: number
+export type Leave = {
+    _id: string
+    employee: string
+    leaveType: string
+    leaveFrom: string
+    leaveTo: string
+    leaveReturn: string
+    reason: string
     status: string
-    personalInfo: PersonalInfo
-    orderHistory: OrderHistory[]
-    paymentMethod: PaymentMethod[]
-    subscription: Subscription[]
-    totalSpending: number
+    comment: string
+    leaveTypeData: LeaveType
+    employeeData: Employee
 }

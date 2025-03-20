@@ -1,42 +1,26 @@
 import useSWR from 'swr'
-import { useLeaveListStore } from '../store/LeaveListStore'
+import { useLeaveListStore } from '../store/leaveListStore'
 import type { GetLeavesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { apiDeleteLeaves, apiPersonalLeaveList } from '@/services/LeaveService'
-
-type LeaveData = {
-    leaveIds: string[]
-}
+import { apiLeaveList } from '@/services/LeaveService'
 
 export default function useLeaveList() {
     const {
         tableData,
-        filterData,
         setTableData,
         selectedLeave,
         setSelectedLeave,
         setSelectAllLeave,
-        setFilterData,
     } = useLeaveListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/personal/leave', { ...tableData }],
+        ['/api/leaves', { ...tableData }],
         ([_, params]) =>
-            apiPersonalLeaveList<GetLeavesListResponse, TableQueries>(params),
+            apiLeaveList<GetLeavesListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
-
-    console.log(data?.list)
-
-    const deleteLeaves = async (leaveIds: string[]) => {
-        await apiDeleteLeaves<string[], LeaveData>({
-            leaveIds,
-        })
-        mutate()
-        setSelectAllLeave([])
-    }
 
     const leaveList = data?.list || []
 
@@ -48,13 +32,10 @@ export default function useLeaveList() {
         error,
         isLoading,
         tableData,
-        filterData,
-        deleteLeaves,
         mutate,
         setTableData,
         selectedLeave,
         setSelectedLeave,
         setSelectAllLeave,
-        setFilterData,
     }
 }

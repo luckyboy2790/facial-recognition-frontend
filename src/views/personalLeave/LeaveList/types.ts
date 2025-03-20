@@ -1,4 +1,5 @@
 import { Employee } from '@/views/employees/EmployeeList/types'
+import { LeaveType } from '@/views/leaveTypes/types'
 
 type PersonalInfo = {
     location: string
@@ -53,6 +54,7 @@ export type Filter = {
 
 export type Leave = {
     _id: string
+    employee: string
     leaveType: string
     leaveFrom: string
     leaveTo: string
@@ -60,4 +62,6 @@ export type Leave = {
     reason: string
     status: string
     comment: string
+    leaveTypeData: LeaveType
+    employeeData: Employee
 }
