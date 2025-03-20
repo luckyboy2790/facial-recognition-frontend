@@ -53,6 +53,7 @@ export type Filter = {
 
 export type Leave = {
     _id: string
+    employee: string
     leaveType: string
     leaveFrom: string
     leaveTo: string

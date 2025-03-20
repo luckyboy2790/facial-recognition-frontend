@@ -18,7 +18,7 @@ const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type LeaveDetailResponse = {
     message: string
-    leave: Leave
+    leaveRecord: Leave
 }
 
 type LeaveData = {
@@ -29,7 +29,7 @@ const LeaveEdit = () => {
     const { id } = useParams()
 
     const { data, isLoading } = useSWR(
-        [`/api/leaves${id}`, { id: id as string }],
+        [`/api/personal/get_personal_leave${id}`, { id: id as string }],
         ([_, params]) =>
             apiLeaveDetail<LeaveDetailResponse, { id: string }>(params),
         {
@@ -38,47 +38,25 @@ const LeaveEdit = () => {
         },
     )
 
-    const convertToUTCFormat = (input: string): string => {
-        if (!input) return ''
-
-        const date = new Date(input)
-
-        if (isNaN(date.getTime())) {
-            throw new Error('Invalid date format')
-        }
-
-        return date.toISOString().split('T')[1]
-    }
-
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
 
     const { token } = useToken()
 
     const handleFormSubmit = async (values: LeaveFormSchema) => {
-        console.log('Submitted values', values)
-
-        if (values.reason === '') {
-            toast.push(
-                <Notification type="warning">Please write reason</Notification>,
-                {
-                    placement: 'top-center',
-                },
-            )
-
-            return
-        }
-
         setIsSubmiting(true)
 
-        const response = await fetch(`${domain}/api/leave/update_leave/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        const response = await fetch(
+            `${domain}/api/leave/personal/update_leave/${id}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+                body: JSON.stringify(values),
             },
-            body: JSON.stringify(values),
-        })
+        )
 
         const data = await response.json()
 
@@ -95,17 +73,22 @@ const LeaveEdit = () => {
 
         await sleep(1500)
 
-        window.location.href = '/leave'
+        window.location.href = '/personal/leave'
     }
 
     const getDefaultValues = () => {
-        console.log(data)
-
         if (data) {
-            const { leaveType, leaveFrom, leaveTo, leaveReturn, reason } =
-                data.leave
+            const {
+                employee,
+                leaveType,
+                leaveFrom,
+                leaveTo,
+                leaveReturn,
+                reason,
+            } = data.leaveRecord
 
             return {
+                employee,
                 leaveType,
                 leaveFrom,
                 leaveTo,
@@ -113,8 +96,6 @@ const LeaveEdit = () => {
                 reason,
             }
         }
-
-        return {}
     }
 
     const handleConfirmDelete = async () => {

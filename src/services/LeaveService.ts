@@ -8,7 +8,7 @@ export async function apiLeaveList<T, U extends Record<string, unknown>>(
 ) {
     const { token } = useToken()
     return ApiService.fetchDataWithAxios<T>({
-        url: `${domain}/api/attendance/get_attendance`,
+        url: `${domain}/api/leave/personal/get_personal_leaves`,
         method: 'get',
         params,
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -21,7 +21,7 @@ export async function apiLeaveDetail<T, U extends Record<string, unknown>>({
 }: U) {
     const { token } = useToken()
     return ApiService.fetchDataWithAxios<T>({
-        url: `${domain}/api/attendance/get_attendance/${id}`,
+        url: `${domain}/api/leave/personal/get_personal_leave/${id}`,
         method: 'get',
         params,
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -46,7 +46,7 @@ export async function apiDeleteLeaves<T, U extends Record<string, unknown>>(
 ) {
     const { token } = useToken()
     return ApiService.fetchDataWithAxios<T>({
-        url: `${domain}/api/attendance/delete_attendance`,
+        url: `${domain}/api/leave/personal/delete_leave`,
         method: 'post',
         data,
         headers: token ? { Authorization: `Bearer ${token}` } : {},

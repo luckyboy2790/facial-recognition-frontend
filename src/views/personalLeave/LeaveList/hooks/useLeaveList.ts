@@ -20,13 +20,15 @@ export default function useLeaveList() {
     } = useLeaveListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/leave', { ...tableData }],
+        ['/api/personal/leave', { ...tableData }],
         ([_, params]) =>
             apiLeaveList<GetLeavesListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
+
+    console.log(data?.list)
 
     const deleteLeaves = async (leaveIds: string[]) => {
         await apiDeleteLeaves<string[], LeaveData>({
