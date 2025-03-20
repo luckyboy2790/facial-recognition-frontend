@@ -2,15 +2,15 @@ import Button from '@/components/ui/Button'
 import { TbUserPlus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 
-const ScheduleListActionTools = () => {
+const LeaveListActionTools = () => {
     const navigate = useNavigate()
 
     return (
-        <div className="flex flex-col md:flex-row gap-3">
+        <div className="flex flex-col gap-3 md:flex-row">
             <Button
                 variant="solid"
                 icon={<TbUserPlus className="text-xl" />}
-                onClick={() => navigate('/schedule-create')}
+                onClick={() => navigate('/personal/leave-create')}
             >
                 Add new
             </Button>
@@ -18,4 +18,4 @@ const ScheduleListActionTools = () => {
     )
 }
 
-export default ScheduleListActionTools
+export default LeaveListActionTools
