@@ -25,14 +25,17 @@ const EmployeeCreate = () => {
         console.log('Submitted values', values)
         setIsSubmiting(true)
 
-        const response = await fetch(`${domain}/api/leave/create_leave`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        const response = await fetch(
+            `${domain}/api/leave/personal/create_leave`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+                body: JSON.stringify(values),
             },
-            body: JSON.stringify(values),
-        })
+        )
 
         const data = await response.json()
 
@@ -49,7 +52,7 @@ const EmployeeCreate = () => {
 
         await sleep(1500)
 
-        window.location.href = '/leave'
+        window.location.href = '/personal/leave'
     }
 
     const handleConfirmDiscard = () => {
@@ -72,12 +75,13 @@ const EmployeeCreate = () => {
     return (
         <>
             <LeaveForm
-                newLeave
+                newLeave={true}
                 defaultValues={{
-                    employee: '',
-                    date: '',
-                    time_in: '',
-                    time_out: '',
+                    leaveType: '',
+                    leaveFrom: '',
+                    leaveTo: '',
+                    leaveReturn: '',
+                    reason: '',
                 }}
                 onFormSubmit={handleFormSubmit}
             >

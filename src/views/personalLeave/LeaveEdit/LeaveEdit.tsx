@@ -102,21 +102,15 @@ const LeaveEdit = () => {
         console.log(data)
 
         if (data) {
-            const { employee, date, time_in, time_out, reason } = data.leave
-
-            console.log({
-                employee,
-                date,
-                time_in: convertToUTCFormat(time_in || ''),
-                time_out: convertToUTCFormat(time_out || ''),
-            })
+            const { leaveType, leaveFrom, leaveTo, leaveReturn, reason } =
+                data.leave
 
             return {
-                employee,
-                date,
-                time_in: convertToUTCFormat(time_in || ''),
-                time_out: convertToUTCFormat(time_out || ''),
-                reason: reason,
+                leaveType,
+                leaveFrom,
+                leaveTo,
+                leaveReturn,
+                reason,
             }
         }
 

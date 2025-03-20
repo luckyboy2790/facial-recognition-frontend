@@ -53,15 +53,11 @@ export type Filter = {
 
 export type Leave = {
     _id: string
-    comment?: string
-    date?: string
-    employee: string
-    employeeData: Employee
-    reason?: string
-    time_in?: string
-    time_out?: string
-    total_hours?: string
-    __v: 0
-    status_timein: string
-    status_timeout: string
+    leaveType: string
+    leaveFrom: string
+    leaveTo: string
+    leaveReturn: string
+    reason: string
+    status: string
+    comment: string
 }

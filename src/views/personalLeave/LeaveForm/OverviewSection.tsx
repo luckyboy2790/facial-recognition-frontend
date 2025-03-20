@@ -5,9 +5,10 @@ import { Controller } from 'react-hook-form'
 import type { LeaveFormSchema, FormSectionBaseProps } from './types'
 import TimeInput from '@/components/ui/TimeInput/TimeInput'
 import { Employee } from '@/views/employees/EmployeeList/types'
-import { apiGetTotalEmployeeList } from '@/services/employeeService'
 import { DatePicker, Input, Select } from '@/components/ui'
 import { format } from 'date-fns'
+import { apiTotalLeaveTypesList } from '@/services/leaveTypeService'
+import { LeaveType } from '@/views/leaveTypes/types'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -16,8 +17,8 @@ type OptionType = {
     label: string
 }
 
-type EmployeeListResponse = {
-    employeeData: Employee[]
+type LeaveTypeResponse = {
+    list: LeaveType[]
 }
 
 const OverviewSection = ({
@@ -33,14 +34,15 @@ const OverviewSection = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data: EmployeeListResponse =
-                    await apiGetTotalEmployeeList()
+                const data: LeaveTypeResponse = await apiTotalLeaveTypesList()
 
-                const options: OptionType[] = data.employeeData.map(
-                    (item: Employee) => {
+                console.log(data)
+
+                const options: OptionType[] = data.list.map(
+                    (item: LeaveType) => {
                         return {
                             value: item._id,
-                            label: item.full_name,
+                            label: item.leave_name,
                         }
                     },
                 )
@@ -64,14 +66,14 @@ const OverviewSection = ({
 
     return (
         <Card>
-            <h4 className="mb-6">Leave Edit</h4>
+            <h4 className="mb-6">{newLeave ? 'Leave Create' : 'Leave Edit'}</h4>
             <FormItem
                 label="Employee"
-                invalid={Boolean(errors.employee)}
-                errorMessage={errors.employee?.message}
+                invalid={Boolean(errors.leaveType)}
+                errorMessage={errors.leaveType?.message}
             >
                 <Controller
-                    name="employee"
+                    name="leaveType"
                     control={control}
                     render={({ field }) => (
                         <Select
@@ -87,13 +89,68 @@ const OverviewSection = ({
                 />
             </FormItem>
 
+            <div className="flex justify-center w-full gap-4 items-center">
+                <FormItem
+                    label="Leave from"
+                    invalid={Boolean(errors.leaveFrom)}
+                    errorMessage={errors.leaveFrom?.message}
+                    className="w-1/2"
+                >
+                    <Controller
+                        name="leaveFrom"
+                        control={control}
+                        render={({ field }) => (
+                            <DatePicker
+                                placeholder="Date"
+                                value={
+                                    field.value ? new Date(field.value) : null
+                                }
+                                onChange={(date) => {
+                                    field.onChange(
+                                        date
+                                            ? date.toISOString().split('T')[0]
+                                            : '',
+                                    )
+                                }}
+                            />
+                        )}
+                    />
+                </FormItem>
+                <FormItem
+                    label="Leave to"
+                    invalid={Boolean(errors.leaveTo)}
+                    errorMessage={errors.leaveTo?.message}
+                    className="w-1/2"
+                >
+                    <Controller
+                        name="leaveTo"
+                        control={control}
+                        render={({ field }) => (
+                            <DatePicker
+                                placeholder="Date"
+                                value={
+                                    field.value ? new Date(field.value) : null
+                                }
+                                onChange={(date) => {
+                                    field.onChange(
+                                        date
+                                            ? date.toISOString().split('T')[0]
+                                            : '',
+                                    )
+                                }}
+                            />
+                        )}
+                    />
+                </FormItem>
+            </div>
+
             <FormItem
-                label="Date"
-                invalid={Boolean(errors.date)}
-                errorMessage={errors.date?.message}
+                label="Return Date"
+                invalid={Boolean(errors.leaveReturn)}
+                errorMessage={errors.leaveReturn?.message}
             >
                 <Controller
-                    name="date"
+                    name="leaveReturn"
                     control={control}
                     render={({ field }) => (
                         <DatePicker
@@ -112,85 +169,26 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Start time"
-                invalid={Boolean(errors.time_in)}
-                errorMessage={errors.time_in?.message}
+                label="Date"
+                invalid={Boolean(errors.reason)}
+                errorMessage={errors.reason?.message}
             >
                 <Controller
-                    name="time_in"
+                    name="reason"
                     control={control}
-                    defaultValue={defaultValues?.time_in || ''}
                     render={({ field }) => (
-                        <TimeInput
-                            value={
-                                field.value
-                                    ? new Date(
-                                          `${getCurrentDate()}T${field.value}`,
-                                      )
-                                    : null
-                            }
-                            onChange={(date) => {
-                                if (date) {
-                                    field.onChange(
-                                        format(date, 'HH:mm:ss.SSS') + 'Z',
-                                    )
-                                }
-                            }}
+                        <Input
+                            type="text"
+                            textArea
+                            autoComplete="off"
+                            placeholder="First Name"
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
                         />
                     )}
                 />
             </FormItem>
-
-            <FormItem
-                label="Off Time"
-                invalid={Boolean(errors.time_out)}
-                errorMessage={errors.time_out?.message}
-            >
-                <Controller
-                    name="time_out"
-                    control={control}
-                    defaultValue={defaultValues?.time_out || ''}
-                    render={({ field }) => (
-                        <TimeInput
-                            value={
-                                field.value
-                                    ? new Date(
-                                          `${getCurrentDate()}T${field.value}`,
-                                      )
-                                    : null
-                            }
-                            onChange={(date) => {
-                                if (date) {
-                                    field.onChange(
-                                        format(date, 'HH:mm:ss.SSS') + 'Z',
-                                    )
-                                }
-                            }}
-                        />
-                    )}
-                />
-            </FormItem>
-
-            {!newLeave && (
-                <FormItem label="Reason">
-                    <Controller
-                        name="reason"
-                        control={control}
-                        defaultValue={defaultValues?.reason || ''}
-                        render={({ field }) => (
-                            <Input
-                                type="text"
-                                textArea
-                                autoComplete="off"
-                                placeholder="Reason"
-                                value={field.value}
-                                onChange={field.onChange}
-                                onBlur={field.onBlur}
-                            />
-                        )}
-                    />
-                </FormItem>
-            )}
         </Card>
     )
 }
