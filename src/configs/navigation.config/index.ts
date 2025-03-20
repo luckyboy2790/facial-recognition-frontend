@@ -141,6 +141,16 @@ export const personalNavigationConfig: NavigationTree[] = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+            {
+                key: 'personalSchedule',
+                path: `/personal/schedule`,
+                title: 'My Schedule',
+                translateKey: 'nav.dashboard.schedule',
+                icon: 'dashboardSchedule',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
         ],
     },
 ]
