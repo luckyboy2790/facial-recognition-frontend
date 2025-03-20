@@ -14,6 +14,12 @@ const personalRoute: Routes = [
         component: lazy(() => import('@/views/personalAttendances')),
         authority: [],
     },
+    {
+        key: 'personal_schedule',
+        path: `/personal/schedule`,
+        component: lazy(() => import('@/views/personalSchedule')),
+        authority: [],
+    },
 ]
 
 export default personalRoute
