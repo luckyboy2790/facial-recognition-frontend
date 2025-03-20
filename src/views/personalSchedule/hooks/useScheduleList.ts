@@ -2,7 +2,10 @@ import useSWR from 'swr'
 import { useScheduleListStore } from '../store/employeeListStore'
 import type { GetSchedulesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { apiDeleteSchedules, apiScheduleList } from '@/services/ScheduleService'
+import {
+    apiDeleteSchedules,
+    apiPersonalScheduleList,
+} from '@/services/ScheduleService'
 
 type ScheduleData = {
     scheduleIds: string[]
@@ -20,7 +23,9 @@ export default function useScheduleList() {
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/schedules', { ...tableData }],
         ([_, params]) =>
-            apiScheduleList<GetSchedulesListResponse, TableQueries>(params),
+            apiPersonalScheduleList<GetSchedulesListResponse, TableQueries>(
+                params,
+            ),
         {
             revalidateOnFocus: false,
         },

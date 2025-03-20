@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Avatar from '@/components/ui/Avatar'
 import Tag from '@/components/ui/Tag'
 import Tooltip from '@/components/ui/Tooltip'
-import DataTable from '@/components/shared/DataTable'
+import DataTable from '@/components/shared/PersonalDataTable'
 import useScheduleList from '../hooks/useScheduleList'
 import { Link, useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
@@ -33,7 +33,7 @@ const ActionColumn = ({
     row: Schedule
 }) => {
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3 items-center">
             {row.status === 'Present' && (
                 <>
                     <Tooltip title="Edit">
@@ -136,19 +136,6 @@ const ScheduleListTable = () => {
                     )
                 },
             },
-            {
-                header: '',
-                id: 'action',
-                cell: (props) => (
-                    <ActionColumn
-                        onEdit={() => handleEdit(props.row.original)}
-                        onArchive={() =>
-                            handleArchiveSchedule(props.row.original._id)
-                        }
-                        row={props.row.original}
-                    />
-                ),
-            },
         ],
         [],
     )
@@ -177,10 +164,6 @@ const ScheduleListTable = () => {
         const newTableData = cloneDeep(tableData)
         newTableData.sort = sort
         handleSetTableData(newTableData)
-    }
-
-    const handleRowSelect = (checked: boolean, row: Schedule) => {
-        setSelectedSchedule(checked, row)
     }
 
     const handleAllRowSelect = (checked: boolean, rows: Row<Schedule>[]) => {
@@ -212,7 +195,6 @@ const ScheduleListTable = () => {
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
             onSort={handleSort}
-            onCheckBoxChange={handleRowSelect}
             onIndeterminateCheckBoxChange={handleAllRowSelect}
         />
     )
