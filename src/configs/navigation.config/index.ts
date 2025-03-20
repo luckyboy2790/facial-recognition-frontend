@@ -122,7 +122,7 @@ export const personalNavigationConfig: NavigationTree[] = [
         },
         subMenu: [
             {
-                key: 'personalDashboard',
+                key: 'personal_dashboard',
                 path: `/personal/dashboard`,
                 title: 'Dashboard',
                 translateKey: 'nav.dashboard.dashboard',
@@ -132,7 +132,7 @@ export const personalNavigationConfig: NavigationTree[] = [
                 subMenu: [],
             },
             {
-                key: 'personalAttendance',
+                key: 'personal_attendance',
                 path: `/personal/attendance`,
                 title: 'My Attendance',
                 translateKey: 'nav.dashboard.attendance',
@@ -142,11 +142,21 @@ export const personalNavigationConfig: NavigationTree[] = [
                 subMenu: [],
             },
             {
-                key: 'personalSchedule',
+                key: 'personal_schedule',
                 path: `/personal/schedule`,
                 title: 'My Schedule',
                 translateKey: 'nav.dashboard.schedule',
                 icon: 'dashboardSchedule',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
+            {
+                key: 'personal_leave',
+                path: `/personal/leave`,
+                title: 'My Leave',
+                translateKey: 'nav.dashboard.leave',
+                icon: 'dashboardLeave',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, USER],
                 subMenu: [],
