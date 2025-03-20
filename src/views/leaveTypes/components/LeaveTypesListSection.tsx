@@ -24,14 +24,6 @@ const CompanyListTable = () => {
                 header: 'Description',
                 accessorKey: 'leave_name',
             },
-            {
-                header: 'Credits',
-                accessorKey: 'credits',
-            },
-            {
-                header: 'Term',
-                accessorKey: 'percalendar',
-            },
         ],
         [],
     )
