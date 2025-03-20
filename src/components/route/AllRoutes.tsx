@@ -19,10 +19,6 @@ type AllRoutesProps = ViewsProps
 const { authenticatedEntryPath } = appConfig
 
 const AllRoutes = (props: AllRoutesProps) => {
-    const { user } = useAuth()
-
-    console.log(user)
-
     return (
         <Routes>
             <Route path="/" element={<ProtectedRoute />}>
