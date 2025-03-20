@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import Tooltip from '@/components/ui/Tooltip'
-import DataTable from '@/components/shared/DataTable'
+import DataTable from '@/components/shared/PersonalDataTable'
 import useAttendanceList from '../hooks/useAttendanceList'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
@@ -11,7 +11,7 @@ import type { TableQueries } from '@/@types/common'
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3 items-center">
             <Tooltip title="Edit">
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
@@ -73,15 +73,6 @@ const AttendanceListTable = () => {
                         {props.row.original.status_timein} /{' '}
                         {props.row.original.status_timeout}
                     </div>
-                ),
-            },
-            {
-                header: '',
-                id: 'action',
-                cell: (props) => (
-                    <ActionColumn
-                        onEdit={() => handleEdit(props.row.original)}
-                    />
                 ),
             },
         ],
@@ -147,7 +138,6 @@ const AttendanceListTable = () => {
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
             onSort={handleSort}
-            onCheckBoxChange={handleRowSelect}
             onIndeterminateCheckBoxChange={handleAllRowSelect}
         />
     )
