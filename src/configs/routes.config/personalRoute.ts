@@ -38,6 +38,12 @@ const personalRoute: Routes = [
         component: lazy(() => import('@/views/personalLeave/LeaveEdit')),
         authority: [],
     },
+    {
+        key: 'personal_setting',
+        path: `/personal/setting`,
+        component: lazy(() => import('@/views/personalSetting')),
+        authority: [],
+    },
 ]
 
 export default personalRoute

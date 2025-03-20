@@ -161,6 +161,16 @@ export const personalNavigationConfig: NavigationTree[] = [
                 authority: [ADMIN, USER],
                 subMenu: [],
             },
+            {
+                key: 'personal_setting',
+                path: `/personal/setting`,
+                title: 'My Setting',
+                translateKey: 'nav.dashboard.setting',
+                icon: 'dashboardSetting',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [ADMIN, USER],
+                subMenu: [],
+            },
         ],
     },
 ]
