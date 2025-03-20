@@ -66,16 +66,6 @@ const LeaveListTable = () => {
                 accessorKey: 'total_hours',
             },
             {
-                header: 'Status (In/Out)',
-                id: 'status',
-                cell: (props) => (
-                    <div>
-                        {props.row.original.status_timein} /{' '}
-                        {props.row.original.status_timeout}
-                    </div>
-                ),
-            },
-            {
                 header: '',
                 id: 'action',
                 cell: (props) => (

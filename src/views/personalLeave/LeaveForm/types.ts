@@ -1,11 +1,11 @@
 import type { Control, FieldErrors } from 'react-hook-form'
 
 export type OverviewFields = {
-    employee: string
-    date: string
-    time_in: string
-    time_out: string
-    reason?: string
+    leaveType: string
+    leaveFrom: string
+    leaveTo: string
+    leaveReturn: string
+    reason: string
 }
 export type LeaveFormSchema = OverviewFields
 

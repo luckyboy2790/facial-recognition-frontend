@@ -64,3 +64,12 @@ export async function apiArchiveLeave<T, U extends Record<string, unknown>>(
         headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
 }
+
+export async function apiLeaveTotalList<T>() {
+    const { token } = useToken()
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/attendance/total_attendance`,
+        method: 'get',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+}

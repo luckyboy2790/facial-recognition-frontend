@@ -81,28 +81,18 @@ const AddLeaveTypeSection = () => {
 
     return (
         <>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 mb-5">
                 <Input
                     placeholder='Leave Name (e.g. "Vacation Leave, Sick Leave")'
                     value={leaveName}
                     onChange={(e) => setLeaveName(e.target.value)}
                 />
-                <Input
-                    placeholder='Credits (e.g. "15" (days))'
-                    value={credits}
-                    onChange={(e) => setCredits(e.target.value)}
-                />
-                <Radio.Group vertical value={termValue} onChange={onChange}>
-                    <Radio value={'Monthly'}>Monthly</Radio>
-                    <Radio value={'Yearly'}>Yearly</Radio>
-                </Radio.Group>
             </div>
             <div className="flex justify-end">
                 <Button
                     variant="solid"
                     icon={<FaPlus />}
                     onClick={handleSubmit}
-                    // disabled={isLoading}
                     loading={isLoading}
                 >
                     Create
