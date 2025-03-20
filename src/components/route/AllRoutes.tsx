@@ -3,11 +3,15 @@ import PublicRoute from './PublicRoute'
 import AuthorityGuard from './AuthorityGuard'
 import AppRoute from './AppRoute'
 import PageContainer from '@/components/template/PageContainer'
-import { protectedRoutes, publicRoutes } from '@/configs/routes.config'
+import { publicRoutes } from '@/configs/routes.config'
 import appConfig from '@/configs/app.config'
 import { useAuth } from '@/auth'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import type { LayoutType } from '@/@types/theme'
+import adminRoute from '@/configs/routes.config/adminRoute'
+import othersRoute from '@/configs/routes.config/othersRoute'
+import personalRoute from '@/configs/routes.config/personalRoute'
+import { Routes as AppRoutes } from '@/@types/routes'
 
 interface ViewsProps {
     pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -19,6 +23,24 @@ type AllRoutesProps = ViewsProps
 const { authenticatedEntryPath } = appConfig
 
 const AllRoutes = (props: AllRoutesProps) => {
+    const { user } = useAuth()
+
+    const userAccountType = user?.account_type || ''
+
+    let accessibleProtectedRoutes: AppRoutes = []
+
+    if (userAccountType === 'SuperAdmin') {
+        accessibleProtectedRoutes = [...adminRoute, ...othersRoute]
+    } else if (userAccountType === 'Admin') {
+        accessibleProtectedRoutes = [
+            ...adminRoute,
+            ...personalRoute,
+            ...othersRoute,
+        ]
+    } else if (userAccountType === 'Employee') {
+        accessibleProtectedRoutes = [...personalRoute, ...othersRoute]
+    }
+
     return (
         <Routes>
             <Route path="/" element={<ProtectedRoute />}>
@@ -26,7 +48,7 @@ const AllRoutes = (props: AllRoutesProps) => {
                     path="/"
                     element={<Navigate replace to={authenticatedEntryPath} />}
                 />
-                {protectedRoutes.map((route, index) => (
+                {accessibleProtectedRoutes.map((route, index) => (
                     <Route
                         key={route.key + index}
                         path={route.path}
@@ -43,8 +65,12 @@ const AllRoutes = (props: AllRoutesProps) => {
                         }
                     />
                 ))}
-                <Route path="*" element={<Navigate replace to="/" />} />
+                <Route
+                    path="*"
+                    element={<Navigate replace to="/access-denied" />}
+                />
             </Route>
+
             <Route path="/" element={<PublicRoute />}>
                 {publicRoutes.map((route) => (
                     <Route
@@ -60,6 +86,16 @@ const AllRoutes = (props: AllRoutesProps) => {
                     />
                 ))}
             </Route>
+
+            <Route
+                path="/access-denied"
+                element={
+                    <AppRoute
+                        routeKey={othersRoute[0].key}
+                        component={othersRoute[0].component}
+                    />
+                }
+            />
         </Routes>
     )
 }
