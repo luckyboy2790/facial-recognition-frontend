@@ -1,0 +1,1 @@
+import{j as r}from"./index-D0yRYkRK.js";import{I as i}from"./Input-CGGIPAMy.js";import{u as f}from"./useDebounce-D4jIpCY2.js";const D=n=>{const{wait:o=500,ref:u,...a}=n;function c(e){var t;(t=n.onChange)==null||t.call(n,e)}const s=f(c,o),m=e=>{s(e)};return r.jsx(i,{ref:u,...a,onChange:m})};export{D};
