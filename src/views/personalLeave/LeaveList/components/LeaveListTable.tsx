@@ -40,38 +40,46 @@ const LeaveListTable = () => {
     } = useLeaveList()
 
     const handleEdit = (leave: Leave) => {
-        navigate(`/leave-edit/${leave._id}`)
+        navigate(`/personal/leave-edit/${leave._id}`)
     }
 
     const columns: ColumnDef<Leave>[] = useMemo(
         () => [
             {
-                header: 'Date',
-                accessorKey: 'date',
+                header: 'Leave Type',
+                accessorKey: 'leaveType.leave_name',
             },
             {
-                header: 'Employee',
-                accessorKey: 'employeeData.full_name',
+                header: 'Leave From',
+                accessorKey: 'leaveFrom',
             },
             {
-                header: 'Time In',
-                accessorKey: 'time_in',
+                header: 'Leave To',
+                accessorKey: 'leaveTo',
             },
             {
-                header: 'Time Out',
-                accessorKey: 'time_out',
+                header: 'Reason',
+                accessorKey: 'reason',
             },
             {
-                header: 'Total Hours',
-                accessorKey: 'total_hours',
+                header: 'Return Date',
+                accessorKey: 'leaveReturn',
+            },
+            {
+                header: 'Status',
+                accessorKey: 'status',
             },
             {
                 header: '',
                 id: 'action',
                 cell: (props) => (
-                    <ActionColumn
-                        onEdit={() => handleEdit(props.row.original)}
-                    />
+                    <>
+                        {props.row.original.status === 'Pending' && (
+                            <ActionColumn
+                                onEdit={() => handleEdit(props.row.original)}
+                            />
+                        )}
+                    </>
                 ),
             },
         ],
