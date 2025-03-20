@@ -75,6 +75,12 @@ const adminRoute: Routes = [
         authority: [],
     },
     {
+        key: 'leave',
+        path: '/leave-edit/:id',
+        component: lazy(() => import('@/views/leave/LeaveEdit')),
+        authority: [],
+    },
+    {
         key: 'reports',
         path: '/reports',
         component: lazy(() => import('@/views/reports/ReportNamesList')),

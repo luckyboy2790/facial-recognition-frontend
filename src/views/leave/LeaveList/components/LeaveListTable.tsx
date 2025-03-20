@@ -64,7 +64,7 @@ const LeaveListTable = () => {
     } = useLeaveList()
 
     const handleEdit = (leave: Leave) => {
-        navigate(`/employee-edit/${leave._id}`)
+        navigate(`/leave-edit/${leave._id}`)
     }
 
     const handleViewDetails = (leave: Leave) => {
@@ -125,7 +125,6 @@ const LeaveListTable = () => {
                 ),
             },
         ],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     )
 
