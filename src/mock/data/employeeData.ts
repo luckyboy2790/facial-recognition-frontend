@@ -91,7 +91,7 @@ export const RecentLeaves = [
 export const tasksData = {
     'Newest Employees': newestEmployees,
     'Recent Attendances': recentAttendances,
-    'Recent Leaves of Absence': recentAttendances,
+    'Recent Leaves of Absence': RecentLeaves,
 }
 
 export const employeeDetailData = [

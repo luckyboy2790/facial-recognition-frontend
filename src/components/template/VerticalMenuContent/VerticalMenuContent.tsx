@@ -14,6 +14,8 @@ import useTranslation from '@/utils/hooks/useTranslation'
 import { Direction } from '@/@types/theme'
 import type { NavigationTree } from '@/@types/navigation'
 import type { TraslationFn } from '@/@types/common'
+import { useAuth } from '@/auth'
+import { personalNavigationConfig } from '@/configs/navigation.config'
 
 export interface VerticalMenuContentProps {
     collapsed?: boolean
@@ -43,6 +45,8 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
     const { t } = useTranslation(!translationSetup)
 
     const [defaulExpandKey, setDefaulExpandKey] = useState<string[]>([])
+
+    const [isPersonal, setIsPersonal] = useState<boolean>(false)
 
     const { activedRoute } = useMenuActive(navigationTree, routeKey)
 
@@ -137,6 +141,22 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
         )
     }
 
+    const isPersonalRoute = (): boolean => {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean)
+
+        return pathSegments.length > 0 && pathSegments[0] === 'personal'
+    }
+
+    useEffect(() => {
+        console.log(isPersonalRoute())
+
+        if (isPersonalRoute()) {
+            setIsPersonal(true)
+        } else {
+            setIsPersonal(false)
+        }
+    }, [])
+
     return (
         <Menu
             className="px-4 pb-4"
@@ -147,7 +167,9 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
                 activedRoute?.parentKey ? [activedRoute.parentKey] : []
             }
         >
-            {renderNavigation(navigationTree, 0)}
+            {!isPersonal
+                ? renderNavigation(navigationTree, 0)
+                : renderNavigation(personalNavigationConfig, 0)}
         </Menu>
     )
 }

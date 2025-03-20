@@ -5,7 +5,7 @@ import VerticalMenuContent from '@/components/template/VerticalMenuContent'
 import { useThemeStore } from '@/store/themeStore'
 import { useSessionUser } from '@/store/authStore'
 import { useRouteKeyStore } from '@/store/routeKeyStore'
-import navigationConfig from '@/configs/navigation.config'
+import { navigationConfig } from '@/configs/navigation.config'
 import appConfig from '@/configs/app.config'
 import { Link } from 'react-router-dom'
 import {
