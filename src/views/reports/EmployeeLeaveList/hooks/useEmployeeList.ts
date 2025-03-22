@@ -1,46 +1,42 @@
-import { apiGetCustomersList } from '@/services/employeeService'
 import useSWR from 'swr'
-import { useCustomerListStore } from '../store/employeeListStore'
-import type { GetCustomersListResponse } from '../types'
+import { useLeaveListStore } from '../store/employeeListStore'
+import type { GetLeavesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { apiLeaveList } from '@/services/LeaveService'
 
-export default function useCustomerList() {
+export default function useLeaveList() {
     const {
         tableData,
-        filterData,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-        setFilterData,
-    } = useCustomerListStore((state) => state)
+        selectedLeave,
+        setSelectedLeave,
+        setSelectAllLeave,
+    } = useLeaveListStore((state) => state)
 
     const { data, error, isLoading, mutate } = useSWR(
-        ['/api/customers', { ...tableData, ...filterData }],
+        ['/api/Leaves', { ...tableData }],
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([_, params]) =>
-            apiGetCustomersList<GetCustomersListResponse, TableQueries>(params),
+            apiLeaveList<GetLeavesListResponse, TableQueries>(params),
         {
             revalidateOnFocus: false,
         },
     )
 
-    const customerList = data?.list || []
+    const LeaveList = data?.list || []
 
-    const customerListTotal = data?.total || 0
+    const LeaveListTotal = data?.total || 0
 
     return {
-        customerList,
-        customerListTotal,
+        LeaveList,
+        LeaveListTotal,
         error,
         isLoading,
         tableData,
-        filterData,
         mutate,
         setTableData,
-        selectedCustomer,
-        setSelectedCustomer,
-        setSelectAllCustomer,
-        setFilterData,
+        selectedLeave,
+        setSelectedLeave,
+        setSelectAllLeave,
     }
 }

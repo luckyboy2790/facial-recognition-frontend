@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { TableQueries } from '@/@types/common'
-import type { Customer, Filter } from '../types'
+import type { Leave, Filter } from '../types'
 
 export const initialTableData: TableQueries = {
     pageIndex: 1,
@@ -23,48 +23,48 @@ export const initialFilterData = {
     ],
 }
 
-export type CustomersListState = {
+export type LeavesListState = {
     tableData: TableQueries
     filterData: Filter
-    selectedCustomer: Partial<Customer>[]
+    selectedLeave: Partial<Leave>[]
 }
 
-type CustomersListAction = {
+type LeavesListAction = {
     setFilterData: (payload: Filter) => void
     setTableData: (payload: TableQueries) => void
-    setSelectedCustomer: (checked: boolean, customer: Customer) => void
-    setSelectAllCustomer: (customer: Customer[]) => void
+    setSelectedLeave: (checked: boolean, Leave: Leave) => void
+    setSelectAllLeave: (Leave: Leave[]) => void
 }
 
-const initialState: CustomersListState = {
+const initialState: LeavesListState = {
     tableData: initialTableData,
     filterData: initialFilterData,
-    selectedCustomer: [],
+    selectedLeave: [],
 }
 
-export const useCustomerListStore = create<
-    CustomersListState & CustomersListAction
->((set) => ({
-    ...initialState,
-    setFilterData: (payload) => set(() => ({ filterData: payload })),
-    setTableData: (payload) => set(() => ({ tableData: payload })),
-    setSelectedCustomer: (checked, row) =>
-        set((state) => {
-            const prevData = state.selectedCustomer
-            if (checked) {
-                return { selectedCustomer: [...prevData, ...[row]] }
-            } else {
-                if (
-                    prevData.some((prevCustomer) => row.id === prevCustomer.id)
-                ) {
-                    return {
-                        selectedCustomer: prevData.filter(
-                            (prevCustomer) => prevCustomer.id !== row.id,
-                        ),
+export const useLeaveListStore = create<LeavesListState & LeavesListAction>(
+    (set) => ({
+        ...initialState,
+        setFilterData: (payload) => set(() => ({ filterData: payload })),
+        setTableData: (payload) => set(() => ({ tableData: payload })),
+        setSelectedLeave: (checked, row) =>
+            set((state) => {
+                const prevData = state.selectedLeave
+                if (checked) {
+                    return { selectedLeave: [...prevData, ...[row]] }
+                } else {
+                    if (
+                        prevData.some((prevLeave) => row._id === prevLeave._id)
+                    ) {
+                        return {
+                            selectedLeave: prevData.filter(
+                                (prevLeave) => prevLeave._id !== row._id,
+                            ),
+                        }
                     }
+                    return { selectedLeave: prevData }
                 }
-                return { selectedCustomer: prevData }
-            }
-        }),
-    setSelectAllCustomer: (row) => set(() => ({ selectedCustomer: row })),
-}))
+            }),
+        setSelectAllLeave: (row) => set(() => ({ selectedLeave: row })),
+    }),
+)
