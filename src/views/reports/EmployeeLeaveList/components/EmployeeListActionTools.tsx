@@ -2,7 +2,7 @@ import Button from '@/components/ui/Button'
 import { useNavigate } from 'react-router-dom'
 import { GiReturnArrow } from 'react-icons/gi'
 
-const CustomerListActionTools = () => {
+const LeaveListActionTools = () => {
     const navigate = useNavigate()
 
     return (
@@ -18,4 +18,4 @@ const CustomerListActionTools = () => {
     )
 }
 
-export default CustomerListActionTools
+export default LeaveListActionTools
