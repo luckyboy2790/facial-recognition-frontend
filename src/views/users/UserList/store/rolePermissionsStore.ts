@@ -62,10 +62,10 @@ export const useRolePermissionsStore = create<
             if (checked) {
                 return { selectedUser: [...prevData, ...[row]] }
             } else {
-                if (prevData.some((prevUser) => row.id === prevUser.id)) {
+                if (prevData.some((prevUser) => row._id === prevUser._id)) {
                     return {
                         selectedUser: prevData.filter(
-                            (prevUser) => prevUser.id !== row.id,
+                            (prevUser) => prevUser._id !== row._id,
                         ),
                     }
                 }

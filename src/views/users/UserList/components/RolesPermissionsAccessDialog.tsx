@@ -47,8 +47,6 @@ const RolesPermissionsAccessDialogComponent = ({
 
     const { user } = useAuth()
 
-    console.log(user)
-
     const [roleName, setRoleName] = useState('')
 
     const [companyOptions, setCompanyOptions] = useState<OptionType[]>([])
@@ -71,7 +69,7 @@ const RolesPermissionsAccessDialogComponent = ({
     }
 
     const handleSubmit = async () => {
-        if (roleName === '' || !selectedStatus) {
+        if (roleName === '' || !selectedStatus || !companyName) {
             toast.push(
                 <Notification type="warning">Fill All Fields</Notification>,
                 {
@@ -153,6 +151,8 @@ const RolesPermissionsAccessDialogComponent = ({
     useEffect(() => {
         if (modules) {
             setRoleName(modules.name || '')
+
+            setCompanyName(modules.company || null)
 
             setSelectedStatus(modules.status || null)
 
