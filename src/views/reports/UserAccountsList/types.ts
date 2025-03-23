@@ -1,46 +1,8 @@
-type PersonalInfo = {
-    location: string
-    title: string
-    birthday: string
-    phoneNumber: string
-    dialCode: string
-    address: string
-    postcode: string
-    city: string
-    country: string
-    facebook: string
-    twitter: string
-    pinterest: string
-    linkedIn: string
-}
+import { Employee } from '@/views/employees/EmployeeList/types'
+import type { KeyedMutator } from 'swr'
 
-type OrderHistory = {
-    id: string
-    item: string
-    status: string
-    amount: number
-    date: number
-}
-
-type PaymentMethod = {
-    cardHolderName: string
-    cardType: string
-    expMonth: string
-    expYear: string
-    last4Number: string
-    primary: boolean
-}
-
-type Subscription = {
-    plan: string
-    status: string
-    billing: string
-    nextPaymentDate: number
-    amount: number
-}
-
-export type GetCustomersListResponse = {
-    list: Customer[]
+export type GetUsersListResponse = {
+    list: User[]
     total: number
 }
 
@@ -49,19 +11,36 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type Customer = {
-    id: string
-    name: string
-    firstName: string
-    lastName: string
+export type User = {
+    _id: string
+    employee: string
     email: string
-    img: string
+    account_type: string
     role: string
-    lastOnline: number
     status: string
-    personalInfo: PersonalInfo
-    orderHistory: OrderHistory[]
-    paymentMethod: PaymentMethod[]
-    subscription: Subscription[]
-    totalSpending: number
+    employeeData: Employee
 }
+
+export type Users = User[]
+
+export type RoleFilter = {
+    role?: string
+    status?: string
+}
+
+export type Role = {
+    _id: string
+    name: string
+    status: string
+    accessRight: Record<string, string[]>
+}
+
+export type Roles = Role[]
+
+export type GetPermissionsRolesResponse = {
+    roleList: Role[]
+    message: string
+}
+
+export type MutateRolesPermissionsRolesResponse =
+    KeyedMutator<GetPermissionsRolesResponse>
