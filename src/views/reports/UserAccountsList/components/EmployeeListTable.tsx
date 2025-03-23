@@ -1,30 +1,16 @@
 import { useMemo } from 'react'
 import Tag from '@/components/ui/Tag'
-import DataTable from '@/components/shared/DataTable'
 import useCustomerList from '../hooks/useEmployeeList'
-import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { User } from '../types'
 import type { TableQueries } from '@/@types/common'
-import ReportsTable from '@/components/shared/ReportTable'
 import ReportDataTable from '@/components/shared/ReportDataTable'
 
 const statusColor: Record<string, string> = {
-    active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
-    archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
-}
-
-const NameColumn = ({ row }: { row: Customer }) => {
-    return (
-        <div className="flex items-center">
-            <div
-                className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
-            >
-                {row.name}
-            </div>
-        </div>
-    )
+    Enabled:
+        'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Disabled: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
 const CustomerListTable = () => {
@@ -38,23 +24,24 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const columns: ColumnDef<User>[] = useMemo(
         () => [
             {
-                header: 'Name',
-                accessorKey: 'name',
-                cell: (props) => {
-                    const row = props.row.original
-                    return <NameColumn row={row} />
-                },
+                header: 'Employee Name',
+                id: 'employeeName',
+                cell: (props) => (
+                    <span>{props.row.original.employeeData.full_name}</span>
+                ),
             },
             {
                 header: 'Email',
-                accessorKey: 'email',
+                id: 'email',
+                cell: (props) => <span>{props.row.original.email}</span>,
             },
             {
-                header: 'location',
-                accessorKey: 'personalInfo.location',
+                header: 'Account Type',
+                id: 'accountType',
+                cell: (props) => <span>{props.row.original.account_type}</span>,
             },
             {
                 header: 'Status',
@@ -68,13 +55,6 @@ const CustomerListTable = () => {
                             </Tag>
                         </div>
                     )
-                },
-            },
-            {
-                header: 'Spent',
-                accessorKey: 'totalSpending',
-                cell: (props) => {
-                    return <span>${props.row.original.totalSpending}</span>
                 },
             },
         ],
@@ -123,7 +103,7 @@ const CustomerListTable = () => {
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedCustomer.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}
