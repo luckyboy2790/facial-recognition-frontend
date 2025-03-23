@@ -1,3 +1,5 @@
+import { Company } from '../companies/types'
+
 type PersonalInfo = {
     location: string
     title: string
@@ -52,6 +54,8 @@ export type Filter = {
 export type Department = {
     _id: string
     department_name: string
+    company: string
+    companyData: Company
 }
 
 export type DepartmentCreateResponse = {
