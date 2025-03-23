@@ -12,12 +12,16 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useSWR from 'swr'
 import type { CustomerFormSchema } from '../UserForm'
 import type { User } from '../UserList/types'
-import { apiGetUserDetail } from '@/services/UserService'
+import { apiDeleteUsers, apiGetUserDetail } from '@/services/UserService'
 import { useToken } from '@/store/authStore'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type UserDetailType = {
     userDetail: User
+}
+
+type UserData = {
+    userIds: string[]
 }
 
 const CustomerEdit = () => {
@@ -93,13 +97,33 @@ const CustomerEdit = () => {
         return {}
     }
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setDeleteConfirmationOpen(true)
-        toast.push(
-            <Notification type="success">Customer deleted!</Notification>,
-            { placement: 'top-center' },
-        )
-        navigate('/concepts/customers/customer-list')
+        if (!id) {
+            toast.push(
+                <Notification type="warning">
+                    User ID is not defined!
+                </Notification>,
+                { placement: 'top-center' },
+            )
+            return
+        }
+        const userIds: string[] = [id]
+
+        try {
+            await apiDeleteUsers<string[], UserData>({ userIds })
+            setDeleteConfirmationOpen(false)
+
+            toast.push(
+                <Notification type="success">Customer deleted!</Notification>,
+                { placement: 'top-center' },
+            )
+
+            await sleep(800)
+            window.location.href = '/users'
+        } catch (error) {
+            console.error('Error deleting companies:', error)
+        }
     }
 
     const handleDelete = () => {

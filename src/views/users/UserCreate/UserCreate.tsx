@@ -69,7 +69,7 @@ const EmployeeCreate = () => {
             <Notification type="success">Customer discardd!</Notification>,
             { placement: 'top-center' },
         )
-        navigate('/employees')
+        navigate('/users')
     }
 
     const handleDiscard = () => {
