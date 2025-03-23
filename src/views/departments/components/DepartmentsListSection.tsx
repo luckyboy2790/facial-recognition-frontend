@@ -24,9 +24,18 @@ const DepartmentListTable = () => {
                 header: 'Department',
                 accessorKey: 'department_name',
             },
+            // {
+            //     header: 'Company Name',
+            //     accessorKey: 'company_name',
+            //     cell: (props) => (
+            //         <span>{props.row.original.companyData?.company_name}</span>
+            //     ),
+            // },
         ],
         [],
     )
+
+    console.log(departmentList)
 
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
