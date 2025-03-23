@@ -85,6 +85,7 @@ const RolesPermissionsAccessDialogComponent = ({
         const newRole = {
             name: roleName || 'Untitled Role',
             status: selectedStatus || '',
+            company: companyName,
             accessRight,
         }
 
