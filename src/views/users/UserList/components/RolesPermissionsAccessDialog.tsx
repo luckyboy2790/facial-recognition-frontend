@@ -195,7 +195,6 @@ const RolesPermissionsAccessDialogComponent = ({
                     {user.account_type === 'SuperAdmin' && (
                         <FormItem label="Company">
                             <Select
-                                className="mb-4"
                                 placeholder="Select company"
                                 options={companyOptions}
                                 value={companyOptions.find(

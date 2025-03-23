@@ -43,6 +43,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
     const [employeeData, setEmployeeData] = useState<Employee[]>([])
     const [roleOptions, setRoleOptions] = useState<optionType[]>([])
 
+    const [selectedUserCompany, setSelectedUserCompany] =
+        useState<String | null>('')
+
     const { setValue } = useFormContext()
 
     useEffect(() => {
@@ -66,6 +69,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                 setRoleOptions(
                     role_list.roleList
                         .filter((item) => item.status === 'Active')
+                        .filter((item) => item.company === selectedUserCompany)
                         .map((item) => ({
                             label: item.name,
                             value: item._id,
@@ -77,7 +81,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
         }
 
         fetchData()
-    }, [])
+    }, [selectedUserCompany])
 
     return (
         <Card>
@@ -108,6 +112,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 if (selectedEmployee) {
                                     setValue('email', selectedEmployee.email)
                                 }
+
+                                setSelectedUserCompany(
+                                    selectedEmployee?.company_id || null,
+                                )
                             }}
                         />
                     )}
@@ -126,7 +134,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         <Input
                             type="text"
                             autoComplete="off"
-                            placeholder="Last Name"
+                            placeholder="Email"
                             value={field.value}
                             onChange={field.onChange}
                             onBlur={field.onBlur}
