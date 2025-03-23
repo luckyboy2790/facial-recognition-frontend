@@ -13,6 +13,7 @@ import { TbCheck } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { Notification, Select, toast } from '@/components/ui'
 import { useToken } from '@/store/authStore'
+import { apiCompaniesList } from '@/services/CompanyService'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusOptions = [
@@ -38,6 +39,8 @@ const RolesPermissionsAccessDialogComponent = ({
     const { token } = useToken()
 
     const [roleName, setRoleName] = useState('')
+
+    const [companyName, setCompanyName] = useState('')
 
     const handleClose = () => {
         setRoleName('')
@@ -142,6 +145,12 @@ const RolesPermissionsAccessDialogComponent = ({
             setAccessRight(modules.accessRight || {})
         }
     }, [modules])
+
+    useEffect(() => {
+        const fetchData = async () => {}
+
+        fetchData()
+    }, [])
 
     return (
         <Dialog
