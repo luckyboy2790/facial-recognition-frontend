@@ -6,6 +6,7 @@ import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { ConfirmDialog } from '@/components/shared'
 import { useState } from 'react'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type RolesPermissionsGroupsProps = {
@@ -24,6 +25,8 @@ const RolesPermissionsGroups = ({
 
     const { token } = useToken()
 
+    const { user } = useAuth()
+
     const handleDelete = (id: string) => {
         setDeleteConfirmationOpen(true)
 
@@ -37,6 +40,8 @@ const RolesPermissionsGroups = ({
             open: true,
         })
     }
+
+    console.log(roleList)
 
     const handleCancel = () => {
         setDeleteConfirmationOpen(false)
@@ -73,7 +78,11 @@ const RolesPermissionsGroups = ({
                     className="flex flex-col justify-between rounded-2xl p-5 bg-gray-100 dark:bg-gray-700 min-h-[140px]"
                 >
                     <div className="flex items-center justify-between">
-                        <h6 className="font-bold">{role.name}</h6>
+                        <h6 className="font-bold">
+                            {role.name}
+                            {user.account_type === 'SuperAdmin' &&
+                                ` (${role.companyData.company_name})`}
+                        </h6>
                         <IoClose
                             className="font-bold cursor-pointer"
                             onClick={() => {
