@@ -37,3 +37,12 @@ export async function apiDeleteCompanies<T, U extends Record<string, unknown>>(
         headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
 }
+
+export async function apiTotalCompanies<T>() {
+    const { token } = useToken()
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/company`,
+        method: 'get',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+}
