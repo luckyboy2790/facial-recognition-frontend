@@ -13,7 +13,9 @@ import { TbCheck } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { Notification, Select, toast } from '@/components/ui'
 import { useToken } from '@/store/authStore'
-import { apiCompaniesList } from '@/services/CompanyService'
+import { apiCompaniesList, apiTotalCompanies } from '@/services/CompanyService'
+import { GetCompanyListResponse } from '@/views/companies/types'
+import { useAuth } from '@/auth'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusOptions = [
@@ -24,6 +26,11 @@ const statusOptions = [
 type RolesPermissionsAccessDialog = {
     roleList: Roles
     mutate: MutateRolesPermissionsRolesResponse
+}
+
+type OptionType = {
+    label: string
+    value: string
 }
 
 const RolesPermissionsAccessDialogComponent = ({
@@ -38,9 +45,15 @@ const RolesPermissionsAccessDialogComponent = ({
 
     const { token } = useToken()
 
+    const { user } = useAuth()
+
+    console.log(user)
+
     const [roleName, setRoleName] = useState('')
 
-    const [companyName, setCompanyName] = useState('')
+    const [companyOptions, setCompanyOptions] = useState<OptionType[]>([])
+
+    const [companyName, setCompanyName] = useState<string | null>(null)
 
     const handleClose = () => {
         setRoleName('')
@@ -147,7 +160,16 @@ const RolesPermissionsAccessDialogComponent = ({
     }, [modules])
 
     useEffect(() => {
-        const fetchData = async () => {}
+        const fetchData = async () => {
+            const response: GetCompanyListResponse = await apiTotalCompanies()
+
+            setCompanyOptions(
+                response.list.map((item) => ({
+                    label: item.company_name,
+                    value: item._id,
+                })),
+            )
+        }
 
         fetchData()
     }, [])
@@ -168,6 +190,25 @@ const RolesPermissionsAccessDialogComponent = ({
                             onChange={(e) => setRoleName(e.target.value)}
                         />
                     </FormItem>
+
+                    {user.account_type === 'SuperAdmin' && (
+                        <FormItem label="Company">
+                            <Select
+                                className="mb-4"
+                                placeholder="Select company"
+                                options={companyOptions}
+                                value={companyOptions.find(
+                                    (option) => option.value === companyName,
+                                )}
+                                onChange={(selectedOption) =>
+                                    setCompanyName(
+                                        selectedOption?.value || null,
+                                    )
+                                }
+                            />
+                        </FormItem>
+                    )}
+
                     <FormItem label="Status">
                         <Select
                             className="mb-4"
