@@ -1,3 +1,4 @@
+import { Company } from '@/views/companies/types'
 import type { KeyedMutator } from 'swr'
 
 export type GetUsersListResponse = {
@@ -30,6 +31,8 @@ export type Role = {
     _id: string
     name: string
     status: string
+    company: string
+    companyData: Company
     accessRight: Record<string, string[]>
 }
 
