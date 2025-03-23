@@ -72,6 +72,8 @@ const dropdownItemList: DropdownList[] = [
 const _QuickAccessDropdown = (props: SidePanelProps) => {
     const { className } = props
 
+    const { user } = useAuth()
+
     return (
         <Dropdown
             className="flex"
@@ -91,7 +93,9 @@ const _QuickAccessDropdown = (props: SidePanelProps) => {
                     </div>
                 </div>
             </Dropdown.Item>
+
             <Dropdown.Item variant="divider" />
+
             {clockItemList.map((item) => (
                 <Dropdown.Item
                     key={item.label}
@@ -106,7 +110,9 @@ const _QuickAccessDropdown = (props: SidePanelProps) => {
                     </Link>
                 </Dropdown.Item>
             ))}
+
             <Dropdown.Item variant="divider" />
+
             {employeeItemList.map((item) => (
                 <Dropdown.Item
                     key={item.label}
@@ -121,21 +127,46 @@ const _QuickAccessDropdown = (props: SidePanelProps) => {
                     </Link>
                 </Dropdown.Item>
             ))}
+
             <Dropdown.Item variant="divider" />
-            {dropdownItemList.map((item) => (
-                <Dropdown.Item
-                    key={item.label}
-                    eventKey={item.label}
-                    className="px-0"
-                >
-                    <Link className="flex h-full w-full px-2" to={item.path}>
-                        <span className="flex gap-2 items-center w-full">
-                            <span className="text-xl">{item.icon}</span>
-                            <span>{item.label}</span>
-                        </span>
-                    </Link>
-                </Dropdown.Item>
-            ))}
+
+            {dropdownItemList.map((item) =>
+                user.account_type === 'Admin' ? (
+                    item.label !== 'Company' && (
+                        <Dropdown.Item
+                            key={item.label}
+                            eventKey={item.label}
+                            className="px-0"
+                        >
+                            <Link
+                                className="flex h-full w-full px-2"
+                                to={item.path}
+                            >
+                                <span className="flex gap-2 items-center w-full">
+                                    <span className="text-xl">{item.icon}</span>
+                                    <span>{item.label}</span>
+                                </span>
+                            </Link>
+                        </Dropdown.Item>
+                    )
+                ) : (
+                    <Dropdown.Item
+                        key={item.label}
+                        eventKey={item.label}
+                        className="px-0"
+                    >
+                        <Link
+                            className="flex h-full w-full px-2"
+                            to={item.path}
+                        >
+                            <span className="flex gap-2 items-center w-full">
+                                <span className="text-xl">{item.icon}</span>
+                                <span>{item.label}</span>
+                            </span>
+                        </Link>
+                    </Dropdown.Item>
+                ),
+            )}
         </Dropdown>
     )
 }
