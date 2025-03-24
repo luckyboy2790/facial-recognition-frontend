@@ -1,3 +1,3 @@
-import AboutContent from './AboutContent'
+import ChangePassword from './ChangePassword'
 
-export default AboutContent
+export default ChangePassword
