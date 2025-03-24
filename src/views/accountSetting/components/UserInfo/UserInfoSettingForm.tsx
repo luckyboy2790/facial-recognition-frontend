@@ -8,7 +8,6 @@ const LocalizationSetting = () => {
 
     return (
         <div className="flex flex-col gap-4">
-            <h5>Localization</h5>
             <AdaptiveCard>
                 <FormItem label="First Name">
                     <Controller
