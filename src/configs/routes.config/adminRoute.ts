@@ -190,6 +190,12 @@ const adminRoute: Routes = [
         component: lazy(() => import('@/views/checkInOut')),
         authority: [],
     },
+    {
+        key: 'account',
+        path: '/account-setting',
+        component: lazy(() => import('@/views/accountSetting')),
+        authority: [],
+    },
 ]
 
 export default adminRoute

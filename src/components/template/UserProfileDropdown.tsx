@@ -15,14 +15,6 @@ type DropdownList = {
     icon: JSX.Element
 }
 
-const dropdownItemList: DropdownList[] = [
-    {
-        label: 'Account Setting',
-        path: '/concepts/account/settings',
-        icon: <PiGearDuotone />,
-    },
-]
-
 const _UserDropdown = () => {
     const { img, full_name, email } = useSessionUser((state) => state.user)
 
@@ -53,6 +45,17 @@ const _UserDropdown = () => {
             setIsPersonal(false)
         }
     }, [])
+
+    const dropdownItemList: DropdownList[] = [
+        {
+            label: 'Account Setting',
+            path:
+                user.account_type === 'Employee' || isPersonal
+                    ? '/personal/account-setting'
+                    : '/account-setting',
+            icon: <PiGearDuotone />,
+        },
+    ]
 
     return (
         <Dropdown

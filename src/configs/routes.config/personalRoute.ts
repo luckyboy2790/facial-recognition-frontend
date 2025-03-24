@@ -44,6 +44,12 @@ const personalRoute: Routes = [
         component: lazy(() => import('@/views/personalSetting')),
         authority: [],
     },
+    {
+        key: 'personal_account',
+        path: '/personal/account-setting',
+        component: lazy(() => import('@/views/accountSetting')),
+        authority: [],
+    },
 ]
 
 export default personalRoute
