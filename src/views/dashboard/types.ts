@@ -13,16 +13,22 @@ export type Member = {
 }
 
 export type Task = {
-    id: string
-    name: string
-    position: string
-    itemType: string
+    _id: string
+    full_name: string
+    type: string
     assignee?: Member
     priority: string
-    dueDate: number | null
+    time: string | null
     checked: boolean
-    startDate: number | null
-    recentAbsenceDate: number | null
+    official_start_date: string | null
+    recentAbsenceDate: string | null
+    job_title?: {
+        job_title: string
+    }
+    leaveReturn: string | null
+    employeeData?: {
+        full_name: string
+    }
 }
 
 export type Members = Member[]

@@ -14,6 +14,7 @@ import { useAuth } from '@/auth'
 
 type AddressSectionProps = FormSectionBaseProps & {
     setValue: UseFormSetValue<any>
+    companyId: string | undefined
 }
 type optionType = {
     label: string
@@ -36,7 +37,12 @@ type responseType = {
     leaveGroup: leaveGroupResponseType[]
 }
 
-const AddressSection = ({ control, errors, setValue }: AddressSectionProps) => {
+const EmployeeDetailSection = ({
+    control,
+    errors,
+    setValue,
+    companyId,
+}: AddressSectionProps) => {
     const [companyOptions, setCompanyOptions] = useState<optionType[]>([])
     const [departmentOptions, setDepartmentOptions] = useState<optionType[]>([])
     const [jobTitleOptions, setJobTitleOptions] = useState<optionType[]>([])
@@ -47,8 +53,8 @@ const AddressSection = ({ control, errors, setValue }: AddressSectionProps) => {
     const { user } = useAuth()
 
     useEffect(() => {
-        console.log(control)
-    }, [control])
+        setCompany(companyId)
+    }, [companyId])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -386,4 +392,4 @@ const AddressSection = ({ control, errors, setValue }: AddressSectionProps) => {
     )
 }
 
-export default AddressSection
+export default EmployeeDetailSection

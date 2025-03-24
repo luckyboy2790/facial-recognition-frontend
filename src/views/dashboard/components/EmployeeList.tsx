@@ -122,11 +122,11 @@ const EmployeeList = () => {
                                                                     ) => (
                                                                         <Draggable
                                                                             key={
-                                                                                item.id +
+                                                                                item._id +
                                                                                 index
                                                                             }
                                                                             draggableId={
-                                                                                item.id +
+                                                                                item._id +
                                                                                 index
                                                                             }
                                                                             index={
@@ -144,28 +144,34 @@ const EmployeeList = () => {
                                                                                         key
                                                                                     }
                                                                                     taskId={
-                                                                                        item.id
+                                                                                        item._id
                                                                                     }
                                                                                     checked={
                                                                                         item.checked
                                                                                     }
                                                                                     name={
-                                                                                        item.name
+                                                                                        item.full_name
+                                                                                            ? item.full_name
+                                                                                            : item
+                                                                                                  .employeeData
+                                                                                                  ?.full_name
                                                                                     }
                                                                                     itemType={
-                                                                                        item.itemType
+                                                                                        item.type
                                                                                     }
                                                                                     dueDate={
-                                                                                        item.dueDate as number
+                                                                                        item.leaveReturn
                                                                                     }
                                                                                     position={
-                                                                                        item.position
+                                                                                        item
+                                                                                            .job_title
+                                                                                            ?.job_title
                                                                                     }
                                                                                     startDate={
-                                                                                        item.startDate as number
+                                                                                        item?.official_start_date
                                                                                     }
                                                                                     recentAbsenceDate={
-                                                                                        item.recentAbsenceDate as number
+                                                                                        item.time
                                                                                     }
                                                                                     dragger={
                                                                                         <span
