@@ -66,7 +66,11 @@ const AddDepartmentSection = () => {
 
     const handleSubmit = async () => {
         try {
-            if (departmentName === '') {
+            if (
+                departmentName === '' ||
+                ((company === null || company === '') &&
+                    user.account_type === 'SuperAdmin')
+            ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
                         You have to fill department name.
@@ -81,6 +85,8 @@ const AddDepartmentSection = () => {
                 mutate()
 
                 setDepartmentName('')
+
+                setCompany(null)
             }
 
             console.log(newDepartment)
@@ -103,9 +109,11 @@ const AddDepartmentSection = () => {
                         placeholder="Select company"
                         className="w-full"
                         options={companyNames}
-                        value={companyNames.find(
-                            (option) => option.value === company,
-                        )}
+                        value={
+                            companyNames.find(
+                                (option) => option.value === company,
+                            ) || null
+                        }
                         onChange={(selectedOption) =>
                             setCompany(selectedOption?.value || null)
                         }

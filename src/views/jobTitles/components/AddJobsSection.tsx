@@ -1,33 +1,80 @@
 import { Button, Input, Notification, Select, toast } from '@/components/ui'
 import { FaPlus } from 'react-icons/fa'
 import useJobTitleList from '../hooks/useJobsList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiCreateJobTitle } from '@/services/JobTitleService'
 import { JobTitleCreateResponse } from '../types'
 import useSWR from 'swr'
+import { GetCompanyListResponse } from '@/views/companies/types'
+import { apiTotalCompanies } from '@/services/CompanyService'
+import { useAuth } from '@/auth'
 
 type JobTitleCreateData = {
-    departmentId: string
+    departmentId: string | null
     jobTitle: string
+    company: string | null
+}
+
+type OptionType = {
+    label: string
+    value: string
 }
 
 const AddJobTitleSection = () => {
     const { departmentList, mutateJobTitles } = useJobTitleList()
-    const [department, setDepartment] = useState<string>('')
+    const [department, setDepartment] = useState<string | null>(null)
     const [jobTitle, setJobTitle] = useState<string>('')
+    const [company, setCompany] = useState<string | null>(null)
+    const [companyNames, setCompanyNames] = useState<OptionType[]>([])
 
-    const optionData = [
-        { value: '', label: 'Select Department' },
-        ...departmentList.map((item) => ({
-            value: item._id,
-            label: item.department_name,
-        })),
-    ]
+    const [optionData, setOptionData] = useState<OptionType[]>([])
+
+    const { user } = useAuth()
+
+    useEffect(() => {
+        const fetchData = () => {
+            if (user.account_type === 'Admin') {
+                setOptionData(
+                    departmentList
+                        .filter((item) => item.company === company)
+                        .map((item) => ({
+                            value: item._id,
+                            label: item.department_name,
+                        })),
+                )
+            } else {
+                setOptionData(
+                    departmentList.map((item) => ({
+                        value: item._id,
+                        label: item.department_name,
+                    })),
+                )
+            }
+        }
+
+        fetchData()
+    }, [departmentList, company])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response: GetCompanyListResponse = await apiTotalCompanies()
+
+            setCompanyNames(
+                response.list.map((item) => ({
+                    label: item.company_name,
+                    value: item._id,
+                })),
+            )
+        }
+
+        fetchData()
+    }, [])
 
     const createJobTitle = async () => {
         return apiCreateJobTitle<JobTitleCreateResponse, JobTitleCreateData>({
-            departmentId: department,
+            departmentId: department || null,
             jobTitle,
+            company,
         })
     }
 
@@ -37,7 +84,12 @@ const AddJobTitleSection = () => {
 
     const handleSubmit = async () => {
         try {
-            if (department === '' || jobTitle === '') {
+            if (
+                department === '' ||
+                jobTitle === '' ||
+                ((company === null || company === '') &&
+                    user.account_type === 'SuperAdmin')
+            ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
                         You have to fill all fields.
@@ -52,7 +104,8 @@ const AddJobTitleSection = () => {
                 mutateJobTitles()
 
                 setJobTitle('')
-                setDepartment('')
+                setDepartment(null)
+                setCompany(null)
             }
         } catch (error) {
             console.error('Error creating department:', error)
@@ -67,8 +120,22 @@ const AddJobTitleSection = () => {
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
                 />
+                {user.account_type === 'SuperAdmin' && (
+                    <Select
+                        placeholder="Select company"
+                        className="w-full"
+                        options={companyNames}
+                        value={
+                            companyNames.find(
+                                (option) => option.value === company,
+                            ) || null
+                        }
+                        onChange={(selectedOption) =>
+                            setCompany(selectedOption?.value || null)
+                        }
+                    />
+                )}
                 <Select
-                    size="lg"
                     className="mb-4"
                     placeholder="Select Department"
                     options={optionData}
@@ -89,6 +156,7 @@ const AddJobTitleSection = () => {
                     variant="solid"
                     icon={<FaPlus />}
                     onClick={handleSubmit}
+                    loading={isLoading}
                 >
                     Create
                 </Button>
