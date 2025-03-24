@@ -43,6 +43,7 @@ export type User = {
     email?: string | null
     authority?: string[]
     account_type?: string
+    company?: string
 }
 
 export type Token = {

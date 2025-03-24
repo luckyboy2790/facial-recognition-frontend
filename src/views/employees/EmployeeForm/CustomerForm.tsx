@@ -154,6 +154,7 @@ const CustomerForm = (props: CustomerFormProps) => {
                         <EmployeeDetailSection
                             control={control}
                             errors={errors}
+                            setValue={setValue}
                         />
                     </div>
                 </div>

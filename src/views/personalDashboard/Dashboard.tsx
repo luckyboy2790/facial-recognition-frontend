@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import DashboardContent from './components/DashboardContent'
 import DashboardHeader from './components/DashboardHeader'
 import { useTasksStore } from './store/employeesStore'
-import { apiGetProjectTasks } from '@/services/employeeService'
+import { apiGetDataOfDashboard } from '@/services/employeeService'
 import type { GetTasksResponse, GetProjectMembersResponse } from './types'
 
 const ProjectList = () => {
@@ -10,7 +10,7 @@ const ProjectList = () => {
 
     useSWR(
         ['/api/projects/tasks'],
-        () => apiGetProjectTasks<GetTasksResponse>(),
+        () => apiGetDataOfDashboard<GetTasksResponse>(),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
