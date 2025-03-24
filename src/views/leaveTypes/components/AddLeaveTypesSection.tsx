@@ -1,34 +1,53 @@
-import { useState } from 'react'
-import { Button, Input, Notification, toast } from '@/components/ui'
+import { useEffect, useState } from 'react'
+import { Button, Input, Notification, Select, toast } from '@/components/ui'
 import { FaPlus } from 'react-icons/fa'
 import Radio from '@/components/ui/Radio'
 import { LeaveTypeCreateResponse } from '../types'
 import { apiCreateLeaveType } from '@/services/leaveTypeService'
 import useSWR from 'swr'
 import useLeaveTypeList from '../hooks/useLeaveTypesList'
+import { apiTotalCompanies } from '@/services/CompanyService'
+import { GetCompanyListResponse } from '@/views/companies/types'
+import { useAuth } from '@/auth'
 
 type LeaveTypeCreateData = {
     leaveName: string
-    credits: string
-    percalendar: string
+    company: string | null
+}
+
+type OptionType = {
+    label: string
+    value: string
 }
 
 const AddLeaveTypeSection = () => {
-    const [termValue, setTermValue] = useState('Monthly')
     const [leaveName, setLeaveName] = useState('')
-    const [credits, setCredits] = useState('')
+    const [company, setCompany] = useState<string | null>(null)
+    const [companyNames, setCompanyNames] = useState<OptionType[]>([])
     const { mutate } = useLeaveTypeList()
 
-    const onChange = (val: string) => {
-        setTermValue(val)
-    }
+    const { user } = useAuth()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response: GetCompanyListResponse = await apiTotalCompanies()
+
+            setCompanyNames(
+                response.list.map((item) => ({
+                    label: item.company_name,
+                    value: item._id,
+                })),
+            )
+        }
+
+        fetchData()
+    }, [])
 
     const createLeaveType = async () => {
         return apiCreateLeaveType<LeaveTypeCreateResponse, LeaveTypeCreateData>(
             {
                 leaveName,
-                credits,
-                percalendar: termValue,
+                company,
             },
         )
     }
@@ -49,28 +68,14 @@ const AddLeaveTypeSection = () => {
                 return
             }
 
-            const numericCredits = Number(credits)
-            if (
-                isNaN(numericCredits) ||
-                numericCredits < 0 ||
-                numericCredits > 365
-            ) {
-                toast.push(
-                    <Notification title={'error'} type={'danger'}>
-                        Credits must be a number between 0 and 365.
-                    </Notification>,
-                )
-                return
-            }
-
             const newLeaveType = await createLeaveType()
 
             if (newLeaveType?.company?._id) {
                 mutate()
 
                 setLeaveName('')
-                setCredits('')
-                setTermValue('Monthly')
+
+                setCompany(null)
             }
 
             console.log(newLeaveType)
@@ -87,6 +92,21 @@ const AddLeaveTypeSection = () => {
                     value={leaveName}
                     onChange={(e) => setLeaveName(e.target.value)}
                 />
+                {user.account_type === 'SuperAdmin' && (
+                    <Select
+                        placeholder="Select company"
+                        className="w-full"
+                        options={companyNames}
+                        value={
+                            companyNames.find(
+                                (option) => option.value === company,
+                            ) || null
+                        }
+                        onChange={(selectedOption) =>
+                            setCompany(selectedOption?.value || null)
+                        }
+                    />
+                )}
             </div>
             <div className="flex justify-end">
                 <Button
