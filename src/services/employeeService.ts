@@ -2,7 +2,7 @@ import { useToken } from '@/store/authStore'
 import ApiService from './ApiService'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
-export async function apiGetProjectTasks<T>() {
+export async function apiGetDataOfDashboard<T>() {
     const { token } = useToken()
     return ApiService.fetchDataWithAxios<T>({
         url: `${domain}/api/dashboard/admin/get_data`,

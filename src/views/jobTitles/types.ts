@@ -42,6 +42,7 @@ type Subscription = {
 export type JobTitle = {
     _id: string
     job_title: string
+    company: string
     department_id: string
 }
 

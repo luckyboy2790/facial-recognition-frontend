@@ -25,7 +25,7 @@ const AboutContent = () => {
         },
     })
 
-    const { handleSubmit, setValue } = methods
+    const { handleSubmit } = methods
 
     const { token } = useToken()
 

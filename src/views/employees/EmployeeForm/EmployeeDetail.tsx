@@ -1,7 +1,7 @@
 import Card from '@/components/ui/Card'
 import Input from '@/components/ui/Input'
 import { FormItem } from '@/components/ui/Form'
-import { Controller } from 'react-hook-form'
+import { Controller, UseFormSetValue } from 'react-hook-form'
 import type { FormSectionBaseProps } from './types'
 import { useEffect, useState } from 'react'
 import { Company } from '@/views/companies/types'
@@ -10,8 +10,11 @@ import { JobTitle } from '@/views/jobTitles/types'
 import { apiGetAllData } from '@/services/employeeService'
 import { DatePicker, Select } from '@/components/ui'
 import { NumericInput } from '@/components/shared'
+import { useAuth } from '@/auth'
 
-type AddressSectionProps = FormSectionBaseProps
+type AddressSectionProps = FormSectionBaseProps & {
+    setValue: UseFormSetValue<any>
+}
 type optionType = {
     label: string
     value: string
@@ -21,6 +24,7 @@ type leaveGroupResponseType = {
     _id: string
     group_name: string
     description: number
+    company: string
     leavePrivilege: string[]
     status: string
 }
@@ -32,11 +36,15 @@ type responseType = {
     leaveGroup: leaveGroupResponseType[]
 }
 
-const AddressSection = ({ control, errors }: AddressSectionProps) => {
+const AddressSection = ({ control, errors, setValue }: AddressSectionProps) => {
     const [companyOptions, setCompanyOptions] = useState<optionType[]>([])
     const [departmentOptions, setDepartmentOptions] = useState<optionType[]>([])
     const [jobTitleOptions, setJobTitleOptions] = useState<optionType[]>([])
     const [leaveGroupOptions, setLeaveGroupOptions] = useState<optionType[]>([])
+
+    const [company, setCompany] = useState<string | undefined>('')
+
+    const { user } = useAuth()
 
     useEffect(() => {
         console.log(control)
@@ -54,32 +62,69 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                     })),
                 )
 
-                setDepartmentOptions(
-                    data.department.map((item) => ({
-                        label: item.department_name,
-                        value: item._id,
-                    })),
-                )
+                console.log(user)
 
-                setJobTitleOptions(
-                    data.jobTitle.map((item) => ({
-                        label: item.job_title,
-                        value: item._id,
-                    })),
-                )
+                if (user.account_type === 'SuperAdmin') {
+                    setDepartmentOptions(
+                        data.department
+                            .filter((item) => item.company === company)
+                            .map((item) => ({
+                                label: item.department_name,
+                                value: item._id,
+                            })),
+                    )
 
-                setLeaveGroupOptions(
-                    data.leaveGroup.map((item) => ({
-                        label: item.group_name,
-                        value: item._id,
-                    })),
-                )
+                    setJobTitleOptions(
+                        data.jobTitle
+                            .filter((item) => item.company === company)
+                            .map((item) => ({
+                                label: item.job_title,
+                                value: item._id,
+                            })),
+                    )
+
+                    setLeaveGroupOptions(
+                        data.leaveGroup
+                            .filter((item) => item.company === company)
+                            .map((item) => ({
+                                label: item.group_name,
+                                value: item._id,
+                            })),
+                    )
+                } else {
+                    setDepartmentOptions(
+                        data.department.map((item) => ({
+                            label: item.department_name,
+                            value: item._id,
+                        })),
+                    )
+
+                    setJobTitleOptions(
+                        data.jobTitle.map((item) => ({
+                            label: item.job_title,
+                            value: item._id,
+                        })),
+                    )
+
+                    setLeaveGroupOptions(
+                        data.leaveGroup.map((item) => ({
+                            label: item.group_name,
+                            value: item._id,
+                        })),
+                    )
+                }
             } catch (error) {
                 console.error('Error fetching data:', error)
             }
         }
 
         fetchData()
+    }, [company])
+
+    useEffect(() => {
+        if (user.account_type === 'Admin') {
+            setValue('company', user.company)
+        }
     }, [])
 
     const employmentTypeOption = [
@@ -97,29 +142,33 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
             <Card>
                 <h4 className="mb-6">Employee Details(Designation)</h4>
 
-                <FormItem
-                    label="Company"
-                    invalid={Boolean(errors.company)}
-                    errorMessage={errors.company?.message}
-                >
-                    <Controller
-                        name="company"
-                        control={control}
-                        render={({ field }) => (
-                            <Select
-                                className="mb-4"
-                                placeholder="Please Select"
-                                options={companyOptions}
-                                value={companyOptions.find(
-                                    (option) => option.value === field.value,
-                                )}
-                                onChange={(option) =>
-                                    field.onChange(option?.value)
-                                }
-                            />
-                        )}
-                    />
-                </FormItem>
+                {user.account_type === 'SuperAdmin' && (
+                    <FormItem
+                        label="Company"
+                        invalid={Boolean(errors.company)}
+                        errorMessage={errors.company?.message}
+                    >
+                        <Controller
+                            name="company"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    className="mb-4"
+                                    placeholder="Please Select"
+                                    options={companyOptions}
+                                    value={companyOptions.find(
+                                        (option) =>
+                                            option.value === field.value,
+                                    )}
+                                    onChange={(option) => {
+                                        field.onChange(option?.value)
+                                        setCompany(option?.value)
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
+                )}
 
                 <FormItem
                     label="Department"
@@ -231,7 +280,7 @@ const AddressSection = ({ control, errors }: AddressSectionProps) => {
                 </FormItem>
             </Card>
             <Card>
-                <h4 className="mb-6">Employee Details(Designation)</h4>
+                <h4 className="mb-6">Employment Information</h4>
 
                 <FormItem
                     label="Employment Type"

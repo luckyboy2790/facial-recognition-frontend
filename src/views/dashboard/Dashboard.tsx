@@ -2,15 +2,15 @@ import useSWR from 'swr'
 import DashboardContent from './components/DashboardContent'
 import DashboardHeader from './components/DashboardHeader'
 import { useTasksStore } from './store/employeesStore'
-import { apiGetProjectTasks } from '@/services/employeeService'
+import { apiGetDataOfDashboard } from '@/services/employeeService'
 import type { GetTasksResponse, GetProjectMembersResponse } from './types'
 
 const ProjectList = () => {
     const { updateOrdered, updateGroups } = useTasksStore()
 
     useSWR(
-        ['/api/projects/tasks'],
-        () => apiGetProjectTasks<GetTasksResponse>(),
+        ['/api/dashboard/data'],
+        () => apiGetDataOfDashboard<GetTasksResponse>(),
         {
             revalidateOnFocus: false,
             revalidateIfStale: false,
