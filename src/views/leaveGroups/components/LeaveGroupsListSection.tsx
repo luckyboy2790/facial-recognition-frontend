@@ -9,7 +9,7 @@ import type {
     LeaveGroupCreateResponse,
 } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { Button, Dialog, Input, Select, Tooltip } from '@/components/ui'
+import { Button, Dialog, Input, Select, Tag, Tooltip } from '@/components/ui'
 import { TbPencil } from 'react-icons/tb'
 import {
     apiLeaveGroupsList,
@@ -23,6 +23,11 @@ type LeaveGroupData = {
     description: string
     leavePrivilege: string[]
     groupStatus: string
+}
+
+const statusColor: Record<string, string> = {
+    Active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
+    Archive: 'bg-red-200 dark:bg-red-200 text-gray-900 dark:text-gray-900',
 }
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
@@ -54,8 +59,6 @@ const CompanyListTable = () => {
         leaveTypesList,
         mutateLeaveGroup,
     } = useLeaveTypeList()
-
-    console.log(leaveGroupsList)
 
     const [groupStatus, setGroupStatus] = useState<string>('')
     const [leaveGroupName, setLeaveGroupName] = useState('')
@@ -172,6 +175,16 @@ const CompanyListTable = () => {
             {
                 header: 'Status',
                 accessorKey: 'status',
+                cell: (props) => {
+                    const row = props.row.original
+                    return (
+                        <div className="flex items-center">
+                            <Tag className={statusColor[row.status]}>
+                                <span className="capitalize">{row.status}</span>
+                            </Tag>
+                        </div>
+                    )
+                },
             },
             {
                 header: '',

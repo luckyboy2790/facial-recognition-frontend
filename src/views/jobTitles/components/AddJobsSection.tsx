@@ -33,7 +33,7 @@ const AddJobTitleSection = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            if (user.account_type === 'Admin') {
+            if (user.account_type === 'SuperAdmin') {
                 setOptionData(
                     departmentList
                         .filter((item) => item.company === company)
