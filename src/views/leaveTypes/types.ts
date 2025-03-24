@@ -52,6 +52,7 @@ export type Filter = {
 export type LeaveType = {
     _id: string
     leave_name: string
+    company: string
 }
 
 export type LeaveTypeCreateResponse = {

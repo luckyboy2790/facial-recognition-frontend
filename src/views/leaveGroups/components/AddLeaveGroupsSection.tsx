@@ -1,16 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Input, Notification, Select, toast } from '@/components/ui'
 import { FaPlus } from 'react-icons/fa'
 import { LeaveGroupCreateResponse } from '../types'
 import useSWR from 'swr'
 import useLeaveTypeList from '../hooks/useLeaveGroupsList'
 import { apiCreateLeaveGroup } from '@/services/leaveGroupService'
+import { apiTotalCompanies } from '@/services/CompanyService'
+import { GetCompanyListResponse } from '@/views/companies/types'
+import { useAuth } from '@/auth'
 
 type LeaveGroupCreateData = {
     leaveGroupName: string
     description: string
+    company: string | null
     leavePrivilege: string[]
     groupStatus: string
+}
+
+type OptionType = {
+    label: string
+    value: string
 }
 
 const AddLeaveTypeSection = () => {
@@ -19,11 +28,12 @@ const AddLeaveTypeSection = () => {
     const [description, setDescription] = useState('')
     const [leaveTypes, setLeaveTypes] = useState<string[]>([])
     const { mutateLeaveGroup, leaveTypesList } = useLeaveTypeList()
+    const [company, setCompany] = useState<string | null>(null)
+    const [companyNames, setCompanyNames] = useState<OptionType[]>([])
 
-    const leaveGroupOptions = leaveTypesList.map((item) => ({
-        value: item._id,
-        label: item.leave_name,
-    }))
+    const [leaveGroupOptions, setLeaveGroupOptions] = useState<OptionType[]>([])
+
+    const { user } = useAuth()
 
     const statusOption = [
         {
@@ -36,6 +46,45 @@ const AddLeaveTypeSection = () => {
         },
     ]
 
+    useEffect(() => {
+        const fetchData = async () => {
+            if (user.account_type === 'SuperAdmin') {
+                setLeaveGroupOptions(
+                    leaveTypesList
+                        .filter((item) => item.company === company)
+                        .map((item) => ({
+                            value: item._id,
+                            label: item.leave_name,
+                        })),
+                )
+            } else {
+                setLeaveGroupOptions(
+                    leaveTypesList.map((item) => ({
+                        value: item._id,
+                        label: item.leave_name,
+                    })),
+                )
+            }
+        }
+
+        fetchData()
+    }, [leaveTypesList, company])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response: GetCompanyListResponse = await apiTotalCompanies()
+
+            setCompanyNames(
+                response.list.map((item) => ({
+                    label: item.company_name,
+                    value: item._id,
+                })),
+            )
+        }
+
+        fetchData()
+    }, [])
+
     const createLeaveType = async () => {
         return apiCreateLeaveGroup<
             LeaveGroupCreateResponse,
@@ -43,6 +92,7 @@ const AddLeaveTypeSection = () => {
         >({
             leaveGroupName,
             description,
+            company,
             leavePrivilege: leaveTypes,
             groupStatus,
         })
@@ -58,7 +108,9 @@ const AddLeaveTypeSection = () => {
                 leaveGroupName === '' ||
                 description === '' ||
                 leaveTypes.length <= 0 ||
-                groupStatus === ''
+                groupStatus === '' ||
+                ((company === null || company === '') &&
+                    user.account_type === 'SuperAdmin')
             ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
@@ -100,6 +152,22 @@ const AddLeaveTypeSection = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
+
+                {user.account_type === 'SuperAdmin' && (
+                    <Select
+                        placeholder="Select company"
+                        className="w-full"
+                        options={companyNames}
+                        value={
+                            companyNames.find(
+                                (option) => option.value === company,
+                            ) || null
+                        }
+                        onChange={(selectedOption) =>
+                            setCompany(selectedOption?.value || null)
+                        }
+                    />
+                )}
 
                 <div className="flex flex-col gap-0.5">
                     <Select

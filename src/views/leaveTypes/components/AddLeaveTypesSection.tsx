@@ -58,7 +58,11 @@ const AddLeaveTypeSection = () => {
 
     const handleSubmit = async () => {
         try {
-            if (leaveName === '') {
+            if (
+                leaveName === '' ||
+                ((company === null || company === '') &&
+                    user.account_type === 'SuperAdmin')
+            ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
                         You have to fill company name.
