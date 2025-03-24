@@ -130,6 +130,7 @@ const AddLeaveTypeSection = () => {
                 setDescription('')
                 setLeaveTypes([])
                 setGroupStatus('')
+                setCompany(null)
             }
 
             console.log(newLeaveType)
