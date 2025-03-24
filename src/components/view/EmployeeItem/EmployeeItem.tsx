@@ -9,15 +9,15 @@ type TaskItemProps = Partial<{
     progress: string
     name: string
     checked: boolean
-    dueDate: number
+    dueDate: string | null
     type: string
     showDragger: boolean
     dragger: ReactNode
     showAssignee: boolean
     position: string
-    startDate: number
-    itemType: string
-    recentAbsenceDate: number
+    startDate: string | null
+    itemType: string | null
+    recentAbsenceDate: string | null
 }> & {
     taskId: string
     ref?: Ref<HTMLTableRowElement>
@@ -95,12 +95,7 @@ const TaskItem = (props: TaskItemProps) => {
                 )}
             >
                 <span className={classNames('heading-text font-semibold')}>
-                    {startDate
-                        ? dayjs(recentAbsenceDate)
-                              .utcOffset(0)
-                              .utc()
-                              .format('hh:mm:ss A')
-                        : '-'}
+                    {recentAbsenceDate ? recentAbsenceDate : '-'}
                 </span>
             </Td>
 
@@ -113,7 +108,7 @@ const TaskItem = (props: TaskItemProps) => {
                 )}
             >
                 <span className="heading-text font-semibold">
-                    {dueDate ? dayjs(dueDate).format('MMMM DD') : '-'} 111
+                    {dueDate ? dayjs(dueDate).format('MMMM DD, YYYY') : '-'}
                 </span>
             </Td>
         </Tr>

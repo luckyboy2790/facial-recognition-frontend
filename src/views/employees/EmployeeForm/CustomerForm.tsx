@@ -107,7 +107,7 @@ const validationSchema: ZodType<any> = z.object({
 })
 
 const CustomerForm = (props: CustomerFormProps) => {
-    const { onFormSubmit, defaultValues = {}, children, newCustomer } = props
+    const { onFormSubmit, defaultValues, children, newCustomer } = props
 
     const {
         handleSubmit,
@@ -155,6 +155,7 @@ const CustomerForm = (props: CustomerFormProps) => {
                             control={control}
                             errors={errors}
                             setValue={setValue}
+                            companyId={defaultValues?.company}
                         />
                     </div>
                 </div>
