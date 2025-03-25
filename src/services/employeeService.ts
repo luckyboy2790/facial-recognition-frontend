@@ -13,6 +13,18 @@ export async function apiGetDataOfDashboard<T>() {
     })
 }
 
+export async function apiGetDataOfPersonalDashboard<T>() {
+    const { token } = useToken()
+
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/dashboard/personal/get_data`,
+        method: 'get',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+}
+
 export async function apiGetCustomersList<T, U extends Record<string, unknown>>(
     params: U,
 ) {

@@ -1,5 +1,5 @@
 import Table from '@/components/ui/Table'
-import TaskItem from '@/components/view/EmployeeItem'
+import TaskItem from '@/components/view/PersonalDashboardTable'
 import { labelClass } from '../utils'
 import reoderArray from '@/utils/reoderArray'
 import reorderDragable from '@/utils/reorderDragable'
@@ -67,6 +67,48 @@ const EmployeeList = () => {
         updateGroups(data.quoteMap)
     }
 
+    const changeTimeFormat = (time: string): string => {
+        const currentDate = new Date()
+
+        const currentYear = currentDate.getFullYear()
+
+        const date = new Date(`${currentYear}-01-01T${time}`)
+
+        if (isNaN(date.getTime())) {
+            return 'Invalid Time'
+        }
+
+        let hours = date.getUTCHours()
+        let minutes = date.getUTCMinutes()
+
+        const period = hours >= 12 ? 'PM' : 'AM'
+
+        hours = hours % 12
+        hours = hours ? hours : 12
+
+        const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`
+
+        return `${hours}:${minutesString} ${period}`
+    }
+
+    const changeDateFormat = (fromDate: string, toDate: string) => {
+        const from = new Date(fromDate)
+        const to = new Date(toDate)
+
+        const fromMonthDay = from.toLocaleDateString('en-US', {
+            month: 'short',
+            day: '2-digit',
+        })
+        const toMonthDay = to.toLocaleDateString('en-US', {
+            month: 'short',
+            day: '2-digit',
+        })
+
+        const year = from.getFullYear()
+
+        return `${fromMonthDay} - ${toMonthDay}, ${year}`
+    }
+
     return (
         <>
             <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
@@ -122,11 +164,11 @@ const EmployeeList = () => {
                                                                     ) => (
                                                                         <Draggable
                                                                             key={
-                                                                                item.id +
+                                                                                item._id +
                                                                                 index
                                                                             }
                                                                             draggableId={
-                                                                                item.id +
+                                                                                item._id +
                                                                                 index
                                                                             }
                                                                             index={
@@ -144,28 +186,32 @@ const EmployeeList = () => {
                                                                                         key
                                                                                     }
                                                                                     taskId={
-                                                                                        item.id
+                                                                                        item._id
                                                                                     }
                                                                                     checked={
                                                                                         item.checked
                                                                                     }
                                                                                     name={
-                                                                                        item.name
+                                                                                        item.full_name
+                                                                                            ? item.full_name
+                                                                                            : item
+                                                                                                  .employeeData
+                                                                                                  ?.full_name
                                                                                     }
-                                                                                    itemType={
-                                                                                        item.itemType
-                                                                                    }
+                                                                                    time={`${changeTimeFormat(item.start_time)} - ${changeTimeFormat(item.off_time)}`}
                                                                                     dueDate={
-                                                                                        item.dueDate as number
+                                                                                        item.leaveReturn
                                                                                     }
                                                                                     position={
-                                                                                        item.position
+                                                                                        item
+                                                                                            .job_title
+                                                                                            ?.job_title
                                                                                     }
                                                                                     startDate={
-                                                                                        item.startDate as number
+                                                                                        item?.date
                                                                                     }
                                                                                     recentAbsenceDate={
-                                                                                        item.recentAbsenceDate as number
+                                                                                        item.time
                                                                                     }
                                                                                     dragger={
                                                                                         <span
@@ -173,6 +219,13 @@ const EmployeeList = () => {
                                                                                         >
                                                                                             <MdDragIndicator />
                                                                                         </span>
+                                                                                    }
+                                                                                    scheduleDate={changeDateFormat(
+                                                                                        item.from,
+                                                                                        item.to,
+                                                                                    )}
+                                                                                    description={
+                                                                                        item.reason
                                                                                     }
                                                                                     {...provided.draggableProps}
                                                                                 />
