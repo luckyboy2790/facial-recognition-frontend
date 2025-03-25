@@ -14,8 +14,6 @@ const { TBody } = Table
 const EmployeeList = () => {
     const { updateOrdered, updateGroups, ordered, groups } = useTasksStore()
 
-    console.log(ordered, groups)
-
     const onDragEnd = (result: DropResult) => {
         if (result.combine) {
             if (result.type === 'COLUMN') {
