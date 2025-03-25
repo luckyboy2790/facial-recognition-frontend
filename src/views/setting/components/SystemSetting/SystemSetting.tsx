@@ -58,7 +58,7 @@ const SystemSetting = () => {
             console.log(JSON.stringify(formData))
 
             const response = await fetch(
-                `${domain}/api/setting/set_setting/${settingId}`,
+                `${domain}/api/setting/set_setting/${settingId ? settingId : undefined}`,
                 {
                     method: 'POST',
                     headers: {
