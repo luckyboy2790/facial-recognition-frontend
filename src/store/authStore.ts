@@ -40,6 +40,7 @@ const initialState: AuthState = {
         full_name: '',
         email: '',
         _id: '',
+        role: {},
     },
 }
 

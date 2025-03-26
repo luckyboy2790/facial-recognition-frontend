@@ -10,6 +10,7 @@ export type SignInResponse = {
         email: string
         full_name: string
         img: string
+        role: Record<string, any>
     }
 }
 
@@ -44,6 +45,7 @@ export type User = {
     authority?: string[]
     account_type?: string
     company?: string
+    role: Record<string, any>
 }
 
 export type Token = {

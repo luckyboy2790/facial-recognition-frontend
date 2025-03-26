@@ -72,7 +72,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const handleSignOut = () => {
         setToken('')
-        setUser({})
+        setUser({ role: {} })
         setSessionSignedIn(false)
     }
 
