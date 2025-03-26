@@ -314,23 +314,7 @@ class VideoInput extends Component<
                                     width: detection.box.width,
                                     transform: `translate(${detection.box._x}px,${detection.box._y}px)`,
                                 }}
-                            >
-                                {match?.[i] && (
-                                    <p
-                                        style={{
-                                            backgroundColor: 'blue',
-                                            border: 'solid',
-                                            borderColor: 'blue',
-                                            width: detection.box.width,
-                                            marginTop: 0,
-                                            color: '#fff',
-                                            transform: `translate(-3px,${detection.box.height}px)`,
-                                        }}
-                                    >
-                                        {match[i]._label}
-                                    </p>
-                                )}
-                            </div>
+                            ></div>
                         ))}
                     </div>
                 </div>
