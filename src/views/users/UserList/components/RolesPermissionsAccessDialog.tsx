@@ -56,11 +56,13 @@ const RolesPermissionsAccessDialogComponent = ({
     const handleClose = () => {
         setRoleName('')
 
-        setSelectedStatus('Active')
+        setSelectedStatus(null)
 
         setAccessRight({})
 
         setSelectedRole('')
+
+        setCompanyName(null)
 
         setRoleDialog({
             type: '',
@@ -131,10 +133,30 @@ const RolesPermissionsAccessDialogComponent = ({
     }
 
     const handleChange = (accessRightValues: string[], moduleId: string) => {
-        setAccessRight((prev) => ({
-            ...prev,
-            [moduleId]: accessRightValues,
-        }))
+        if (accessRightValues.includes('read')) {
+            setAccessRight((prev) => ({
+                ...prev,
+                [moduleId]: accessRightValues,
+            }))
+        } else {
+            const filteredPermissions = accessRightValues.filter(
+                (permission) => permission !== 'read',
+            )
+            setAccessRight((prev) => ({
+                ...prev,
+                [moduleId]: filteredPermissions,
+            }))
+        }
+
+        if (
+            accessRightValues.length > 0 &&
+            !accessRightValues.includes('read')
+        ) {
+            setAccessRight((prev) => ({
+                ...prev,
+                [moduleId]: ['read', ...accessRightValues],
+            }))
+        }
     }
 
     const getCheckboxState = (moduleId: string) => {
@@ -197,9 +219,12 @@ const RolesPermissionsAccessDialogComponent = ({
                             <Select
                                 placeholder="Select company"
                                 options={companyOptions}
-                                value={companyOptions.find(
-                                    (option) => option.value === companyName,
-                                )}
+                                value={
+                                    companyOptions.find(
+                                        (option) =>
+                                            option.value === companyName,
+                                    ) || null
+                                }
                                 onChange={(selectedOption) =>
                                     setCompanyName(
                                         selectedOption?.value || null,
@@ -214,9 +239,11 @@ const RolesPermissionsAccessDialogComponent = ({
                             className="mb-4"
                             placeholder="Select status"
                             options={statusOptions}
-                            value={statusOptions.find(
-                                (option) => option.value === selectedStatus,
-                            )}
+                            value={
+                                statusOptions.find(
+                                    (option) => option.value === selectedStatus,
+                                ) || null
+                            }
                             onChange={(selectedOption) =>
                                 setSelectedStatus(selectedOption?.value || null)
                             }

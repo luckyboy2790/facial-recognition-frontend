@@ -144,7 +144,7 @@ const Button = (props: ButtonProps) => {
     const defaultColor = () => {
         const btn = {
             bgColor: active
-                ? `bg-gray-100 border border-gray-300 dark:bg-gray-500 dark:border-gray-500`
+                ? `bg-gray-100 border border-gray-300 dark:bg-gray-500`
                 : `bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-700`,
             textColor: `text-gray-600 dark:text-gray-100`,
             hoverColor: active

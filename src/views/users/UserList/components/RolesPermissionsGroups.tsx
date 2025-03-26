@@ -1,6 +1,6 @@
 import Button from '@/components/ui/Button'
 import { useRolePermissionsStore } from '../store/rolePermissionsStore'
-import { IoClose } from 'react-icons/io5'
+import { FaRegTrashAlt } from 'react-icons/fa'
 import { TbArrowRight } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { ConfirmDialog } from '@/components/shared'
@@ -78,17 +78,20 @@ const RolesPermissionsGroups = ({
                     className="flex flex-col justify-between rounded-2xl p-5 bg-gray-100 dark:bg-gray-700 min-h-[140px]"
                 >
                     <div className="flex items-center justify-between">
-                        <h6 className="font-bold">
+                        <h6 className="font-bold cursor-default">
                             {role.name}
                             {user.account_type === 'SuperAdmin' &&
                                 ` (${role.companyData.company_name})`}
                         </h6>
-                        <IoClose
-                            className="font-bold cursor-pointer"
-                            onClick={() => {
-                                handleDelete(role._id)
-                            }}
-                        />
+                        <Button
+                            variant="plain"
+                            size="sm"
+                            icon={
+                                <FaRegTrashAlt className="font-bold cursor-pointer text-sm" />
+                            }
+                            iconAlignment="end"
+                            onClick={() => handleDelete(role._id)}
+                        ></Button>
                     </div>
                     <div className="flex items-center justify-between mt-4">
                         <Button
