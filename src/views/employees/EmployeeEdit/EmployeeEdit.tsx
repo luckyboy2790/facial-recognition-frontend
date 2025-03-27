@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import Notification from '@/components/ui/Notification'
 import toast from '@/components/ui/toast'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
-import { apiGetCustomer } from '@/services/employeeService'
+import { apiDeleteEmployees, apiGetCustomer } from '@/services/employeeService'
 import CustomerForm from '../EmployeeForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
@@ -14,6 +14,8 @@ import useSWR from 'swr'
 import type { CustomerFormSchema } from '../EmployeeForm'
 import type { Employee } from '../EmployeeList/types'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ProfileSectionProps = {
@@ -22,6 +24,8 @@ type ProfileSectionProps = {
 
 const CustomerEdit = () => {
     const { id } = useParams()
+
+    const { user } = useAuth()
 
     const navigate = useNavigate()
 
@@ -108,6 +112,9 @@ const CustomerEdit = () => {
                 </Notification>,
                 { placement: 'top-center' },
             )
+
+            await sleep(1000)
+
             window.location.href = '/employees'
         } catch (error: any) {
             console.error('❌ Error submitting form:', error)
@@ -116,13 +123,33 @@ const CustomerEdit = () => {
         setIsSubmiting(false)
     }
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setDeleteConfirmationOpen(true)
-        toast.push(
-            <Notification type="success">Customer deleted!</Notification>,
-            { placement: 'top-center' },
-        )
-        navigate('/concepts/customers/customer-list')
+
+        if (
+            permissionChecker(user, 'employee', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            try {
+                await apiDeleteEmployees({ id: id || '' })
+                setDeleteConfirmationOpen(false)
+                toast.push(
+                    <Notification type="success">
+                        Customer deleted!
+                    </Notification>,
+                    { placement: 'top-center' },
+                )
+                await sleep(1000)
+
+                window.location.href = '/employees'
+            } catch (error) {
+                console.error('Error deleting companies:', error)
+            }
+        }
     }
 
     const handleDelete = () => {

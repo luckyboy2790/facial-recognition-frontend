@@ -7,6 +7,9 @@ import { ConfirmDialog } from '@/components/shared'
 import { useState } from 'react'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { toast } from '@/components/ui'
+import Notification from '@/components/ui/Notification'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type RolesPermissionsGroupsProps = {
@@ -34,11 +37,23 @@ const RolesPermissionsGroups = ({
     }
 
     const handleEditRoleClick = (id: string) => {
-        setSelectedRole(id)
-        setRoleDialog({
-            type: 'edit',
-            open: true,
-        })
+        if (
+            permissionChecker(user, 'role', 'update') === false &&
+            user.account_type === 'Admin'
+        ) {
+            toast.push(
+                <Notification type="warning">
+                    You don't have permission to update user role.
+                </Notification>,
+                { placement: 'top-center' },
+            )
+        } else {
+            setSelectedRole(id)
+            setRoleDialog({
+                type: 'edit',
+                open: true,
+            })
+        }
     }
 
     console.log(roleList)
@@ -48,26 +63,44 @@ const RolesPermissionsGroups = ({
     }
 
     const handleConfirmDelete = async () => {
-        try {
-            const response = await fetch(
-                `${domain}/api/user/delete_role/${deleteRole}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                    },
-                },
+        if (
+            permissionChecker(user, 'role', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            toast.push(
+                <Notification type="warning">
+                    You don't have permission to delete user role.
+                </Notification>,
+                { placement: 'top-center' },
             )
 
-            if (!response.ok) {
-                throw new Error(`Failed to create role: ${response.statusText}`)
-            }
-
-            mutate()
-
             setDeleteConfirmationOpen(false)
-        } catch (error) {}
+        } else {
+            try {
+                const response = await fetch(
+                    `${domain}/api/user/delete_role/${deleteRole}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...(token
+                                ? { Authorization: `Bearer ${token}` }
+                                : {}),
+                        },
+                    },
+                )
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to create role: ${response.statusText}`,
+                    )
+                }
+
+                mutate()
+
+                setDeleteConfirmationOpen(false)
+            } catch (error) {}
+        }
     }
 
     return (

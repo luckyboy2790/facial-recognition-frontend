@@ -3,6 +3,9 @@ import { useUserListStore } from '../store/employeeListStore'
 import type { GetUsersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { apiDeleteUsers, apiGetUsersList } from '@/services/UserService'
+import { User } from '@/@types/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useNavigate } from 'react-router-dom'
 
 type UserData = {
     userIds: string[]
@@ -17,6 +20,8 @@ export default function useUserList() {
         setSelectAllUser,
     } = useUserListStore((state) => state)
 
+    const navigate = useNavigate()
+
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/users', { ...tableData }],
         ([_, params]) =>
@@ -26,12 +31,21 @@ export default function useUserList() {
         },
     )
 
-    const deleteUsers = async (userIds: string[]) => {
-        await apiDeleteUsers<string[], UserData>({
-            userIds,
-        })
-        mutate()
-        setSelectAllUser([])
+    const deleteUsers = async (userIds: string[], user: User) => {
+        if (
+            permissionChecker(user, 'user', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteUsers<string[], UserData>({
+                userIds,
+            })
+            mutate()
+            setSelectAllUser([])
+        }
     }
 
     const userList = data?.list || []

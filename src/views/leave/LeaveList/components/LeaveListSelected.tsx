@@ -10,15 +10,12 @@ import RichTextEditor from '@/components/shared/RichTextEditor'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useLeaveList'
 import { TbChecks } from 'react-icons/tb'
+import { useAuth } from '@/auth'
 
 const LeaveListSelected = () => {
-    const {
-        selectedLeave,
-        leaveList,
-        mutate,
-        leaveListTotal,
-        setSelectAllLeave,
-    } = useEmployeeList()
+    const { selectedLeave, leaveList, mutate, deleteLeave } = useEmployeeList()
+
+    const { user } = useAuth()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -30,19 +27,23 @@ const LeaveListSelected = () => {
         setDeleteConfirmationOpen(false)
     }
 
-    const handleConfirmDelete = () => {
-        const newLeaveList = leaveList.filter((leave) => {
-            return !selectedLeave.some((selected) => selected._id === leave._id)
-        })
-        setSelectAllLeave([])
-        mutate(
-            {
-                list: newLeaveList,
-                total: leaveListTotal - selectedLeave.length,
-            },
-            false,
-        )
-        setDeleteConfirmationOpen(false)
+    const handleConfirmDelete = async () => {
+        const leaveIds: string[] = leaveList
+            .map((leave) => leave._id)
+            .filter((id): id is string => id !== undefined)
+
+        if (leaveIds.length === 0) {
+            console.error('No valid employee IDs to delete')
+            return
+        }
+
+        try {
+            await deleteLeave(leaveIds, user)
+            setDeleteConfirmationOpen(false)
+            mutate()
+        } catch (error) {
+            console.error('Error deleting companies:', error)
+        }
     }
 
     return (

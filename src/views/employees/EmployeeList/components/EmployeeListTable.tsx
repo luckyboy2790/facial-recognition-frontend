@@ -11,6 +11,8 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Employee } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { apiArchiveEmployee } from '@/services/employeeService'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useAuth } from '@/auth'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusColor: Record<string, string> = {
@@ -83,6 +85,8 @@ const ActionColumn = ({
 const CustomerListTable = () => {
     const navigate = useNavigate()
 
+    const { user } = useAuth()
+
     const {
         customerList,
         customerListTotal,
@@ -104,17 +108,25 @@ const CustomerListTable = () => {
     }
 
     const handleArchiveEmployee = async (employeeId: string) => {
-        try {
-            console.log(employeeId)
-            const employee: ArchiveResponse = await apiArchiveEmployee({
-                employeeId,
-            })
+        if (
+            permissionChecker(user, 'employee', 'archive') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-            if (employee.employee) {
-                mutate()
+            return
+        } else {
+            try {
+                const employee: ArchiveResponse = await apiArchiveEmployee({
+                    employeeId,
+                })
+
+                if (employee.employee) {
+                    mutate()
+                }
+            } catch (error) {
+                console.error('Error archiving employee:', error)
             }
-        } catch (error) {
-            console.error('Error archiving employee:', error)
         }
     }
 

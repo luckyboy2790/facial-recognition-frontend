@@ -8,6 +8,9 @@ import {
     apiDeleteLeaveGroups,
     apiLeaveGroupsList,
 } from '@/services/leaveGroupService'
+import { User } from '@/@types/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useNavigate } from 'react-router-dom'
 
 type LeaveTypeData = {
     leaveTypeIds: string[]
@@ -21,6 +24,8 @@ export default function useLeaveTypeList() {
         setSelectedLeaveGroup,
         setSelectAllLeaveGroup,
     } = useLeaveGroupListStore((state) => state)
+
+    const navigate = useNavigate()
 
     const {
         data: leaveTypes,
@@ -51,12 +56,21 @@ export default function useLeaveTypeList() {
         },
     )
 
-    const deleteLeaveGroups = async (leaveTypeIds: string[]) => {
-        await apiDeleteLeaveGroups<string[], LeaveTypeData>({
-            leaveTypeIds,
-        })
-        mutateLeaveGroup()
-        setSelectAllLeaveGroup([])
+    const deleteLeaveGroups = async (leaveTypeIds: string[], user: User) => {
+        if (
+            permissionChecker(user, 'leaveGroup', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteLeaveGroups<string[], LeaveTypeData>({
+                leaveTypeIds,
+            })
+            mutateLeaveGroup()
+            setSelectAllLeaveGroup([])
+        }
     }
 
     const leaveGroupsList = leaveGroupData?.list || []

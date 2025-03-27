@@ -8,7 +8,7 @@ import AttendanceForm from '../AttendanceForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { Attendance } from '../AttendanceList/types'
 import {
@@ -17,6 +17,8 @@ import {
 } from '@/services/AttendanceService'
 import { AttendanceFormSchema } from '../AttendanceForm/types'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type AttendanceDetailResponse = {
@@ -30,6 +32,10 @@ type AttendanceData = {
 
 const AttendanceEdit = () => {
     const { id } = useParams()
+
+    const { user } = useAuth()
+
+    const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
         [`/api/attendances${id}`, { id: id as string }],
@@ -137,18 +143,27 @@ const AttendanceEdit = () => {
 
         const attendanceIds: string[] = [id!]
 
-        await apiDeleteAttendances<string[], AttendanceData>({
-            attendanceIds,
-        })
+        if (
+            permissionChecker(user, 'attendance', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-        toast.push(
-            <Notification type="success">Schedule deleted!</Notification>,
-            { placement: 'top-center' },
-        )
+            return
+        } else {
+            await apiDeleteAttendances<string[], AttendanceData>({
+                attendanceIds,
+            })
 
-        await sleep(1000)
+            toast.push(
+                <Notification type="success">Schedule deleted!</Notification>,
+                { placement: 'top-center' },
+            )
 
-        window.location.href = '/attendance'
+            await sleep(1000)
+
+            window.location.href = '/attendance'
+        }
     }
 
     const handleDelete = () => {

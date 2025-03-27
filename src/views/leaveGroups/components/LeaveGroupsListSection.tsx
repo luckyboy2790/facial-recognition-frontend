@@ -9,13 +9,24 @@ import type {
     LeaveGroupCreateResponse,
 } from '../types'
 import type { TableQueries } from '@/@types/common'
-import { Button, Dialog, Input, Select, Tag, Tooltip } from '@/components/ui'
+import {
+    Button,
+    Dialog,
+    Input,
+    Notification,
+    Select,
+    Tag,
+    toast,
+    Tooltip,
+} from '@/components/ui'
 import { TbPencil } from 'react-icons/tb'
 import {
     apiLeaveGroupsList,
     apiUpdateLeaveGroup,
 } from '@/services/leaveGroupService'
 import useSWR from 'swr'
+import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
 
 type LeaveGroupData = {
     _id: string
@@ -66,6 +77,8 @@ const CompanyListTable = () => {
     const [leaveTypes, setLeaveTypes] = useState<string[]>([])
     const [groupId, setGroupId] = useState<string>('')
 
+    const { user } = useAuth()
+
     const leaveGroupOptions = leaveTypesList.map((item) => ({
         value: item._id,
         label: item.leave_name,
@@ -91,26 +104,38 @@ const CompanyListTable = () => {
     const [dialogIsOpen, setIsOpen] = useState(false)
 
     const openDialog = async (leaveGroup: LeaveGroup) => {
-        const leaveGroups = await getLeaveGroup()
+        if (
+            permissionChecker(user, 'leaveGroup', 'update') === false &&
+            user.account_type === 'Admin'
+        ) {
+            toast.push(
+                <Notification type="warning">
+                    You don't have permission to update leave group.
+                </Notification>,
+                { placement: 'top-center' },
+            )
+        } else {
+            const leaveGroups = await getLeaveGroup()
 
-        const editData: any = leaveGroups.list.find(
-            (item) => item._id === leaveGroup._id,
-        )
+            const editData: any = leaveGroups.list.find(
+                (item) => item._id === leaveGroup._id,
+            )
 
-        if (!editData) return
+            if (!editData) return
 
-        setGroupId(leaveGroup._id)
-        setLeaveGroupName(editData.group_name || '')
-        setGroupStatus(editData.status || '')
-        setDescription(editData.description || '')
+            setGroupId(leaveGroup._id)
+            setLeaveGroupName(editData.group_name || '')
+            setGroupStatus(editData.status || '')
+            setDescription(editData.description || '')
 
-        setLeaveTypes(
-            Array.isArray(editData.leaveprivileges)
-                ? editData.leaveprivileges
-                : [],
-        )
+            setLeaveTypes(
+                Array.isArray(editData.leaveprivileges)
+                    ? editData.leaveprivileges
+                    : [],
+            )
 
-        setIsOpen(true)
+            setIsOpen(true)
+        }
     }
 
     const updateLeaveGroup = async () => {

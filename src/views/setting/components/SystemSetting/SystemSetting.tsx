@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { System } from '../../type'
 import { useNavigate } from 'react-router-dom'
 import { useToken } from '@/store/authStore'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useAuth } from '@/auth'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const SystemSetting = () => {
@@ -24,6 +26,8 @@ const SystemSetting = () => {
             ipRestriction: '',
         },
     })
+
+    const { user } = useAuth()
 
     const { handleSubmit, setValue } = methods
 
@@ -54,36 +58,47 @@ const SystemSetting = () => {
     }, [setValue])
 
     const onSubmit = async (formData: System) => {
-        try {
-            console.log(JSON.stringify(formData))
+        if (
+            permissionChecker(user, 'setting', 'update') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-            const response = await fetch(
-                `${domain}/api/setting/set_setting/${settingId ? settingId : undefined}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            return
+        } else {
+            try {
+                console.log(JSON.stringify(formData))
+
+                const response = await fetch(
+                    `${domain}/api/setting/set_setting/${settingId ? settingId : undefined}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...(token
+                                ? { Authorization: `Bearer ${token}` }
+                                : {}),
+                        },
+                        body: JSON.stringify(formData),
                     },
-                    body: JSON.stringify(formData),
-                },
-            )
+                )
 
-            if (!response.ok) {
-                throw new Error('Failed to save settings')
+                if (!response.ok) {
+                    throw new Error('Failed to save settings')
+                }
+
+                toast.push(
+                    <Notification type="success">
+                        Setting Saved Successfully
+                    </Notification>,
+                    {
+                        placement: 'top-center',
+                    },
+                )
+            } catch (error) {
+                console.error('Error saving settings:', error)
+                alert('Failed to save settings. Try again!')
             }
-
-            toast.push(
-                <Notification type="success">
-                    Setting Saved Successfully
-                </Notification>,
-                {
-                    placement: 'top-center',
-                },
-            )
-        } catch (error) {
-            console.error('Error saving settings:', error)
-            alert('Failed to save settings. Try again!')
         }
     }
 

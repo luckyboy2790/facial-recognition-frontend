@@ -1,6 +1,6 @@
 export const accessModules = [
     {
-        id: 'dahsboard',
+        id: 'dashboard',
         name: 'DASHBOARD',
         accessor: [
             {
@@ -39,6 +39,10 @@ export const accessModules = [
         id: 'attendance',
         name: 'ATTENDANCES',
         accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
             {
                 label: 'Read',
                 value: 'read',
@@ -154,24 +158,6 @@ export const accessModules = [
             {
                 label: 'Update',
                 value: 'update',
-            },
-            {
-                label: 'Delete',
-                value: 'delete',
-            },
-        ],
-    },
-    {
-        id: 'company',
-        name: 'COMPANIES',
-        accessor: [
-            {
-                label: 'Create',
-                value: 'create',
-            },
-            {
-                label: 'Read',
-                value: 'read',
             },
             {
                 label: 'Delete',

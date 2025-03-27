@@ -6,6 +6,9 @@ import {
     apiAttendanceList,
     apiDeleteAttendances,
 } from '@/services/AttendanceService'
+import { User } from '@/@types/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useNavigate } from 'react-router-dom'
 
 type AttendanceData = {
     attendanceIds: string[]
@@ -22,6 +25,8 @@ export default function useAttendanceList() {
         setFilterData,
     } = useAttendanceListStore((state) => state)
 
+    const navigate = useNavigate()
+
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/attendance', { ...tableData }],
         ([_, params]) =>
@@ -31,12 +36,21 @@ export default function useAttendanceList() {
         },
     )
 
-    const deleteAttendances = async (attendanceIds: string[]) => {
-        await apiDeleteAttendances<string[], AttendanceData>({
-            attendanceIds,
-        })
-        mutate()
-        setSelectAllAttendance([])
+    const deleteAttendances = async (attendanceIds: string[], user: User) => {
+        if (
+            permissionChecker(user, 'attendance', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteAttendances<string[], AttendanceData>({
+                attendanceIds,
+            })
+            mutate()
+            setSelectAllAttendance([])
+        }
     }
 
     const attendanceList = data?.list || []

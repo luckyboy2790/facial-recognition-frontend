@@ -12,11 +12,13 @@ import ScheduleForm from '../ScheduleForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { ScheduleFormSchema } from '../ScheduleForm'
 import type { Schedule } from '../ScheduleList/types'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ScheduleDetailResponse = {
@@ -30,6 +32,10 @@ type ScheduleData = {
 
 const ScheduleEdit = () => {
     const { id } = useParams()
+
+    const { user } = useAuth()
+
+    const navigate = useNavigate()
 
     const { data, isLoading } = useSWR(
         [`/api/schedule${id}`, { id: id as string }],
@@ -115,17 +121,26 @@ const ScheduleEdit = () => {
     const handleConfirmDelete = async () => {
         setDeleteConfirmationOpen(true)
 
-        const scheduleIds: string[] = [id!]
+        if (
+            permissionChecker(user, 'schedule', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-        await apiDeleteSchedules<string[], ScheduleData>({
-            scheduleIds,
-        })
+            return
+        } else {
+            const scheduleIds: string[] = [id!]
 
-        toast.push(
-            <Notification type="success">Schedule deleted!</Notification>,
-            { placement: 'top-center' },
-        )
-        window.location.href = '/schedule'
+            await apiDeleteSchedules<string[], ScheduleData>({
+                scheduleIds,
+            })
+
+            toast.push(
+                <Notification type="success">Schedule deleted!</Notification>,
+                { placement: 'top-center' },
+            )
+            window.location.href = '/schedule'
+        }
     }
 
     const handleDelete = () => {

@@ -92,6 +92,8 @@ const EmployeeCreate = () => {
                 </Notification>,
                 { placement: 'top-center' },
             )
+
+            await sleep(100)
             window.location.href = '/employees'
         } catch (error: any) {
             console.error('❌ Error submitting form:', error)
