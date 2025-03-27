@@ -32,6 +32,7 @@ interface State {
     faceMatcher: any
     match: Match[] | null
     facingMode: string | { exact: string } | null
+    cameraLabel: string | null
     requestSent: boolean
 }
 
@@ -63,14 +64,13 @@ class VideoInput extends Component<
             faceMatcher: null,
             match: null,
             facingMode: null,
+            cameraLabel: null,
             requestSent: false,
         }
     }
 
     async componentDidMount() {
         const data: FaceDescriptorData = await apiGetTotalEmployeeDescriptor()
-
-        console.log(data)
 
         if (Object.keys(data).length <= 0) {
             toast.push(
@@ -105,15 +105,38 @@ class VideoInput extends Component<
             const videoInputs = devices.filter(
                 (device) => device.kind === 'videoinput',
             )
-            this.setState(
-                {
-                    facingMode:
-                        videoInputs.length < 2
-                            ? 'user'
-                            : { exact: 'environment' },
-                },
-                this.startCapture,
-            )
+
+            let frontCamera = null
+            let rearCamera = null
+
+            for (const device of videoInputs) {
+                if (device.label.toLowerCase().includes('front')) {
+                    frontCamera = device
+                } else if (device.label.toLowerCase().includes('back')) {
+                    rearCamera = device
+                }
+            }
+
+            if (!frontCamera) {
+                frontCamera = videoInputs[0]
+            }
+
+            if (frontCamera) {
+                this.setState(
+                    { facingMode: 'user', cameraLabel: 'front' },
+                    this.startCapture,
+                )
+            } else if (rearCamera) {
+                this.setState(
+                    {
+                        facingMode: { exact: 'environment' },
+                        cameraLabel: 'back',
+                    },
+                    this.startCapture,
+                )
+            } else {
+                console.error('No camera devices available.')
+            }
         })
     }
 
@@ -192,8 +215,6 @@ class VideoInput extends Component<
                             fractionalSecondDigits: 3,
                         }).format(date) + 'Z'
 
-                    console.log(time_in)
-
                     attendanceId = attendanceData._id
                 }
             }
@@ -238,7 +259,6 @@ class VideoInput extends Component<
                 const responseData = await response.json()
 
                 if (response.ok) {
-                    console.log('Successfully sent matched user data')
                     this.props.onCloseDialog()
 
                     toast.push(
@@ -273,11 +293,13 @@ class VideoInput extends Component<
     }
 
     render() {
-        const { detections, match, facingMode } = this.state
+        const { detections, match, facingMode, cameraLabel } = this.state
         const videoConstraints = facingMode
             ? { width: WIDTH, height: HEIGHT, facingMode }
             : null
-        const camera = facingMode === 'user' ? 'Front' : 'Back'
+
+        const camera =
+            cameraLabel === 'front' ? 'Front' : cameraLabel === 'back' && 'Back'
 
         return (
             <div
