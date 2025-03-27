@@ -53,10 +53,10 @@ function AuthProvider({ children }: AuthProviderProps) {
         const redirectUrl = params.get(REDIRECT_URL_KEY)
 
         navigatorRef.current?.navigate(
-            redirectUrl
-                ? redirectUrl
-                : userInfo?.account_type === 'Employee'
-                  ? appConfig.personalAuthenticatedEntryPath
+            userInfo?.account_type === 'Employee'
+                ? appConfig.personalAuthenticatedEntryPath
+                : redirectUrl
+                  ? redirectUrl
                   : appConfig.authenticatedEntryPath,
         )
     }

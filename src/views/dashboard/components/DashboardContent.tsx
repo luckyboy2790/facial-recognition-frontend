@@ -22,9 +22,9 @@ const DashboardContent = () => {
             id: 1,
             tabTitle: 'employees',
             label1: 'Regular',
-            value1: 7,
+            value1: 0,
             label2: 'Trainee',
-            value2: 2,
+            value2: 0,
             icon: <FaRegUserCircle />,
         },
         {
@@ -33,7 +33,7 @@ const DashboardContent = () => {
             label1: 'Online',
             value1: 0,
             label2: 'Offline',
-            value2: 21,
+            value2: 0,
             icon: <FaRegClock />,
         },
         {
