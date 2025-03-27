@@ -44,7 +44,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
     const [roleOptions, setRoleOptions] = useState<optionType[]>([])
 
     const [selectedUserCompany, setSelectedUserCompany] =
-        useState<String | null>('')
+        useState<String | null>(control._formValues.employeeData.company_id)
 
     const { setValue } = useFormContext()
 

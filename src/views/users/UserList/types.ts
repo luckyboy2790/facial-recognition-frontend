@@ -1,4 +1,5 @@
 import { Company } from '@/views/companies/types'
+import { Employee } from '@/views/employees/EmployeeList/types'
 import type { KeyedMutator } from 'swr'
 
 export type GetUsersListResponse = {
@@ -18,6 +19,7 @@ export type User = {
     account_type: string
     role: string
     status: string
+    employeeData: Employee
 }
 
 export type Users = User[]

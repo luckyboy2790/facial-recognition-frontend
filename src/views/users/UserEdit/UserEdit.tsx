@@ -83,11 +83,15 @@ const CustomerEdit = () => {
     }
 
     const getDefaultValues = () => {
-        console.log(data)
-
         if (data) {
-            const { employee, email, account_type, status, role } =
-                data.userDetail
+            const {
+                employee,
+                email,
+                account_type,
+                status,
+                role,
+                employeeData,
+            } = data.userDetail
 
             return {
                 employee,
@@ -95,6 +99,7 @@ const CustomerEdit = () => {
                 account_type,
                 status,
                 role,
+                employeeData,
             }
         }
 
