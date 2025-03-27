@@ -68,8 +68,6 @@ const EmployeeDetailSection = ({
                     })),
                 )
 
-                console.log(user)
-
                 if (user.account_type === 'SuperAdmin') {
                     setDepartmentOptions(
                         data.department
@@ -126,12 +124,6 @@ const EmployeeDetailSection = ({
 
         fetchData()
     }, [company])
-
-    useEffect(() => {
-        if (user.account_type === 'Admin') {
-            setValue('company', user.company)
-        }
-    }, [])
 
     const employmentTypeOption = [
         { label: 'Regular', value: 'Regular' },
@@ -192,9 +184,17 @@ const EmployeeDetailSection = ({
                                 value={departmentOptions.find(
                                     (option) => option.value === field.value,
                                 )}
-                                onChange={(option) =>
+                                onChange={(option) => {
                                     field.onChange(option?.value)
-                                }
+                                    if (
+                                        user.account_type === 'Admin' &&
+                                        user.company
+                                    ) {
+                                        setValue('company', user.company, {
+                                            shouldValidate: true,
+                                        })
+                                    }
+                                }}
                             />
                         )}
                     />
@@ -216,9 +216,17 @@ const EmployeeDetailSection = ({
                                 value={jobTitleOptions.find(
                                     (option) => option.value === field.value,
                                 )}
-                                onChange={(option) =>
+                                onChange={(option) => {
                                     field.onChange(option?.value)
-                                }
+                                    if (
+                                        user.account_type === 'Admin' &&
+                                        user.company
+                                    ) {
+                                        setValue('company', user.company, {
+                                            shouldValidate: true,
+                                        })
+                                    }
+                                }}
                             />
                         )}
                     />
@@ -277,9 +285,17 @@ const EmployeeDetailSection = ({
                                 value={leaveGroupOptions.find(
                                     (option) => option.value === field.value,
                                 )}
-                                onChange={(option) =>
+                                onChange={(option) => {
                                     field.onChange(option?.value)
-                                }
+                                    if (
+                                        user.account_type === 'Admin' &&
+                                        user.company
+                                    ) {
+                                        setValue('company', user.company, {
+                                            shouldValidate: true,
+                                        })
+                                    }
+                                }}
                             />
                         )}
                     />
@@ -304,9 +320,17 @@ const EmployeeDetailSection = ({
                                 value={employmentTypeOption.find(
                                     (option) => option.value === field.value,
                                 )}
-                                onChange={(option) =>
+                                onChange={(option) => {
                                     field.onChange(option?.value)
-                                }
+                                    if (
+                                        user.account_type === 'Admin' &&
+                                        user.company
+                                    ) {
+                                        setValue('company', user.company, {
+                                            shouldValidate: true,
+                                        })
+                                    }
+                                }}
                             />
                         )}
                     />
@@ -328,9 +352,17 @@ const EmployeeDetailSection = ({
                                 value={employmentStatusOption.find(
                                     (option) => option.value === field.value,
                                 )}
-                                onChange={(option) =>
+                                onChange={(option) => {
                                     field.onChange(option?.value)
-                                }
+                                    if (
+                                        user.account_type === 'Admin' &&
+                                        user.company
+                                    ) {
+                                        setValue('company', user.company, {
+                                            shouldValidate: true,
+                                        })
+                                    }
+                                }}
                             />
                         )}
                     />

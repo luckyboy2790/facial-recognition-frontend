@@ -4,10 +4,13 @@ import Button from '@/components/ui/Button'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useDepartmentList from '../hooks/useDepartmentsList'
 import { TbChecks } from 'react-icons/tb'
+import { useAuth } from '@/auth'
 
 const DepartmentListSelected = () => {
     const { selectedDepartment, mutate, deleteDepartments } =
         useDepartmentList()
+
+    const { user } = useAuth()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -22,7 +25,7 @@ const DepartmentListSelected = () => {
     const handleConfirmDelete = async () => {
         const departmentIds: string[] = selectedDepartment
             .map((department) => department._id)
-            .filter((id): id is string => id !== undefined) // Ensure `_id` exists
+            .filter((id): id is string => id !== undefined)
 
         if (departmentIds.length === 0) {
             console.error('No valid department IDs to delete')
@@ -30,7 +33,7 @@ const DepartmentListSelected = () => {
         }
 
         try {
-            await deleteDepartments(departmentIds)
+            await deleteDepartments(departmentIds, user)
             setDeleteConfirmationOpen(false)
             mutate()
         } catch (error) {

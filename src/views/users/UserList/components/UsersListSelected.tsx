@@ -4,11 +4,14 @@ import Button from '@/components/ui/Button'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useEmployeeList'
 import { TbChecks } from 'react-icons/tb'
+import { useAuth } from '@/auth'
 
 const UserListSelected = () => {
     const { selectedUser, mutate, deleteUsers } = useEmployeeList()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
+
+    const { user } = useAuth()
 
     const handleDelete = () => {
         setDeleteConfirmationOpen(true)
@@ -29,7 +32,7 @@ const UserListSelected = () => {
         }
 
         try {
-            await deleteUsers(userIds)
+            await deleteUsers(userIds, user)
             setDeleteConfirmationOpen(false)
             mutate()
         } catch (error) {

@@ -61,7 +61,7 @@ const EmployeeCreate = () => {
             <Notification type="success">Attendance discardd!</Notification>,
             { placement: 'top-center' },
         )
-        navigate('/schedule')
+        navigate('/attendance')
     }
 
     const handleDiscard = () => {

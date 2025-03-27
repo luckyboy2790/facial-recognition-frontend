@@ -6,6 +6,9 @@ import useSWR from 'swr'
 import { useLeaveTypeListStore } from '../store/leaveTypesListStore'
 import type { GetLeaveTypesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { User } from '@/@types/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useNavigate } from 'react-router-dom'
 
 type LeaveTypeData = {
     leaveTypeIds: string[]
@@ -20,6 +23,8 @@ export default function useLeaveTypeList() {
         setSelectAllLeaveType,
     } = useLeaveTypeListStore((state) => state)
 
+    const navigate = useNavigate()
+
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/leaveTypes', { ...tableData }],
         ([_, params]) =>
@@ -29,12 +34,21 @@ export default function useLeaveTypeList() {
         },
     )
 
-    const deleteLeaveTypes = async (leaveTypeIds: string[]) => {
-        await apiDeleteLeaveTypes<string[], LeaveTypeData>({
-            leaveTypeIds,
-        })
-        mutate()
-        setSelectAllLeaveType([])
+    const deleteLeaveTypes = async (leaveTypeIds: string[], user: User) => {
+        if (
+            permissionChecker(user, 'leaveType', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteLeaveTypes<string[], LeaveTypeData>({
+                leaveTypeIds,
+            })
+            mutate()
+            setSelectAllLeaveType([])
+        }
     }
 
     const leaveTypeList = data?.list || []

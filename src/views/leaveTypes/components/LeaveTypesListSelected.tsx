@@ -4,9 +4,12 @@ import Button from '@/components/ui/Button'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useLeaveTypesList'
 import { TbChecks } from 'react-icons/tb'
+import { useAuth } from '@/auth'
 
 const CompanyListSelected = () => {
     const { selectedLeaveType, mutate, deleteLeaveTypes } = useEmployeeList()
+
+    const { user } = useAuth()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -29,7 +32,7 @@ const CompanyListSelected = () => {
         }
 
         try {
-            await deleteLeaveTypes(leaveTypeIds)
+            await deleteLeaveTypes(leaveTypeIds, user)
             setDeleteConfirmationOpen(false)
             mutate()
         } catch (error) {

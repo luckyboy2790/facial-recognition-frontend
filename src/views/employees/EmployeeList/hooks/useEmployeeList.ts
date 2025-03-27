@@ -6,6 +6,9 @@ import useSWR from 'swr'
 import { useCustomerListStore } from '../store/employeeListStore'
 import type { GetCustomersListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useNavigate } from 'react-router-dom'
+import { User } from '@/@types/auth'
 
 type LeaveTypeData = {
     employeeIds: string[]
@@ -20,6 +23,8 @@ export default function useCustomerList() {
         setSelectAllCustomer,
     } = useCustomerListStore((state) => state)
 
+    const navigate = useNavigate()
+
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/employee', { ...tableData }],
         ([_, params]) =>
@@ -29,12 +34,21 @@ export default function useCustomerList() {
         },
     )
 
-    const deleteEmployees = async (employeeIds: string[]) => {
-        await apiDeleteEmployees<string[], LeaveTypeData>({
-            employeeIds,
-        })
-        mutate()
-        setSelectAllCustomer([])
+    const deleteEmployees = async (employeeIds: string[], user: User) => {
+        if (
+            permissionChecker(user, 'employee', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteEmployees<string[], LeaveTypeData>({
+                employeeIds,
+            })
+            mutate()
+            setSelectAllCustomer([])
+        }
     }
 
     const customerList = data?.list || []

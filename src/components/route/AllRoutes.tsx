@@ -48,23 +48,42 @@ const AllRoutes = (props: AllRoutesProps) => {
                     path="/"
                     element={<Navigate replace to={authenticatedEntryPath} />}
                 />
-                {accessibleProtectedRoutes.map((route, index) => (
-                    <Route
-                        key={route.key + index}
-                        path={route.path}
-                        element={
-                            <AuthorityGuard authority={route.authority}>
-                                <PageContainer {...props} {...route.meta}>
-                                    <AppRoute
-                                        routeKey={route.key}
-                                        component={route.component}
-                                        {...route.meta}
-                                    />
-                                </PageContainer>
-                            </AuthorityGuard>
-                        }
-                    />
-                ))}
+                {accessibleProtectedRoutes.map((route, index) => {
+                    return (
+                        <Route
+                            key={route.key + index}
+                            path={route.path}
+                            element={
+                                userAccountType === 'Admin' ? (
+                                    <AuthorityGuard
+                                        routeAuthority={
+                                            route.routeAuthority || []
+                                        }
+                                    >
+                                        <PageContainer
+                                            {...props}
+                                            {...route.meta}
+                                        >
+                                            <AppRoute
+                                                routeKey={route.key}
+                                                component={route.component}
+                                                {...route.meta}
+                                            />
+                                        </PageContainer>
+                                    </AuthorityGuard>
+                                ) : (
+                                    <PageContainer {...props} {...route.meta}>
+                                        <AppRoute
+                                            routeKey={route.key}
+                                            component={route.component}
+                                            {...route.meta}
+                                        />
+                                    </PageContainer>
+                                )
+                            }
+                        />
+                    )
+                })}
                 <Route
                     path="*"
                     element={<Navigate replace to="/access-denied" />}
@@ -74,7 +93,7 @@ const AllRoutes = (props: AllRoutesProps) => {
             <Route path="/" element={<PublicRoute />}>
                 {publicRoutes.map((route) => (
                     <Route
-                        key={route.path}
+                        key={route.key}
                         path={route.path}
                         element={
                             <AppRoute

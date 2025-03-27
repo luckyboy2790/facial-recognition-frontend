@@ -14,6 +14,8 @@ import type { CustomerFormSchema } from '../UserForm'
 import type { User } from '../UserList/types'
 import { apiDeleteUsers, apiGetUserDetail } from '@/services/UserService'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type UserDetailType = {
@@ -43,6 +45,8 @@ const CustomerEdit = () => {
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
+
+    const { user } = useAuth()
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
         console.log('Submitted values', values)
@@ -108,21 +112,33 @@ const CustomerEdit = () => {
             )
             return
         }
-        const userIds: string[] = [id]
 
-        try {
-            await apiDeleteUsers<string[], UserData>({ userIds })
-            setDeleteConfirmationOpen(false)
+        if (
+            permissionChecker(user, 'user', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-            toast.push(
-                <Notification type="success">Customer deleted!</Notification>,
-                { placement: 'top-center' },
-            )
+            return
+        } else {
+            const userIds: string[] = [id]
 
-            await sleep(800)
-            window.location.href = '/users'
-        } catch (error) {
-            console.error('Error deleting companies:', error)
+            try {
+                await apiDeleteUsers<string[], UserData>({ userIds })
+                setDeleteConfirmationOpen(false)
+
+                toast.push(
+                    <Notification type="success">
+                        Customer deleted!
+                    </Notification>,
+                    { placement: 'top-center' },
+                )
+
+                await sleep(800)
+                window.location.href = '/users'
+            } catch (error) {
+                console.error('Error deleting companies:', error)
+            }
         }
     }
 

@@ -10,6 +10,8 @@ import { HiPencil, HiOutlineTrash } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import { Employee } from '../EmployeeList/types'
 import { apiDeleteEmployees } from '@/services/employeeService'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useAuth } from '@/auth'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type CustomerInfoFieldProps = {
@@ -45,7 +47,7 @@ const CustomerInfoField = ({ title, value }: CustomerInfoFieldProps) => {
 }
 
 const ProfileSection = ({ data }: ProfileSectionProps) => {
-    console.log(data)
+    const { user } = useAuth()
 
     const navigate = useNavigate()
 
@@ -64,16 +66,25 @@ const ProfileSection = ({ data }: ProfileSectionProps) => {
 
         const employeeIds: string[] = [data._id]
 
-        await apiDeleteEmployees<string[], LeaveTypeData>({
-            employeeIds,
-        })
+        if (
+            permissionChecker(user, 'employee', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-        navigate('/employees')
-        toast.push(
-            <Notification title={'Successfully Deleted'} type="success">
-                Customer successfuly deleted
-            </Notification>,
-        )
+            return
+        } else {
+            await apiDeleteEmployees<string[], LeaveTypeData>({
+                employeeIds,
+            })
+
+            navigate('/employees')
+            toast.push(
+                <Notification title={'Successfully Deleted'} type="success">
+                    Customer successfuly deleted
+                </Notification>,
+            )
+        }
     }
 
     const handleEdit = () => {

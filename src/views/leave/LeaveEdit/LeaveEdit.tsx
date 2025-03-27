@@ -8,7 +8,7 @@ import LeaveForm from '../LeaveForm'
 import sleep from '@/utils/sleep'
 import NoUserFound from '@/assets/svg/NoUserFound'
 import { TbTrash, TbArrowNarrowLeft } from 'react-icons/tb'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import type { Leave } from '../LeaveList/types'
 import {
@@ -17,6 +17,8 @@ import {
 } from '@/services/LeaveService'
 import { LeaveFormSchema } from '../LeaveForm/types'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type LeaveDetailResponse = {
@@ -43,6 +45,10 @@ const LeaveEdit = () => {
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
+
+    const { user } = useAuth()
+
+    const navigate = useNavigate()
 
     const { token } = useToken()
 
@@ -107,20 +113,29 @@ const LeaveEdit = () => {
     const handleConfirmDelete = async () => {
         setDeleteConfirmationOpen(true)
 
-        const leaveIds: string[] = [id!]
+        if (
+            permissionChecker(user, 'leave', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
 
-        await apiDeleteLeaves<string[], LeaveData>({
-            leaveIds,
-        })
+            return
+        } else {
+            const leaveIds: string[] = [id!]
 
-        toast.push(
-            <Notification type="success">Schedule deleted!</Notification>,
-            { placement: 'top-center' },
-        )
+            await apiDeleteLeaves<string[], LeaveData>({
+                leaveIds,
+            })
 
-        await sleep(1000)
+            toast.push(
+                <Notification type="success">Schedule deleted!</Notification>,
+                { placement: 'top-center' },
+            )
 
-        window.location.href = '/leave-list'
+            await sleep(1000)
+
+            window.location.href = '/leave-list'
+        }
     }
 
     const handleDelete = () => {
