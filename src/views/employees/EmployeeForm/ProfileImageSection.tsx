@@ -23,8 +23,9 @@ const ProfileImage = ({
 }: ProfileImageSectionProps) => {
     const [faceDescriptor, setFaceDescriptor] = useState<number[] | null>(null)
     const [modelsLoaded, setModelsLoaded] = useState(false)
-
     const [isUpdateImage, setIsUpdateImage] = useState(false)
+
+    const [currentImageURL, setCurrentImageURL] = useState<string | null>(null)
 
     useEffect(() => {
         if (!newCustomer && control._formValues.faceDescriptor) {
@@ -35,6 +36,7 @@ const ProfileImage = ({
             setFaceDescriptor(faceDescriptorData)
             setValue('faceDescriptor', faceDescriptorData)
             setValue('img', control._formValues.img)
+            setCurrentImageURL(control._formValues.img)
         }
     }, [newCustomer, control._formValues.faceDescriptor])
 
@@ -78,6 +80,7 @@ const ProfileImage = ({
         }
 
         const imgURL = URL.createObjectURL(file)
+        setCurrentImageURL(imgURL)
         onChange(imgURL)
         setIsUpdateImage(true)
 
@@ -119,17 +122,15 @@ const ProfileImage = ({
                         render={({ field }) => (
                             <>
                                 <div className="flex items-center justify-center">
-                                    {field.value ? (
+                                    {currentImageURL ? (
                                         <Avatar
                                             size={100}
                                             className="border-4 border-white bg-gray-100 text-gray-300 shadow-lg"
                                             icon={<HiOutlineUser />}
                                             src={
-                                                field.value
-                                                    ? isUpdateImage
-                                                        ? field.value
-                                                        : `${domain}${field.value}`
-                                                    : ''
+                                                isUpdateImage
+                                                    ? currentImageURL
+                                                    : `${domain}${field.value}`
                                             }
                                         />
                                     ) : (
@@ -158,14 +159,14 @@ const ProfileImage = ({
                                         className="mt-4"
                                         type="button"
                                         disabled={!modelsLoaded}
-                                        onClick={() => setIsUpdateImage(true)}
                                     >
                                         {modelsLoaded
                                             ? 'Upload Image'
                                             : 'Loading Models...'}
                                     </Button>
                                 </Upload>
-                                {faceDescriptor && newCustomer && (
+                                {((faceDescriptor && newCustomer) ||
+                                    isUpdateImage) && (
                                     <p className="mt-2 text-sm text-green-600">
                                         Image uploaded successfully.
                                     </p>
