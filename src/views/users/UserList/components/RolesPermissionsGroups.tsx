@@ -1,12 +1,15 @@
 import Button from '@/components/ui/Button'
 import { useRolePermissionsStore } from '../store/rolePermissionsStore'
-import { IoClose } from 'react-icons/io5'
+import { FaRegTrashAlt } from 'react-icons/fa'
 import { TbArrowRight } from 'react-icons/tb'
 import type { MutateRolesPermissionsRolesResponse, Roles } from '../types'
 import { ConfirmDialog } from '@/components/shared'
 import { useState } from 'react'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { toast } from '@/components/ui'
+import Notification from '@/components/ui/Notification'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type RolesPermissionsGroupsProps = {
@@ -34,11 +37,23 @@ const RolesPermissionsGroups = ({
     }
 
     const handleEditRoleClick = (id: string) => {
-        setSelectedRole(id)
-        setRoleDialog({
-            type: 'edit',
-            open: true,
-        })
+        if (
+            permissionChecker(user, 'role', 'update') === false &&
+            user.account_type === 'Admin'
+        ) {
+            toast.push(
+                <Notification type="warning">
+                    You don't have permission to update user role.
+                </Notification>,
+                { placement: 'top-center' },
+            )
+        } else {
+            setSelectedRole(id)
+            setRoleDialog({
+                type: 'edit',
+                open: true,
+            })
+        }
     }
 
     console.log(roleList)
@@ -48,26 +63,44 @@ const RolesPermissionsGroups = ({
     }
 
     const handleConfirmDelete = async () => {
-        try {
-            const response = await fetch(
-                `${domain}/api/user/delete_role/${deleteRole}`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                    },
-                },
+        if (
+            permissionChecker(user, 'role', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            toast.push(
+                <Notification type="warning">
+                    You don't have permission to delete user role.
+                </Notification>,
+                { placement: 'top-center' },
             )
 
-            if (!response.ok) {
-                throw new Error(`Failed to create role: ${response.statusText}`)
-            }
-
-            mutate()
-
             setDeleteConfirmationOpen(false)
-        } catch (error) {}
+        } else {
+            try {
+                const response = await fetch(
+                    `${domain}/api/user/delete_role/${deleteRole}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...(token
+                                ? { Authorization: `Bearer ${token}` }
+                                : {}),
+                        },
+                    },
+                )
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to create role: ${response.statusText}`,
+                    )
+                }
+
+                mutate()
+
+                setDeleteConfirmationOpen(false)
+            } catch (error) {}
+        }
     }
 
     return (
@@ -78,17 +111,20 @@ const RolesPermissionsGroups = ({
                     className="flex flex-col justify-between rounded-2xl p-5 bg-gray-100 dark:bg-gray-700 min-h-[140px]"
                 >
                     <div className="flex items-center justify-between">
-                        <h6 className="font-bold">
+                        <h6 className="font-bold cursor-default">
                             {role.name}
                             {user.account_type === 'SuperAdmin' &&
                                 ` (${role.companyData.company_name})`}
                         </h6>
-                        <IoClose
-                            className="font-bold cursor-pointer"
-                            onClick={() => {
-                                handleDelete(role._id)
-                            }}
-                        />
+                        <Button
+                            variant="plain"
+                            size="sm"
+                            icon={
+                                <FaRegTrashAlt className="font-bold cursor-pointer text-sm" />
+                            }
+                            iconAlignment="end"
+                            onClick={() => handleDelete(role._id)}
+                        ></Button>
                     </div>
                     <div className="flex items-center justify-between mt-4">
                         <Button

@@ -1,6 +1,6 @@
 export const accessModules = [
     {
-        id: 'dahsboard',
+        id: 'dashboard',
         name: 'DASHBOARD',
         accessor: [
             {
@@ -40,6 +40,14 @@ export const accessModules = [
         name: 'ATTENDANCES',
         accessor: [
             {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Read',
+                value: 'read',
+            },
+            {
                 label: 'Update',
                 value: 'update',
             },
@@ -76,6 +84,10 @@ export const accessModules = [
         name: 'LEAVE',
         accessor: [
             {
+                label: 'Read',
+                value: 'read',
+            },
+            {
                 label: 'Update',
                 value: 'update',
             },
@@ -89,6 +101,10 @@ export const accessModules = [
         id: 'setting',
         name: 'SETTINGS',
         accessor: [
+            {
+                label: 'Read',
+                value: 'read',
+            },
             {
                 label: 'Update',
                 value: 'update',
@@ -114,6 +130,10 @@ export const accessModules = [
                 value: 'create',
             },
             {
+                label: 'Read',
+                value: 'read',
+            },
+            {
                 label: 'Update',
                 value: 'update',
             },
@@ -132,26 +152,12 @@ export const accessModules = [
                 value: 'create',
             },
             {
+                label: 'Read',
+                value: 'read',
+            },
+            {
                 label: 'Update',
                 value: 'update',
-            },
-            {
-                label: 'setPermission',
-                value: 'Set Permission',
-            },
-            {
-                label: 'Delete',
-                value: 'delete',
-            },
-        ],
-    },
-    {
-        id: 'company',
-        name: 'COMPANIES',
-        accessor: [
-            {
-                label: 'Create',
-                value: 'create',
             },
             {
                 label: 'Delete',
@@ -168,6 +174,10 @@ export const accessModules = [
                 value: 'create',
             },
             {
+                label: 'Read',
+                value: 'read',
+            },
+            {
                 label: 'Delete',
                 value: 'delete',
             },
@@ -180,6 +190,10 @@ export const accessModules = [
             {
                 label: 'Create',
                 value: 'create',
+            },
+            {
+                label: 'Read',
+                value: 'read',
             },
             {
                 label: 'Delete',
@@ -196,6 +210,10 @@ export const accessModules = [
                 value: 'create',
             },
             {
+                label: 'Read',
+                value: 'read',
+            },
+            {
                 label: 'Delete',
                 value: 'delete',
             },
@@ -208,6 +226,10 @@ export const accessModules = [
             {
                 label: 'Create',
                 value: 'create',
+            },
+            {
+                label: 'Read',
+                value: 'read',
             },
             {
                 label: 'Update',

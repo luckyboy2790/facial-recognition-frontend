@@ -4,10 +4,13 @@ import Button from '@/components/ui/Button'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useJobsList'
 import { TbChecks } from 'react-icons/tb'
+import { useAuth } from '@/auth'
 
 const CompanyListSelected = () => {
     const { selectedJobTitle, mutateJobTitles, deleteJobTitles } =
         useEmployeeList()
+
+    const { user } = useAuth()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -22,7 +25,7 @@ const CompanyListSelected = () => {
     const handleConfirmDelete = async () => {
         const jobTitleIds: string[] = selectedJobTitle
             .map((department) => department._id)
-            .filter((id): id is string => id !== undefined) // Ensure `_id` exists
+            .filter((id): id is string => id !== undefined)
 
         if (selectedJobTitle.length === 0) {
             console.error('No valid department IDs to delete')
@@ -30,7 +33,7 @@ const CompanyListSelected = () => {
         }
 
         try {
-            await deleteJobTitles(jobTitleIds)
+            await deleteJobTitles(jobTitleIds, user)
             setDeleteConfirmationOpen(false)
             mutateJobTitles()
         } catch (error) {

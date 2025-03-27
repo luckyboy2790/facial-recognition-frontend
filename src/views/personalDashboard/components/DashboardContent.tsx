@@ -105,7 +105,9 @@ const DashboardContent = () => {
                     value1: `${changeTimeFormat(result.recentSchedule.start_time)} - ${changeTimeFormat(result.recentSchedule.off_time)}`,
                     label2: 'Rest Days	',
                     value2: result.recentSchedule.rest_days.map(
-                        (item: string) => <span>{`${item}, `}</span>,
+                        (item: string, index: number) => (
+                            <span key={index}>{`${item}, `}</span>
+                        ),
                     ),
                     icon: <FaRegUserCircle />,
                 },

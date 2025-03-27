@@ -8,6 +8,9 @@ import { useJobTitleListStore } from '../store/jobsListStore'
 import type { GetJobTitleListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { GetDepartmentsListResponse } from '@/views/departments/types'
+import { User } from '@/@types/auth'
+import { permissionChecker } from '@/services/PermissionChecker'
+import { useNavigate } from 'react-router-dom'
 
 type DepartmentCreateData = {
     jobTitles: string[]
@@ -21,6 +24,8 @@ export default function useJobTitleList() {
         setSelectedJobTitle,
         setSelectAllJobTitle,
     } = useJobTitleListStore((state) => state)
+
+    const navigate = useNavigate()
 
     const {
         data: departmentsData,
@@ -52,12 +57,21 @@ export default function useJobTitleList() {
         },
     )
 
-    const deleteJobTitles = async (jobTitles: string[]) => {
-        await apiDeleteJobTitles<string[], DepartmentCreateData>({
-            jobTitles,
-        })
-        mutateJobTitles()
-        setSelectAllJobTitle([])
+    const deleteJobTitles = async (jobTitles: string[], user: User) => {
+        if (
+            permissionChecker(user, 'jobTitles', 'delete') === false &&
+            user.account_type === 'Admin'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteJobTitles<string[], DepartmentCreateData>({
+                jobTitles,
+            })
+            mutateJobTitles()
+            setSelectAllJobTitle([])
+        }
     }
 
     return {

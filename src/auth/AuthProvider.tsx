@@ -47,13 +47,17 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const navigatorRef = useRef<IsolatedNavigatorRef>(null)
 
-    const redirect = () => {
+    const redirect = (userInfo?: User) => {
         const search = window.location.search
         const params = new URLSearchParams(search)
         const redirectUrl = params.get(REDIRECT_URL_KEY)
 
         navigatorRef.current?.navigate(
-            redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath,
+            userInfo?.account_type === 'Employee'
+                ? appConfig.personalAuthenticatedEntryPath
+                : redirectUrl
+                  ? redirectUrl
+                  : appConfig.authenticatedEntryPath,
         )
     }
 
@@ -68,7 +72,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const handleSignOut = () => {
         setToken('')
-        setUser({})
+        setUser({ role: {} })
         setSessionSignedIn(false)
     }
 
@@ -79,7 +83,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
             if (resp) {
                 handleSignIn({ accessToken: resp.accessToken }, resp.user)
-                redirect()
+                redirect(resp.user)
                 return {
                     status: 'success',
                     message: '',
