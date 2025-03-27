@@ -325,6 +325,19 @@ class VideoInput extends Component<
                                 />
                             </div>
                         )}
+                        {detections?.map((detection, i) => (
+                            <div
+                                key={i}
+                                style={{
+                                    position: 'absolute',
+                                    border: 'solid',
+                                    borderColor: 'blue',
+                                    height: detection.box.height,
+                                    width: detection.box.width,
+                                    transform: `translate(${detection.box._x}px,${detection.box._y}px)`,
+                                }}
+                            ></div>
+                        ))}
                     </div>
                 </div>
             </div>
