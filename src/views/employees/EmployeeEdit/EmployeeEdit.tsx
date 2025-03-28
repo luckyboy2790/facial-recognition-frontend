@@ -103,12 +103,12 @@ const CustomerEdit = () => {
             const result = await response.json()
 
             if (!response.ok) {
-                throw new Error(result.message || 'Failed to create employee')
+                throw new Error(result.message || 'Failed to update employee')
             }
 
             toast.push(
                 <Notification type="success">
-                    Employee created successfully!
+                    Employee updated successfully!
                 </Notification>,
                 { placement: 'top-center' },
             )

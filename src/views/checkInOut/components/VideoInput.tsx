@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react'
+import React, { Component, createRef, Dispatch, SetStateAction } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Webcam from 'react-webcam'
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face'
@@ -43,6 +43,7 @@ class VideoInput extends Component<
         timezone: string
         navigate: any
         token: string | null
+        setRecoStatus: Dispatch<SetStateAction<boolean>>
     },
     State
 > {
@@ -55,6 +56,7 @@ class VideoInput extends Component<
         timezone: string
         navigate: any
         token: string | null
+        setRecoStatus: Dispatch<SetStateAction<boolean>>
     }) {
         super(props)
         this.state = {
@@ -357,6 +359,10 @@ class VideoInput extends Component<
             } catch (error: any) {
                 console.error('Error sending request:', error)
             }
+        } else {
+            this.props.setRecoStatus(false)
+
+            this.props.onCloseDialog()
         }
     }
 
@@ -418,11 +424,13 @@ export default function VideoInputWithRouter({
     type,
     timezone,
     navigate,
+    setRecoStatus,
 }: {
     onCloseDialog: () => void
     type: string
     timezone: string
     navigate: any
+    setRecoStatus: Dispatch<SetStateAction<boolean>>
 }) {
     const { token } = useToken()
 
@@ -433,6 +441,7 @@ export default function VideoInputWithRouter({
             timezone={timezone}
             navigate={navigate}
             token={typeof token === 'string' ? token : null}
+            setRecoStatus={setRecoStatus}
         />
     )
 }
