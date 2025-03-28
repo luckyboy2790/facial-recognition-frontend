@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import ApiService from './ApiService'
 import { useToken } from '@/store/authStore'
 
@@ -39,6 +40,15 @@ export async function apiAttendanceCheckOut<
         params,
         headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
+        .then((data) => data)
+        .catch((error: any) => {
+            const errorMessage =
+                error?.response?.data?.message || 'An unexpected error occurred'
+
+            console.log(errorMessage)
+
+            throw new Error(errorMessage)
+        })
 }
 
 export async function apiDeleteAttendances<

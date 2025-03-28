@@ -54,7 +54,15 @@ const ClockButton = (props: BoardCardProps) => {
                 <h5 className="mb-4">{title}</h5>
                 <VideoInputWithRouter
                     onCloseDialog={() => setIsOpen(false)}
-                    type={`${title === 'Check In' ? 'time_in' : 'time_out'}`}
+                    type={`${
+                        title === 'Check In'
+                            ? 'time_in'
+                            : title === 'Break In'
+                              ? 'break_in'
+                              : title === 'Break Out'
+                                ? 'break_out'
+                                : 'time_out'
+                    }`}
                     timezone={timezone}
                     navigate={navigate}
                 />

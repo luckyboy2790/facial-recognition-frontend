@@ -21,8 +21,45 @@ const EmployeeCreate = () => {
 
     const { token } = useToken()
 
+    function isBreakValid(data: AttendanceFormSchema) {
+        const baseDate = '1970-01-01T'
+        const breakIn = data?.break_in
+            ? new Date(baseDate + data.break_in)
+            : null
+        const breakOut = data?.break_out
+            ? new Date(baseDate + data.break_out)
+            : null
+        const timeIn = data?.time_in ? new Date(baseDate + data.time_in) : null
+        const timeOut = data?.time_out
+            ? new Date(baseDate + data.time_out)
+            : null
+
+        console.log(breakIn, breakOut, timeIn, timeOut)
+
+        if (!timeIn || !timeOut) return false
+
+        const isBreakValid =
+            (!breakIn || breakIn > timeIn) && (!breakOut || breakOut < timeOut)
+
+        return isBreakValid
+    }
+
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
-        console.log('Submitted values', values)
+        console.log(values)
+
+        if (!isBreakValid(values)) {
+            toast.push(
+                <Notification type="warning">
+                    Break Time must be between working time.
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
+
         setIsSubmiting(true)
 
         const response = await fetch(
@@ -58,7 +95,7 @@ const EmployeeCreate = () => {
     const handleConfirmDiscard = () => {
         setDiscardConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Attendance discardd!</Notification>,
+            <Notification type="success">Attendance discarded!</Notification>,
             { placement: 'top-center' },
         )
         navigate('/attendance')
@@ -81,6 +118,8 @@ const EmployeeCreate = () => {
                     date: '',
                     time_in: '',
                     time_out: '',
+                    break_in: '',
+                    break_out: '',
                 }}
                 onFormSubmit={handleFormSubmit}
             >
