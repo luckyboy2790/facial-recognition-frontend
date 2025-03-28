@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button'
 import { TbCloudDownload, TbCloudUpload } from 'react-icons/tb'
 import { CSVLink } from 'react-csv'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Company, CompanyCreateResponse } from '../types'
 import { apiCreateCompany, apiTotalCompanies } from '@/services/CompanyService'
 import Papa from 'papaparse'
