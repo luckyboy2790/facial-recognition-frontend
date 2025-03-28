@@ -56,172 +56,186 @@ const PinInput = ({
         let attendanceId: string = ''
         let employeeId: string | undefined = ''
 
-        const employee: Employee = await apiPinEmployeeCheckOut({
-            email: email,
-            pin: pin,
-        })
-
-        console.log(employee)
-
-        if (employee) {
-            employeeId = employee._id
-        }
-
-        if (
-            type === 'time_out' ||
-            type === 'break_in' ||
-            type === 'break_out'
-        ) {
-            try {
-                const attendanceData: Attendance = await apiAttendanceCheckOut({
-                    id: employeeId,
-                })
-
-                if (attendanceData && attendanceData.time_in) {
-                    const date = new Date(attendanceData.time_in)
-
-                    time_in =
-                        new Intl.DateTimeFormat('en-US', {
-                            hour12: false,
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            fractionalSecondDigits: 3,
-                        }).format(date) + 'Z'
-
-                    attendanceId = attendanceData._id
-                }
-
-                if (attendanceData && attendanceData.break_in) {
-                    const date = new Date(attendanceData.break_in)
-
-                    break_in =
-                        new Intl.DateTimeFormat('en-US', {
-                            hour12: false,
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            fractionalSecondDigits: 3,
-                        }).format(date) + 'Z'
-                }
-
-                if (attendanceData && attendanceData.break_out) {
-                    const date = new Date(attendanceData.break_out)
-
-                    break_out =
-                        new Intl.DateTimeFormat('en-US', {
-                            hour12: false,
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            fractionalSecondDigits: 3,
-                        }).format(date) + 'Z'
-                }
-
-                attendanceId = attendanceData._id
-            } catch (error: any) {
-                toast.push(
-                    <Notification type="warning">
-                        {error.message || 'An unexpected error occurred'}
-                    </Notification>,
-                    {
-                        placement: 'top-center',
-                    },
-                )
-
-                onPinDialogClose()
-            }
-        }
-
-        let reqData = {}
-
-        if (type === 'time_in') {
-            reqData = {
-                employee: employeeId,
-                date: date,
-                time_in: timeWithTimezone,
-                time_out: '',
-            }
-        } else if (type === 'time_out') {
-            console.log(break_in, break_out)
-
-            reqData = {
-                employee: employeeId,
-                date: date,
-                break_in: break_in,
-                break_out: break_out,
-                time_in: time_in,
-                time_out: timeWithTimezone,
-            }
-        } else if (type === 'break_in') {
-            reqData = {
-                employee: employeeId,
-                date: date,
-                break_in: timeWithTimezone,
-                break_out: '',
-            }
-        } else if (type === 'break_out') {
-            reqData = {
-                employee: employeeId,
-                date: date,
-                break_in: break_in,
-                break_out: timeWithTimezone,
-            }
-        }
-
-        const domain = import.meta.env.VITE_BACKEND_ENDPOINT
-
-        const endpoint =
-            type === 'time_in'
-                ? `${domain}/api/attendance/create_attendance`
-                : type === 'break_in'
-                  ? `${domain}/api/attendance/record_break/${attendanceId}`
-                  : type === 'break_out'
-                    ? `${domain}/api/attendance/record_break/${attendanceId}`
-                    : `${domain}/api/attendance/update_attendance/${attendanceId}`
-
         try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                },
-                body: JSON.stringify(reqData),
+            const employee: Employee = await apiPinEmployeeCheckOut({
+                email: email,
+                pin: pin,
             })
 
-            const responseData = await response.json()
+            console.log(employee)
 
-            if (response.ok) {
-                onPinDialogClose()
+            if (employee) {
+                employeeId = employee._id
+            }
 
-                toast.push(
-                    <Notification type="success">
-                        Face recognized!
-                    </Notification>,
-                    {
-                        placement: 'top-center',
+            if (
+                type === 'time_out' ||
+                type === 'break_in' ||
+                type === 'break_out'
+            ) {
+                try {
+                    const attendanceData: Attendance =
+                        await apiAttendanceCheckOut({
+                            id: employeeId,
+                        })
+
+                    if (attendanceData && attendanceData.time_in) {
+                        const date = new Date(attendanceData.time_in)
+
+                        time_in =
+                            new Intl.DateTimeFormat('en-US', {
+                                hour12: false,
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                fractionalSecondDigits: 3,
+                            }).format(date) + 'Z'
+
+                        attendanceId = attendanceData._id
+                    }
+
+                    if (attendanceData && attendanceData.break_in) {
+                        const date = new Date(attendanceData.break_in)
+
+                        break_in =
+                            new Intl.DateTimeFormat('en-US', {
+                                hour12: false,
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                fractionalSecondDigits: 3,
+                            }).format(date) + 'Z'
+                    }
+
+                    if (attendanceData && attendanceData.break_out) {
+                        const date = new Date(attendanceData.break_out)
+
+                        break_out =
+                            new Intl.DateTimeFormat('en-US', {
+                                hour12: false,
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                fractionalSecondDigits: 3,
+                            }).format(date) + 'Z'
+                    }
+
+                    attendanceId = attendanceData._id
+                } catch (error: any) {
+                    toast.push(
+                        <Notification type="warning">
+                            {error.message || 'An unexpected error occurred'}
+                        </Notification>,
+                        {
+                            placement: 'top-center',
+                        },
+                    )
+
+                    onPinDialogClose()
+                }
+            }
+
+            let reqData = {}
+
+            if (type === 'time_in') {
+                reqData = {
+                    employee: employeeId,
+                    date: date,
+                    time_in: timeWithTimezone,
+                    time_out: '',
+                }
+            } else if (type === 'time_out') {
+                console.log(break_in, break_out)
+
+                reqData = {
+                    employee: employeeId,
+                    date: date,
+                    break_in: break_in,
+                    break_out: break_out,
+                    time_in: time_in,
+                    time_out: timeWithTimezone,
+                }
+            } else if (type === 'break_in') {
+                reqData = {
+                    employee: employeeId,
+                    date: date,
+                    break_in: timeWithTimezone,
+                    break_out: '',
+                }
+            } else if (type === 'break_out') {
+                reqData = {
+                    employee: employeeId,
+                    date: date,
+                    break_in: break_in,
+                    break_out: timeWithTimezone,
+                }
+            }
+
+            const domain = import.meta.env.VITE_BACKEND_ENDPOINT
+
+            const endpoint =
+                type === 'time_in'
+                    ? `${domain}/api/attendance/create_attendance`
+                    : type === 'break_in'
+                      ? `${domain}/api/attendance/record_break/${attendanceId}`
+                      : type === 'break_out'
+                        ? `${domain}/api/attendance/record_break/${attendanceId}`
+                        : `${domain}/api/attendance/update_attendance/${attendanceId}`
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(token ? { Authorization: `Bearer ${token}` } : {}),
                     },
-                )
+                    body: JSON.stringify(reqData),
+                })
 
-                await sleep(1000)
-            } else {
-                onPinDialogClose()
+                const responseData = await response.json()
 
-                toast.push(
-                    <Notification type="warning">
-                        {responseData.message}
-                    </Notification>,
-                    {
-                        placement: 'top-center',
-                    },
-                )
+                if (response.ok) {
+                    onPinDialogClose()
 
-                await sleep(1000)
-                console.error('Failed to send user data')
+                    toast.push(
+                        <Notification type="success">
+                            Face recognized!
+                        </Notification>,
+                        {
+                            placement: 'top-center',
+                        },
+                    )
+
+                    await sleep(1000)
+                } else {
+                    onPinDialogClose()
+
+                    toast.push(
+                        <Notification type="warning">
+                            {responseData.message}
+                        </Notification>,
+                        {
+                            placement: 'top-center',
+                        },
+                    )
+
+                    await sleep(1000)
+                    console.error('Failed to send user data')
+                }
+            } catch (error: any) {
+                console.error('Error sending request:', error)
             }
         } catch (error: any) {
-            console.error('Error sending request:', error)
+            toast.push(
+                <Notification type="warning">
+                    {error.message || 'An unexpected error occurred'}
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            onPinDialogClose()
         }
     }
 
