@@ -21,7 +21,7 @@ const CompanyListTable = () => {
     const columns: ColumnDef<LeaveType>[] = useMemo(
         () => [
             {
-                header: 'Description',
+                header: 'Leave Name',
                 accessorKey: 'leave_name',
             },
         ],
