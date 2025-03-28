@@ -5,6 +5,8 @@ export type OverviewFields = {
     date: string
     time_in: string
     time_out: string
+    break_in: string
+    break_out: string
     reason?: string
 }
 export type AttendanceFormSchema = OverviewFields

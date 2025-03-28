@@ -69,7 +69,7 @@ const AttendanceEdit = () => {
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
         console.log('Submitted values', values)
 
-        if (values.reason === '') {
+        if (values.reason === '' || !values.reason) {
             toast.push(
                 <Notification type="warning">Please write reason</Notification>,
                 {
@@ -116,21 +116,23 @@ const AttendanceEdit = () => {
         console.log(data)
 
         if (data) {
-            const { employee, date, time_in, time_out, reason } =
-                data.attendance
-
-            console.log({
+            const {
                 employee,
                 date,
-                time_in: convertToUTCFormat(time_in || ''),
-                time_out: convertToUTCFormat(time_out || ''),
-            })
+                time_in,
+                time_out,
+                reason,
+                break_in,
+                break_out,
+            } = data.attendance
 
             return {
                 employee,
                 date,
                 time_in: convertToUTCFormat(time_in || ''),
                 time_out: convertToUTCFormat(time_out || ''),
+                break_in: convertToUTCFormat(break_in || ''),
+                break_out: convertToUTCFormat(break_out || ''),
                 reason: reason,
             }
         }

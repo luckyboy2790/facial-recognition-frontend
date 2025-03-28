@@ -64,7 +64,7 @@ const OverviewSection = ({
 
     return (
         <Card>
-            <h4 className="mb-6">Attendance Edit</h4>
+            <h4 className="mb-6">{`Attendance ${newAttendance ? 'Create' : 'Edit'}`}</h4>
             <FormItem
                 label="Employee"
                 invalid={Boolean(errors.employee)}
@@ -75,7 +75,6 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <Select
-                            className="mb-4"
                             placeholder="Please Select"
                             options={employeeOptions}
                             value={employeeOptions.find(
@@ -150,6 +149,66 @@ const OverviewSection = ({
                     name="time_out"
                     control={control}
                     defaultValue={defaultValues?.time_out || ''}
+                    render={({ field }) => (
+                        <TimeInput
+                            value={
+                                field.value
+                                    ? new Date(
+                                          `${getCurrentDate()}T${field.value}`,
+                                      )
+                                    : null
+                            }
+                            onChange={(date) => {
+                                if (date) {
+                                    field.onChange(
+                                        format(date, 'HH:mm:ss.SSS') + 'Z',
+                                    )
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </FormItem>
+
+            <FormItem
+                label="Break In Time"
+                invalid={Boolean(errors.break_in)}
+                errorMessage={errors.break_in?.message}
+            >
+                <Controller
+                    name="break_in"
+                    control={control}
+                    defaultValue={defaultValues?.break_in || ''}
+                    render={({ field }) => (
+                        <TimeInput
+                            value={
+                                field.value
+                                    ? new Date(
+                                          `${getCurrentDate()}T${field.value}`,
+                                      )
+                                    : null
+                            }
+                            onChange={(date) => {
+                                if (date) {
+                                    field.onChange(
+                                        format(date, 'HH:mm:ss.SSS') + 'Z',
+                                    )
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </FormItem>
+
+            <FormItem
+                label="Break Out Time"
+                invalid={Boolean(errors.break_out)}
+                errorMessage={errors.break_out?.message}
+            >
+                <Controller
+                    name="break_out"
+                    control={control}
+                    defaultValue={defaultValues?.break_out || ''}
                     render={({ field }) => (
                         <TimeInput
                             value={

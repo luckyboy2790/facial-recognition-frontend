@@ -9,22 +9,6 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 
-const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
-    return (
-        <div className="flex gap-3 items-center">
-            <Tooltip title="Edit">
-                <div
-                    className={`text-xl cursor-pointer select-none font-semibold`}
-                    role="button"
-                    onClick={onEdit}
-                >
-                    <TbPencil />
-                </div>
-            </Tooltip>
-        </div>
-    )
-}
-
 const AttendanceListTable = () => {
     const navigate = useNavigate()
 
@@ -38,10 +22,6 @@ const AttendanceListTable = () => {
         setSelectedAttendance,
         selectedAttendance,
     } = useAttendanceList()
-
-    const handleEdit = (attendance: Attendance) => {
-        navigate(`/attendance-edit/${attendance._id}`)
-    }
 
     const columns: ColumnDef<Attendance>[] = useMemo(
         () => [
@@ -60,6 +40,14 @@ const AttendanceListTable = () => {
             {
                 header: 'Time Out',
                 accessorKey: 'time_out',
+            },
+            {
+                header: 'Break In',
+                accessorKey: 'break_in',
+            },
+            {
+                header: 'Break Out',
+                accessorKey: 'break_out',
             },
             {
                 header: 'Total Hours',

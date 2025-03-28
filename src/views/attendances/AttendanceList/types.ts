@@ -60,6 +60,8 @@ export type Attendance = {
     reason?: string
     time_in?: string
     time_out?: string
+    break_in?: string
+    break_out?: string
     total_hours?: string
     __v: 0
     status_timein: string

@@ -39,6 +39,8 @@ const AttendanceListTable = () => {
         selectedAttendance,
     } = useAttendanceList()
 
+    console.log(attendanceList)
+
     const handleEdit = (attendance: Attendance) => {
         navigate(`/attendance-edit/${attendance._id}`)
     }
@@ -60,6 +62,14 @@ const AttendanceListTable = () => {
             {
                 header: 'Time Out',
                 accessorKey: 'time_out',
+            },
+            {
+                header: 'Break In',
+                accessorKey: 'break_in',
+            },
+            {
+                header: 'Break Out',
+                accessorKey: 'break_out',
             },
             {
                 header: 'Total Hours',
