@@ -1,16 +1,17 @@
 import Button from '@/components/ui/Button'
 import { TbCloudDownload, TbCloudUpload } from 'react-icons/tb'
 import { CSVLink } from 'react-csv'
+import useDepartmentList from '../hooks/useDepartmentsList'
 
 const CompanyActionTools = () => {
-    const customerList: any = []
+    const { departmentList } = useDepartmentList()
 
     return (
         <div className="flex flex-col md:flex-row gap-3">
             <CSVLink
                 className="w-full"
                 filename="customerList.csv"
-                data={customerList}
+                data={departmentList}
             >
                 <Button
                     icon={<TbCloudDownload className="text-xl" />}

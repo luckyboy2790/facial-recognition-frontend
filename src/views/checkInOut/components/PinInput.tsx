@@ -22,7 +22,6 @@ const PinInput = ({
     onPinDialogOk: (e: any) => void
 }) => {
     const [pin, setPin] = useState('')
-    const [email, setEmail] = useState('')
 
     const { token } = useToken()
 
@@ -31,10 +30,6 @@ const PinInput = ({
         if (/^\d*$/.test(inputValue)) {
             setPin(inputValue)
         }
-    }
-
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value)
     }
 
     const handleMatch = async () => {
@@ -58,7 +53,6 @@ const PinInput = ({
 
         try {
             const employee: Employee = await apiPinEmployeeCheckOut({
-                email: email,
                 pin: pin,
             })
 
@@ -243,13 +237,6 @@ const PinInput = ({
         <>
             <div className="flex flex-col items-center justify-center gap-5 text-white">
                 <h2 className="mb-6 text-2xl font-semibold">Enter PIN code</h2>
-                <Input
-                    type="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    placeholder="Enter your email"
-                    required
-                />
                 <PasswordInput
                     value={pin}
                     onChange={handlePinChange}
