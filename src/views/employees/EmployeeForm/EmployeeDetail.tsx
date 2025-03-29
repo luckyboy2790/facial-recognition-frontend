@@ -383,11 +383,27 @@ const EmployeeDetailSection = ({
                                     field.value ? new Date(field.value) : null
                                 }
                                 onChange={(date) => {
-                                    field.onChange(
-                                        date
-                                            ? date.toISOString().split('T')[0]
-                                            : '',
-                                    )
+                                    if (date) {
+                                        const normalizedDate = new Date(
+                                            Date.UTC(
+                                                date.getFullYear(),
+                                                date.getMonth(),
+                                                date.getDate(),
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                            ),
+                                        )
+
+                                        field.onChange(
+                                            normalizedDate
+                                                .toISOString()
+                                                .split('T')[0],
+                                        )
+                                    } else {
+                                        field.onChange('')
+                                    }
                                 }}
                             />
                         )}
@@ -409,11 +425,27 @@ const EmployeeDetailSection = ({
                                     field.value ? new Date(field.value) : null
                                 }
                                 onChange={(date) => {
-                                    field.onChange(
-                                        date
-                                            ? date.toISOString().split('T')[0]
-                                            : '',
-                                    )
+                                    if (date) {
+                                        const normalizedDate = new Date(
+                                            Date.UTC(
+                                                date.getFullYear(),
+                                                date.getMonth(),
+                                                date.getDate(),
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                            ),
+                                        )
+
+                                        field.onChange(
+                                            normalizedDate
+                                                .toISOString()
+                                                .split('T')[0],
+                                        )
+                                    } else {
+                                        field.onChange('')
+                                    }
                                 }}
                             />
                         )}
