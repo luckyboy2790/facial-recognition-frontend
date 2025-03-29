@@ -30,7 +30,7 @@ const CustomerListTable = () => {
                 header: 'Employee Name',
                 id: 'employeeName',
                 cell: (props) => (
-                    <span>{props.row.original.employeeData.full_name}</span>
+                    <span>{props.row.original.employeeData?.full_name}</span>
                 ),
             },
             {
