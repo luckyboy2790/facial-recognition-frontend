@@ -11,11 +11,11 @@ const CustomerListActionTools = () => {
     const { customerList } = useEmployeeList()
 
     const filteredCustomerList = customerList.map((employee) => ({
-        full_name: employee.full_name,
-        department_name: employee.department?.department_name,
-        job_title: employee.job_title?.job_title,
-        birthday: employee.birthday,
-        contact_number: `${employee.dial_code} ${employee.phone_number}`,
+        'Employee Name': employee.full_name,
+        Department: employee.department?.department_name,
+        Position: employee.job_title?.job_title,
+        Birthday: employee.birthday,
+        'Contact Number': `${employee.dial_code} ${employee.phone_number}`,
     }))
 
     return (
@@ -29,7 +29,7 @@ const CustomerListActionTools = () => {
             </Button>
             <CSVLink
                 className="w-full"
-                filename="employeeList.csv"
+                filename="employeeBirthdayList.csv"
                 data={filteredCustomerList}
             >
                 <Button
