@@ -111,3 +111,16 @@ export async function apiPersonalAttendanceList<
         headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
 }
+
+export async function apiTotalAttendanceList<
+    T,
+    U extends Record<string, unknown>,
+>(params?: U) {
+    const { token } = useToken()
+    return ApiService.fetchDataWithAxios<T>({
+        url: `${domain}/api/attendance/total_attendance`,
+        method: 'get',
+        params,
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+}

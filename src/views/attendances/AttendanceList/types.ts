@@ -59,9 +59,13 @@ export type Attendance = {
     employeeData: Employee
     reason?: string
     time_in?: string
+    time_in_24?: string
     time_out?: string
+    time_out_24?: string
     break_in?: string
+    break_in_24?: string
     break_out?: string
+    break_out_24?: string
     total_hours?: string
     __v: 0
     status_timein: string
