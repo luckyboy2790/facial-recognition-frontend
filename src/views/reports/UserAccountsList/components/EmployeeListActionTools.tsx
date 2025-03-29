@@ -10,6 +10,13 @@ const CustomerListActionTools = () => {
 
     const { customerList } = useEmployeeList()
 
+    const filteredUserList = customerList.map((user) => ({
+        'Employee Name': user.employeeData?.full_name,
+        Email: user.email,
+        'Account Type': user.account_type,
+        Status: user.status,
+    }))
+
     return (
         <div className="flex flex-col md:flex-row gap-3">
             <Button
@@ -21,8 +28,8 @@ const CustomerListActionTools = () => {
             </Button>
             <CSVLink
                 className="w-full"
-                filename="customerList.csv"
-                data={customerList}
+                filename="userList.csv"
+                data={filteredUserList}
             >
                 <Button
                     icon={<TbCloudDownload className="text-xl" />}
