@@ -29,6 +29,8 @@
     "@tiptap/react": "^2.10.4",
     "@tiptap/starter-kit": "^2.10.4",
     "@visx/pattern": "^3.13.0-alpha.0",
+    "antd": "^5.24.5",
+    "antd-style": "^3.7.1",
     "axios": "^1.7.7",
     "axios-mock-adapter": "^2.0.0",
     "classnames": "^2.5.1",

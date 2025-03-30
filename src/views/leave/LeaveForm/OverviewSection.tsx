@@ -3,12 +3,11 @@ import Card from '@/components/ui/Card'
 import { FormItem } from '@/components/ui/Form'
 import { Controller } from 'react-hook-form'
 import type { LeaveFormSchema, FormSectionBaseProps } from './types'
-import TimeInput from '@/components/ui/TimeInput/TimeInput'
-import { Employee } from '@/views/employees/EmployeeList/types'
-import { DatePicker, Input, Select } from '@/components/ui'
-import { format } from 'date-fns'
+import { Input, Select } from '@/components/ui'
 import { apiTotalLeaveTypesList } from '@/services/leaveTypeService'
 import { LeaveType } from '@/views/leaveTypes/types'
+import dayjs from 'dayjs'
+import { DatePicker } from 'antd'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -109,32 +108,15 @@ const OverviewSection = ({
                         render={({ field }) => (
                             <DatePicker
                                 placeholder="Date"
-                                disabled
+                                className="w-full"
+                                style={{ height: '48px', borderRadius: '12px' }}
                                 value={
-                                    field.value ? new Date(field.value) : null
+                                    field.value
+                                        ? dayjs(field.value, 'YYYY-MM-DD')
+                                        : null
                                 }
                                 onChange={(date) => {
-                                    if (date) {
-                                        const normalizedDate = new Date(
-                                            Date.UTC(
-                                                date.getFullYear(),
-                                                date.getMonth(),
-                                                date.getDate(),
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                            ),
-                                        )
-
-                                        field.onChange(
-                                            normalizedDate
-                                                .toISOString()
-                                                .split('T')[0],
-                                        )
-                                    } else {
-                                        field.onChange('')
-                                    }
+                                    field.onChange(date.format('YYYY-MM-DD'))
                                 }}
                             />
                         )}
@@ -152,32 +134,15 @@ const OverviewSection = ({
                         render={({ field }) => (
                             <DatePicker
                                 placeholder="Date"
-                                disabled
+                                className="w-full"
+                                style={{ height: '48px', borderRadius: '12px' }}
                                 value={
-                                    field.value ? new Date(field.value) : null
+                                    field.value
+                                        ? dayjs(field.value, 'YYYY-MM-DD')
+                                        : null
                                 }
                                 onChange={(date) => {
-                                    if (date) {
-                                        const normalizedDate = new Date(
-                                            Date.UTC(
-                                                date.getFullYear(),
-                                                date.getMonth(),
-                                                date.getDate(),
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                            ),
-                                        )
-
-                                        field.onChange(
-                                            normalizedDate
-                                                .toISOString()
-                                                .split('T')[0],
-                                        )
-                                    } else {
-                                        field.onChange('')
-                                    }
+                                    field.onChange(date.format('YYYY-MM-DD'))
                                 }}
                             />
                         )}
@@ -195,31 +160,16 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <DatePicker
-                            disabled
                             placeholder="Date"
-                            value={field.value ? new Date(field.value) : null}
+                            className="w-full"
+                            style={{ height: '48px', borderRadius: '12px' }}
+                            value={
+                                field.value
+                                    ? dayjs(field.value, 'YYYY-MM-DD')
+                                    : null
+                            }
                             onChange={(date) => {
-                                if (date) {
-                                    const normalizedDate = new Date(
-                                        Date.UTC(
-                                            date.getFullYear(),
-                                            date.getMonth(),
-                                            date.getDate(),
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                        ),
-                                    )
-
-                                    field.onChange(
-                                        normalizedDate
-                                            .toISOString()
-                                            .split('T')[0],
-                                    )
-                                } else {
-                                    field.onChange('')
-                                }
+                                field.onChange(date.format('YYYY-MM-DD'))
                             }}
                         />
                     )}

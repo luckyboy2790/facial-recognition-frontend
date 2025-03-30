@@ -47,10 +47,33 @@ const EmployeeCreate = () => {
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
         console.log(values)
 
-        if (!isBreakValid(values)) {
+        if (
+            !isBreakValid(values) &&
+            (values.break_in !== '' || values.break_out !== '')
+        ) {
             toast.push(
                 <Notification type="warning">
                     Break Time must be between working time.
+                </Notification>,
+                {
+                    placement: 'top-center',
+                },
+            )
+
+            return
+        }
+
+        if (
+            !values.employee ||
+            values.employee === '' ||
+            !values.date ||
+            values.date === '' ||
+            !values.time_in ||
+            values.time_in === ''
+        ) {
+            toast.push(
+                <Notification type="warning">
+                    Please fill all fields.
                 </Notification>,
                 {
                     placement: 'top-center',

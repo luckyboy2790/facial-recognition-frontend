@@ -20,7 +20,6 @@ const EmployeeCreate = () => {
     const [isSubmiting, setIsSubmiting] = useState(false)
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
-        console.log('Submitted values', values)
         setIsSubmiting(true)
 
         const { token } = useToken()

@@ -8,9 +8,11 @@ import { Company } from '@/views/companies/types'
 import { Department } from '@/views/departments/types'
 import { JobTitle } from '@/views/jobTitles/types'
 import { apiGetAllData } from '@/services/employeeService'
-import { DatePicker, Select } from '@/components/ui'
+import { Select } from '@/components/ui'
 import { NumericInput } from '@/components/shared'
 import { useAuth } from '@/auth'
+import { DatePicker } from 'antd'
+import dayjs from 'dayjs'
 
 type AddressSectionProps = FormSectionBaseProps & {
     setValue: UseFormSetValue<any>
@@ -378,32 +380,16 @@ const EmployeeDetailSection = ({
                         control={control}
                         render={({ field }) => (
                             <DatePicker
-                                placeholder="DATE"
+                                placeholder="Date"
+                                className="w-full"
+                                style={{ height: '48px', borderRadius: '12px' }}
                                 value={
-                                    field.value ? new Date(field.value) : null
+                                    field.value
+                                        ? dayjs(field.value, 'YYYY-MM-DD')
+                                        : null
                                 }
                                 onChange={(date) => {
-                                    if (date) {
-                                        const normalizedDate = new Date(
-                                            Date.UTC(
-                                                date.getFullYear(),
-                                                date.getMonth(),
-                                                date.getDate(),
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                            ),
-                                        )
-
-                                        field.onChange(
-                                            normalizedDate
-                                                .toISOString()
-                                                .split('T')[0],
-                                        )
-                                    } else {
-                                        field.onChange('')
-                                    }
+                                    field.onChange(date.format('YYYY-MM-DD'))
                                 }}
                             />
                         )}
@@ -420,32 +406,16 @@ const EmployeeDetailSection = ({
                         control={control}
                         render={({ field }) => (
                             <DatePicker
-                                placeholder="DATE"
+                                placeholder="Date"
+                                className="w-full"
+                                style={{ height: '48px', borderRadius: '12px' }}
                                 value={
-                                    field.value ? new Date(field.value) : null
+                                    field.value
+                                        ? dayjs(field.value, 'YYYY-MM-DD')
+                                        : null
                                 }
                                 onChange={(date) => {
-                                    if (date) {
-                                        const normalizedDate = new Date(
-                                            Date.UTC(
-                                                date.getFullYear(),
-                                                date.getMonth(),
-                                                date.getDate(),
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                            ),
-                                        )
-
-                                        field.onChange(
-                                            normalizedDate
-                                                .toISOString()
-                                                .split('T')[0],
-                                        )
-                                    } else {
-                                        field.onChange('')
-                                    }
+                                    field.onChange(date.format('YYYY-MM-DD'))
                                 }}
                             />
                         )}

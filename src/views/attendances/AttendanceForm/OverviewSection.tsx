@@ -3,11 +3,11 @@ import Card from '@/components/ui/Card'
 import { FormItem } from '@/components/ui/Form'
 import { Controller } from 'react-hook-form'
 import type { AttendanceFormSchema, FormSectionBaseProps } from './types'
-import TimeInput from '@/components/ui/TimeInput/TimeInput'
 import { Employee } from '@/views/employees/EmployeeList/types'
 import { apiGetTotalEmployeeList } from '@/services/employeeService'
-import { DatePicker, Input, Select } from '@/components/ui'
-import { format } from 'date-fns'
+import { Input, Select } from '@/components/ui'
+import { TimePicker, DatePicker } from 'antd'
+import dayjs from 'dayjs'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -54,14 +54,6 @@ const OverviewSection = ({
         fetchData()
     }, [])
 
-    const getCurrentDate = () => {
-        const now = new Date()
-        const year = now.getFullYear()
-        const month = String(now.getMonth() + 1).padStart(2, '0')
-
-        return `${year}-${month}-01`
-    }
-
     return (
         <Card>
             <h4 className="mb-6">{`Attendance ${newAttendance ? 'Create' : 'Edit'}`}</h4>
@@ -97,29 +89,15 @@ const OverviewSection = ({
                     render={({ field }) => (
                         <DatePicker
                             placeholder="Date"
-                            value={field.value ? new Date(field.value) : null}
+                            className="w-full"
+                            style={{ height: '48px', borderRadius: '12px' }}
+                            value={
+                                field.value
+                                    ? dayjs(field.value, 'YYYY-MM-DD')
+                                    : null
+                            }
                             onChange={(date) => {
-                                if (date) {
-                                    const normalizedDate = new Date(
-                                        Date.UTC(
-                                            date.getFullYear(),
-                                            date.getMonth(),
-                                            date.getDate(),
-                                            0,
-                                            0,
-                                            0,
-                                            0,
-                                        ),
-                                    )
-
-                                    field.onChange(
-                                        normalizedDate
-                                            .toISOString()
-                                            .split('T')[0],
-                                    )
-                                } else {
-                                    field.onChange('')
-                                }
+                                field.onChange(date.format('YYYY-MM-DD'))
                             }}
                         />
                     )}
@@ -136,20 +114,19 @@ const OverviewSection = ({
                     control={control}
                     defaultValue={defaultValues?.time_in || ''}
                     render={({ field }) => (
-                        <TimeInput
+                        <TimePicker
+                            format={'HH:mm'}
+                            className="w-full"
+                            size="large"
+                            style={{ height: '48px', borderRadius: '12px' }}
                             value={
                                 field.value
-                                    ? new Date(
-                                          `${getCurrentDate()}T${field.value}`,
-                                      )
+                                    ? dayjs(field.value, 'HH:mm:ss.SSS')
                                     : null
                             }
-                            onChange={(date) => {
-                                if (date) {
-                                    field.onChange(
-                                        format(date, 'HH:mm:ss.SSS') + 'Z',
-                                    )
-                                }
+                            onChange={(value: any) => {
+                                console.log(value.format('HH:mm:ss.SSS'))
+                                field.onChange(value.format('HH:mm:ss.SSS'))
                             }}
                         />
                     )}
@@ -166,20 +143,19 @@ const OverviewSection = ({
                     control={control}
                     defaultValue={defaultValues?.time_out || ''}
                     render={({ field }) => (
-                        <TimeInput
+                        <TimePicker
+                            format={'HH:mm'}
+                            className="w-full"
+                            size="large"
+                            style={{ height: '48px', borderRadius: '12px' }}
                             value={
                                 field.value
-                                    ? new Date(
-                                          `${getCurrentDate()}T${field.value}`,
-                                      )
+                                    ? dayjs(field.value, 'HH:mm:ss.SSS')
                                     : null
                             }
-                            onChange={(date) => {
-                                if (date) {
-                                    field.onChange(
-                                        format(date, 'HH:mm:ss.SSS') + 'Z',
-                                    )
-                                }
+                            onChange={(value: any) => {
+                                console.log(value.format('HH:mm:ss.SSS'))
+                                field.onChange(value.format('HH:mm:ss.SSS'))
                             }}
                         />
                     )}
@@ -196,20 +172,19 @@ const OverviewSection = ({
                     control={control}
                     defaultValue={defaultValues?.break_in || ''}
                     render={({ field }) => (
-                        <TimeInput
+                        <TimePicker
+                            format={'HH:mm'}
+                            className="w-full"
+                            size="large"
+                            style={{ height: '48px', borderRadius: '12px' }}
                             value={
                                 field.value
-                                    ? new Date(
-                                          `${getCurrentDate()}T${field.value}`,
-                                      )
+                                    ? dayjs(field.value, 'HH:mm:ss.SSS')
                                     : null
                             }
-                            onChange={(date) => {
-                                if (date) {
-                                    field.onChange(
-                                        format(date, 'HH:mm:ss.SSS') + 'Z',
-                                    )
-                                }
+                            onChange={(value: any) => {
+                                console.log(value.format('HH:mm:ss.SSS'))
+                                field.onChange(value.format('HH:mm:ss.SSS'))
                             }}
                         />
                     )}
@@ -226,20 +201,19 @@ const OverviewSection = ({
                     control={control}
                     defaultValue={defaultValues?.break_out || ''}
                     render={({ field }) => (
-                        <TimeInput
+                        <TimePicker
+                            format={'HH:mm'}
+                            className="w-full"
+                            size="large"
+                            style={{ height: '48px', borderRadius: '12px' }}
                             value={
                                 field.value
-                                    ? new Date(
-                                          `${getCurrentDate()}T${field.value}`,
-                                      )
+                                    ? dayjs(field.value, 'HH:mm:ss.SSS')
                                     : null
                             }
-                            onChange={(date) => {
-                                if (date) {
-                                    field.onChange(
-                                        format(date, 'HH:mm:ss.SSS') + 'Z',
-                                    )
-                                }
+                            onChange={(value: any) => {
+                                console.log(value.format('HH:mm:ss.SSS'))
+                                field.onChange(value.format('HH:mm:ss.SSS'))
                             }}
                         />
                     )}

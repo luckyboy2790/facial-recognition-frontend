@@ -10,7 +10,8 @@ import { Controller } from 'react-hook-form'
 import { components } from 'react-select'
 import type { FormSectionBaseProps } from './types'
 import type { ControlProps, OptionProps } from 'react-select'
-import DatePicker from '@/components/ui/DatePicker/DatePicker'
+import dayjs from 'dayjs'
+import { DatePicker } from 'antd'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -317,32 +318,16 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         control={control}
                         render={({ field }) => (
                             <DatePicker
-                                placeholder="Birthday"
+                                placeholder="Date"
+                                className="w-full"
+                                style={{ height: '48px', borderRadius: '12px' }}
                                 value={
-                                    field.value ? new Date(field.value) : null
+                                    field.value
+                                        ? dayjs(field.value, 'YYYY-MM-DD')
+                                        : null
                                 }
                                 onChange={(date) => {
-                                    if (date) {
-                                        const normalizedDate = new Date(
-                                            Date.UTC(
-                                                date.getFullYear(),
-                                                date.getMonth(),
-                                                date.getDate(),
-                                                0,
-                                                0,
-                                                0,
-                                                0,
-                                            ),
-                                        )
-
-                                        field.onChange(
-                                            normalizedDate
-                                                .toISOString()
-                                                .split('T')[0],
-                                        )
-                                    } else {
-                                        field.onChange('')
-                                    }
+                                    field.onChange(date.format('YYYY-MM-DD'))
                                 }}
                             />
                         )}
