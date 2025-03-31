@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { useLocation } from 'react-router-dom'
 import Loading from '@/components/shared/Loading'
 import type { CommonProps } from '@/@types/common'
 import { useAuth } from '@/auth'
@@ -8,8 +9,8 @@ import PreLoginLayout from './PreLoginLayout'
 
 const Layout = ({ children }: CommonProps) => {
     const layoutType = useThemeStore((state) => state.layout.type)
-
     const { authenticated } = useAuth()
+    const location = useLocation()
 
     return (
         <Suspense
@@ -19,7 +20,7 @@ const Layout = ({ children }: CommonProps) => {
                 </div>
             }
         >
-            {authenticated ? (
+            {authenticated || location.pathname === '/clock' ? (
                 <PostLoginLayout layoutType={layoutType}>
                     {children}
                 </PostLoginLayout>

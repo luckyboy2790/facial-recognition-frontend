@@ -3,18 +3,25 @@ import { Word } from './Word'
 import { Number } from './Number'
 import { useAuth } from '@/auth'
 
+type Setting = {
+    country: string
+    timezone: string
+    timeFormat: string
+    rfidClock: boolean
+    ipRestriction: string
+}
+
 interface LocationDisplayProps {
     timezone: string
+    settingData: Setting
 }
 
 const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
-const Clock: React.FC<LocationDisplayProps> = ({ timezone }) => {
+const Clock: React.FC<LocationDisplayProps> = ({ timezone, settingData }) => {
     const startTime = new Date(Date.now()).toLocaleTimeString('en-US', {
         timeZone: timezone,
     })
-
-    const { setting } = useAuth()
 
     const [time, setTime] = useState<string>(startTime)
     const [day, setDay] = useState<number>(0)
@@ -29,10 +36,10 @@ const Clock: React.FC<LocationDisplayProps> = ({ timezone }) => {
         n.current = setTimeout(() => {
             t.current = setInterval(() => {
                 const currentTime = new Date(Date.now())
+
                 setTime(
                     currentTime.toLocaleTimeString('en-US', {
                         timeZone: timezone,
-                        hour12: setting.timeFormat === '1' ? true : false,
                     }),
                 )
 
@@ -75,13 +82,19 @@ const Clock: React.FC<LocationDisplayProps> = ({ timezone }) => {
                     <Word value={timezoneAbbreviation} hidden={false} />
                 </div>
                 <div className="hour">
-                    <Number value={parseInt(hours, 10)} />
+                    <Number
+                        value={
+                            settingData.timeFormat === '1'
+                                ? parseInt(hours, 10)
+                                : parseInt(hours, 10) + 12
+                        }
+                    />
                     <Word value={':'} hidden={false} />
                     <Number value={parseInt(minutes, 10)} />
                     <Word value={':'} hidden={false} />
                     <Number value={parseInt(seconds, 10)} />
                 </div>
-                {setting.timeFormat === '1' && (
+                {settingData.timeFormat === '1' && (
                     <div className="ampm">
                         <Word value={'AM'} hidden={pm} />
                         <Word value={'PM'} hidden={!pm} />

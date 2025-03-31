@@ -20,25 +20,27 @@ const CollapsibleSide = ({ children }: CommonProps) => {
             className="app-layout-collapsible-side flex flex-auto flex-col"
         >
             <div className="flex flex-auto min-w-0">
-                {larger.lg && <SideNav />}
+                {larger.lg && location.pathname !== '/clock' && <SideNav />}
                 <div className="flex flex-col flex-auto min-h-screen min-w-0 relative w-full">
-                    <Header
-                        className="shadow dark:shadow-2xl"
-                        headerStart={
-                            <>
-                                {smaller.lg && <MobileNav />}
-                                {larger.lg && <SideNavToggle />}
-                            </>
-                        }
-                        headerEnd={
-                            <>
-                                <LanguageSelector />
-                                <SidePanel />
-                                <QuickAccessDropdown hoverable={false} />
-                                <UserProfileDropdown hoverable={false} />
-                            </>
-                        }
-                    />
+                    {location.pathname !== '/clock' && (
+                        <Header
+                            className="shadow dark:shadow-2xl"
+                            headerStart={
+                                <>
+                                    {smaller.lg && <MobileNav />}
+                                    {larger.lg && <SideNavToggle />}
+                                </>
+                            }
+                            headerEnd={
+                                <>
+                                    <LanguageSelector />
+                                    <SidePanel />
+                                    <QuickAccessDropdown hoverable={false} />
+                                    <UserProfileDropdown hoverable={false} />
+                                </>
+                            }
+                        />
+                    )}
                     <div className="h-full flex flex-auto flex-col">
                         {children}
                     </div>

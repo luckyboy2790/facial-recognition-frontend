@@ -4,6 +4,17 @@ import ClockButton from './components/ClockButton'
 import { FaBusinessTime } from 'react-icons/fa'
 import { LuAlarmClockPlus, LuAlarmClockCheck } from 'react-icons/lu'
 import { useAuth } from '@/auth'
+import { useEffect, useState } from 'react'
+import { useSessionUser } from '@/store/authStore'
+const domain = import.meta.env.VITE_BACKEND_ENDPOINT
+
+type Setting = {
+    country: string
+    timezone: string
+    timeFormat: string
+    rfidClock: boolean
+    ipRestriction: string
+}
 
 const btns = [
     {
@@ -29,7 +40,32 @@ const btns = [
 ]
 
 const CheckInOutContent = () => {
-    const { setting } = useAuth()
+    const setSetting = useSessionUser((state) => state.setSetting)
+
+    const [settingData, setSettingData] = useState<Setting>({
+        country: 'UK',
+        timezone: 'Europe/Lisbon',
+        timeFormat: '1',
+        rfidClock: false,
+        ipRestriction: '',
+    })
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            const response = await fetch(`${domain}/api/setting/get_setting`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            const data = await response.json()
+
+            setSetting(data.settingData)
+
+            setSettingData(data.settingData)
+        }
+
+        fetchSettings()
+    }, [])
 
     return (
         <>
@@ -38,10 +74,11 @@ const CheckInOutContent = () => {
                     <AdaptiveCard>
                         <Clock
                             timezone={
-                                setting.timezone !== ''
-                                    ? setting.timezone
+                                settingData.timezone !== ''
+                                    ? settingData.timezone
                                     : 'Europe/Lisbon'
                             }
+                            settingData={settingData}
                         />
                     </AdaptiveCard>
                     <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6">
@@ -52,8 +89,8 @@ const CheckInOutContent = () => {
                                 description={item.description}
                                 icon={item.icon}
                                 timezone={
-                                    setting.timezone !== ''
-                                        ? setting.timezone
+                                    settingData.timezone !== ''
+                                        ? settingData.timezone
                                         : 'Europe/Lisbon'
                                 }
                             />

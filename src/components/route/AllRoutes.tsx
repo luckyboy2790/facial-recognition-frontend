@@ -12,6 +12,8 @@ import adminRoute from '@/configs/routes.config/adminRoute'
 import othersRoute from '@/configs/routes.config/othersRoute'
 import personalRoute from '@/configs/routes.config/personalRoute'
 import { Routes as AppRoutes } from '@/@types/routes'
+import { lazy, Suspense, useEffect } from 'react'
+import ClockRoute from './ClockRoute'
 
 interface ViewsProps {
     pageContainerType?: 'default' | 'gutterless' | 'contained'
@@ -40,6 +42,14 @@ const AllRoutes = (props: AllRoutesProps) => {
     } else if (userAccountType === 'Employee') {
         accessibleProtectedRoutes = [...personalRoute, ...othersRoute]
     }
+
+    useEffect(() => {
+        fetch('https://api.ipify.org?format=json')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('Your IP is:', data.ip)
+            })
+    }, [])
 
     return (
         <Routes>
@@ -105,16 +115,23 @@ const AllRoutes = (props: AllRoutesProps) => {
                     />
                 ))}
             </Route>
-
-            <Route
-                path="/access-denied"
-                element={
-                    <AppRoute
-                        routeKey={othersRoute[0].key}
-                        component={othersRoute[0].component}
-                    />
-                }
-            />
+            <Route path="/" element={<ClockRoute />}>
+                <Route
+                    path="/clock"
+                    element={
+                        <Suspense>
+                            <PageContainer {...props}>
+                                <AppRoute
+                                    routeKey="clock"
+                                    component={lazy(
+                                        () => import('@/views/checkInOut'),
+                                    )}
+                                />
+                            </PageContainer>
+                        </Suspense>
+                    }
+                />
+            </Route>
         </Routes>
     )
 }

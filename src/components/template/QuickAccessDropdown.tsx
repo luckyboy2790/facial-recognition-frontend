@@ -102,12 +102,17 @@ const _QuickAccessDropdown = (props: SidePanelProps) => {
                     eventKey={item.label}
                     className="px-0"
                 >
-                    <Link className="flex h-full w-full px-2" to={item.path}>
+                    <a
+                        className="flex h-full w-full px-2"
+                        href={item.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         <span className="flex gap-2 items-center w-full">
                             <span className="text-xl">{item.icon}</span>
                             <span>{item.label}</span>
                         </span>
-                    </Link>
+                    </a>
                 </Dropdown.Item>
             ))}
 

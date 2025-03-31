@@ -50,12 +50,12 @@ const personalRoute: Routes = [
         component: lazy(() => import('@/views/accountSetting')),
         routeAuthority: [],
     },
-    {
-        key: 'clock',
-        path: '/clock',
-        component: lazy(() => import('@/views/checkInOut')),
-        routeAuthority: [],
-    },
+    // {
+    //     key: 'clock',
+    //     path: '/clock',
+    //     component: lazy(() => import('@/views/checkInOut')),
+    //     routeAuthority: [],
+    // },
 ]
 
 export default personalRoute

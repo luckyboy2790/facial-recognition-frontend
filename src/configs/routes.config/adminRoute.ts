@@ -184,12 +184,12 @@ const adminRoute: Routes = [
         component: lazy(() => import('@/views/leaveGroups')),
         routeAuthority: ['leaveGroup.read'],
     },
-    {
-        key: 'clock',
-        path: '/clock',
-        component: lazy(() => import('@/views/checkInOut')),
-        routeAuthority: [],
-    },
+    // {
+    //     key: 'clock',
+    //     path: '/clock',
+    //     component: lazy(() => import('@/views/checkInOut')),
+    //     routeAuthority: [],
+    // },
     {
         key: 'account',
         path: '/account-setting',
