@@ -37,6 +37,7 @@ const IsolatedNavigator = ({ ref }: { ref: Ref<IsolatedNavigatorRef> }) => {
 function AuthProvider({ children }: AuthProviderProps) {
     const signedIn = useSessionUser((state) => state.session.signedIn)
     const user = useSessionUser((state) => state.user)
+    const setting = useSessionUser((state) => state.setting)
     const setUser = useSessionUser((state) => state.setUser)
     const setSessionSignedIn = useSessionUser(
         (state) => state.setSessionSignedIn,
@@ -148,6 +149,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             value={{
                 authenticated,
                 user,
+                setting,
                 signIn,
                 signUp,
                 signOut,

@@ -1092,7 +1092,7 @@ export const countryList = [
     {
         label: 'United Kingdom',
         dialCode: '+44',
-        value: 'GB',
+        value: 'UK',
     },
     {
         label: 'United States',

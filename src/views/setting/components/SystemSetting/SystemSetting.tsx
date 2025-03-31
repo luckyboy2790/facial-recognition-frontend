@@ -8,13 +8,15 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { System } from '../../type'
 import { useNavigate } from 'react-router-dom'
-import { useToken } from '@/store/authStore'
+import { useSessionUser, useToken } from '@/store/authStore'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { useAuth } from '@/auth'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const SystemSetting = () => {
     const navigate = useNavigate()
+
+    const setSetting = useSessionUser((state) => state.setSetting)
 
     const methods = useForm({
         defaultValues: {
@@ -45,13 +47,18 @@ const SystemSetting = () => {
             })
             const data = await response.json()
 
-            setValue('country', data.settingData.country || '')
-            setValue('timezone', data.settingData.timezone || '')
-            setValue('timeFormat', data.settingData.timeFormat || '')
-            setValue('rfidClock', data.settingData.rfidClock || false)
-            setValue('timeInComments', data.settingData.timeInComments || false)
-            setValue('ipRestriction', data.settingData.ipRestriction || '')
-            setSettingId(data.settingData._id)
+            setSetting(data.settingData)
+
+            setValue('country', data.settingData?.country || '')
+            setValue('timezone', data.settingData?.timezone || '')
+            setValue('timeFormat', data.settingData?.timeFormat || '')
+            setValue('rfidClock', data.settingData?.rfidClock || false)
+            setValue(
+                'timeInComments',
+                data.settingData?.timeInComments || false,
+            )
+            setValue('ipRestriction', data.settingData?.ipRestriction || '')
+            setSettingId(data.settingData?._id)
         }
 
         fetchSettings()
@@ -86,6 +93,8 @@ const SystemSetting = () => {
                 if (!response.ok) {
                     throw new Error('Failed to save settings')
                 }
+
+                setSetting(formData)
 
                 toast.push(
                     <Notification type="success">

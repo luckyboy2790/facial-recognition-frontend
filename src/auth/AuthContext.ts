@@ -7,9 +7,19 @@ import type {
     OauthSignInCallbackPayload,
 } from '@/@types/auth'
 
+type Setting = {
+    country: string
+    timezone: string
+    timeFormat: string
+    rfidClock: boolean
+    timeInComments: boolean
+    ipRestriction: string
+}
+
 type Auth = {
     authenticated: boolean
     user: User
+    setting: Setting
     signIn: (values: SignInCredential) => AuthResult
     signUp: (values: SignUpCredential) => AuthResult
     signOut: () => void
@@ -38,6 +48,14 @@ const defaultOAuthSignInPlaceHolder = (
 const AuthContext = createContext<Auth>({
     authenticated: false,
     user: { role: {} },
+    setting: {
+        country: 'UK',
+        timezone: 'Europe/Lisbon',
+        timeFormat: '1',
+        rfidClock: false,
+        timeInComments: false,
+        ipRestriction: '',
+    },
     signIn: async () => defaultFunctionPlaceHolder(),
     signUp: async () => defaultFunctionPlaceHolder(),
     signOut: () => {},

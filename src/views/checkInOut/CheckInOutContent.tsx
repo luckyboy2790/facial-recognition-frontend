@@ -3,6 +3,7 @@ import Clock from './components/Clock'
 import ClockButton from './components/ClockButton'
 import { FaBusinessTime } from 'react-icons/fa'
 import { LuAlarmClockPlus, LuAlarmClockCheck } from 'react-icons/lu'
+import { useAuth } from '@/auth'
 
 const btns = [
     {
@@ -28,12 +29,20 @@ const btns = [
 ]
 
 const CheckInOutContent = () => {
+    const { setting } = useAuth()
+
     return (
         <>
             <Container>
                 <div className="flex flex-col gap-6">
                     <AdaptiveCard>
-                        <Clock timezone="America/Iqaluit" />
+                        <Clock
+                            timezone={
+                                setting.timezone !== ''
+                                    ? setting.timezone
+                                    : 'Europe/Lisbon'
+                            }
+                        />
                     </AdaptiveCard>
                     <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6">
                         {btns.map((item, index) => (
@@ -42,7 +51,11 @@ const CheckInOutContent = () => {
                                 title={item.title}
                                 description={item.description}
                                 icon={item.icon}
-                                timezone="America/Iqaluit"
+                                timezone={
+                                    setting.timezone !== ''
+                                        ? setting.timezone
+                                        : 'Europe/Lisbon'
+                                }
                             />
                         ))}
                     </div>

@@ -9,14 +9,25 @@ type Session = {
     signedIn: boolean
 }
 
+type Setting = {
+    country: string
+    timezone: string
+    timeFormat: string
+    rfidClock: boolean
+    timeInComments: boolean
+    ipRestriction: string
+}
+
 type AuthState = {
     session: Session
     user: User
+    setting: Setting
 }
 
 type AuthAction = {
     setSessionSignedIn: (payload: boolean) => void
     setUser: (payload: User) => void
+    setSetting: (payload: Setting) => void
 }
 
 const getPersistStorage = () => {
@@ -42,6 +53,14 @@ const initialState: AuthState = {
         _id: '',
         role: {},
     },
+    setting: {
+        country: 'UK',
+        timezone: 'Europe/Lisbon',
+        timeFormat: '1',
+        rfidClock: false,
+        timeInComments: false,
+        ipRestriction: '',
+    },
 }
 
 export const useSessionUser = create<AuthState & AuthAction>()(
@@ -59,6 +78,13 @@ export const useSessionUser = create<AuthState & AuthAction>()(
                 set((state) => ({
                     user: {
                         ...state.user,
+                        ...payload,
+                    },
+                })),
+            setSetting: (payload) =>
+                set((state) => ({
+                    setting: {
+                        ...state.setting,
                         ...payload,
                     },
                 })),
