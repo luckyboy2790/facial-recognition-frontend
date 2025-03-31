@@ -104,10 +104,11 @@ const OverviewSection = ({
                         defaultValue={defaultValues?.start_time || ''}
                         render={({ field }) => (
                             <TimePicker
+                                use12Hours
                                 format={
                                     setting.timeFormat === '1'
-                                        ? 'HH:mm a'
-                                        : 'HH:mm'
+                                        ? 'h:mm a'
+                                        : 'h:mm'
                                 }
                                 className="w-full"
                                 size="large"
@@ -137,10 +138,11 @@ const OverviewSection = ({
                         defaultValue={defaultValues?.off_time || ''}
                         render={({ field }) => (
                             <TimePicker
+                                use12Hours
                                 format={
                                     setting.timeFormat === '1'
-                                        ? 'HH:mm a'
-                                        : 'HH:mm'
+                                        ? 'h:mm a'
+                                        : 'h:mm'
                                 }
                                 className="w-full"
                                 size="large"

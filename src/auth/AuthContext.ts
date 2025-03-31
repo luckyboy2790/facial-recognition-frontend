@@ -12,7 +12,6 @@ type Setting = {
     timezone: string
     timeFormat: string
     rfidClock: boolean
-    timeInComments: boolean
     ipRestriction: string
 }
 
@@ -53,7 +52,6 @@ const AuthContext = createContext<Auth>({
         timezone: 'Europe/Lisbon',
         timeFormat: '1',
         rfidClock: false,
-        timeInComments: false,
         ipRestriction: '',
     },
     signIn: async () => defaultFunctionPlaceHolder(),

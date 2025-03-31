@@ -1,4 +1,5 @@
-import { PasswordInput } from '@/components/shared'
+import { useAuth } from '@/auth'
+import { DebouceInput, PasswordInput } from '@/components/shared'
 import { Button, Input, Notification, toast } from '@/components/ui'
 import {
     apiAttendanceCheckOut,
@@ -25,25 +26,19 @@ const PinInput = ({
 
     const { token } = useToken()
 
-    const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value
-        if (/^\d*$/.test(inputValue)) {
-            setPin(inputValue)
-        }
-    }
+    const { setting } = useAuth()
 
-    const handleMatch = async () => {
+    const handleMatch = async (pinData?: string) => {
         const now = new Date()
         const date = now.toISOString().split('T')[0]
-        const timeWithTimezone =
-            new Intl.DateTimeFormat('en-US', {
-                timeZone: timezone,
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                fractionalSecondDigits: 3,
-            }).format(now) + 'Z'
+        const timeWithTimezone = new Intl.DateTimeFormat('en-US', {
+            timeZone: timezone,
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            fractionalSecondDigits: 3,
+        }).format(now)
 
         let time_in: string | undefined = ''
         let break_in: string | undefined = ''
@@ -53,7 +48,7 @@ const PinInput = ({
 
         try {
             const employee: Employee = await apiPinEmployeeCheckOut({
-                pin: pin,
+                pin: setting.rfidClock === true ? pinData : pin,
             })
 
             console.log(employee)
@@ -76,14 +71,13 @@ const PinInput = ({
                     if (attendanceData && attendanceData.time_in) {
                         const date = new Date(attendanceData.time_in)
 
-                        time_in =
-                            new Intl.DateTimeFormat('en-US', {
-                                hour12: false,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                fractionalSecondDigits: 3,
-                            }).format(date) + 'Z'
+                        time_in = new Intl.DateTimeFormat('en-US', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date)
 
                         attendanceId = attendanceData._id
                     }
@@ -91,27 +85,25 @@ const PinInput = ({
                     if (attendanceData && attendanceData.break_in) {
                         const date = new Date(attendanceData.break_in)
 
-                        break_in =
-                            new Intl.DateTimeFormat('en-US', {
-                                hour12: false,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                fractionalSecondDigits: 3,
-                            }).format(date) + 'Z'
+                        break_in = new Intl.DateTimeFormat('en-US', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date)
                     }
 
                     if (attendanceData && attendanceData.break_out) {
                         const date = new Date(attendanceData.break_out)
 
-                        break_out =
-                            new Intl.DateTimeFormat('en-US', {
-                                hour12: false,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                fractionalSecondDigits: 3,
-                            }).format(date) + 'Z'
+                        break_out = new Intl.DateTimeFormat('en-US', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date)
                     }
 
                     attendanceId = attendanceData._id
@@ -233,14 +225,28 @@ const PinInput = ({
         }
     }
 
+    const handlePinChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        const inputValue = e.target.value
+
+        if (/^\d*$/.test(inputValue)) {
+            setPin(inputValue)
+
+            if (setting.rfidClock === true) {
+                handleMatch(inputValue)
+            }
+        }
+    }
+
     return (
         <>
             <div className="flex flex-col items-center justify-center gap-5 text-white">
                 <h2 className="mb-6 text-2xl font-semibold">Enter PIN code</h2>
-                <PasswordInput
-                    value={pin}
-                    onChange={handlePinChange}
+                <DebouceInput
+                    onChange={(e) => handlePinChange(e)}
                     inputMode="numeric"
+                    type="password"
                 />
             </div>
             <div className="text-right mt-6">

@@ -14,7 +14,6 @@ type Setting = {
     timezone: string
     timeFormat: string
     rfidClock: boolean
-    timeInComments: boolean
     ipRestriction: string
 }
 
@@ -58,7 +57,6 @@ const initialState: AuthState = {
         timezone: 'Europe/Lisbon',
         timeFormat: '1',
         rfidClock: false,
-        timeInComments: false,
         ipRestriction: '',
     },
 }

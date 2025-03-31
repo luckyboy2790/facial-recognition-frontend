@@ -3,6 +3,5 @@ export type System = {
     timezone: string
     timeFormat: string
     rfidClock: boolean
-    timeInComments: boolean
     ipRestriction: string
 }

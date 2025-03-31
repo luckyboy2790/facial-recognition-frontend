@@ -51,9 +51,9 @@ const AttendanceListTable = () => {
         if (!time) return ''
 
         if (formatType === '1') {
-            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+            return dayjs(time, 'HH:mm:ss A').format('h:mm:ss a')
         } else if (formatType === '2') {
-            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+            return dayjs(time, 'HH:mm:ss A').format('h:mm:ss')
         }
         return time
     }

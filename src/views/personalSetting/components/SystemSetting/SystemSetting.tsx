@@ -20,7 +20,6 @@ const SystemSetting = () => {
             timezone: '',
             timeFormat: '',
             rfidClock: false,
-            timeInComments: false,
             ipRestriction: '',
         },
     })
@@ -45,7 +44,6 @@ const SystemSetting = () => {
             setValue('timezone', data.settingData.timezone || '')
             setValue('timeFormat', data.settingData.timeFormat || '')
             setValue('rfidClock', data.settingData.rfidClock || false)
-            setValue('timeInComments', data.settingData.timeInComments || false)
             setValue('ipRestriction', data.settingData.ipRestriction || '')
             setSettingId(data.settingData._id)
         }

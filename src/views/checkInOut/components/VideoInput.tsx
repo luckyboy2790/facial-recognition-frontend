@@ -185,15 +185,14 @@ class VideoInput extends Component<
 
             const now = new Date()
             const date = now.toISOString().split('T')[0]
-            const timeWithTimezone =
-                new Intl.DateTimeFormat('en-US', {
-                    timeZone: this.props.timezone,
-                    hour12: false,
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    fractionalSecondDigits: 3,
-                }).format(now) + 'Z'
+            const timeWithTimezone = new Intl.DateTimeFormat('en-US', {
+                timeZone: this.props.timezone,
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                fractionalSecondDigits: 3,
+            }).format(now)
 
             let time_in: string | undefined = ''
             let break_in: string | undefined = ''
@@ -214,14 +213,13 @@ class VideoInput extends Component<
                     if (attendanceData && attendanceData.time_in) {
                         const date = new Date(attendanceData.time_in)
 
-                        time_in =
-                            new Intl.DateTimeFormat('en-US', {
-                                hour12: false,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                fractionalSecondDigits: 3,
-                            }).format(date) + 'Z'
+                        time_in = new Intl.DateTimeFormat('en-US', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date)
 
                         attendanceId = attendanceData._id
                     }
@@ -229,27 +227,25 @@ class VideoInput extends Component<
                     if (attendanceData && attendanceData.break_in) {
                         const date = new Date(attendanceData.break_in)
 
-                        break_in =
-                            new Intl.DateTimeFormat('en-US', {
-                                hour12: false,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                fractionalSecondDigits: 3,
-                            }).format(date) + 'Z'
+                        break_in = new Intl.DateTimeFormat('en-US', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date)
                     }
 
                     if (attendanceData && attendanceData.break_out) {
                         const date = new Date(attendanceData.break_out)
 
-                        break_out =
-                            new Intl.DateTimeFormat('en-US', {
-                                hour12: false,
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit',
-                                fractionalSecondDigits: 3,
-                            }).format(date) + 'Z'
+                        break_out = new Intl.DateTimeFormat('en-US', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            fractionalSecondDigits: 3,
+                        }).format(date)
                     }
 
                     attendanceId = attendanceData._id

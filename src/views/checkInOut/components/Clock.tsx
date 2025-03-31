@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Word } from './Word'
 import { Number } from './Number'
+import { useAuth } from '@/auth'
 
 interface LocationDisplayProps {
     timezone: string
@@ -12,6 +13,8 @@ const Clock: React.FC<LocationDisplayProps> = ({ timezone }) => {
     const startTime = new Date(Date.now()).toLocaleTimeString('en-US', {
         timeZone: timezone,
     })
+
+    const { setting } = useAuth()
 
     const [time, setTime] = useState<string>(startTime)
     const [day, setDay] = useState<number>(0)
@@ -29,6 +32,7 @@ const Clock: React.FC<LocationDisplayProps> = ({ timezone }) => {
                 setTime(
                     currentTime.toLocaleTimeString('en-US', {
                         timeZone: timezone,
+                        hour12: setting.timeFormat === '1' ? true : false,
                     }),
                 )
 
@@ -77,10 +81,12 @@ const Clock: React.FC<LocationDisplayProps> = ({ timezone }) => {
                     <Word value={':'} hidden={false} />
                     <Number value={parseInt(seconds, 10)} />
                 </div>
-                <div className="ampm">
-                    <Word value={'AM'} hidden={pm} />
-                    <Word value={'PM'} hidden={!pm} />
-                </div>
+                {setting.timeFormat === '1' && (
+                    <div className="ampm">
+                        <Word value={'AM'} hidden={pm} />
+                        <Word value={'PM'} hidden={!pm} />
+                    </div>
+                )}
             </div>
         </div>
     )

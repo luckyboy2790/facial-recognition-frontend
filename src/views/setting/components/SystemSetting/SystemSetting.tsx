@@ -24,7 +24,6 @@ const SystemSetting = () => {
             timezone: '',
             timeFormat: '',
             rfidClock: false,
-            timeInComments: false,
             ipRestriction: '',
         },
     })
@@ -53,10 +52,6 @@ const SystemSetting = () => {
             setValue('timezone', data.settingData?.timezone || '')
             setValue('timeFormat', data.settingData?.timeFormat || '')
             setValue('rfidClock', data.settingData?.rfidClock || false)
-            setValue(
-                'timeInComments',
-                data.settingData?.timeInComments || false,
-            )
             setValue('ipRestriction', data.settingData?.ipRestriction || '')
             setSettingId(data.settingData?._id)
         }
@@ -74,7 +69,18 @@ const SystemSetting = () => {
             return
         } else {
             try {
-                console.log(JSON.stringify(formData))
+                if (!formData.timeFormat || formData.timeFormat === '') {
+                    toast.push(
+                        <Notification type="warning">
+                            You have to select time format.
+                        </Notification>,
+                        {
+                            placement: 'top-center',
+                        },
+                    )
+
+                    return
+                }
 
                 const response = await fetch(
                     `${domain}/api/setting/set_setting/${settingId ? settingId : undefined}`,

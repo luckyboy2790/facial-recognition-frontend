@@ -119,8 +119,9 @@ const OverviewSection = ({
                     render={({ field }) => (
                         <TimePicker
                             format={
-                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                                setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
                             }
+                            use12Hours
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
@@ -149,8 +150,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.time_out || ''}
                     render={({ field }) => (
                         <TimePicker
+                            use12Hours
                             format={
-                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                                setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
                             }
                             className="w-full"
                             size="large"
@@ -180,8 +182,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.break_in || ''}
                     render={({ field }) => (
                         <TimePicker
+                            use12Hours
                             format={
-                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                                setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
                             }
                             className="w-full"
                             size="large"
@@ -211,8 +214,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.break_out || ''}
                     render={({ field }) => (
                         <TimePicker
+                            use12Hours
                             format={
-                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                                setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
                             }
                             className="w-full"
                             size="large"
