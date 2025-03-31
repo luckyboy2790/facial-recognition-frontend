@@ -2,9 +2,11 @@ import { useMemo } from 'react'
 import useCustomerList from '../hooks/useEmployeeList'
 import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
-import type { Customer } from '../types'
+import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
+import dayjs from 'dayjs'
+import { useAuth } from '@/auth'
 
 const CustomerListTable = () => {
     const {
@@ -17,7 +19,20 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
-    const columns: ColumnDef<Customer>[] = useMemo(
+    const { setting } = useAuth()
+
+    const formatTime = (time: string | undefined, formatType: string) => {
+        if (!time) return ''
+
+        if (formatType === '1') {
+            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+        } else if (formatType === '2') {
+            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+        }
+        return time
+    }
+
+    const columns: ColumnDef<Attendance>[] = useMemo(
         () => [
             {
                 header: 'Date',
@@ -30,10 +45,26 @@ const CustomerListTable = () => {
             {
                 header: 'Time In',
                 accessorKey: 'time_in',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.time_in,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Time Out',
                 accessorKey: 'time_out',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.time_out,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Total Hours',
@@ -84,7 +115,7 @@ const CustomerListTable = () => {
                 pageSize: tableData.pageSize as number,
             }}
             checkboxChecked={(row) =>
-                selectedCustomer.some((selected) => selected.id === row.id)
+                selectedCustomer.some((selected) => selected._id === row._id)
             }
             onPaginationChange={handlePaginationChange}
             onSelectChange={handleSelectChange}

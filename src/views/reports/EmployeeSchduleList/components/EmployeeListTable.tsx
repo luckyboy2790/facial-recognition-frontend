@@ -6,6 +6,8 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Schedule } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
+import { useAuth } from '@/auth'
+import dayjs from 'dayjs'
 
 const statusColor: Record<string, string> = {
     Present:
@@ -24,6 +26,19 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
+    const { setting } = useAuth()
+
+    const formatTime = (time: string | undefined, formatType: string) => {
+        if (!time) return ''
+
+        if (formatType === '1') {
+            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+        } else if (formatType === '2') {
+            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+        }
+        return time
+    }
+
     const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
@@ -33,10 +48,26 @@ const CustomerListTable = () => {
             {
                 header: 'Start Time',
                 accessorKey: 'start_time',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.start_time,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Off Time',
                 accessorKey: 'off_time',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.off_time,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Start Date',

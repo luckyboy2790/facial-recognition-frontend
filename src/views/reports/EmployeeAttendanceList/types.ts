@@ -1,3 +1,5 @@
+import { Employee } from '../EmployeeList/types'
+
 type PersonalInfo = {
     location: string
     title: string
@@ -40,7 +42,7 @@ type Subscription = {
 }
 
 export type GetCustomersListResponse = {
-    list: Customer[]
+    list: Attendance[]
     total: number
 }
 
@@ -49,19 +51,23 @@ export type Filter = {
     purchaseChannel: Array<string>
 }
 
-export type Customer = {
-    id: string
-    name: string
-    firstName: string
-    lastName: string
-    email: string
-    img: string
-    role: string
-    lastOnline: number
-    status: string
-    personalInfo: PersonalInfo
-    orderHistory: OrderHistory[]
-    paymentMethod: PaymentMethod[]
-    subscription: Subscription[]
-    totalSpending: number
+export type Attendance = {
+    _id: string
+    comment?: string
+    date?: string
+    employee: string
+    employeeData: Employee
+    reason?: string
+    time_in?: string
+    time_in_24?: string
+    time_out?: string
+    time_out_24?: string
+    break_in?: string
+    break_in_24?: string
+    break_out?: string
+    break_out_24?: string
+    total_hours?: string
+    __v: 0
+    status_timein: string
+    status_timeout: string
 }

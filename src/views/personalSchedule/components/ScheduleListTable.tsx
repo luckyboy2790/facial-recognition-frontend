@@ -12,6 +12,8 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Schedule } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { apiArchiveSchedule } from '@/services/ScheduleService'
+import { useAuth } from '@/auth'
+import dayjs from 'dayjs'
 
 const statusColor: Record<string, string> = {
     Previous:
@@ -21,43 +23,6 @@ const statusColor: Record<string, string> = {
 
 type ArchiveResponse = {
     schedule: Schedule
-}
-
-const ActionColumn = ({
-    onEdit,
-    onArchive,
-    row,
-}: {
-    onEdit: () => void
-    onArchive: () => void
-    row: Schedule
-}) => {
-    return (
-        <div className="flex gap-3 items-center">
-            {row.status === 'Present' && (
-                <>
-                    <Tooltip title="Edit">
-                        <div
-                            className={`text-xl cursor-pointer select-none font-semibold`}
-                            role="button"
-                            onClick={onEdit}
-                        >
-                            <TbPencil />
-                        </div>
-                    </Tooltip>
-                    <Tooltip title="Archive">
-                        <div
-                            className={`text-xl cursor-pointer select-none font-semibold`}
-                            role="button"
-                            onClick={onArchive}
-                        >
-                            <IoArchiveOutline />
-                        </div>
-                    </Tooltip>
-                </>
-            )}
-        </div>
-    )
 }
 
 const ScheduleListTable = () => {
@@ -70,30 +35,21 @@ const ScheduleListTable = () => {
         isLoading,
         setTableData,
         setSelectAllSchedule,
-        setSelectedSchedule,
         selectedSchedule,
         mutate,
     } = useScheduleList()
 
-    console.log(scheduleList)
+    const { setting } = useAuth()
 
-    const handleEdit = (schedule: Schedule) => {
-        navigate(`/schedule-edit/${schedule._id}`)
-    }
+    const formatTime = (time: string | undefined, formatType: string) => {
+        if (!time) return ''
 
-    const handleArchiveSchedule = async (scheduleId: string) => {
-        try {
-            console.log(scheduleId)
-            const schedule: ArchiveResponse = await apiArchiveSchedule({
-                scheduleId,
-            })
-
-            if (schedule.schedule) {
-                mutate()
-            }
-        } catch (error) {
-            console.error('Error archiving schedule:', error)
+        if (formatType === '1') {
+            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+        } else if (formatType === '2') {
+            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
         }
+        return time
     }
 
     const columns: ColumnDef<Schedule>[] = useMemo(
@@ -105,6 +61,19 @@ const ScheduleListTable = () => {
             {
                 header: 'Time (Start-Off)',
                 accessorKey: 'formattedTime',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.start_time,
+                            setting.timeFormat,
+                        )}
+                        {' - '}
+                        {formatTime(
+                            props.row.original.off_time,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Hours',

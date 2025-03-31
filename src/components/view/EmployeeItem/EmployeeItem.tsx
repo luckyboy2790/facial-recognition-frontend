@@ -3,6 +3,7 @@ import Table from '@/components/ui/Table'
 import dayjs from 'dayjs'
 import type { ReactNode, Ref } from 'react'
 import utc from 'dayjs/plugin/utc'
+import { useAuth } from '@/auth'
 dayjs.extend(utc)
 
 type TaskItemProps = Partial<{
@@ -43,6 +44,19 @@ const TaskItem = (props: TaskItemProps) => {
         itemType,
         ...rest
     } = props
+
+    const { setting } = useAuth()
+
+    const formatTime = (time: string | null, formatType: string) => {
+        if (!time) return '-'
+
+        if (formatType === '1') {
+            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+        } else if (formatType === '2') {
+            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+        }
+        return time
+    }
 
     return (
         <Tr ref={ref} {...rest}>
@@ -95,7 +109,9 @@ const TaskItem = (props: TaskItemProps) => {
                 )}
             >
                 <span className={classNames('heading-text font-semibold')}>
-                    {recentAbsenceDate ? recentAbsenceDate : '-'}
+                    {recentAbsenceDate
+                        ? formatTime(recentAbsenceDate, setting.timeFormat)
+                        : '-'}
                 </span>
             </Td>
 

@@ -12,6 +12,8 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Schedule } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { apiArchiveSchedule } from '@/services/ScheduleService'
+import dayjs from 'dayjs'
+import { useAuth } from '@/auth'
 
 const statusColor: Record<string, string> = {
     Previous:
@@ -75,7 +77,7 @@ const ScheduleListTable = () => {
         mutate,
     } = useScheduleList()
 
-    console.log(scheduleList)
+    const { setting } = useAuth()
 
     const handleEdit = (schedule: Schedule) => {
         navigate(`/schedule-edit/${schedule._id}`)
@@ -96,6 +98,17 @@ const ScheduleListTable = () => {
         }
     }
 
+    const formatTime = (time: string | undefined, formatType: string) => {
+        if (!time) return ''
+
+        if (formatType === '1') {
+            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+        } else if (formatType === '2') {
+            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+        }
+        return time
+    }
+
     const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
@@ -105,6 +118,19 @@ const ScheduleListTable = () => {
             {
                 header: 'Time (Start-Off)',
                 accessorKey: 'formattedTime',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.start_time,
+                            setting.timeFormat,
+                        )}
+                        {' - '}
+                        {formatTime(
+                            props.row.original.off_time,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Hours',

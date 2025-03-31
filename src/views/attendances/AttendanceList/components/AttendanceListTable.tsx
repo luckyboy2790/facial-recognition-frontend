@@ -8,6 +8,8 @@ import { TbPencil } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
+import { useAuth } from '@/auth'
+import dayjs from 'dayjs'
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
@@ -39,10 +41,21 @@ const AttendanceListTable = () => {
         selectedAttendance,
     } = useAttendanceList()
 
-    console.log(attendanceList)
+    const { setting } = useAuth()
 
     const handleEdit = (attendance: Attendance) => {
         navigate(`/attendance-edit/${attendance._id}`)
+    }
+
+    const formatTime = (time: string | undefined, formatType: string) => {
+        if (!time) return ''
+
+        if (formatType === '1') {
+            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
+        } else if (formatType === '2') {
+            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+        }
+        return time
     }
 
     const columns: ColumnDef<Attendance>[] = useMemo(
@@ -58,18 +71,50 @@ const AttendanceListTable = () => {
             {
                 header: 'Time In',
                 accessorKey: 'time_in',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.time_in,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Time Out',
                 accessorKey: 'time_out',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.time_out,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Break In',
                 accessorKey: 'break_in',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.break_in,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Break Out',
                 accessorKey: 'break_out',
+                cell: (props) => (
+                    <div>
+                        {formatTime(
+                            props.row.original.break_out,
+                            setting.timeFormat,
+                        )}
+                    </div>
+                ),
             },
             {
                 header: 'Total Hours',

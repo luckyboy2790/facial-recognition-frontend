@@ -11,6 +11,7 @@ import { Employee } from '@/views/employees/EmployeeList/types'
 import { format } from 'date-fns'
 import dayjs from 'dayjs'
 import { DatePicker, TimePicker } from 'antd'
+import { useAuth } from '@/auth'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -39,6 +40,8 @@ const OverviewSection = ({
     defaultValues,
 }: OverviewSectionProps & { defaultValues?: Partial<ScheduleFormSchema> }) => {
     const [employeeOptions, setEmployeeOptions] = useState<OptionType[]>([])
+
+    const { setting } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -101,7 +104,11 @@ const OverviewSection = ({
                         defaultValue={defaultValues?.start_time || ''}
                         render={({ field }) => (
                             <TimePicker
-                                format={'HH:mm'}
+                                format={
+                                    setting.timeFormat === '1'
+                                        ? 'HH:mm a'
+                                        : 'HH:mm'
+                                }
                                 className="w-full"
                                 size="large"
                                 style={{ height: '48px', borderRadius: '12px' }}
@@ -130,7 +137,11 @@ const OverviewSection = ({
                         defaultValue={defaultValues?.off_time || ''}
                         render={({ field }) => (
                             <TimePicker
-                                format={'HH:mm'}
+                                format={
+                                    setting.timeFormat === '1'
+                                        ? 'HH:mm a'
+                                        : 'HH:mm'
+                                }
                                 className="w-full"
                                 size="large"
                                 style={{ height: '48px', borderRadius: '12px' }}

@@ -8,6 +8,7 @@ import { apiGetTotalEmployeeList } from '@/services/employeeService'
 import { Input, Select } from '@/components/ui'
 import { TimePicker, DatePicker } from 'antd'
 import dayjs from 'dayjs'
+import { useAuth } from '@/auth'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -29,6 +30,8 @@ const OverviewSection = ({
     defaultValues?: Partial<AttendanceFormSchema>
 }) => {
     const [employeeOptions, setEmployeeOptions] = useState<OptionType[]>([])
+
+    const { setting } = useAuth()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -115,7 +118,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.time_in || ''}
                     render={({ field }) => (
                         <TimePicker
-                            format={'HH:mm'}
+                            format={
+                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                            }
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
@@ -144,7 +149,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.time_out || ''}
                     render={({ field }) => (
                         <TimePicker
-                            format={'HH:mm'}
+                            format={
+                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                            }
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
@@ -173,7 +180,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.break_in || ''}
                     render={({ field }) => (
                         <TimePicker
-                            format={'HH:mm'}
+                            format={
+                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                            }
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
@@ -202,7 +211,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.break_out || ''}
                     render={({ field }) => (
                         <TimePicker
-                            format={'HH:mm'}
+                            format={
+                                setting.timeFormat === '1' ? 'HH:mm a' : 'HH:mm'
+                            }
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
