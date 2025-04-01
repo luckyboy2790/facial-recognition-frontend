@@ -24,6 +24,7 @@ const ProfileImage = ({
     const [faceDescriptor, setFaceDescriptor] = useState<number[] | null>(null)
     const [modelsLoaded, setModelsLoaded] = useState(false)
     const [isUpdateImage, setIsUpdateImage] = useState(false)
+    const [isChecked, setIsChecked] = useState(false)
 
     const [currentImageURL, setCurrentImageURL] = useState<string | null>(null)
 
@@ -101,9 +102,14 @@ const ProfileImage = ({
 
                     setValue('faceDescriptor', descriptorArray)
                     setFaceDescriptor(descriptorArray)
+
+                    setIsChecked(true)
                 } else {
                     console.log('No face detected')
                     setValue('faceDescriptor', [])
+                    setFaceDescriptor([])
+
+                    setIsChecked(false)
                 }
             } catch (error) {
                 console.error('Error detecting face:', error)
@@ -165,10 +171,22 @@ const ProfileImage = ({
                                             : 'Loading Models...'}
                                     </Button>
                                 </Upload>
-                                {((faceDescriptor && newCustomer) ||
-                                    isUpdateImage) && (
+                                {((faceDescriptor &&
+                                    faceDescriptor.length > 0 &&
+                                    newCustomer) ||
+                                    isChecked) && (
                                     <p className="mt-2 text-sm text-green-600">
                                         Image uploaded successfully.
+                                    </p>
+                                )}
+                                {((faceDescriptor &&
+                                    faceDescriptor.length === 0 &&
+                                    newCustomer) ||
+                                    (!faceDescriptor && newCustomer) ||
+                                    !isChecked) && (
+                                    <p className="mt-2 text-sm text-red-600">
+                                        Image is not recognized, please upload
+                                        other.
                                     </p>
                                 )}
                             </>
