@@ -181,9 +181,12 @@ const ProfileImage = ({
                                 )}
                                 {((faceDescriptor &&
                                     faceDescriptor.length === 0 &&
-                                    newCustomer) ||
-                                    (!faceDescriptor && newCustomer) ||
-                                    !isChecked) && (
+                                    newCustomer &&
+                                    isUpdateImage) ||
+                                    (!faceDescriptor &&
+                                        newCustomer &&
+                                        isUpdateImage) ||
+                                    (!isChecked && isUpdateImage)) && (
                                     <p className="mt-2 text-sm text-red-600">
                                         Image is not recognized, please upload
                                         other.
