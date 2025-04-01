@@ -88,10 +88,14 @@ class VideoInput extends Component<
                 },
             )
 
-            if (this.props.user.account_type === 'Employee') {
-                this.props.navigate('/personal/dashboard')
+            if (this.props.token) {
+                if (this.props.user.account_type === 'Employee') {
+                    this.props.navigate('/personal/dashboard')
+                } else {
+                    this.props.navigate('/employee')
+                }
             } else {
-                this.props.navigate('/employee')
+                this.props.navigate('/sign-in')
             }
             return
         }
