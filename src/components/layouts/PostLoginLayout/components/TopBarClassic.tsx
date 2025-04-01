@@ -23,25 +23,30 @@ const TopBarClassic = ({ children }: CommonProps) => {
         >
             <div className="flex flex-auto min-w-0">
                 <div className="flex flex-col flex-auto min-h-screen min-w-0 relative w-full">
-                    <Header
-                        container
-                        className="shadow dark:shadow-2xl"
-                        headerStart={
-                            <>
-                                {smaller.lg && <MobileNav />}
-                                <HeaderLogo />
-                            </>
-                        }
-                        headerMiddle={<>{larger.lg && <HorizontalNav />}</>}
-                        headerEnd={
-                            <>
-                                <LanguageSelector />
-                                <SidePanel />
-                                <QuickAccessDropdown />
-                                <UserProfileDropdown hoverable={false} />
-                            </>
-                        }
-                    />
+                    {location.pathname !== '/clock' && (
+                        <Header
+                            container
+                            className="shadow dark:shadow-2xl"
+                            headerStart={
+                                <>
+                                    {smaller.lg && <MobileNav />}
+                                    <HeaderLogo />
+                                </>
+                            }
+                            headerMiddle={<>{larger.lg && <HorizontalNav />}</>}
+                            headerEnd={
+                                <>
+                                    <LanguageSelector />
+                                    <SidePanel />
+                                    <QuickAccessDropdown />
+                                    <UserProfileDropdown hoverable={false} />
+                                </>
+                            }
+                        />
+                    )}
+                    {location.pathname === '/clock' && (
+                        <SidePanel className="z-10 fixed ltr:right-0 rtl:left-0 top-96 p-3 rounded-none ltr:rounded-tl-lg ltr:rounded-bl-lg rtl:rounded-tr-lg rtl:rounded-br-lg text-white text-xl cursor-pointer select-none bg-primary hover:!bg-primary hover:text-white" />
+                    )}
                     {children}
                 </div>
             </div>

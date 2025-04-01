@@ -54,8 +54,6 @@ const ClockButton = (props: BoardCardProps) => {
     }
 
     useEffect(() => {
-        console.log(recoStatus)
-
         if (recoStatus === false) {
             toast.push(
                 <Notification type="warning">

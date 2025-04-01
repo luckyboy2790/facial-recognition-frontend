@@ -21,20 +21,27 @@ const StackedSide = ({ children }: CommonProps) => {
             className="app-layout-stacked-side flex flex-auto flex-col"
         >
             <div className="flex flex-auto min-w-0">
-                {larger.lg && <StackedSideNav />}
+                {larger.lg && location.pathname !== '/clock' && (
+                    <StackedSideNav />
+                )}
                 <div className="flex flex-col flex-auto min-h-screen min-w-0 relative w-full">
-                    <Header
-                        className="shadow dark:shadow-2xl"
-                        headerStart={<>{smaller.lg && <MobileNav />}</>}
-                        headerEnd={
-                            <>
-                                <LanguageSelector />
-                                <SidePanel />
-                                <QuickAccessDropdown />
-                                <UserProfileDropdown hoverable={false} />
-                            </>
-                        }
-                    />
+                    {location.pathname !== '/clock' && (
+                        <Header
+                            className="shadow dark:shadow-2xl"
+                            headerStart={<>{smaller.lg && <MobileNav />}</>}
+                            headerEnd={
+                                <>
+                                    <LanguageSelector />
+                                    <SidePanel />
+                                    <QuickAccessDropdown />
+                                    <UserProfileDropdown hoverable={false} />
+                                </>
+                            }
+                        />
+                    )}
+                    {location.pathname === '/clock' && (
+                        <SidePanel className="z-10 fixed ltr:right-0 rtl:left-0 top-96 p-3 rounded-none ltr:rounded-tl-lg ltr:rounded-bl-lg rtl:rounded-tr-lg rtl:rounded-br-lg text-white text-xl cursor-pointer select-none bg-primary hover:!bg-primary hover:text-white" />
+                    )}
                     <div className="h-full flex flex-auto flex-col">
                         {children}
                     </div>

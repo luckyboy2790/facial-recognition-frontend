@@ -41,6 +41,9 @@ const CollapsibleSide = ({ children }: CommonProps) => {
                             }
                         />
                     )}
+                    {location.pathname === '/clock' && (
+                        <SidePanel className="z-10 fixed ltr:right-0 rtl:left-0 top-96 p-3 rounded-none ltr:rounded-tl-lg ltr:rounded-bl-lg rtl:rounded-tr-lg rtl:rounded-br-lg text-white text-xl cursor-pointer select-none bg-primary hover:!bg-primary hover:text-white" />
+                    )}
                     <div className="h-full flex flex-auto flex-col">
                         {children}
                     </div>

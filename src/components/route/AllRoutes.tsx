@@ -43,14 +43,6 @@ const AllRoutes = (props: AllRoutesProps) => {
         accessibleProtectedRoutes = [...personalRoute, ...othersRoute]
     }
 
-    useEffect(() => {
-        fetch('https://api.ipify.org?format=json')
-            .then((res) => res.json())
-            .then((data) => {
-                console.log('Your IP is:', data.ip)
-            })
-    }, [])
-
     return (
         <Routes>
             <Route path="/" element={<ProtectedRoute />}>

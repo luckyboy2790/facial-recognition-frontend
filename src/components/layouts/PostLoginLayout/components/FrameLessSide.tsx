@@ -80,7 +80,7 @@ const FrameLessSide = ({ children }: CommonProps) => {
             )}
         >
             <div className="flex flex-auto min-w-0">
-                {larger.lg && (
+                {larger.lg && location.pathname !== '/clock' && (
                     <SideNav
                         background={false}
                         className={classNames('dark pt-6')}
@@ -90,27 +90,34 @@ const FrameLessSide = ({ children }: CommonProps) => {
                 )}
                 <FrameLessGap className="min-h-screen min-w-0 relative w-full">
                     <div className="bg-white dark:bg-gray-900 flex flex-col flex-1 h-full rounded-2xl">
-                        <Header
-                            className={classNames(
-                                'rounded-t-2xl dark:bg-gray-900',
-                                isSticky && 'shadow !rounded-none',
-                            )}
-                            headerStart={
-                                <>
-                                    {smaller.lg && <MobileNav />}
-                                    {larger.lg && <SideNavToggle />}
-                                    <Search />
-                                </>
-                            }
-                            headerEnd={
-                                <>
-                                    <LanguageSelector />
-                                    <SidePanel />
-                                    <QuickAccessDropdown />
-                                    <UserProfileDropdown hoverable={false} />
-                                </>
-                            }
-                        />
+                        {location.pathname !== '/clock' && (
+                            <Header
+                                className={classNames(
+                                    'rounded-t-2xl dark:bg-gray-900',
+                                    isSticky && 'shadow !rounded-none',
+                                )}
+                                headerStart={
+                                    <>
+                                        {smaller.lg && <MobileNav />}
+                                        {larger.lg && <SideNavToggle />}
+                                        <Search />
+                                    </>
+                                }
+                                headerEnd={
+                                    <>
+                                        <LanguageSelector />
+                                        <SidePanel />
+                                        <QuickAccessDropdown />
+                                        <UserProfileDropdown
+                                            hoverable={false}
+                                        />
+                                    </>
+                                }
+                            />
+                        )}
+                        {location.pathname === '/clock' && (
+                            <SidePanel className="z-10 fixed ltr:right-0 rtl:left-0 top-96 p-3 rounded-none ltr:rounded-tl-lg ltr:rounded-bl-lg rtl:rounded-tr-lg rtl:rounded-br-lg text-white text-xl cursor-pointer select-none bg-primary hover:!bg-primary hover:text-white" />
+                        )}
                         <div className="h-full flex flex-auto flex-col">
                             {children}
                         </div>

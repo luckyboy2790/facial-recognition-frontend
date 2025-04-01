@@ -96,33 +96,38 @@ const ContentOverlay = ({ children }: CommonProps) => {
         >
             <div className="flex flex-auto min-w-0">
                 <div className="flex flex-col flex-auto min-h-screen min-w-0 relative w-full">
-                    <Header
-                        container
-                        className={classNames(
-                            'fixed',
-                            isSticky
-                                ? 'shadow dark:shadow-2xl'
-                                : 'bg-transparent dark',
-                        )}
-                        wrapperClass="px-0"
-                        headerStart={
-                            <>
-                                {smaller.lg && <MobileNav />}
-                                <HeaderLogo
-                                    {...(!isSticky ? { mode: 'dark' } : {})}
-                                />
-                            </>
-                        }
-                        headerMiddle={<>{larger.lg && <HorizontalNav />}</>}
-                        headerEnd={
-                            <>
-                                <LanguageSelector />
-                                <SidePanel />
-                                <QuickAccessDropdown />
-                                <UserProfileDropdown hoverable={false} />
-                            </>
-                        }
-                    />
+                    {location.pathname !== '/clock' && (
+                        <Header
+                            container
+                            className={classNames(
+                                'fixed',
+                                isSticky
+                                    ? 'shadow dark:shadow-2xl'
+                                    : 'bg-transparent dark',
+                            )}
+                            wrapperClass="px-0"
+                            headerStart={
+                                <>
+                                    {smaller.lg && <MobileNav />}
+                                    <HeaderLogo
+                                        {...(!isSticky ? { mode: 'dark' } : {})}
+                                    />
+                                </>
+                            }
+                            headerMiddle={<>{larger.lg && <HorizontalNav />}</>}
+                            headerEnd={
+                                <>
+                                    <LanguageSelector />
+                                    <SidePanel />
+                                    <QuickAccessDropdown />
+                                    <UserProfileDropdown hoverable={false} />
+                                </>
+                            }
+                        />
+                    )}
+                    {location.pathname === '/clock' && (
+                        <SidePanel className="z-10 fixed ltr:right-0 rtl:left-0 top-96 p-3 rounded-none ltr:rounded-tl-lg ltr:rounded-bl-lg rtl:rounded-tr-lg rtl:rounded-br-lg text-white text-xl cursor-pointer select-none bg-primary hover:!bg-primary hover:text-white" />
+                    )}
                     <div className="h-[400px] bg-[linear-gradient(220deg,_rgb(9,_12,_17)_10%,_#15122f_35%,_#2b1e38_55%,_#0c2239_70%,_rgb(9,_12,_17)_90%)]">
                         <div className="container mx-auto h-full"></div>
                     </div>
