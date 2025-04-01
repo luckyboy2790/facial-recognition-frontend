@@ -8,6 +8,8 @@ import { Attendance } from '@/views/attendances/AttendanceList/types'
 import { Notification, toast } from '@/components/ui'
 import sleep from '@/utils/sleep'
 import { useToken } from '@/store/authStore'
+import { useAuth } from '@/auth'
+import { User } from '@/@types/auth'
 
 const WIDTH = 420
 const HEIGHT = 420
@@ -44,6 +46,7 @@ class VideoInput extends Component<
         navigate: any
         token: string | null
         setRecoStatus: Dispatch<SetStateAction<boolean>>
+        user: User
     },
     State
 > {
@@ -57,6 +60,7 @@ class VideoInput extends Component<
         navigate: any
         token: string | null
         setRecoStatus: Dispatch<SetStateAction<boolean>>
+        user: User
     }) {
         super(props)
         this.state = {
@@ -77,14 +81,18 @@ class VideoInput extends Component<
         if (Object.keys(data).length <= 0) {
             toast.push(
                 <Notification type="warning">
-                    Employees are not exist!
+                    The employees do not exist!
                 </Notification>,
                 {
                     placement: 'top-center',
                 },
             )
 
-            this.props.navigate('/employee')
+            if (this.props.user.account_type === 'Employee') {
+                this.props.navigate('/personal/dashboard')
+            } else {
+                this.props.navigate('/employee')
+            }
             return
         }
 
@@ -430,6 +438,8 @@ export default function VideoInputWithRouter({
 }) {
     const { token } = useToken()
 
+    const { user } = useAuth()
+
     return (
         <VideoInput
             onCloseDialog={onCloseDialog}
@@ -438,6 +448,7 @@ export default function VideoInputWithRouter({
             navigate={navigate}
             token={typeof token === 'string' ? token : null}
             setRecoStatus={setRecoStatus}
+            user={user}
         />
     )
 }
