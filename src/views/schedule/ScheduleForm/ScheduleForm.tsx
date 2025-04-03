@@ -21,13 +21,13 @@ const validationSchema: ZodType<ScheduleFormSchema> = z.object({
     employee: z.string().min(1, { message: 'First name required' }),
     start_time: z
         .string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?Z$/, {
+        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?$/, {
             message: 'Invalid time format (HH:mm:ss.SSSZ)',
         }),
 
     off_time: z
         .string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?Z$/, {
+        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?$/, {
             message: 'Invalid time format (HH:mm:ss.SSSZ)',
         }),
     from: z
