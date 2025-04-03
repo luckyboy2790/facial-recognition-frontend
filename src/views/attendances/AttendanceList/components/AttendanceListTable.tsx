@@ -50,6 +50,8 @@ const AttendanceListTable = () => {
     const formatTime = (time: string | undefined, formatType: string) => {
         if (!time) return ''
 
+        console.log(time)
+
         if (formatType === '1') {
             return dayjs(time, 'HH:mm:ss A').format('h:mm:ss a')
         } else if (formatType === '2') {
