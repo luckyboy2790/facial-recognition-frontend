@@ -66,7 +66,7 @@ const AttendanceListTable = () => {
             trimmedTime.toLowerCase().includes('am') ||
             trimmedTime.toLowerCase().includes('pm')
         ) {
-            parsedTime = dayjs(trimmedTime, 'h:mm:ss A')
+            parsedTime = dayjs(trimmedTime, 'hh:mm:ss A')
             console.log('Parsed Time (12-hour format): ', parsedTime)
         } else {
             parsedTime = dayjs(trimmedTime, 'HH:mm:ss')
