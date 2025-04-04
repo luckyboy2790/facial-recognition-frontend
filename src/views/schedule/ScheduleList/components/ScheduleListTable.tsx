@@ -101,12 +101,44 @@ const ScheduleListTable = () => {
     const formatTime = (time: string | undefined, formatType: string) => {
         if (!time) return ''
 
-        if (formatType === '1') {
-            return dayjs(time, 'HH:mm:ss').format('h:mm:ss a')
-        } else if (formatType === '2') {
-            return dayjs(time, 'HH:mm:ss').format('HH:mm:ss')
+        const trimmedTime = time.trim()
+
+        let parsedTime: Date | null = null
+
+        if (
+            trimmedTime.toLowerCase().includes('am') ||
+            trimmedTime.toLowerCase().includes('pm')
+        ) {
+            const [timePart, period] = trimmedTime.split(' ')
+            const [hours, minutes, seconds] = timePart.split(':')
+            const formattedTimeString = `01/01/2000 ${hours}:${minutes}:${seconds} ${period}`
+
+            parsedTime = new Date(formattedTimeString)
+        } else {
+            parsedTime = new Date(`01/01/2000 ${trimmedTime}`)
         }
-        return time
+
+        if (isNaN(parsedTime.getTime())) {
+            return 'No registrado'
+        }
+
+        if (formatType === '1') {
+            return new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true,
+            }).format(parsedTime)
+        } else if (formatType === '2') {
+            return new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false,
+            }).format(parsedTime)
+        }
+
+        return trimmedTime
     }
 
     const columns: ColumnDef<Schedule>[] = useMemo(
