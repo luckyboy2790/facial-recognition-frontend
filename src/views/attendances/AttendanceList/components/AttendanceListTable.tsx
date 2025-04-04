@@ -11,8 +11,10 @@ import type { TableQueries } from '@/@types/common'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import enLocale from 'dayjs/locale/en'
 
 dayjs.extend(localizedFormat)
+dayjs.locale('en')
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
