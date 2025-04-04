@@ -10,6 +10,11 @@ import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
+
+dayjs.extend(utc)
+dayjs.extend(advancedFormat)
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
@@ -53,7 +58,6 @@ const AttendanceListTable = () => {
         if (!time) return ''
 
         const trimmedTime = time.trim()
-
         console.log('Trimmed Time: ', trimmedTime)
 
         let parsedTime
