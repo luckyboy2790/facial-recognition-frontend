@@ -27,8 +27,6 @@ const { authenticatedEntryPath } = appConfig
 const AllRoutes = (props: AllRoutesProps) => {
     const { user } = useAuth()
 
-    console.log(user, 'all routes')
-
     const userAccountType = user?.account_type || ''
 
     let accessibleProtectedRoutes: AppRoutes = []

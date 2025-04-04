@@ -13,22 +13,12 @@ const AuthorityGuard: React.FC<AuthorityGuardProps> = ({
 }) => {
     const { user } = useAuth()
 
-    console.log(user, 'route checker')
-
-    console.log(user?.role, 'route checker')
-
     const userPermissions = user?.role || {}
 
     const hasPermission = routeAuthority.every((modulePermission) => {
         const [module, permission] = modulePermission.split('.')
 
-        console.log(module, permission)
-
         const modulePermissions = userPermissions[module] || []
-
-        console.log(userPermissions, 'userPermissiones')
-
-        console.log(userPermissions[module])
 
         if (permission) {
             return modulePermissions.includes(permission)

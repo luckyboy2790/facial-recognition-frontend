@@ -54,6 +54,10 @@ const AttendanceListTable = () => {
 
         console.log(time, 'Check Time for project')
 
+        console.log(dayjs(time, 'HH:mm:ss').isValid())
+
+        console.log(formatType)
+
         if (formatType === '1') {
             return dayjs(time, 'HH:mm:ss').isValid()
                 ? dayjs(time, 'HH:mm:ss').format('hh:mm A')
@@ -61,6 +65,7 @@ const AttendanceListTable = () => {
         } else if (formatType === '2') {
             return dayjs(time, 'HH:mm:ss A').format('h:mm:ss')
         }
+
         return time
     }
 
