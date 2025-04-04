@@ -27,6 +27,9 @@ const CompanyListTable = () => {
             {
                 header: 'Department Name',
                 accessorKey: 'department_name',
+                cell: (props) => (
+                    <div>{props.row.original.department.department_name}</div>
+                ),
             },
         ],
         [],

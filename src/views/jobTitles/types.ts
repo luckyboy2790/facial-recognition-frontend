@@ -1,3 +1,6 @@
+import { Company } from '../companies/types'
+import { Department } from '../departments/types'
+
 type PersonalInfo = {
     location: string
     title: string
@@ -44,6 +47,7 @@ export type JobTitle = {
     job_title: string
     company: string
     department_id: string
+    department: Department
 }
 
 export type GetJobTitleListResponse = {
