@@ -52,7 +52,15 @@ const AttendanceListTable = () => {
     const formatTime = (time: string | undefined, formatType: string) => {
         if (!time) return ''
 
-        const parsedTime = dayjs(time, 'HH:mm:ss')
+        let parsedTime
+        if (
+            time.toLowerCase().includes('am') ||
+            time.toLowerCase().includes('pm')
+        ) {
+            parsedTime = dayjs(time, 'h:mm:ss A')
+        } else {
+            parsedTime = dayjs(time, 'HH:mm:ss')
+        }
 
         if (!parsedTime.isValid()) {
             return 'No registrado'
