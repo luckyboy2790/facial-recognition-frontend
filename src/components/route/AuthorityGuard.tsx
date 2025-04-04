@@ -21,7 +21,12 @@ const AuthorityGuard: React.FC<AuthorityGuardProps> = ({
 
     const hasPermission = routeAuthority.every((modulePermission) => {
         const [module, permission] = modulePermission.split('.')
+
+        console.log(module, permission)
+
         const modulePermissions = userPermissions[module]
+
+        console.log(modulePermissions)
 
         if (permission) {
             return modulePermissions.includes(permission)
