@@ -170,106 +170,112 @@ const EmployeeDetailSection = ({
                     </FormItem>
                 )}
 
-                <FormItem
-                    label="Department"
-                    invalid={Boolean(errors.department)}
-                    errorMessage={errors.department?.message}
-                >
-                    <Controller
-                        name="department"
-                        control={control}
-                        render={({ field }) => (
-                            <Select
-                                className="mb-4"
-                                placeholder="Please Select"
-                                options={departmentOptions}
-                                value={departmentOptions.find(
-                                    (option) => option.value === field.value,
-                                )}
-                                onChange={(option) => {
-                                    field.onChange(option?.value)
-                                    if (
-                                        user.account_type === 'Admin' &&
-                                        user.company
-                                    ) {
-                                        setValue('company', user.company, {
-                                            shouldValidate: true,
-                                        })
-                                    }
-                                }}
-                            />
-                        )}
-                    />
-                </FormItem>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <FormItem
+                        label="Department"
+                        invalid={Boolean(errors.department)}
+                        errorMessage={errors.department?.message}
+                    >
+                        <Controller
+                            name="department"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    className="mb-4"
+                                    placeholder="Please Select"
+                                    options={departmentOptions}
+                                    value={departmentOptions.find(
+                                        (option) =>
+                                            option.value === field.value,
+                                    )}
+                                    onChange={(option) => {
+                                        field.onChange(option?.value)
+                                        if (
+                                            user.account_type === 'Admin' &&
+                                            user.company
+                                        ) {
+                                            setValue('company', user.company, {
+                                                shouldValidate: true,
+                                            })
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
 
-                <FormItem
-                    label="Job Title"
-                    invalid={Boolean(errors.jobTitle)}
-                    errorMessage={errors.jobTitle?.message}
-                >
-                    <Controller
-                        name="jobTitle"
-                        control={control}
-                        render={({ field }) => (
-                            <Select
-                                className="mb-4"
-                                placeholder="Please Select"
-                                options={jobTitleOptions}
-                                value={jobTitleOptions.find(
-                                    (option) => option.value === field.value,
-                                )}
-                                onChange={(option) => {
-                                    field.onChange(option?.value)
-                                    if (
-                                        user.account_type === 'Admin' &&
-                                        user.company
-                                    ) {
-                                        setValue('company', user.company, {
-                                            shouldValidate: true,
-                                        })
-                                    }
-                                }}
-                            />
-                        )}
-                    />
-                </FormItem>
+                    <FormItem
+                        label="Job Title"
+                        invalid={Boolean(errors.jobTitle)}
+                        errorMessage={errors.jobTitle?.message}
+                    >
+                        <Controller
+                            name="jobTitle"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    className="mb-4"
+                                    placeholder="Please Select"
+                                    options={jobTitleOptions}
+                                    value={jobTitleOptions.find(
+                                        (option) =>
+                                            option.value === field.value,
+                                    )}
+                                    onChange={(option) => {
+                                        field.onChange(option?.value)
+                                        if (
+                                            user.account_type === 'Admin' &&
+                                            user.company
+                                        ) {
+                                            setValue('company', user.company, {
+                                                shouldValidate: true,
+                                            })
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
+                </div>
 
-                <FormItem
-                    label="PIN password"
-                    invalid={Boolean(errors.pin)}
-                    errorMessage={errors.pin?.message}
-                >
-                    <Controller
-                        name="pin"
-                        control={control}
-                        render={({ field }) => (
-                            <NumericInput
-                                autoComplete="off"
-                                placeholder="PIN (Between 6~10 numeric digits)"
-                                {...field}
-                            />
-                        )}
-                    />
-                </FormItem>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <FormItem
+                        label="PIN password"
+                        invalid={Boolean(errors.pin)}
+                        errorMessage={errors.pin?.message}
+                    >
+                        <Controller
+                            name="pin"
+                            control={control}
+                            render={({ field }) => (
+                                <NumericInput
+                                    autoComplete="off"
+                                    placeholder="PIN (Between 6~10 numeric digits)"
+                                    {...field}
+                                />
+                            )}
+                        />
+                    </FormItem>
 
-                <FormItem
-                    label="Email Address (Company)"
-                    invalid={Boolean(errors.companyEmail)}
-                    errorMessage={errors.companyEmail?.message}
-                >
-                    <Controller
-                        name="companyEmail"
-                        control={control}
-                        render={({ field }) => (
-                            <Input
-                                type="text"
-                                autoComplete="off"
-                                placeholder="email"
-                                {...field}
-                            />
-                        )}
-                    />
-                </FormItem>
+                    <FormItem
+                        label="Email Address (Company)"
+                        invalid={Boolean(errors.companyEmail)}
+                        errorMessage={errors.companyEmail?.message}
+                    >
+                        <Controller
+                            name="companyEmail"
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    type="text"
+                                    autoComplete="off"
+                                    placeholder="email"
+                                    {...field}
+                                />
+                            )}
+                        />
+                    </FormItem>
+                </div>
 
                 <FormItem
                     label="Leave Group"
@@ -306,121 +312,137 @@ const EmployeeDetailSection = ({
             <Card>
                 <h4 className="mb-6">Employment Information</h4>
 
-                <FormItem
-                    label="Employment Type"
-                    invalid={Boolean(errors.employmentType)}
-                    errorMessage={errors.employmentType?.message}
-                >
-                    <Controller
-                        name="employmentType"
-                        control={control}
-                        render={({ field }) => (
-                            <Select
-                                className="mb-4"
-                                placeholder="Please Select"
-                                options={employmentTypeOption}
-                                value={employmentTypeOption.find(
-                                    (option) => option.value === field.value,
-                                )}
-                                onChange={(option) => {
-                                    field.onChange(option?.value)
-                                    if (
-                                        user.account_type === 'Admin' &&
-                                        user.company
-                                    ) {
-                                        setValue('company', user.company, {
-                                            shouldValidate: true,
-                                        })
+                <div className="grid md:grid-cols-2 gap-4">
+                    <FormItem
+                        label="Employment Type"
+                        invalid={Boolean(errors.employmentType)}
+                        errorMessage={errors.employmentType?.message}
+                    >
+                        <Controller
+                            name="employmentType"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    className="mb-4"
+                                    placeholder="Please Select"
+                                    options={employmentTypeOption}
+                                    value={employmentTypeOption.find(
+                                        (option) =>
+                                            option.value === field.value,
+                                    )}
+                                    onChange={(option) => {
+                                        field.onChange(option?.value)
+                                        if (
+                                            user.account_type === 'Admin' &&
+                                            user.company
+                                        ) {
+                                            setValue('company', user.company, {
+                                                shouldValidate: true,
+                                            })
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
+
+                    <FormItem
+                        label="Employment Status"
+                        invalid={Boolean(errors.employmentStatus)}
+                        errorMessage={errors.employmentStatus?.message}
+                    >
+                        <Controller
+                            name="employmentStatus"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    className="mb-4"
+                                    placeholder="Please Select"
+                                    options={employmentStatusOption}
+                                    value={employmentStatusOption.find(
+                                        (option) =>
+                                            option.value === field.value,
+                                    )}
+                                    onChange={(option) => {
+                                        field.onChange(option?.value)
+                                        if (
+                                            user.account_type === 'Admin' &&
+                                            user.company
+                                        ) {
+                                            setValue('company', user.company, {
+                                                shouldValidate: true,
+                                            })
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                    <FormItem
+                        label="Official Start Date"
+                        invalid={Boolean(errors.officialStartDate)}
+                        errorMessage={errors.officialStartDate?.message}
+                    >
+                        <Controller
+                            name="officialStartDate"
+                            control={control}
+                            render={({ field }) => (
+                                <DatePicker
+                                    placeholder="Date"
+                                    className="w-full"
+                                    style={{
+                                        height: '48px',
+                                        borderRadius: '12px',
+                                    }}
+                                    value={
+                                        field.value
+                                            ? dayjs(field.value, 'YYYY-MM-DD')
+                                            : null
                                     }
-                                }}
-                            />
-                        )}
-                    />
-                </FormItem>
+                                    onChange={(date) => {
+                                        field.onChange(
+                                            date.format('YYYY-MM-DD'),
+                                        )
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
 
-                <FormItem
-                    label="Employment Status"
-                    invalid={Boolean(errors.employmentStatus)}
-                    errorMessage={errors.employmentStatus?.message}
-                >
-                    <Controller
-                        name="employmentStatus"
-                        control={control}
-                        render={({ field }) => (
-                            <Select
-                                className="mb-4"
-                                placeholder="Please Select"
-                                options={employmentStatusOption}
-                                value={employmentStatusOption.find(
-                                    (option) => option.value === field.value,
-                                )}
-                                onChange={(option) => {
-                                    field.onChange(option?.value)
-                                    if (
-                                        user.account_type === 'Admin' &&
-                                        user.company
-                                    ) {
-                                        setValue('company', user.company, {
-                                            shouldValidate: true,
-                                        })
+                    <FormItem
+                        label="Date Regularized"
+                        invalid={Boolean(errors.dateRegularized)}
+                        errorMessage={errors.dateRegularized?.message}
+                    >
+                        <Controller
+                            name="dateRegularized"
+                            control={control}
+                            render={({ field }) => (
+                                <DatePicker
+                                    placeholder="Date"
+                                    className="w-full"
+                                    style={{
+                                        height: '48px',
+                                        borderRadius: '12px',
+                                    }}
+                                    value={
+                                        field.value
+                                            ? dayjs(field.value, 'YYYY-MM-DD')
+                                            : null
                                     }
-                                }}
-                            />
-                        )}
-                    />
-                </FormItem>
-
-                <FormItem
-                    label="Official Start Date"
-                    invalid={Boolean(errors.officialStartDate)}
-                    errorMessage={errors.officialStartDate?.message}
-                >
-                    <Controller
-                        name="officialStartDate"
-                        control={control}
-                        render={({ field }) => (
-                            <DatePicker
-                                placeholder="Date"
-                                className="w-full"
-                                style={{ height: '48px', borderRadius: '12px' }}
-                                value={
-                                    field.value
-                                        ? dayjs(field.value, 'YYYY-MM-DD')
-                                        : null
-                                }
-                                onChange={(date) => {
-                                    field.onChange(date.format('YYYY-MM-DD'))
-                                }}
-                            />
-                        )}
-                    />
-                </FormItem>
-
-                <FormItem
-                    label="Date Regularized"
-                    invalid={Boolean(errors.dateRegularized)}
-                    errorMessage={errors.dateRegularized?.message}
-                >
-                    <Controller
-                        name="dateRegularized"
-                        control={control}
-                        render={({ field }) => (
-                            <DatePicker
-                                placeholder="Date"
-                                className="w-full"
-                                style={{ height: '48px', borderRadius: '12px' }}
-                                value={
-                                    field.value
-                                        ? dayjs(field.value, 'YYYY-MM-DD')
-                                        : null
-                                }
-                                onChange={(date) => {
-                                    field.onChange(date.format('YYYY-MM-DD'))
-                                }}
-                            />
-                        )}
-                    />
-                </FormItem>
+                                    onChange={(date) => {
+                                        field.onChange(
+                                            date.format('YYYY-MM-DD'),
+                                        )
+                                    }}
+                                />
+                            )}
+                        />
+                    </FormItem>
+                </div>
             </Card>
         </>
     )
