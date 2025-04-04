@@ -62,6 +62,8 @@ const AttendanceListTable = () => {
             parsedTime = dayjs(time, 'HH:mm:ss')
         }
 
+        console.log(parsedTime)
+
         if (!parsedTime.isValid()) {
             return 'No registrado'
         }
