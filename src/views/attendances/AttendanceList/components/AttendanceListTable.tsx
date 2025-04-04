@@ -10,11 +10,6 @@ import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
@@ -57,25 +52,16 @@ const AttendanceListTable = () => {
     const formatTime = (time: string | undefined, formatType: string) => {
         if (!time) return ''
 
-        console.log('Current Timezone: ', dayjs.tz.guess())
-
-        const parsedTime = dayjs(time, 'h:mm:ss A')
-
-        console.log('Parsed Time: ', parsedTime.format())
+        const parsedTime = dayjs(time, 'HH:mm:ss')
 
         if (!parsedTime.isValid()) {
-            console.log('Invalid Date')
-            return 'Invalid Time'
+            return 'No registrado'
         }
 
         if (formatType === '1') {
-            return parsedTime.isValid()
-                ? parsedTime.format('hh:mm A')
-                : 'No registrado'
+            return parsedTime.format('h:mm:ss A')
         } else if (formatType === '2') {
-            return parsedTime.isValid()
-                ? parsedTime.format('HH:mm:ss')
-                : 'No registrado'
+            return parsedTime.format('HH:mm:ss')
         }
 
         return time
