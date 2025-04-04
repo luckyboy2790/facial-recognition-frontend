@@ -26,7 +26,9 @@ const AuthorityGuard: React.FC<AuthorityGuardProps> = ({
 
         const modulePermissions = userPermissions[module]
 
-        console.log(modulePermissions)
+        console.log(userPermissions, 'userPermissiones')
+
+        console.log(userPermissions[module])
 
         if (permission) {
             return modulePermissions.includes(permission)
