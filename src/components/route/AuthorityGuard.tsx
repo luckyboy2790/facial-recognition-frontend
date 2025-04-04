@@ -24,7 +24,7 @@ const AuthorityGuard: React.FC<AuthorityGuardProps> = ({
 
         console.log(module, permission)
 
-        const modulePermissions = userPermissions[module]
+        const modulePermissions = userPermissions[module] || []
 
         console.log(userPermissions, 'userPermissiones')
 
