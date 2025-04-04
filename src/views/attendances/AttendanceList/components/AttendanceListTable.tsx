@@ -9,12 +9,6 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { useAuth } from '@/auth'
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-import enLocale from 'dayjs/locale/en'
-
-dayjs.extend(localizedFormat)
-dayjs.locale('en')
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
@@ -58,30 +52,40 @@ const AttendanceListTable = () => {
         if (!time) return ''
 
         const trimmedTime = time.trim()
-        console.log('Trimmed Time: ', trimmedTime)
 
-        let parsedTime
+        let parsedTime: Date | null = null
 
         if (
             trimmedTime.toLowerCase().includes('am') ||
             trimmedTime.toLowerCase().includes('pm')
         ) {
-            parsedTime = dayjs(trimmedTime, 'hh:mm:ss A')
-            console.log('Parsed Time (12-hour format): ', parsedTime)
+            const [timePart, period] = trimmedTime.split(' ')
+            const [hours, minutes, seconds] = timePart.split(':')
+            const formattedTimeString = `01/01/2000 ${hours}:${minutes}:${seconds} ${period}`
+
+            parsedTime = new Date(formattedTimeString)
         } else {
-            parsedTime = dayjs(trimmedTime, 'HH:mm:ss')
-            console.log('Parsed Time (24-hour format): ', parsedTime)
+            parsedTime = new Date(`01/01/2000 ${trimmedTime}`)
         }
 
-        if (!parsedTime.isValid()) {
-            console.log('Invalid date format:', trimmedTime)
+        if (isNaN(parsedTime.getTime())) {
             return 'No registrado'
         }
 
         if (formatType === '1') {
-            return parsedTime.format('h:mm:ss A')
+            return new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true,
+            }).format(parsedTime)
         } else if (formatType === '2') {
-            return parsedTime.format('HH:mm:ss')
+            return new Intl.DateTimeFormat('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false,
+            }).format(parsedTime)
         }
 
         return trimmedTime
