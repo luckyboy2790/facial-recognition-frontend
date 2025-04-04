@@ -54,6 +54,8 @@ const AttendanceListTable = () => {
 
         console.log(time, 'Check Time for project')
 
+        console.log(dayjs(time, 'HH:mm:ss'))
+
         console.log(dayjs(time, 'HH:mm:ss').isValid())
 
         console.log(formatType)
