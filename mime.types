@@ -1,0 +1,16 @@
+types {
+    application/javascript js;
+    text/css css;
+    image/jpeg jpeg jpg;
+    image/png png;
+    image/gif gif;
+    image/svg+xml svg svgz;
+    application/font-woff2 woff2;
+    application/font-woff woff;
+    font/ttf ttf;
+    application/font-otf otf;
+    application/json json;
+    text/html html htm;
+    text/plain txt;
+    application/xml xml;
+}
