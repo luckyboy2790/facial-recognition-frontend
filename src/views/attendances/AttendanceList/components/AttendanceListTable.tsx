@@ -52,26 +52,25 @@ const AttendanceListTable = () => {
     const formatTime = (time: string | undefined, formatType: string) => {
         if (!time) return ''
 
-        console.log(
-            time.toLowerCase().includes('am') ||
-                time.toLowerCase().includes('pm'),
-        )
+        const trimmedTime = time.trim()
+
+        console.log('Trimmed Time: ', trimmedTime)
 
         let parsedTime
+
         if (
-            time.toLowerCase().includes('am') ||
-            time.toLowerCase().includes('pm')
+            trimmedTime.toLowerCase().includes('am') ||
+            trimmedTime.toLowerCase().includes('pm')
         ) {
-            parsedTime = dayjs(time, 'h:mm:ss A')
-            console.log(time, 'h:mm:ss A')
+            parsedTime = dayjs(trimmedTime, 'h:mm:ss A')
+            console.log('Parsed Time (12-hour format): ', parsedTime)
         } else {
-            parsedTime = dayjs(time, 'HH:mm:ss')
-            console.log(time, 'h:mm:ss A')
+            parsedTime = dayjs(trimmedTime, 'HH:mm:ss')
+            console.log('Parsed Time (24-hour format): ', parsedTime)
         }
 
-        console.log(parsedTime)
-
         if (!parsedTime.isValid()) {
+            console.log('Invalid date format:', trimmedTime)
             return 'No registrado'
         }
 
@@ -81,7 +80,7 @@ const AttendanceListTable = () => {
             return parsedTime.format('HH:mm:ss')
         }
 
-        return time
+        return trimmedTime
     }
 
     const columns: ColumnDef<Attendance>[] = useMemo(
