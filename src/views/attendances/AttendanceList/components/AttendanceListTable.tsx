@@ -10,11 +10,9 @@ import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-dayjs.extend(utc)
-dayjs.extend(advancedFormat)
+dayjs.extend(localizedFormat)
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
