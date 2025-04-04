@@ -52,14 +52,21 @@ const AttendanceListTable = () => {
     const formatTime = (time: string | undefined, formatType: string) => {
         if (!time) return ''
 
+        console.log(
+            time.toLowerCase().includes('am') ||
+                time.toLowerCase().includes('pm'),
+        )
+
         let parsedTime
         if (
             time.toLowerCase().includes('am') ||
             time.toLowerCase().includes('pm')
         ) {
             parsedTime = dayjs(time, 'h:mm:ss A')
+            console.log(time, 'h:mm:ss A')
         } else {
             parsedTime = dayjs(time, 'HH:mm:ss')
+            console.log(time, 'h:mm:ss A')
         }
 
         console.log(parsedTime)
