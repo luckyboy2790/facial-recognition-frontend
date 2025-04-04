@@ -24,46 +24,21 @@ const validationSchema: ZodType<any> = z.object({
     lastName: z.string().min(1, { message: 'Last name required' }),
     gender: z.string().min(1, { message: 'Gender required' }),
 
-    civilStatus: z.string().min(1, { message: 'Civil Status required' }),
+    civilStatus: z.string(),
     email: z
         .string()
         .min(1, { message: 'Email required' })
         .email({ message: 'Invalid email' }),
-    dialCode: z.string().min(1, { message: 'Please select your country code' }),
-    phoneNumber: z
-        .string()
-        .min(1, { message: 'Please input your mobile number' }),
-    address: z.string().min(1, { message: 'Addrress required' }),
+    dialCode: z.string().optional(),
+    phoneNumber: z.string(),
+    address: z.string(),
     img: z.string().min(1, { message: 'Civil Status required' }),
-    height: z
-        .string()
-        .regex(/^\d+$/, { message: 'Height must be a numeric value' })
-        .refine((val) => Number(val) >= 50 && Number(val) <= 250, {
-            message: 'Height must be between 50 cm and 250 cm',
-        }),
-    weight: z
-        .string()
-        .regex(/^\d+$/, { message: 'Weight must be a numeric value' })
-        .refine((val) => Number(val) >= 20 && Number(val) <= 300, {
-            message: 'Weight must be between 20 kg and 300 kg',
-        }),
-    age: z
-        .string()
-        .regex(/^\d+$/, { message: 'Age must be a numeric value' })
-        .refine((val) => Number(val) >= 1 && Number(val) <= 120, {
-            message: 'Age must be between 1 and 120',
-        }),
-    birthday: z
-        .string()
-        .min(1, { message: 'Birthday is required' })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: 'Invalid date format (YYYY-MM-DD)',
-        })
-        .refine((val) => new Date(val) <= new Date(), {
-            message: 'Birthday cannot be in the future',
-        }),
+    height: z.string(),
+    weight: z.string(),
+    age: z.string(),
+    birthday: z.string(),
     nationalId: z.string().min(1, { message: 'National Id required' }),
-    placeOfBirth: z.string().min(1, { message: 'Place of birth required' }),
+    placeOfBirth: z.string(),
     department: z.string().min(1, { message: 'Department name required' }),
     company: z.string().min(1, { message: 'Company name required' }),
     jobTitle: z.string().min(1, { message: 'Job Title required' }),
@@ -75,27 +50,12 @@ const validationSchema: ZodType<any> = z.object({
         .refine((val) => Number(val) >= 0 && Number(val) <= 9999999999, {
             message: 'PIN must be a 4-digit number between 1000 and 9999',
         }),
-    companyEmail: z
-        .string()
-        .min(1, { message: 'Email required' })
-        .email({ message: 'Invalid email' }),
-    leaveGroup: z.string().min(1, { message: 'Leave Group required' }),
-    employmentType: z.string().min(1, { message: 'Employment Type required' }),
-    employmentStatus: z
-        .string()
-        .min(1, { message: 'Employment Status required' }),
-    officialStartDate: z
-        .string()
-        .min(1, { message: 'Official Start Date is required' })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: 'Invalid date format (YYYY-MM-DD)',
-        }),
-    dateRegularized: z
-        .string()
-        .min(1, { message: 'Date Regularized is required' })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: 'Invalid date format (YYYY-MM-DD)',
-        }),
+    companyEmail: z.string(),
+    leaveGroup: z.string().min(1, { message: 'Leave group required' }),
+    employmentType: z.string(),
+    employmentStatus: z.string(),
+    officialStartDate: z.string().optional(),
+    dateRegularized: z.string().optional(),
     faceDescriptor: z
         .array(z.number(), {
             message: 'Face descriptor must be an array of numbers',
