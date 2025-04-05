@@ -10,7 +10,9 @@ import { Employee } from '@/views/employees/EmployeeList/types'
 import { Role } from '../UserList/types'
 import { apiGetRolesPermissionsRoles } from '@/services/UserService'
 
-type OverviewSectionProps = FormSectionBaseProps
+type OverviewSectionProps = FormSectionBaseProps & {
+    newCustomer: boolean
+}
 
 type optionType = {
     label: string
@@ -38,19 +40,27 @@ const statusOptions = [
     },
 ]
 
-const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
+const OverviewSection = ({
+    control,
+    newCustomer,
+    errors,
+}: OverviewSectionProps) => {
     const [employeeOptions, setEmployeeOptions] = useState<optionType[]>([])
     const [employeeData, setEmployeeData] = useState<Employee[]>([])
     const [roleOptions, setRoleOptions] = useState<optionType[]>([])
 
-    const [userType, setUserType] = useState<String | null>(null)
+    const [userType, setUserType] = useState<String | null>(
+        control._formValues?.account_type,
+    )
 
     const [selectedUserCompany, setSelectedUserCompany] =
         useState<String | null>(control._formValues?.employeeData?.company_id)
 
-    const { setValue, reset } = useFormContext()
+    const { setValue } = useFormContext()
 
     useEffect(() => {
+        console.log(control._formValues)
+
         const fetchData = async () => {
             try {
                 const employee_list: GetCustomersListResponse =
@@ -80,6 +90,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 value: item._id,
                             })),
                     )
+
+                    if (newCustomer) {
+                        setValue('role', null)
+                    }
                 } else {
                     setRoleOptions(
                         role_list.roleList
@@ -99,6 +113,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                                 value: item._id,
                             })),
                     )
+
+                    if (newCustomer) {
+                        setValue('role', null)
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error)
@@ -184,7 +202,6 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             onChange={(value) => {
                                 field.onChange(value)
                                 setUserType(value)
-                                setValue('role', null)
                             }}
                         >
                             <Radio value={'Employee'}>Employee</Radio>
@@ -207,13 +224,15 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             placeholder="Please Select"
                             options={roleOptions}
                             value={
-                                roleOptions.find(
-                                    (option) => option.value === field.value,
-                                ) || null
+                                roleOptions.find((option) => {
+                                    console.log(option.value === field.value)
+
+                                    return option.value === field.value
+                                }) || null
                             }
-                            onChange={(option) =>
-                                field.onChange(option?.value || null)
-                            }
+                            onChange={(option) => {
+                                field.onChange(option?.value)
+                            }}
                         />
                     )}
                 />

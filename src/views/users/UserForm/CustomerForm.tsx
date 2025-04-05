@@ -109,6 +109,7 @@ const CustomerForm = (props: CustomerFormProps) => {
                         <div className="gap-4 flex flex-col flex-auto">
                             <OverviewSection
                                 control={control}
+                                newCustomer={newCustomer}
                                 errors={errors}
                             />
                         </div>
