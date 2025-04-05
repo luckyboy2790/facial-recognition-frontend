@@ -306,14 +306,4 @@ export const accessEmployeeModules = [
             },
         ],
     },
-    {
-        id: 'report',
-        name: 'REPORTS',
-        accessor: [
-            {
-                label: 'Read',
-                value: 'read',
-            },
-        ],
-    },
 ]
