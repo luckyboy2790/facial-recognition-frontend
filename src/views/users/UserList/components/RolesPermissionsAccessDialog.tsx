@@ -196,6 +196,8 @@ const RolesPermissionsAccessDialogComponent = ({
 
             setSelectedStatus(modules.status || null)
 
+            setUserType(modules.userType || null)
+
             setAccessRight(modules.accessRight || {})
         }
     }, [modules])

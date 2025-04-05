@@ -56,8 +56,6 @@ const RolesPermissionsGroups = ({
         }
     }
 
-    console.log(roleList)
-
     const handleCancel = () => {
         setDeleteConfirmationOpen(false)
     }

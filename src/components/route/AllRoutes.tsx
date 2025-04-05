@@ -56,7 +56,7 @@ const AllRoutes = (props: AllRoutesProps) => {
                             key={route.key + index}
                             path={route.path}
                             element={
-                                userAccountType === 'Admin' ? (
+                                userAccountType !== 'SuperAdmin' ? (
                                     <AuthorityGuard
                                         routeAuthority={
                                             route.routeAuthority || []

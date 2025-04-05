@@ -59,8 +59,6 @@ const OverviewSection = ({
     const { setValue } = useFormContext()
 
     useEffect(() => {
-        console.log(control._formValues)
-
         const fetchData = async () => {
             try {
                 const employee_list: GetCustomersListResponse =
@@ -225,8 +223,6 @@ const OverviewSection = ({
                             options={roleOptions}
                             value={
                                 roleOptions.find((option) => {
-                                    console.log(option.value === field.value)
-
                                     return option.value === field.value
                                 }) || null
                             }

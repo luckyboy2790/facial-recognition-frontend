@@ -3,6 +3,9 @@ import { useLeaveListStore } from '../store/LeaveListStore'
 import type { GetLeavesListResponse } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { apiDeleteLeaves, apiPersonalLeaveList } from '@/services/LeaveService'
+import { User } from '@/@types/auth'
+import { useNavigate } from 'react-router-dom'
+import { permissionChecker } from '@/services/PermissionChecker'
 
 type LeaveData = {
     leaveIds: string[]
@@ -19,6 +22,8 @@ export default function useLeaveList() {
         setFilterData,
     } = useLeaveListStore((state) => state)
 
+    const navigate = useNavigate()
+
     const { data, error, isLoading, mutate } = useSWR(
         ['/api/personal/leave', { ...tableData }],
         ([_, params]) =>
@@ -30,12 +35,21 @@ export default function useLeaveList() {
 
     console.log(data?.list)
 
-    const deleteLeaves = async (leaveIds: string[]) => {
-        await apiDeleteLeaves<string[], LeaveData>({
-            leaveIds,
-        })
-        mutate()
-        setSelectAllLeave([])
+    const deleteLeaves = async (leaveIds: string[], user: User) => {
+        if (
+            permissionChecker(user, 'leave', 'delete') === false &&
+            user.account_type === 'Employee'
+        ) {
+            navigate('/access-denied')
+
+            return
+        } else {
+            await apiDeleteLeaves<string[], LeaveData>({
+                leaveIds,
+            })
+            mutate()
+            setSelectAllLeave([])
+        }
     }
 
     const leaveList = data?.list || []
