@@ -35,6 +35,7 @@ export type Role = {
     status: string
     company: string
     companyData: Company
+    userType: string
     accessRight: Record<string, string[]>
 }
 

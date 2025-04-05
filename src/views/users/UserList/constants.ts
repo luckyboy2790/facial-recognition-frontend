@@ -1,4 +1,4 @@
-export const accessModules = [
+export const accessAdminModules = [
     {
         id: 'dashboard',
         name: 'DASHBOARD',
@@ -238,6 +238,81 @@ export const accessModules = [
             {
                 label: 'Delete',
                 value: 'delete',
+            },
+        ],
+    },
+]
+
+export const accessEmployeeModules = [
+    {
+        id: 'dashboard',
+        name: 'DASHBOARD',
+        accessor: [
+            {
+                label: 'Read',
+                value: 'read',
+            },
+        ],
+    },
+    {
+        id: 'attendance',
+        name: 'ATTENDANCES',
+        accessor: [
+            {
+                label: 'Read',
+                value: 'read',
+            },
+        ],
+    },
+    {
+        id: 'schedule',
+        name: 'SCHEDULES',
+        accessor: [
+            {
+                label: 'Read',
+                value: 'read',
+            },
+        ],
+    },
+    {
+        id: 'leave',
+        name: 'LEAVE',
+        accessor: [
+            {
+                label: 'Create',
+                value: 'create',
+            },
+            {
+                label: 'Read',
+                value: 'read',
+            },
+            {
+                label: 'Update',
+                value: 'update',
+            },
+            {
+                label: 'Delete',
+                value: 'delete',
+            },
+        ],
+    },
+    {
+        id: 'setting',
+        name: 'SETTINGS',
+        accessor: [
+            {
+                label: 'Read',
+                value: 'read',
+            },
+        ],
+    },
+    {
+        id: 'report',
+        name: 'REPORTS',
+        accessor: [
+            {
+                label: 'Read',
+                value: 'read',
             },
         ],
     },

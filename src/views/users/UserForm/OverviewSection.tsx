@@ -43,10 +43,12 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
     const [employeeData, setEmployeeData] = useState<Employee[]>([])
     const [roleOptions, setRoleOptions] = useState<optionType[]>([])
 
+    const [userType, setUserType] = useState<String | null>(null)
+
     const [selectedUserCompany, setSelectedUserCompany] =
         useState<String | null>(control._formValues?.employeeData?.company_id)
 
-    const { setValue } = useFormContext()
+    const { setValue, reset } = useFormContext()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,22 +68,45 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                 const role_list: GetRolesPermissions =
                     await apiGetRolesPermissionsRoles()
 
-                setRoleOptions(
-                    role_list.roleList
-                        .filter((item) => item.status === 'Active')
-                        .filter((item) => item.company === selectedUserCompany)
-                        .map((item) => ({
-                            label: item.name,
-                            value: item._id,
-                        })),
-                )
+                if (!userType) {
+                    setRoleOptions(
+                        role_list.roleList
+                            .filter((item) => item.status === 'Active')
+                            .filter(
+                                (item) => item.company === selectedUserCompany,
+                            )
+                            .map((item) => ({
+                                label: item.name,
+                                value: item._id,
+                            })),
+                    )
+                } else {
+                    setRoleOptions(
+                        role_list.roleList
+                            .filter((item) => item.status === 'Active')
+                            .filter(
+                                (item) => item.company === selectedUserCompany,
+                            )
+                            .filter((item) => {
+                                if (userType === 'Admin') {
+                                    return item.userType === 'admin'
+                                } else {
+                                    return item.userType === 'employee'
+                                }
+                            })
+                            .map((item) => ({
+                                label: item.name,
+                                value: item._id,
+                            })),
+                    )
+                }
             } catch (error) {
                 console.error('Error fetching data:', error)
             }
         }
 
         fetchData()
-    }, [selectedUserCompany])
+    }, [selectedUserCompany, userType])
 
     return (
         <Card>
@@ -156,7 +181,11 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         <Radio.Group
                             vertical
                             value={field.value}
-                            onChange={field.onChange}
+                            onChange={(value) => {
+                                field.onChange(value)
+                                setUserType(value)
+                                setValue('role', null)
+                            }}
                         >
                             <Radio value={'Employee'}>Employee</Radio>
                             <Radio value={'Admin'}>Admin</Radio>
@@ -177,10 +206,14 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         <Select
                             placeholder="Please Select"
                             options={roleOptions}
-                            value={roleOptions.find(
-                                (option) => option.value === field.value,
-                            )}
-                            onChange={(option) => field.onChange(option?.value)}
+                            value={
+                                roleOptions.find(
+                                    (option) => option.value === field.value,
+                                ) || null
+                            }
+                            onChange={(option) =>
+                                field.onChange(option?.value || null)
+                            }
                         />
                     )}
                 />

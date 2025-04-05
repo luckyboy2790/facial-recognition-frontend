@@ -6,7 +6,7 @@ import Input from '@/components/ui/Input'
 import ScrollBar from '@/components/ui/ScrollBar'
 import { FormItem } from '@/components/ui/Form'
 import { useRolePermissionsStore } from '../store/rolePermissionsStore'
-import { accessModules } from '../constants'
+import { accessAdminModules, accessEmployeeModules } from '../constants'
 import classNames from '@/utils/classNames'
 import isLastChild from '@/utils/isLastChild'
 import { TbCheck } from 'react-icons/tb'
@@ -33,6 +33,11 @@ type OptionType = {
     value: string
 }
 
+const userTypeOptions = [
+    { label: 'Admin', value: 'admin' },
+    { label: 'Employee', value: 'employee' },
+]
+
 const RolesPermissionsAccessDialogComponent = ({
     roleList,
     mutate,
@@ -43,6 +48,8 @@ const RolesPermissionsAccessDialogComponent = ({
     const [accessRight, setAccessRight] = useState<Record<string, string[]>>({})
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
 
+    const [userType, setUserType] = useState<string | null>('admin')
+
     const { token } = useToken()
 
     const { user } = useAuth()
@@ -52,6 +59,8 @@ const RolesPermissionsAccessDialogComponent = ({
     const [companyOptions, setCompanyOptions] = useState<OptionType[]>([])
 
     const [companyName, setCompanyName] = useState<string | null>(null)
+
+    const [accessModules, setAccessModules] = useState(accessAdminModules)
 
     const handleClose = () => {
         setRoleName('')
@@ -70,6 +79,14 @@ const RolesPermissionsAccessDialogComponent = ({
         })
     }
 
+    useEffect(() => {
+        if (userType === 'admin') {
+            setAccessModules(accessAdminModules)
+        } else if (userType === 'employee') {
+            setAccessModules(accessEmployeeModules)
+        }
+    }, [userType])
+
     const handleSubmit = async () => {
         if (roleName === '' || !selectedStatus || !companyName) {
             toast.push(
@@ -86,6 +103,7 @@ const RolesPermissionsAccessDialogComponent = ({
             name: roleName || 'Untitled Role',
             status: selectedStatus || '',
             company: companyName,
+            userType: userType,
             accessRight,
         }
 
@@ -249,6 +267,23 @@ const RolesPermissionsAccessDialogComponent = ({
                             }
                         />
                     </FormItem>
+
+                    <FormItem label="User Type">
+                        <Select
+                            className="mb-4"
+                            placeholder="Select status"
+                            options={userTypeOptions}
+                            value={
+                                userTypeOptions.find(
+                                    (option) => option.value === userType,
+                                ) || null
+                            }
+                            onChange={(selectedOption) =>
+                                setUserType(selectedOption?.value || null)
+                            }
+                        />
+                    </FormItem>
+
                     <span className="font-semibold mb-2">Roles</span>
 
                     {accessModules.map((module, index) => (

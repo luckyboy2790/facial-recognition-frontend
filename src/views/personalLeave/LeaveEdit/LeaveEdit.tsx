@@ -117,7 +117,7 @@ const LeaveEdit = () => {
 
         await sleep(1000)
 
-        window.location.href = '/leave'
+        window.location.href = '/personal/leave'
     }
 
     const handleDelete = () => {
