@@ -1,8 +1,9 @@
-# Ignore artifacts: 
+# Ignore artifacts:
 /build
 /node_modules
+/dist
 
-# Ignore files: 
+# Ignore files:
 /public
 /src/assets/styles
 /src/index.css
