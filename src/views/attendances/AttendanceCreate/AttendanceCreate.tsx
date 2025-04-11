@@ -34,8 +34,6 @@ const EmployeeCreate = () => {
             ? new Date(baseDate + data.time_out)
             : null
 
-        console.log(breakIn, breakOut, timeIn, timeOut)
-
         if (!timeIn || !timeOut) return false
 
         const isBreakValid =
@@ -45,8 +43,6 @@ const EmployeeCreate = () => {
     }
 
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
-        console.log(values)
-
         if (
             !isBreakValid(values) &&
             (values.break_in !== '' || values.break_out !== '')

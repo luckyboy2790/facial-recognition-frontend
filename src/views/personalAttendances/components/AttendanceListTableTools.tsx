@@ -17,8 +17,6 @@ const AttendancesListTableTools = () => {
         if (typeof val === 'string' && val.length === 0) {
             setTableData(newTableData)
         }
-
-        console.log(val)
     }
 
     return (

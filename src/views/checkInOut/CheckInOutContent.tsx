@@ -82,8 +82,6 @@ const CheckInOutContent = () => {
                     .map((ip: string) => ip.trim())
                     .filter(Boolean)
 
-                console.log(ipData)
-
                 const accessGranted =
                     ipList.length === 0 || ipList.includes(ipData.ip)
 

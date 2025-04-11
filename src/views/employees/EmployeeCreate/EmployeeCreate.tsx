@@ -65,8 +65,6 @@ const EmployeeCreate = () => {
                 faceDescriptor: values.faceDescriptor,
             }
 
-            console.log(payload)
-
             const response = await fetch(
                 `${domain}/api/employee/create_employee`,
                 {

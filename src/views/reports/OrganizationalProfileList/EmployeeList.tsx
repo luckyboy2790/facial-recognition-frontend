@@ -19,11 +19,7 @@ type EmployeeListResponse = {
 const EmployeeList = () => {
     const [isViewed, setIsViewed] = useState<boolean>(false)
 
-    const [employeeList, setEmployeeList] = useState<Employee[]>([])
-
     const handleChange = (isViewed: boolean) => {
-        console.log(isViewed)
-
         setIsViewed(!isViewed)
     }
 
@@ -121,8 +117,6 @@ const EmployeeList = () => {
                     console.error('Invalid data structure:', employee_data)
                     return
                 }
-
-                console.log(employee_data)
 
                 const formattedCompanyData = groupByField(
                     employee_data.employeeData,

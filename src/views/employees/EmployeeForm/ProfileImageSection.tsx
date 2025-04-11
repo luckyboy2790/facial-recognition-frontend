@@ -52,7 +52,6 @@ const ProfileImage = ({
                 await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL)
                 await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
                 setModelsLoaded(true)
-                console.log('Face-api models loaded successfully')
             } catch (error) {
                 console.error('Error loading face-api models:', error)
             }
@@ -64,7 +63,6 @@ const ProfileImage = ({
         let valid: string | boolean = true
         const allowedFileType = ['image/jpeg', 'image/png']
         if (files) {
-            console.log(files[0].type)
             for (const file of files) {
                 if (!allowedFileType.includes(file.type)) {
                     valid = 'Please upload a .jpeg or .png file!'
@@ -79,7 +77,6 @@ const ProfileImage = ({
         onChange: (value: string) => void,
     ) => {
         if (!modelsLoaded) {
-            console.log('Models are still loading, please wait...')
             toast.push(
                 <Notification type="warning">
                     Models are still loading, please wait...
@@ -108,7 +105,6 @@ const ProfileImage = ({
                     .withFaceDescriptor()
 
                 if (detections) {
-                    console.log('Face Descriptor:', detections.descriptor)
                     const descriptorArray = Array.from(
                         detections.descriptor,
                     ).map((item) => Number(item))
@@ -118,7 +114,6 @@ const ProfileImage = ({
 
                     setIsChecked(true)
                 } else {
-                    console.log('No face detected')
                     setValue('faceDescriptor', [])
                     setFaceDescriptor([])
 

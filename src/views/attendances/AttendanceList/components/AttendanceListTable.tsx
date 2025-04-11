@@ -42,8 +42,6 @@ const AttendanceListTable = () => {
 
     const { setting } = useAuth()
 
-    console.log(setting)
-
     const handleEdit = (attendance: Attendance) => {
         navigate(`/attendance-edit/${attendance._id}`)
     }

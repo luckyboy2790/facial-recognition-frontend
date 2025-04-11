@@ -23,8 +23,6 @@ export const useLocaleStore = create<LocaleState>()(
                         },
                     )
 
-                    console.log(formattedLang)
-
                     i18n.changeLanguage(formattedLang)
 
                     dateLocales[formattedLang]().then(() => {

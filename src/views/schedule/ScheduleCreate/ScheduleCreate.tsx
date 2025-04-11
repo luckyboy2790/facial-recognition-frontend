@@ -22,7 +22,6 @@ const EmployeeCreate = () => {
     const { token } = useToken()
 
     const handleFormSubmit = async (values: ScheduleFormSchema) => {
-        console.log('Submitted values', values)
         setIsSubmiting(true)
 
         const response: any = await fetch(

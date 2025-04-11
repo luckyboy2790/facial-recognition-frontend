@@ -88,8 +88,6 @@ const AddDepartmentSection = () => {
 
                 setCompany(null)
             }
-
-            console.log(newDepartment)
         } catch (error) {
             console.error('Error creating department:', error)
         }

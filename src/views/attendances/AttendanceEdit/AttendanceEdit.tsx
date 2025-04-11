@@ -67,8 +67,6 @@ const AttendanceEdit = () => {
     const { token } = useToken()
 
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
-        console.log('Submitted values', values)
-
         if (values.reason === '' || !values.reason) {
             toast.push(
                 <Notification type="warning">Please write reason</Notification>,
@@ -113,8 +111,6 @@ const AttendanceEdit = () => {
     }
 
     const getDefaultValues = () => {
-        console.log(data)
-
         if (data) {
             const {
                 employee,

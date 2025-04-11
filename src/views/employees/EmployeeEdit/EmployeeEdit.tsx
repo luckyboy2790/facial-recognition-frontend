@@ -39,7 +39,6 @@ const CustomerEdit = () => {
     const [isSubmiting, setIsSubmiting] = useState(false)
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
-        console.log('Submitted values', values)
         setIsSubmiting(true)
 
         const { token } = useToken()
@@ -85,8 +84,6 @@ const CustomerEdit = () => {
                 faceDescriptor: values.faceDescriptor,
                 _id: id,
             }
-
-            console.log(payload)
 
             const response = await fetch(
                 `${domain}/api/employee/update_employee`,

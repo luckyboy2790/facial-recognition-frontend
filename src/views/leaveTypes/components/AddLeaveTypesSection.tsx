@@ -81,8 +81,6 @@ const AddLeaveTypeSection = () => {
 
                 setCompany(null)
             }
-
-            console.log(newLeaveType)
         } catch (error) {
             console.error('Error creating company:', error)
         }

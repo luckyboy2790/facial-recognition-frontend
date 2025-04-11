@@ -22,7 +22,6 @@ const EmployeeCreate = () => {
     const { token } = useToken()
 
     const handleFormSubmit = async (values: LeaveFormSchema) => {
-        console.log('Submitted values', values)
         setIsSubmiting(true)
 
         const response = await fetch(

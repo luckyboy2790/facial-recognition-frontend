@@ -3,13 +3,9 @@ import * as faceapi from 'face-api.js'
 export async function loadModels() {
     const MODEL_URL = '/models'
 
-    console.log(123456789)
-
     await faceapi.loadTinyFaceDetectorModel(MODEL_URL)
     await faceapi.loadFaceLandmarkTinyModel(MODEL_URL)
     await faceapi.loadFaceRecognitionModel(MODEL_URL)
-
-    console.log(console.log(faceapi.nets))
 }
 
 export async function getFullFaceDescription(blob: any, inputSize = 512) {

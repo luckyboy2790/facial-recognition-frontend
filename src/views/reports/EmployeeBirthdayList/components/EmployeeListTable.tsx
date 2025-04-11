@@ -25,8 +25,6 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
-    console.log(customerList)
-
     const columns: ColumnDef<Employee>[] = useMemo(
         () => [
             {

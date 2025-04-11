@@ -51,8 +51,6 @@ const PinInput = ({
                 pin: setting.rfidClock === true ? pinData : pin,
             })
 
-            console.log(employee)
-
             if (employee) {
                 employeeId = employee._id
             }
@@ -131,8 +129,6 @@ const PinInput = ({
                     time_out: '',
                 }
             } else if (type === 'time_out') {
-                console.log(break_in, break_out)
-
                 reqData = {
                     employee: employeeId,
                     date: date,

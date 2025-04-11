@@ -57,14 +57,13 @@ const SystemSetting = () => {
             setValue('role', data.userDetail?.roleData?.name || '')
             setValue('status', data.userDetail?.status || '')
 
-            console.log(data)
-
             const userData = {
                 _id: data.userDetail._id,
                 email: data.userDetail.email,
                 full_name: data.userDetail.employeeData.full_name,
                 account_type: data.userDetail.account_type,
                 img: data.userDetail.employeeData?.img || null,
+                role: data.userDetail?.roleData?.accessRight || {},
             }
 
             setUser(userData)
@@ -75,8 +74,6 @@ const SystemSetting = () => {
 
     const onSubmit = async (formData: UserInfo) => {
         try {
-            console.log(JSON.stringify(formData))
-
             const response = await fetch(
                 `${domain}/api/setting/account_setting/${user._id}`,
                 {
@@ -105,8 +102,6 @@ const SystemSetting = () => {
             const data = await response.json()
 
             setUser(data.user)
-
-            console.log(data.user)
         } catch (error) {
             console.error('Error saving settings:', error)
             alert('Failed to save settings. Try again!')

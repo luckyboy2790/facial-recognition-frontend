@@ -22,7 +22,6 @@ const EmployeeCreate = () => {
     const { token } = useToken()
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
-        console.log('Submitted values', values)
         if (values.password !== values.confirm_password) {
             toast.push(
                 <Notification type="warning">

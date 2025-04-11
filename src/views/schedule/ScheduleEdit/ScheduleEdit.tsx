@@ -54,7 +54,6 @@ const ScheduleEdit = () => {
     const { token } = useToken()
 
     const handleFormSubmit = async (values: ScheduleFormSchema) => {
-        console.log('Submitted values', values)
         setIsSubmiting(true)
 
         const response = await fetch(
@@ -91,8 +90,6 @@ const ScheduleEdit = () => {
     }
 
     const getDefaultValues = () => {
-        console.log(data)
-
         if (data) {
             const {
                 employee,

@@ -43,8 +43,6 @@ const AddCompanySection = () => {
 
                 setCompanyName('')
             }
-
-            console.log(newCompany)
         } catch (error) {
             console.error('Error creating company:', error)
         }

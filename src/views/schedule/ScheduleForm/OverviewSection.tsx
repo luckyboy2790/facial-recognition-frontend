@@ -119,7 +119,6 @@ const OverviewSection = ({
                                         : null
                                 }
                                 onChange={(value: any) => {
-                                    console.log(value.format('HH:mm:ss.SSS'))
                                     field.onChange(value.format('HH:mm:ss.SSS'))
                                 }}
                             />
@@ -153,7 +152,6 @@ const OverviewSection = ({
                                         : null
                                 }
                                 onChange={(value: any) => {
-                                    console.log(value.format('HH:mm:ss.SSS'))
                                     field.onChange(value.format('HH:mm:ss.SSS'))
                                 }}
                             />

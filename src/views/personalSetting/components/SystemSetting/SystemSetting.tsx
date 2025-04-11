@@ -53,8 +53,6 @@ const SystemSetting = () => {
 
     const onSubmit = async (formData: System) => {
         try {
-            console.log(JSON.stringify(formData))
-
             const response = await fetch(
                 `${domain}/api/setting/set_setting/${settingId}`,
                 {

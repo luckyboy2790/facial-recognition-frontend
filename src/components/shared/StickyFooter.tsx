@@ -26,11 +26,6 @@ const StickyFooter = (props: StickyFooterProps) => {
         const cachedRef = ref.current
         const observer = new IntersectionObserver(
             ([e]) => {
-                console.log(
-                    'e.intersectionRatio < 1',
-                    e.intersectionRatio,
-                    e.intersectionRatio < 1,
-                )
                 if (!(e.intersectionRatio < 1)) {
                     window.scrollTo({
                         top: document.body.scrollHeight - 1,

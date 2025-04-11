@@ -85,7 +85,6 @@ const ScheduleListTable = () => {
 
     const handleArchiveSchedule = async (scheduleId: string) => {
         try {
-            console.log(scheduleId)
             const schedule: ArchiveResponse = await apiArchiveSchedule({
                 scheduleId,
             })

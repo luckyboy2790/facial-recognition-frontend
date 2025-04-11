@@ -31,12 +31,8 @@ const AttendanceListActionTools = () => {
     const onDialogOk = async (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ) => {
-        console.log(date)
-
         const attendanceData: GetAttendancesListResponse =
             await apiTotalAttendanceList({ query: date })
-
-        console.log(attendanceData)
 
         const exportData = attendanceData.list.map((attendance) => ({
             date: attendance.date,

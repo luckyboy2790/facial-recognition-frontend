@@ -285,8 +285,6 @@ class VideoInput extends Component<
                     time_out: '',
                 }
             } else if (this.props.type === 'time_out') {
-                console.log(break_in, break_out)
-
                 reqData = {
                     employee: match[0]._label,
                     date: date,

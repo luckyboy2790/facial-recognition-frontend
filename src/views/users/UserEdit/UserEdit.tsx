@@ -49,7 +49,6 @@ const CustomerEdit = () => {
     const { user } = useAuth()
 
     const handleFormSubmit = async (values: CustomerFormSchema) => {
-        console.log('Submitted values', values)
         setIsSubmiting(true)
 
         const response = await fetch(`${domain}/api/user/update_user/${id}`, {

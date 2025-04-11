@@ -30,12 +30,10 @@ const ClockButton = (props: BoardCardProps) => {
     }
 
     const onPinDialogClose = (e: MouseEvent) => {
-        console.log('onDialogClose', e)
         setPinDialogIsOpen(false)
     }
 
     const onPinDialogOk = (e: MouseEvent) => {
-        console.log('onDialogOk', e)
         setPinDialogIsOpen(false)
     }
 
@@ -44,12 +42,10 @@ const ClockButton = (props: BoardCardProps) => {
     }
 
     const onDialogClose = (e: MouseEvent) => {
-        console.log('onDialogClose', e)
         setIsOpen(false)
     }
 
     const onDialogOk = (e: MouseEvent) => {
-        console.log('onDialogOk', e)
         setIsOpen(false)
     }
 

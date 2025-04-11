@@ -15,8 +15,6 @@ if (appConfig.enableMock) {
 function App() {
     const data = useDarkMode()
 
-    console.log(data[0])
-
     return (
         <Theme>
             <ConfigProvider

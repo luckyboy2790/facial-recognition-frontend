@@ -35,8 +35,6 @@ const DepartmentListTable = () => {
         [],
     )
 
-    console.log(departmentList)
-
     const handleSetTableData = (data: TableQueries) => {
         setTableData(data)
         if (selectedDepartment.length > 0) {

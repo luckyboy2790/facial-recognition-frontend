@@ -83,8 +83,6 @@ const LeaveEdit = () => {
     }
 
     const getDefaultValues = () => {
-        console.log(data)
-
         if (data) {
             const {
                 employee,

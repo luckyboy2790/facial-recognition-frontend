@@ -45,8 +45,6 @@ export async function apiAttendanceCheckOut<
             const errorMessage =
                 error?.response?.data?.message || 'An unexpected error occurred'
 
-            console.log(errorMessage)
-
             throw new Error(errorMessage)
         })
 }
@@ -66,8 +64,6 @@ export async function apiPinEmployeeCheckOut<
         .catch((error: any) => {
             const errorMessage =
                 error?.response?.data?.message || 'An unexpected error occurred'
-
-            console.log(errorMessage)
 
             throw new Error(errorMessage)
         })

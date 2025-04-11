@@ -50,8 +50,6 @@ const OverviewSection = ({
             try {
                 const data: LeaveTypeResponse = await apiTotalLeaveTypesList()
 
-                console.log(data)
-
                 const options: OptionType[] = data.list.map(
                     (item: LeaveType) => {
                         return {

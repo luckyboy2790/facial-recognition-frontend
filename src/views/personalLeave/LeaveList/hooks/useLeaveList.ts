@@ -33,8 +33,6 @@ export default function useLeaveList() {
         },
     )
 
-    console.log(data?.list)
-
     const deleteLeaves = async (leaveIds: string[], user: User) => {
         if (
             permissionChecker(user, 'leave', 'delete') === false &&
