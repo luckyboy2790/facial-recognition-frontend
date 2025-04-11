@@ -14,5 +14,19 @@
             "my_leave": "Mis vacaciones",
             "my_setting": "Mi Configuración"
         }
+    },
+    "page": {
+        "dashboard": {
+            "Projects": "Proyectos",
+            "employees": "empleadas",
+            "attendances": "asistencias",
+            "leaves_of_absence": "permisos de ausencia",
+            "newest_employees": "Empleados más nuevos",
+            "recent_attendances": "Asistencias recientes",
+            "recent_leaves": "Licencias recientes por ausencia",
+            "previous_attendances": "Asistencias anteriores",
+            "my_attendance": "Asistencia (Mes actual)",
+            "present_schedule": "Horario actual"
+        }
     }
 }
