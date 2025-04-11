@@ -73,7 +73,7 @@ const EmployeeCreate = () => {
         ) {
             toast.push(
                 <Notification type="warning">
-                    Please fill all fields.
+                    Please fill fields(Employee, Date, Start time required).
                 </Notification>,
                 {
                     placement: 'top-center',

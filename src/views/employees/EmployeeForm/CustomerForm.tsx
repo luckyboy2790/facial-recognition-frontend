@@ -52,7 +52,7 @@ const validationSchema: ZodType<any> = z.object({
         }),
     companyEmail: z.string(),
     leaveGroup: z.string().min(1, { message: 'Leave group required' }),
-    employmentType: z.string(),
+    employmentType: z.string().min(1, {message: "Employee Type required"}),
     employmentStatus: z.string(),
     officialStartDate: z.string().optional(),
     dateRegularized: z.string().optional(),

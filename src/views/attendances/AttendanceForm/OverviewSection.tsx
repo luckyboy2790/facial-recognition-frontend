@@ -100,7 +100,9 @@ const OverviewSection = ({
                                     : null
                             }
                             onChange={(date) => {
-                                field.onChange(date.format('YYYY-MM-DD'))
+                                field.onChange(
+                                    date?.format('YYYY-MM-DD') || null,
+                                )
                             }}
                         />
                     )}
