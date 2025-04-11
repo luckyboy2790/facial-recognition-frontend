@@ -122,7 +122,7 @@ const OverviewSection = ({
                         <TimePicker
                             use12Hours={setting.timeFormat === '1'}
                             format={
-                                setting.timeFormat === '1' ? 'h:mm a' : 'HH:mm'
+                                setting.timeFormat === '1' ? 'hh:mm a' : 'HH:mm'
                             }
                             className="w-full"
                             size="large"
@@ -153,7 +153,7 @@ const OverviewSection = ({
                         <TimePicker
                             use12Hours={setting.timeFormat === '1'}
                             format={
-                                setting.timeFormat === '1' ? 'h:mm a' : 'HH:mm'
+                                setting.timeFormat === '1' ? 'hh:mm a' : 'HH:mm'
                             }
                             className="w-full"
                             size="large"
