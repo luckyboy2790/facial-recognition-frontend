@@ -120,10 +120,10 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.time_in || ''}
                     render={({ field }) => (
                         <TimePicker
+                            use12Hours={setting.timeFormat === '1'}
                             format={
-                                setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
+                                setting.timeFormat === '1' ? 'h:mm a' : 'HH:mm'
                             }
-                            use12Hours
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
@@ -151,9 +151,9 @@ const OverviewSection = ({
                     defaultValue={defaultValues?.time_out || ''}
                     render={({ field }) => (
                         <TimePicker
-                            use12Hours
+                            use12Hours={setting.timeFormat === '1'}
                             format={
-                                setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
+                                setting.timeFormat === '1' ? 'h:mm a' : 'HH:mm'
                             }
                             className="w-full"
                             size="large"

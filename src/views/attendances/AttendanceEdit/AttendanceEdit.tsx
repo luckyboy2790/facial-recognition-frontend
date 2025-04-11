@@ -19,6 +19,7 @@ import { AttendanceFormSchema } from '../AttendanceForm/types'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
+import dayjs from 'dayjs'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type AttendanceDetailResponse = {
@@ -53,12 +54,11 @@ const AttendanceEdit = () => {
         if (!input) return ''
 
         const date = new Date(input)
-
         if (isNaN(date.getTime())) {
             throw new Error('Invalid date format')
         }
 
-        return date.toISOString().split('T')[1]
+        return dayjs(date).format('HH:mm:ss') + '.000Z'
     }
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
