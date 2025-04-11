@@ -64,8 +64,6 @@ const DashboardContent = () => {
 
             const result = await repsonse.json()
 
-            console.log(result)
-
             setTabList([
                 {
                     id: 1,

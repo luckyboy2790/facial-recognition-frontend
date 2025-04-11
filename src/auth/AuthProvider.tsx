@@ -80,7 +80,6 @@ function AuthProvider({ children }: AuthProviderProps) {
     const signIn = async (values: SignInCredential): AuthResult => {
         try {
             const resp = await apiSignIn(values)
-            console.log(resp)
 
             if (resp) {
                 handleSignIn({ accessToken: resp.accessToken }, resp.user)
