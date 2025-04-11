@@ -84,6 +84,10 @@ export const accessAdminModules = [
         name: 'LEAVE',
         accessor: [
             {
+                label: 'Create',
+                value: 'create',
+            },
+            {
                 label: 'Read',
                 value: 'read',
             },
