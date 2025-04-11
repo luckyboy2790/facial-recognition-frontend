@@ -18,13 +18,7 @@ const statusColor: Record<string, string> = {
     Pending: 'bg-red-300 dark:bg-red-300 text-gray-900 dark:text-gray-900',
 }
 
-const ActionColumn = ({
-    onEdit,
-    onViewDetail,
-}: {
-    onEdit: () => void
-    onViewDetail: () => void
-}) => {
+const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
     return (
         <div className="flex gap-3 items-center">
             <Tooltip title="Edit">
@@ -34,15 +28,6 @@ const ActionColumn = ({
                     onClick={onEdit}
                 >
                     <TbPencil />
-                </div>
-            </Tooltip>
-            <Tooltip title="View">
-                <div
-                    className={`text-xl cursor-pointer select-none font-semibold`}
-                    role="button"
-                    onClick={onViewDetail}
-                >
-                    <TbEye />
                 </div>
             </Tooltip>
         </div>
@@ -65,10 +50,6 @@ const LeaveListTable = () => {
 
     const handleEdit = (leave: Leave) => {
         navigate(`/leave-edit/${leave._id}`)
-    }
-
-    const handleViewDetails = (leave: Leave) => {
-        navigate(`/employee-details/${leave._id}`)
     }
 
     const columns: ColumnDef<Leave>[] = useMemo(
@@ -118,9 +99,6 @@ const LeaveListTable = () => {
                 cell: (props) => (
                     <ActionColumn
                         onEdit={() => handleEdit(props.row.original)}
-                        onViewDetail={() =>
-                            handleViewDetails(props.row.original)
-                        }
                     />
                 ),
             },
