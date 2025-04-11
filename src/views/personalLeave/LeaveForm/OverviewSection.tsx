@@ -65,7 +65,7 @@ const OverviewSection = ({
         <Card>
             <h4 className="mb-6">{newLeave ? 'Leave Create' : 'Leave Edit'}</h4>
             <FormItem
-                label="Employee"
+                label="Leave Type"
                 invalid={Boolean(errors.leaveType)}
                 errorMessage={errors.leaveType?.message}
             >
