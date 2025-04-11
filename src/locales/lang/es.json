@@ -17,7 +17,7 @@
     },
     "page": {
         "dashboard": {
-            "Projects": "Proyectos",
+            "projects": "Proyectos",
             "employees": "empleadas",
             "attendances": "asistencias",
             "leaves_of_absence": "permisos de ausencia",
@@ -26,7 +26,17 @@
             "recent_leaves": "Licencias recientes por ausencia",
             "previous_attendances": "Asistencias anteriores",
             "my_attendance": "Asistencia (Mes actual)",
-            "present_schedule": "Horario actual"
+            "present_schedule": "Horario actual",
+            "trainee": "Aprendiz",
+            "regular": "Regular",
+            "online": "En línea",
+            "offline": "Fuera de línea",
+            "approved": "Aprobado",
+            "pending": "Pendiente",
+            "late_arrival": "Llegadas tardías",
+            "early_departure": "Salidas anticipadas",
+            "time": "Tiempo",
+            "rest_days": "Días de descanso"
         }
     }
 }

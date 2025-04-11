@@ -26,7 +26,7 @@ export const dateLocales: {
     [key: string]: () => Promise<ILocale>
 } = {
     en: () => import('dayjs/locale/en'),
-    zh: () => import('dayjs/locale/zh'),
+    es: () => import('dayjs/locale/es'),
 }
 
 export default i18n

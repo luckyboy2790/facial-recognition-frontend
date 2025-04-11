@@ -8,11 +8,14 @@ import { Droppable, DragDropContext, Draggable } from '@hello-pangea/dnd'
 import { MdDragIndicator } from 'react-icons/md'
 import type { DropResult } from '@hello-pangea/dnd'
 import type { Task } from '../types'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const { TBody } = Table
 
 const EmployeeList = () => {
     const { updateOrdered, updateGroups, ordered, groups } = useTasksStore()
+
+    const { t } = useTranslation()
 
     const onDragEnd = (result: DropResult) => {
         if (result.combine) {
@@ -99,7 +102,24 @@ const EmployeeList = () => {
                                                     >
                                                         <MdDragIndicator />
                                                     </span>
-                                                    <h4>{key}</h4>
+                                                    <h4>
+                                                        {key ===
+                                                        'Newest Employees'
+                                                            ? t(
+                                                                  'page.dashboard.newest_employees',
+                                                                  'Newest Employees',
+                                                              )
+                                                            : key ===
+                                                                'Recent Attendances'
+                                                              ? t(
+                                                                    'page.dashboard.recent_attendances',
+                                                                    'Recent Attendances',
+                                                                )
+                                                              : t(
+                                                                    'page.dashboard.recent_leaves',
+                                                                    'Recent Leaves of Absence',
+                                                                )}
+                                                    </h4>
                                                 </div>
                                                 <Table className="lg:overflow-hidden">
                                                     <Droppable

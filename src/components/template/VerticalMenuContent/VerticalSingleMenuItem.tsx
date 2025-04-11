@@ -48,7 +48,7 @@ const CollapsedItem = ({
     onLinkClick,
     userAuthority,
     t,
-    currentKey
+    currentKey,
 }: CollapsedItemProps) => {
     return (
         <AuthorityCheck userAuthority={userAuthority} authority={nav.authority}>
@@ -131,7 +131,7 @@ const VerticalSingleMenuItem = ({
     showTitle,
     t,
     currentKey,
-    parentKeys
+    parentKeys,
 }: Omit<VerticalMenuItemProps, 'title' | 'translateKey'>) => {
     return (
         <>

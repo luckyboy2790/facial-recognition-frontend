@@ -14,7 +14,6 @@ import useTranslation from '@/utils/hooks/useTranslation'
 import { Direction } from '@/@types/theme'
 import type { NavigationTree } from '@/@types/navigation'
 import type { TraslationFn } from '@/@types/common'
-import { useAuth } from '@/auth'
 import { personalNavigationConfig } from '@/configs/navigation.config'
 
 export interface VerticalMenuContentProps {

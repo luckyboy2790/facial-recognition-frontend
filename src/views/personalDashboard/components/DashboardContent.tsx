@@ -3,6 +3,7 @@ import Card from '@/components/ui/Card'
 import { FaRegUserCircle, FaRegClock, FaHome } from 'react-icons/fa'
 import EmployeeList from './EmployeeList'
 import { useToken } from '@/store/authStore'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
@@ -17,31 +18,36 @@ interface tabData {
 }
 
 const DashboardContent = () => {
+    const { t } = useTranslation()
+
     const [tabList, setTabList] = useState<tabData[]>([
         {
             id: 1,
-            tabTitle: 'Attendance (Current Month)',
-            label1: 'Late Arrivals',
+            tabTitle: t(
+                'page.dashboard.my_attendance',
+                'Attendance (Current Month)',
+            ),
+            label1: t('page.dashboard.late_arrival', 'Late Arrivals'),
             value1: 0,
-            label2: 'Early Departures',
+            label2: t('page.dashboard.early_departure', 'Early Departures'),
             value2: 0,
             icon: <FaRegClock />,
         },
         {
             id: 2,
-            tabTitle: 'Present Schedule',
-            label1: 'Time',
+            tabTitle: t('page.dashboard.present_schedule', 'Present Schedule'),
+            label1: t('page.dashboard.present_schedule', 'Time'),
             value1: '',
-            label2: 'Rest Days',
+            label2: t('page.dashboard.rest_days', 'Rest Days'),
             value2: '',
             icon: <FaRegUserCircle />,
         },
         {
             id: 3,
-            tabTitle: 'leaves of absence',
-            label1: 'Approved',
+            tabTitle: t('page.dashboard.leaves_of_absence', 'leave of absence'),
+            label1: t('page.dashboard.approved', 'Approved'),
             value1: 0,
-            label2: 'Pending',
+            label2: t('page.dashboard.pending', 'Pending'),
             value2: 0,
             icon: <FaHome />,
         },
@@ -91,19 +97,28 @@ const DashboardContent = () => {
             setTabList([
                 {
                     id: 1,
-                    tabTitle: 'Attendance (Current Month)',
-                    label1: 'Late Arrivals',
+                    tabTitle: t(
+                        'page.dashboard.my_attendance',
+                        'Attendance (Current Month)',
+                    ),
+                    label1: t('page.dashboard.late_arrival', 'Late Arrivals'),
                     value1: result.lateArrivals,
-                    label2: 'Early Departures',
+                    label2: t(
+                        'page.dashboard.early_departure',
+                        'Early Departures',
+                    ),
                     value2: result.earlyDepartures,
                     icon: <FaRegClock />,
                 },
                 {
                     id: 2,
-                    tabTitle: 'Present Schedule',
-                    label1: 'Time',
+                    tabTitle: t(
+                        'page.dashboard.present_schedule',
+                        'Present Schedule',
+                    ),
+                    label1: t('page.dashboard.present_schedule', 'Time'),
                     value1: `${changeTimeFormat(result.recentSchedule.start_time)} - ${changeTimeFormat(result.recentSchedule.off_time)}`,
-                    label2: 'Rest Days	',
+                    label2: t('page.dashboard.rest_days', 'Rest Days'),
                     value2: result.recentSchedule.rest_days.map(
                         (item: string, index: number) => (
                             <span key={index}>{`${item}, `}</span>
@@ -113,10 +128,13 @@ const DashboardContent = () => {
                 },
                 {
                     id: 3,
-                    tabTitle: 'leaves of absence',
-                    label1: 'Approved',
+                    tabTitle: t(
+                        'page.dashboard.leaves_of_absence',
+                        'leave of absence',
+                    ),
+                    label1: t('page.dashboard.approved', 'Approved'),
                     value1: result.approvedLeave,
-                    label2: 'Pending',
+                    label2: t('page.dashboard.pending', 'Pending'),
                     value2: result.pendingLeave,
                     icon: <FaHome />,
                 },
@@ -124,7 +142,7 @@ const DashboardContent = () => {
         }
 
         fetchData()
-    }, [])
+    }, [t])
     return (
         <div>
             <div className="mt-8">
