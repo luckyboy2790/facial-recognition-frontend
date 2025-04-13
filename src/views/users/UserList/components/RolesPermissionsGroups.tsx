@@ -10,6 +10,7 @@ import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { toast } from '@/components/ui'
 import Notification from '@/components/ui/Notification'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type RolesPermissionsGroupsProps = {
@@ -22,6 +23,8 @@ const RolesPermissionsGroups = ({
     mutate,
 }: RolesPermissionsGroupsProps) => {
     const { setSelectedRole, setRoleDialog } = useRolePermissionsStore()
+
+    const { t } = useTranslation()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
     const [deleteRole, setDeleteRole] = useState('')
@@ -43,7 +46,10 @@ const RolesPermissionsGroups = ({
         ) {
             toast.push(
                 <Notification type="warning">
-                    You don't have permission to update user role.
+                    {t(
+                        'page.user.permission_update_denide',
+                        "You don't have permission to update user role.",
+                    )}
                 </Notification>,
                 { placement: 'top-center' },
             )
@@ -67,7 +73,10 @@ const RolesPermissionsGroups = ({
         ) {
             toast.push(
                 <Notification type="warning">
-                    You don't have permission to delete user role.
+                    {t(
+                        'page.user.permission_delete_denide',
+                        "You don't have permission to delete user role.",
+                    )}
                 </Notification>,
                 { placement: 'top-center' },
             )
@@ -133,7 +142,8 @@ const RolesPermissionsGroups = ({
                             iconAlignment="end"
                             onClick={() => handleEditRoleClick(role._id)}
                         >
-                            Edit role
+                            {t('page.edit', 'Edit')}{' '}
+                            {t('page.user.role', 'role')}
                         </Button>
                     </div>
                 </div>
@@ -141,16 +151,20 @@ const RolesPermissionsGroups = ({
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove Role"
+                title={`${t('page.delete', 'Delete')} ${t('page.user.role', 'Role')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these role? This action
-                    can&apos;t be undo.{' '}
+                    {t(
+                        'page.user.delete_role_confirm_message',
+                        'Are you sure you want to remove these role? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </div>

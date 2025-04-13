@@ -16,6 +16,7 @@ import { apiDeleteUsers, apiGetUserDetail } from '@/services/UserService'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type UserDetailType = {
@@ -28,6 +29,8 @@ type UserData = {
 
 const CustomerEdit = () => {
     const { id } = useParams()
+
+    const { t } = useTranslation()
 
     const { token } = useToken()
 
@@ -63,7 +66,7 @@ const CustomerEdit = () => {
         if (!response.ok) {
             toast.push(
                 <Notification type="warning">
-                    Something went wrong!
+                    {t('page.wrong_message', 'Something went wrong!')}
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -74,9 +77,14 @@ const CustomerEdit = () => {
         }
 
         setIsSubmiting(false)
-        toast.push(<Notification type="success">Changes Saved!</Notification>, {
-            placement: 'top-center',
-        })
+        toast.push(
+            <Notification type="success">
+                {t('page.change_saved', 'Changes Saved!')}
+            </Notification>,
+            {
+                placement: 'top-center',
+            },
+        )
         await sleep(800)
         window.location.href = '/users'
     }
@@ -110,7 +118,10 @@ const CustomerEdit = () => {
         if (!id) {
             toast.push(
                 <Notification type="warning">
-                    User ID is not defined!
+                    {t(
+                        'page.user.user_id_not_defined',
+                        'User ID is not defined!',
+                    )}
                 </Notification>,
                 { placement: 'top-center' },
             )
@@ -133,7 +144,10 @@ const CustomerEdit = () => {
 
                 toast.push(
                     <Notification type="success">
-                        Customer deleted!
+                        {t(
+                            'page.user.delete_user_confirm_message',
+                            'User deleted!',
+                        )}
                     </Notification>,
                     { placement: 'top-center' },
                 )
@@ -163,7 +177,9 @@ const CustomerEdit = () => {
             {!isLoading && !data && (
                 <div className="h-full flex flex-col items-center justify-center">
                     <NoUserFound height={280} width={280} />
-                    <h3 className="mt-8">No user found!</h3>
+                    <h3 className="mt-8">
+                        {t('page.user.no_data', 'No user found!')}
+                    </h3>
                 </div>
             )}
             {!isLoading && data && (
@@ -182,7 +198,7 @@ const CustomerEdit = () => {
                                     icon={<TbArrowNarrowLeft />}
                                     onClick={handleBack}
                                 >
-                                    Back
+                                    {t('page.back', 'Back')}
                                 </Button>
                                 <div className="flex items-center">
                                     <Button
@@ -194,14 +210,14 @@ const CustomerEdit = () => {
                                         icon={<TbTrash />}
                                         onClick={handleDelete}
                                     >
-                                        Delete
+                                        {t('page.delete', 'Delete')}
                                     </Button>
                                     <Button
                                         variant="solid"
                                         type="submit"
                                         loading={isSubmiting}
                                     >
-                                        Save
+                                        {t('page.save', 'Save')}
                                     </Button>
                                 </div>
                             </div>
@@ -210,15 +226,19 @@ const CustomerEdit = () => {
                     <ConfirmDialog
                         isOpen={deleteConfirmationOpen}
                         type="danger"
-                        title="Remove customers"
+                        title={`${t('page.delete', 'Delete')} ${t('page.user.users', 'Users')}`}
                         onClose={handleCancel}
                         onRequestClose={handleCancel}
                         onCancel={handleCancel}
                         onConfirm={handleConfirmDelete}
+                        cancelText={t('page.employee.cancel', 'Cancel')}
+                        confirmText={t('page.employee.confirm', 'Confirm')}
                     >
                         <p>
-                            Are you sure you want to remove this customer? This
-                            action can&apos;t be undo.{' '}
+                            {t(
+                                'page.user.delete_confirm_message',
+                                'Are you sure you want to remove this user? This action cannot be undo.',
+                            )}{' '}
                         </p>
                     </ConfirmDialog>
                 </>

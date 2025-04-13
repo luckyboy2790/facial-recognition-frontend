@@ -10,10 +10,13 @@ import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { CustomerFormSchema } from '../UserForm'
 import { useToken } from '@/store/authStore'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const [discardConfirmationOpen, setDiscardConfirmationOpen] =
         useState(false)
@@ -65,7 +68,9 @@ const EmployeeCreate = () => {
     const handleConfirmDiscard = () => {
         setDiscardConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Customer discardd!</Notification>,
+            <Notification type="success">
+                {t('page.user.user_discarded', 'User discarded!')}
+            </Notification>,
             { placement: 'top-center' },
         )
         navigate('/users')
@@ -107,14 +112,14 @@ const EmployeeCreate = () => {
                                 icon={<TbTrash />}
                                 onClick={handleDiscard}
                             >
-                                Discard
+                                {t('page.discard', 'Discard')}
                             </Button>
                             <Button
                                 variant="solid"
                                 type="submit"
                                 loading={isSubmiting}
                             >
-                                Create
+                                {t('page.user.create', 'Create')}
                             </Button>
                         </div>
                     </div>
@@ -123,15 +128,19 @@ const EmployeeCreate = () => {
             <ConfirmDialog
                 isOpen={discardConfirmationOpen}
                 type="danger"
-                title="Discard changes"
+                title={t('page.discard_change', 'Discard changes')}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDiscard}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
-                    Are you sure you want discard this? This action can&apos;t
-                    be undo.{' '}
+                    {t(
+                        'page.discard_confirm',
+                        'Are you sure you want discard this? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>

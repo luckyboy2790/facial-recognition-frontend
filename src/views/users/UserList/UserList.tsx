@@ -9,11 +9,14 @@ import useRolePermissonsRoles from './hooks/useRolePermissonsRoles'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { FaLock } from 'react-icons/fa'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const EmployeeList = () => {
     const { roleList, mutate: roleMutate } = useRolePermissonsRoles()
 
     const { user } = useAuth()
+
+    const { t } = useTranslation()
 
     return (
         <>
@@ -21,7 +24,7 @@ const EmployeeList = () => {
                 <AdaptiveCard>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <h3>Users</h3>
+                            <h3>{t('page.user.user', 'Users')}</h3>
                             <EmployeeListActionTools />
                         </div>
                         <div className="mb-10">
@@ -31,8 +34,10 @@ const EmployeeList = () => {
                                     <div className="flex flex-col gap-4 justify-center items-center">
                                         <FaLock className="text-6xl" />
                                         <p className="text-sm">
-                                            You don't have permission to access
-                                            to user role table.
+                                            {t(
+                                                'page.user.user_role_access_denide',
+                                                "You don't have permission to access to user role table.",
+                                            )}
                                         </p>
                                     </div>
                                 </div>
@@ -50,8 +55,10 @@ const EmployeeList = () => {
                                     <div className="flex flex-col gap-4 justify-center items-center">
                                         <FaLock className="text-8xl" />
                                         <p className="text-xl">
-                                            You don't have permission to access
-                                            to user table.
+                                            {t(
+                                                'page.user.permission_access_denide',
+                                                "You don't have permission to access to user table.",
+                                            )}
                                         </p>
                                     </div>
                                 </div>

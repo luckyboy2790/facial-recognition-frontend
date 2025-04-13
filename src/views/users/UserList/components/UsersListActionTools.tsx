@@ -6,9 +6,12 @@ import { CSVLink } from 'react-csv'
 import RolesPermissionsGroupsAction from './RolesPermissionsGroupsAction'
 import RolesPermissionsAccessDialogComponent from './RolesPermissionsAccessDialog'
 import useRolePermissonsRoles from '../hooks/useRolePermissonsRoles'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const UserListActionTools = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const { userList } = useEmployeeList()
     const { roleList, mutate: roleMutate } = useRolePermissonsRoles()
@@ -20,7 +23,7 @@ const UserListActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <RolesPermissionsGroupsAction />
@@ -29,7 +32,7 @@ const UserListActionTools = () => {
                 icon={<TbUserPlus className="text-xl" />}
                 onClick={() => navigate('/users-create')}
             >
-                Add new
+                {t('page.add_new', 'Add new')}
             </Button>
             <RolesPermissionsAccessDialogComponent
                 roleList={roleList}

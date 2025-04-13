@@ -9,6 +9,7 @@ import { apiGetTotalEmployeeList } from '@/services/employeeService'
 import { Employee } from '@/views/employees/EmployeeList/types'
 import { Role } from '../UserList/types'
 import { apiGetRolesPermissionsRoles } from '@/services/UserService'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type OverviewSectionProps = FormSectionBaseProps & {
     newCustomer: boolean
@@ -48,6 +49,8 @@ const OverviewSection = ({
     const [employeeOptions, setEmployeeOptions] = useState<optionType[]>([])
     const [employeeData, setEmployeeData] = useState<Employee[]>([])
     const [roleOptions, setRoleOptions] = useState<optionType[]>([])
+
+    const { t } = useTranslation()
 
     const [userType, setUserType] = useState<String | null>(
         control._formValues?.account_type,
@@ -126,10 +129,14 @@ const OverviewSection = ({
 
     return (
         <Card>
-            <h4 className="mb-6">Overview</h4>
+            <h4 className="mb-6">
+                {newCustomer
+                    ? t('page.user.create_user', 'Create User')
+                    : t('page.user.update_user', 'Update User')}
+            </h4>
 
             <FormItem
-                label="Employee"
+                label={t('page.user.employee', 'Employee')}
                 invalid={Boolean(errors.employee)}
                 errorMessage={errors.employee?.message}
             >
@@ -138,7 +145,10 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <Select
-                            placeholder="Please Select"
+                            placeholder={t(
+                                'page.select_placeholder',
+                                'Please Select',
+                            )}
                             options={employeeOptions}
                             value={employeeOptions.find(
                                 (option) => option.value === field.value,
@@ -164,7 +174,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Email"
+                label={t('page.employee.email', 'Email')}
                 invalid={Boolean(errors.email)}
                 errorMessage={errors.email?.message}
             >
@@ -175,7 +185,7 @@ const OverviewSection = ({
                         <Input
                             type="text"
                             autoComplete="off"
-                            placeholder="Email"
+                            placeholder={t('page.employee.email', 'Email')}
                             value={field.value}
                             onChange={field.onChange}
                             onBlur={field.onBlur}
@@ -186,7 +196,10 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Choose Account type"
+                label={t(
+                    'page.user.choose_account_type',
+                    'Choose Account type',
+                )}
                 invalid={Boolean(errors.account_type)}
                 errorMessage={errors.account_type?.message}
             >
@@ -202,15 +215,19 @@ const OverviewSection = ({
                                 setUserType(value)
                             }}
                         >
-                            <Radio value={'Employee'}>Employee</Radio>
-                            <Radio value={'Admin'}>Admin</Radio>
+                            <Radio value={'Employee'}>
+                                {t('page.user.employee', 'Employee')}
+                            </Radio>
+                            <Radio value={'Admin'}>
+                                {t('page.user.admin', 'Admin')}
+                            </Radio>
                         </Radio.Group>
                     )}
                 />
             </FormItem>
 
             <FormItem
-                label="Role"
+                label={t('page.user.role', 'Role')}
                 invalid={Boolean(errors.role)}
                 errorMessage={errors.role?.message}
             >
@@ -219,7 +236,10 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <Select
-                            placeholder="Please Select"
+                            placeholder={t(
+                                'page.select_placeholder',
+                                'Please Select',
+                            )}
                             options={roleOptions}
                             value={
                                 roleOptions.find((option) => {
@@ -235,7 +255,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Status"
+                label={t('page.user.status', 'Status')}
                 invalid={Boolean(errors.status)}
                 errorMessage={errors.status?.message}
             >
@@ -244,7 +264,10 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <Select
-                            placeholder="Please Select"
+                            placeholder={t(
+                                'page.select_placeholder',
+                                'Please Select',
+                            )}
                             options={statusOptions}
                             value={statusOptions.find(
                                 (option) => option.value === field.value,
@@ -257,7 +280,7 @@ const OverviewSection = ({
 
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="Password"
+                    label={t('page.user.password', 'Password')}
                     invalid={Boolean(errors.password)}
                     errorMessage={errors.password?.message}
                 >
@@ -268,7 +291,10 @@ const OverviewSection = ({
                             <Input
                                 type="password"
                                 autoComplete="off"
-                                placeholder="Password"
+                                placeholder={t(
+                                    'page.user.password',
+                                    'Password',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                             />
@@ -276,7 +302,7 @@ const OverviewSection = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Confirm Password"
+                    label={t('page.user.confirm_password', 'Confirm Password')}
                     invalid={Boolean(errors.confirm_password)}
                     errorMessage={
                         errors.confirm_password?.message ||
@@ -290,7 +316,10 @@ const OverviewSection = ({
                             <Input
                                 type="password"
                                 autoComplete="off"
-                                placeholder="Confirm Password"
+                                placeholder={t(
+                                    'page.user.confirm_password',
+                                    'Confirm Password',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                             />

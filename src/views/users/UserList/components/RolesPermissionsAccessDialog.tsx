@@ -16,6 +16,7 @@ import { useToken } from '@/store/authStore'
 import { apiCompaniesList, apiTotalCompanies } from '@/services/CompanyService'
 import { GetCompanyListResponse } from '@/views/companies/types'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusOptions = [
@@ -33,15 +34,16 @@ type OptionType = {
     value: string
 }
 
-const userTypeOptions = [
-    { label: 'Admin', value: 'admin' },
-    { label: 'Employee', value: 'employee' },
-]
-
 const RolesPermissionsAccessDialogComponent = ({
     roleList,
     mutate,
 }: RolesPermissionsAccessDialog) => {
+    const { t } = useTranslation()
+
+    const userTypeOptions = [
+        { label: t('page.user.admin', 'Admin'), value: 'admin' },
+        { label: t('page.user.employee', 'Employee'), value: 'employee' },
+    ]
     const { selectedRole, setSelectedRole, setRoleDialog, roleDialog } =
         useRolePermissionsStore()
 
@@ -90,7 +92,9 @@ const RolesPermissionsAccessDialogComponent = ({
     const handleSubmit = async () => {
         if (roleName === '' || !selectedStatus || !companyName) {
             toast.push(
-                <Notification type="warning">Fill All Fields</Notification>,
+                <Notification type="warning">
+                    {t('page.fill_all_fields_message', 'Fill All Fields')}
+                </Notification>,
                 {
                     placement: 'top-center',
                 },
@@ -224,10 +228,14 @@ const RolesPermissionsAccessDialogComponent = ({
             onClose={handleClose}
             onRequestClose={handleClose}
         >
-            <h4>{roleDialog.type === 'new' ? 'Create role' : modules?.name}</h4>
+            <h4>
+                {roleDialog.type === 'new'
+                    ? `${t('page.create', 'Create')} ${t('page.user.role', 'role')}`
+                    : modules?.name}
+            </h4>
             <ScrollBar className="mt-6 max-h-[600px] overflow-y-auto">
                 <div className="px-4">
-                    <FormItem label="Role name">
+                    <FormItem label={t('page.user.role_name', 'Role name')}>
                         <Input
                             value={roleName}
                             onChange={(e) => setRoleName(e.target.value)}
@@ -235,9 +243,12 @@ const RolesPermissionsAccessDialogComponent = ({
                     </FormItem>
 
                     {user.account_type === 'SuperAdmin' && (
-                        <FormItem label="Company">
+                        <FormItem label={t('page.user.company', 'Company')}>
                             <Select
-                                placeholder="Select company"
+                                placeholder={t(
+                                    'page.select_placeholder',
+                                    'Please select',
+                                )}
                                 options={companyOptions}
                                 value={
                                     companyOptions.find(
@@ -254,10 +265,13 @@ const RolesPermissionsAccessDialogComponent = ({
                         </FormItem>
                     )}
 
-                    <FormItem label="Status">
+                    <FormItem label={t('page.user.status', 'Status')}>
                         <Select
                             className="mb-4"
-                            placeholder="Select status"
+                            placeholder={t(
+                                'page.select_placeholder',
+                                'Select status',
+                            )}
                             options={statusOptions}
                             value={
                                 statusOptions.find(
@@ -270,10 +284,13 @@ const RolesPermissionsAccessDialogComponent = ({
                         />
                     </FormItem>
 
-                    <FormItem label="User Type">
+                    <FormItem label={t('page.user.user_type', 'User Type')}>
                         <Select
                             className="mb-4"
-                            placeholder="Select status"
+                            placeholder={t(
+                                'page.user.select_placeholder',
+                                'Please select',
+                            )}
                             options={userTypeOptions}
                             value={
                                 userTypeOptions.find(
@@ -286,7 +303,9 @@ const RolesPermissionsAccessDialogComponent = ({
                         />
                     </FormItem>
 
-                    <span className="font-semibold mb-2">Roles</span>
+                    <span className="font-semibold mb-2">
+                        {t('page.user.roles', 'Roles')}
+                    </span>
 
                     {accessModules.map((module, index) => (
                         <div
@@ -319,8 +338,125 @@ const RolesPermissionsAccessDialogComponent = ({
                                         }
                                         className="cursor-pointer"
                                     />
-                                    <h6 className="font-bold text-sm">
-                                        {module.name}
+                                    <h6 className="font-bold text-sm uppercase">
+                                        {(() => {
+                                            switch (module.name) {
+                                                case 'DASHBOARD':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.dashboard',
+                                                                'DASHBOARD',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'EMPLOYEES':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.employees',
+                                                                'EMPLOYEES',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'ATTENDANCES':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.attendances',
+                                                                'ATTENDANCES',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'SCHEDULES':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.schedules',
+                                                                'SCHEDULES',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'LEAVE':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.leave',
+                                                                'LEAVE',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'SETTINGS':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.settings',
+                                                                'SETTINGS',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'REPORTS':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.reports',
+                                                                'REPORTS',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'USER ROLES':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.user_roles',
+                                                                'USER ROLES',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'DEPARTMENTS':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.departments',
+                                                                'DEPARTMENTS',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'JOB TITLES':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.job_titles',
+                                                                'JOB TITLES',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'LEAVE TYPES':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.leave_types',
+                                                                'LEAVE TYPES',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                case 'LEAVE GROUPS':
+                                                    return (
+                                                        <span>
+                                                            {t(
+                                                                'page.user.leave_group',
+                                                                'LEAVE GROUPS',
+                                                            )}
+                                                        </span>
+                                                    )
+                                                default:
+                                                    return (
+                                                        <span>
+                                                            {module.name}
+                                                        </span>
+                                                    )
+                                            }
+                                        })()}
                                     </h6>
                                 </label>
                             </div>
@@ -366,7 +502,57 @@ const RolesPermissionsAccessDialogComponent = ({
                                                     }
                                                     onClick={onSegmentItemClick}
                                                 >
-                                                    {access.label}
+                                                    {(() => {
+                                                        switch (access.label) {
+                                                            case 'Create':
+                                                                return (
+                                                                    <span>
+                                                                        {t(
+                                                                            'page.user.create',
+                                                                            'Create',
+                                                                        )}
+                                                                    </span>
+                                                                )
+                                                            case 'Update':
+                                                                return (
+                                                                    <span>
+                                                                        {t(
+                                                                            'page.user.update',
+                                                                            'Update',
+                                                                        )}
+                                                                    </span>
+                                                                )
+                                                            case 'Read':
+                                                                return (
+                                                                    <span>
+                                                                        {t(
+                                                                            'page.user.read',
+                                                                            'Read',
+                                                                        )}
+                                                                    </span>
+                                                                )
+                                                            case 'Delete':
+                                                                return (
+                                                                    <span>
+                                                                        {t(
+                                                                            'page.user.delete',
+                                                                            'Delete',
+                                                                        )}
+                                                                    </span>
+                                                                )
+                                                            case 'Archive':
+                                                                return (
+                                                                    <span>
+                                                                        {t(
+                                                                            'page.user.archive',
+                                                                            'Archive',
+                                                                        )}
+                                                                    </span>
+                                                                )
+                                                            default:
+                                                                return access.label
+                                                        }
+                                                    })()}
                                                 </Button>
                                             )}
                                         </Segment.Item>
@@ -382,10 +568,12 @@ const RolesPermissionsAccessDialogComponent = ({
                             variant="plain"
                             onClick={handleClose}
                         >
-                            Cancel
+                            {t('page.user.cancel', 'Cancel')}
                         </Button>
                         <Button variant="solid" onClick={handleSubmit}>
-                            {roleDialog.type === 'edit' ? 'Update' : 'Create'}
+                            {roleDialog.type === 'edit'
+                                ? t('page.user.update', 'Update')
+                                : t('page.user.create', 'Create')}
                         </Button>
                     </div>
                 </div>

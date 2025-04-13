@@ -10,6 +10,7 @@ import { TbPencil, TbEye } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { User } from '../types'
 import type { TableQueries } from '@/@types/common'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     Enabled:
@@ -18,9 +19,11 @@ const statusColor: Record<string, string> = {
 }
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
+    const { t } = useTranslation()
+
     return (
         <div className="flex items-center gap-3">
-            <Tooltip title="Edit">
+            <Tooltip title={t('page.edit', 'Edit')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -35,6 +38,8 @@ const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
 
 const UserListTable = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const {
         userList,
@@ -54,30 +59,34 @@ const UserListTable = () => {
     const columns: ColumnDef<User>[] = useMemo(
         () => [
             {
-                header: 'Name',
+                header: t('page.user.name', 'Name'),
                 accessorKey: 'employeeData.full_name',
             },
             {
-                header: 'Email',
+                header: t('page.user.email', 'Email'),
                 accessorKey: 'email',
             },
             {
-                header: 'Role',
+                header: t('page.user.role', 'Role'),
                 accessorKey: 'roleData.name',
             },
             {
-                header: 'Type',
+                header: t('page.user.type', 'Type'),
                 accessorKey: 'account_type',
             },
             {
-                header: 'Status',
+                header: t('page.user.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
                             <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                                <span className="capitalize">
+                                    {row.status === 'Enabled'
+                                        ? t('page.user.enabled', 'Enabled')
+                                        : t('page.user.disabled', 'Disabled')}
+                                </span>
                             </Tag>
                         </div>
                     )
@@ -94,7 +103,7 @@ const UserListTable = () => {
             },
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {
