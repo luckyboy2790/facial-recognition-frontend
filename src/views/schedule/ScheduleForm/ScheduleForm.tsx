@@ -10,6 +10,7 @@ import { z } from 'zod'
 import type { ZodType } from 'zod'
 import type { CommonProps } from '@/@types/common'
 import type { ScheduleFormSchema } from './types'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type ScheduleFormProps = {
     onFormSubmit: (values: ScheduleFormSchema) => void
@@ -17,36 +18,51 @@ type ScheduleFormProps = {
     newSchedule?: boolean
 } & CommonProps
 
-const validationSchema: ZodType<ScheduleFormSchema> = z.object({
-    employee: z.string().min(1, { message: 'First name required' }),
-    start_time: z
-        .string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?$/, {
-            message: 'Invalid time format (HH:mm:ss.SSSZ)',
-        }),
-
-    off_time: z
-        .string()
-        .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?$/, {
-            message: 'Invalid time format (HH:mm:ss.SSSZ)',
-        }),
-    from: z
-        .string()
-        .min(1, { message: 'Official Start Date is required' })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: 'Invalid date format (YYYY-MM-DD)',
-        }),
-    to: z
-        .string()
-        .min(1, { message: 'Official Start Date is required' })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: 'Invalid date format (YYYY-MM-DD)',
-        }),
-    total_hours: z.string().min(1, { message: 'Total hours required' }),
-    rest_days: z.array(z.string()),
-})
-
 const ScheduleForm = (props: ScheduleFormProps) => {
+    const { t } = useTranslation()
+
+    const validationSchema: ZodType<ScheduleFormSchema> = z.object({
+        employee: z.string().min(1, {
+            message: t('page.schedule.employee_required', 'Employee required'),
+        }),
+        start_time: z
+            .string()
+            .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?$/, {
+                message: t(
+                    'page.schedule.time_format',
+                    'Invalid time format (HH:mm:ss.SSSZ)',
+                ),
+            }),
+
+        off_time: z
+            .string()
+            .regex(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{3})?$/, {
+                message: t(
+                    'page.schedule.time_format',
+                    'Invalid time format (HH:mm:ss.SSSZ)',
+                ),
+            }),
+        from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: t(
+                'page.schedule.date_format',
+                'Invalid date format (YYYY-MM-DD)',
+            ),
+        }),
+        to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+            message: t(
+                'page.schedule.date_format',
+                'Invalid date format (YYYY-MM-DD)',
+            ),
+        }),
+        total_hours: z.string().min(1, {
+            message: t(
+                'page.schedule.total_hours_required',
+                'Total hours required',
+            ),
+        }),
+        rest_days: z.array(z.string()),
+    })
+
     const { onFormSubmit, defaultValues = {}, children, newSchedule } = props
 
     const {

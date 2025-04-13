@@ -11,9 +11,12 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useLeaveList'
 import { TbChecks } from 'react-icons/tb'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const LeaveListSelected = () => {
     const { selectedLeave, leaveList, mutate, deleteLeave } = useEmployeeList()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -64,9 +67,15 @@ const LeaveListSelected = () => {
                                         </span>
                                         <span className="flex font-semibold gap-1 items-center">
                                             <span className="heading-text">
-                                                {selectedLeave.length} Leaves
+                                                {selectedLeave.length}{' '}
+                                                {t(
+                                                    'page.leave.leave',
+                                                    'Leaves',
+                                                )}
                                             </span>
-                                            <span>selected</span>
+                                            <span>
+                                                {t('page.select', 'selected')}
+                                            </span>
                                         </span>
                                     </span>
                                 )}
@@ -82,7 +91,7 @@ const LeaveListSelected = () => {
                                     }
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('page.delete', 'Delete')}
                                 </Button>
                             </div>
                         </div>
@@ -92,16 +101,20 @@ const LeaveListSelected = () => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove leaves"
+                title={`${t('page.delete', 'Delete')} ${t('page.leave.leave', 'Leaves')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these leaves? This action
-                    can&apos;t be undo.{' '}
+                    {t(
+                        'page.leave.delete_confirm_message',
+                        'Are you sure you want to remove these leaves? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>

@@ -159,7 +159,32 @@
             "schedule_create_success_message": "¡Programación creada exitosamente!",
             "schedule_update_success_message": "¡Programación actualizado exitosamente!",
             "schedule_delete_success_message": "¡Programación eliminado!",
-            "no_data": "¡No se encontró ningún horario!"
+            "no_data": "¡No se encontró ningún horario!",
+            "employee_required": "Se requiere empleado",
+            "time_format": "Formato de hora no válido (HH:mm:ss.SSSZ)",
+            "date_format": "Formato de fecha no válido (YYYY-MM-DD)",
+            "total_hours_required": "Total de horas requeridas"
+        },
+        "leave": {
+            "leave_of_absence": "Permisos de ausencia",
+            "leave": "Licencias",
+            "employee": "Empleadas",
+            "leave_type": "Tipo de licencia",
+            "from": "Salir de",
+            "to": "Dejar a",
+            "status": "Estado",
+            "reason": "Razón",
+            "return_date": "Fecha de regreso",
+            "approved": "Aprobado",
+            "pending": "Pendiente",
+            "declined": "Rechazado",
+            "comment": "Comentario",
+            "add_comment": "Agregar comentario",
+            "delete_confirm_message": "¿Seguro que desea eliminar estas licencias? Esta acción no se puede deshacer.",
+            "leave_create_success_message": "¡Licencia creada exitosamente!",
+            "leave_update_success_message": "¡Licencia actualizado exitosamente!",
+            "leave_delete_success_message": "¡Licencia eliminado!",
+            "no_data": "¡No se encontró ninguna licencia!"
         },
         "view": "Vista",
         "create": "Crear",
@@ -177,6 +202,7 @@
         "add_new": "Agregar nuevo",
         "select": "seleccionado",
         "page": "Página",
-        "quick_search": "Búsqueda rápida..."
+        "quick_search": "Búsqueda rápida...",
+        "download": "Descargar"
     }
 }

@@ -3,9 +3,12 @@ import { TbCloudDownload, TbUserPlus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import useEmployeeList from '../hooks/useLeaveList'
 import { CSVLink } from 'react-csv'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const LeaveListActionTools = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const { leaveList } = useEmployeeList()
 
@@ -20,7 +23,7 @@ const LeaveListActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <Button
@@ -28,7 +31,7 @@ const LeaveListActionTools = () => {
                 icon={<TbUserPlus className="text-xl" />}
                 onClick={() => navigate('/employee-create')}
             >
-                Add new
+                {t('page.add_new', 'Add new')}
             </Button>
         </div>
     )

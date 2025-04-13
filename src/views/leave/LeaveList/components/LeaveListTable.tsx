@@ -10,6 +10,7 @@ import { TbPencil, TbEye } from 'react-icons/tb'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Leave } from '../types'
 import type { TableQueries } from '@/@types/common'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     Approved:
@@ -19,9 +20,10 @@ const statusColor: Record<string, string> = {
 }
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
+    const { t } = useTranslation()
     return (
         <div className="flex gap-3 items-center">
-            <Tooltip title="Edit">
+            <Tooltip title={t('page.edit', 'Edit')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -36,6 +38,8 @@ const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
 
 const LeaveListTable = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const {
         leaveList,
@@ -55,7 +59,7 @@ const LeaveListTable = () => {
     const columns: ColumnDef<Leave>[] = useMemo(
         () => [
             {
-                header: 'Leave Type',
+                header: t('page.leave.leave_type', 'Leave Type'),
                 id: 'leaveTypeData.leave_name',
                 cell: (props) => (
                     <span>
@@ -64,30 +68,39 @@ const LeaveListTable = () => {
                 ),
             },
             {
-                header: 'Leave From',
+                header: t('page.leave.from', 'Leave From'),
                 accessorKey: 'leaveFrom',
             },
             {
-                header: 'Leave To',
+                header: t('page.leave.to', 'Leave To'),
                 accessorKey: 'leaveTo',
             },
             {
-                header: 'Reason',
+                header: t('page.leave.reason', 'Reason'),
                 accessorKey: 'reason',
             },
             {
-                header: 'Return Date',
+                header: t('page.leave.return_date', 'Return Date'),
                 accessorKey: 'leaveReturn',
             },
             {
-                header: 'Status',
+                header: t('page.leave.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
                             <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                                <span className="capitalize">
+                                    {row.status === 'Approved'
+                                        ? t('page.leave.approved', 'Approved')
+                                        : row.status === 'Pending'
+                                          ? t('page.leave.pending', 'Pending')
+                                          : t(
+                                                'page.leave.declined',
+                                                'Declined',
+                                            )}
+                                </span>
                             </Tag>
                         </div>
                     )
@@ -103,7 +116,7 @@ const LeaveListTable = () => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {
