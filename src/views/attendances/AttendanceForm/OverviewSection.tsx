@@ -9,6 +9,7 @@ import { Input, Select } from '@/components/ui'
 import { TimePicker, DatePicker } from 'antd'
 import dayjs from 'dayjs'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -32,6 +33,8 @@ const OverviewSection = ({
     const [employeeOptions, setEmployeeOptions] = useState<OptionType[]>([])
 
     const { setting } = useAuth()
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,9 +62,9 @@ const OverviewSection = ({
 
     return (
         <Card>
-            <h4 className="mb-6">{`Attendance ${newAttendance ? 'Create' : 'Edit'}`}</h4>
+            <h4 className="mb-6">{`${t('page.attendance.attendance', 'Attendance')} ${newAttendance ? t('page.create', 'Create') : t('page.edit', 'Edit')}`}</h4>
             <FormItem
-                label="Employee"
+                label={t('page.attendance.employee', 'Employee')}
                 invalid={Boolean(errors.employee)}
                 errorMessage={errors.employee?.message}
             >
@@ -70,7 +73,10 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <Select
-                            placeholder="Please Select"
+                            placeholder={t(
+                                'page.select_placeholder',
+                                'Please Select',
+                            )}
                             options={employeeOptions}
                             value={employeeOptions.find(
                                 (option) => option.value === field.value,
@@ -82,7 +88,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Date"
+                label={t('page.attendance.date', 'Date')}
                 invalid={Boolean(errors.date)}
                 errorMessage={errors.date?.message}
             >
@@ -91,7 +97,10 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <DatePicker
-                            placeholder="Date"
+                            placeholder={t(
+                                'page.date_placeholder',
+                                'Select Date',
+                            )}
                             className="w-full"
                             style={{ height: '48px', borderRadius: '12px' }}
                             value={
@@ -110,7 +119,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Start time"
+                label={t('page.attendance.start_time', 'Start time')}
                 invalid={Boolean(errors.time_in)}
                 errorMessage={errors.time_in?.message}
             >
@@ -126,6 +135,10 @@ const OverviewSection = ({
                             }
                             className="w-full"
                             size="large"
+                            placeholder={t(
+                                'page.time_placeholder',
+                                'Select Time',
+                            )}
                             style={{ height: '48px', borderRadius: '12px' }}
                             value={
                                 field.value
@@ -141,7 +154,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Off Time"
+                label={t('page.attendance.off_time', 'Off Time')}
                 invalid={Boolean(errors.time_out)}
                 errorMessage={errors.time_out?.message}
             >
@@ -156,6 +169,10 @@ const OverviewSection = ({
                                 setting.timeFormat === '1' ? 'h:mm a' : 'HH:mm'
                             }
                             className="w-full"
+                            placeholder={t(
+                                'page.time_placeholder',
+                                'Select Time',
+                            )}
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}
                             value={
@@ -172,7 +189,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Break In Time"
+                label={t('page.attendance_break_in_time', 'Break In Time')}
                 invalid={Boolean(errors.break_in)}
                 errorMessage={errors.break_in?.message}
             >
@@ -188,6 +205,10 @@ const OverviewSection = ({
                             }
                             className="w-full"
                             size="large"
+                            placeholder={t(
+                                'page.time_placeholder',
+                                'Select Time',
+                            )}
                             style={{ height: '48px', borderRadius: '12px' }}
                             value={
                                 field.value
@@ -203,7 +224,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Break Out Time"
+                label={t('page.attendance.break_out', 'Break Out Time')}
                 invalid={Boolean(errors.break_out)}
                 errorMessage={errors.break_out?.message}
             >
@@ -217,6 +238,10 @@ const OverviewSection = ({
                             format={
                                 setting.timeFormat === '1' ? 'h:mm a' : 'h:mm'
                             }
+                            placeholder={t(
+                                'page.time_placeholder',
+                                'Select Time',
+                            )}
                             className="w-full"
                             size="large"
                             style={{ height: '48px', borderRadius: '12px' }}

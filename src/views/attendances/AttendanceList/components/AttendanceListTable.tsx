@@ -9,11 +9,13 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Attendance } from '../types'
 import type { TableQueries } from '@/@types/common'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
+    const { t } = useTranslation()
     return (
         <div className="flex items-center gap-3">
-            <Tooltip title="Edit">
+            <Tooltip title={t('page.edit', 'Edit')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -28,6 +30,8 @@ const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
 
 const AttendanceListTable = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const {
         attendanceList,
@@ -92,15 +96,15 @@ const AttendanceListTable = () => {
     const columns: ColumnDef<Attendance>[] = useMemo(
         () => [
             {
-                header: 'Date',
+                header: t('page.attendance.date', 'Date'),
                 accessorKey: 'date',
             },
             {
-                header: 'Employee',
+                header: t('page.attendance.employee', 'Employee'),
                 accessorKey: 'employeeData.full_name',
             },
             {
-                header: 'Time In',
+                header: t('page.attendance.time_in', 'Time In'),
                 accessorKey: 'time_in',
                 cell: (props) => (
                     <div>
@@ -112,7 +116,7 @@ const AttendanceListTable = () => {
                 ),
             },
             {
-                header: 'Time Out',
+                header: t('page.attendance.time_out', 'Time Out'),
                 accessorKey: 'time_out',
                 cell: (props) => (
                     <div>
@@ -124,7 +128,7 @@ const AttendanceListTable = () => {
                 ),
             },
             {
-                header: 'Break In',
+                header: t('page.attendance.break_in', 'Break In'),
                 accessorKey: 'break_in',
                 cell: (props) => (
                     <div>
@@ -136,7 +140,7 @@ const AttendanceListTable = () => {
                 ),
             },
             {
-                header: 'Break Out',
+                header: t('page.attendance.break_out', 'Break Out'),
                 accessorKey: 'break_out',
                 cell: (props) => (
                     <div>
@@ -148,16 +152,21 @@ const AttendanceListTable = () => {
                 ),
             },
             {
-                header: 'Total Hours',
+                header: t('page.attendance.total_hours', 'Total Hours'),
                 accessorKey: 'total_hours',
             },
             {
-                header: 'Status (In/Out)',
+                header: t('page.attendance.status', 'Status (In/Out)'),
                 id: 'status',
                 cell: (props) => (
                     <div>
-                        {props.row.original.status_timein} /{' '}
-                        {props.row.original.status_timeout}
+                        {props.row.original.status_timein === 'Late In'
+                            ? t('page.attendance.late_in', 'Late In')
+                            : t('page.attendance.in_time', 'Time In')}
+                        /{' '}
+                        {props.row.original.status_timeout === 'Early Out'
+                            ? t('page.attendance.early_out', 'Early Out')
+                            : t('page.attendance.out_time', 'Time Out')}
                     </div>
                 ),
             },
@@ -171,7 +180,7 @@ const AttendanceListTable = () => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

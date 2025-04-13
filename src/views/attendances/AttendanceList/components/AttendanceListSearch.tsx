@@ -1,5 +1,6 @@
 import { Ref, useState } from 'react'
 import DatePickerRange from '@/components/ui/DatePicker/DatePickerRange'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type DatePickerRangeValue = [Date | null, Date | null] // Ensure compatibility with DatePickerRange
 type CustomerListSearchProps = {
@@ -9,6 +10,8 @@ type CustomerListSearchProps = {
 
 const CustomerListSearch = (props: CustomerListSearchProps) => {
     const { onInputChange, ref } = props
+
+    const { t } = useTranslation()
 
     const handleDateChange = (dates: DatePickerRangeValue) => {
         if (dates[0] && dates[1]) {
@@ -22,7 +25,7 @@ const CustomerListSearch = (props: CustomerListSearchProps) => {
         <>
             <DatePickerRange
                 ref={ref}
-                placeholder="Select date"
+                placeholder={t('page.date_placeholder', 'Select date')}
                 onChange={handleDateChange}
             />
         </>

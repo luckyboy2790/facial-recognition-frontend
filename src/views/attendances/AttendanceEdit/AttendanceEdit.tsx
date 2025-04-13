@@ -20,6 +20,7 @@ import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type AttendanceDetailResponse = {
@@ -33,6 +34,8 @@ type AttendanceData = {
 
 const AttendanceEdit = () => {
     const { id } = useParams()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -69,7 +72,12 @@ const AttendanceEdit = () => {
     const handleFormSubmit = async (values: AttendanceFormSchema) => {
         if (values.reason === '' || !values.reason) {
             toast.push(
-                <Notification type="warning">Please write reason</Notification>,
+                <Notification type="warning">
+                    {t(
+                        'page.attendance.write_reason_message',
+                        'Please write reason',
+                    )}
+                </Notification>,
                 {
                     placement: 'top-center',
                 },
@@ -202,7 +210,7 @@ const AttendanceEdit = () => {
                                     icon={<TbArrowNarrowLeft />}
                                     onClick={handleBack}
                                 >
-                                    Back
+                                    {t('page.back', 'Back')}
                                 </Button>
                                 <div className="flex items-center">
                                     <Button
@@ -214,14 +222,14 @@ const AttendanceEdit = () => {
                                         icon={<TbTrash />}
                                         onClick={handleDelete}
                                     >
-                                        Delete
+                                        {t('page.delete', 'Delete')}
                                     </Button>
                                     <Button
                                         variant="solid"
                                         type="submit"
                                         loading={isSubmiting}
                                     >
-                                        Save
+                                        {t('page.save', 'Save')}
                                     </Button>
                                 </div>
                             </div>
@@ -230,15 +238,19 @@ const AttendanceEdit = () => {
                     <ConfirmDialog
                         isOpen={deleteConfirmationOpen}
                         type="danger"
-                        title="Remove attendances"
+                        title={`${t('page.delete', 'Delete')} ${t('page.attendance.attendance', 'Attendances')}`}
                         onClose={handleCancel}
                         onRequestClose={handleCancel}
                         onCancel={handleCancel}
                         onConfirm={handleConfirmDelete}
+                        cancelText={t('page.employee.cancel', 'Cancel')}
+                        confirmText={t('page.employee.confirm', 'Confirm')}
                     >
                         <p>
-                            Are you sure you want to remove this attendance?
-                            This action can&apos;t be undo.{' '}
+                            {t(
+                                'page.attendance.delete_confirm_message',
+                                'Are you sure you want to remove this attendance? This action cannot be undo.',
+                            )}{' '}
                         </p>
                     </ConfirmDialog>
                 </>

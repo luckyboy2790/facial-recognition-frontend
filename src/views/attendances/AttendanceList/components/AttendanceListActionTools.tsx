@@ -10,11 +10,14 @@ import DatePickerRange, {
 import { apiTotalAttendanceList } from '@/services/AttendanceService'
 import * as XLSX from 'xlsx'
 import { GetAttendancesListResponse } from '../types'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const AttendanceListActionTools = () => {
     const navigate = useNavigate()
 
     const [dialogIsOpen, setIsOpen] = useState(false)
+
+    const { t } = useTranslation()
 
     const [date, setDate] = useState('')
 
@@ -85,14 +88,14 @@ const AttendanceListActionTools = () => {
                 icon={<FaCloudArrowDown className="text-xl" />}
                 onClick={openDialog}
             >
-                Export Excel
+                {t('page.attendance.export_excel', 'Export Excel')}
             </Button>
             <Button
                 variant="solid"
                 icon={<TbUserPlus className="text-xl" />}
                 onClick={() => navigate('/attendance-create')}
             >
-                Add new
+                {t('page.add_new', 'Add new')}
             </Button>
             <Dialog
                 isOpen={dialogIsOpen}
