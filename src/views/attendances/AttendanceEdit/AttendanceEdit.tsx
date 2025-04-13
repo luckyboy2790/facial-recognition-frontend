@@ -162,7 +162,12 @@ const AttendanceEdit = () => {
             })
 
             toast.push(
-                <Notification type="success">Schedule deleted!</Notification>,
+                <Notification type="success">
+                    {t(
+                        'page.attendance.attendance_delete_success_message',
+                        'Schedule deleted!',
+                    )}
+                </Notification>,
                 { placement: 'top-center' },
             )
 
@@ -189,7 +194,9 @@ const AttendanceEdit = () => {
             {!isLoading && !data && (
                 <div className="h-full flex flex-col items-center justify-center">
                     <NoUserFound height={280} width={280} />
-                    <h3 className="mt-8">No user found!</h3>
+                    <h3 className="mt-8">
+                        {t('page.no_data', 'No user found!')}
+                    </h3>
                 </div>
             )}
             {!isLoading && data && (

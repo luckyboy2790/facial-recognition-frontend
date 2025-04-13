@@ -10,6 +10,7 @@ import { TbTrash } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import type { ScheduleFormSchema } from '../ScheduleForm'
 import { useToken } from '@/store/authStore'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const EmployeeCreate = () => {
@@ -18,6 +19,8 @@ const EmployeeCreate = () => {
     const [discardConfirmationOpen, setDiscardConfirmationOpen] =
         useState(false)
     const [isSubmiting, setIsSubmiting] = useState(false)
+
+    const { t } = useTranslation()
 
     const { token } = useToken()
 
@@ -59,7 +62,9 @@ const EmployeeCreate = () => {
     const handleConfirmDiscard = () => {
         setDiscardConfirmationOpen(true)
         toast.push(
-            <Notification type="success">Schedule discardd!</Notification>,
+            <Notification type="success">
+                {t('page.schedule.schedule_discarded', 'Schedule discarded!')}
+            </Notification>,
             { placement: 'top-center' },
         )
         navigate('/schedule')
@@ -76,7 +81,7 @@ const EmployeeCreate = () => {
     return (
         <>
             <ScheduleForm
-                newSchedule
+                newSchedule={true}
                 defaultValues={{
                     employee: '',
                     start_time: '',
@@ -101,14 +106,14 @@ const EmployeeCreate = () => {
                                 icon={<TbTrash />}
                                 onClick={handleDiscard}
                             >
-                                Discard
+                                {t('page.discard', 'Discard')}
                             </Button>
                             <Button
                                 variant="solid"
                                 type="submit"
                                 loading={isSubmiting}
                             >
-                                Create
+                                {t('page.create', 'Create')}
                             </Button>
                         </div>
                     </div>
@@ -117,15 +122,19 @@ const EmployeeCreate = () => {
             <ConfirmDialog
                 isOpen={discardConfirmationOpen}
                 type="danger"
-                title="Discard changes"
+                title={t('page.discard_change', 'Discard changes')}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDiscard}
+                cancelText={t('page.discard', 'Discard')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
-                    Are you sure you want discard this? This action can&apos;t
-                    be undo.{' '}
+                    {t(
+                        'page.discard_confirm',
+                        'Are you sure you want discard this? This action cannot be undo.',
+                    )}
                 </p>
             </ConfirmDialog>
         </>

@@ -14,6 +14,7 @@ import type { TableQueries } from '@/@types/common'
 import { apiArchiveSchedule } from '@/services/ScheduleService'
 import dayjs from 'dayjs'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     Previous:
@@ -34,11 +35,12 @@ const ActionColumn = ({
     onArchive: () => void
     row: Schedule
 }) => {
+    const { t } = useTranslation()
     return (
         <div className="flex items-center gap-3">
             {row.status === 'Present' && (
                 <>
-                    <Tooltip title="Edit">
+                    <Tooltip title={t('page.edit', 'Edit')}>
                         <div
                             className={`text-xl cursor-pointer select-none font-semibold`}
                             role="button"
@@ -47,7 +49,7 @@ const ActionColumn = ({
                             <TbPencil />
                         </div>
                     </Tooltip>
-                    <Tooltip title="Archive">
+                    <Tooltip title={t('page.archive', 'Archived')}>
                         <div
                             className={`text-xl cursor-pointer select-none font-semibold`}
                             role="button"
@@ -76,6 +78,8 @@ const ScheduleListTable = () => {
         selectedSchedule,
         mutate,
     } = useScheduleList()
+
+    const { t } = useTranslation()
 
     const { setting } = useAuth()
 
@@ -143,11 +147,11 @@ const ScheduleListTable = () => {
     const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
-                header: 'Schedule',
+                header: t('page.schedule.employee', 'Employee'),
                 accessorKey: 'employee_name',
             },
             {
-                header: 'Time (Start-Off)',
+                header: t('page.schedule.time', 'Time (Start-Off)'),
                 accessorKey: 'formattedTime',
                 cell: (props) => (
                     <div>
@@ -164,30 +168,114 @@ const ScheduleListTable = () => {
                 ),
             },
             {
-                header: 'Hours',
+                header: t('page.schedule.hours', 'Hours'),
                 accessorKey: 'total_hours',
             },
             {
-                header: 'Rest Days',
+                header: t('page.schedule.rest_days', 'Rest Days'),
                 accessorKey: 'rest_days',
+                cell: (props) => (
+                    <div>
+                        {props.row.original.rest_days.map((item, index) => (
+                            <div key={index}>
+                                {(() => {
+                                    switch (item) {
+                                        case 'Monday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.monday',
+                                                        'Monday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Tuesday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.tuesday',
+                                                        'Tuesday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Wednesday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.wednesday',
+                                                        'Wednesday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Thursday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.thursday',
+                                                        'Thursday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Friday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.friday',
+                                                        'Friday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Saturday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.saturday',
+                                                        'Saturday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Sunday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.sunday',
+                                                        'Sunday',
+                                                    )}
+                                                </span>
+                                            )
+                                        default:
+                                            return <span>{item}</span>
+                                    }
+                                })()}
+                            </div>
+                        ))}
+                    </div>
+                ),
             },
             {
-                header: 'From (Date)',
+                header: t('page.schedule.from', 'From (Date)'),
                 accessorKey: 'formattedFromDate',
             },
             {
-                header: 'To (Date)',
+                header: t('page.schedule.to', 'To (Date)'),
                 accessorKey: 'formattedToDate',
             },
             {
-                header: 'Status',
+                header: t('page.schedule.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
                             <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                                <span className="capitalize">
+                                    {row.status === 'Present'
+                                        ? t('page.schedule.present', 'Present')
+                                        : t(
+                                              'page.schedule.previous',
+                                              'Previous',
+                                          )}
+                                </span>
                             </Tag>
                         </div>
                     )
@@ -207,7 +295,7 @@ const ScheduleListTable = () => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

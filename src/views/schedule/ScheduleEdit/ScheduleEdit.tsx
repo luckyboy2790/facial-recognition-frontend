@@ -19,6 +19,7 @@ import type { Schedule } from '../ScheduleList/types'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ScheduleDetailResponse = {
@@ -34,6 +35,8 @@ const ScheduleEdit = () => {
     const { id } = useParams()
 
     const { user } = useAuth()
+
+    const { t } = useTranslation()
 
     const navigate = useNavigate()
 
@@ -82,9 +85,14 @@ const ScheduleEdit = () => {
         }
 
         setIsSubmiting(false)
-        toast.push(<Notification type="success">Changes Saved!</Notification>, {
-            placement: 'top-center',
-        })
+        toast.push(
+            <Notification type="success">
+                {t('page.schedule.no_data', 'Changes Saved!')}
+            </Notification>,
+            {
+                placement: 'top-center',
+            },
+        )
         await sleep(800)
         window.location.href = '/schedule'
     }
@@ -133,7 +141,12 @@ const ScheduleEdit = () => {
             })
 
             toast.push(
-                <Notification type="success">Schedule deleted!</Notification>,
+                <Notification type="success">
+                    {t(
+                        'page.schedule.schedule_delete_success_message',
+                        'Schedule deleted!',
+                    )}
+                </Notification>,
                 { placement: 'top-center' },
             )
             window.location.href = '/schedule'
@@ -157,7 +170,9 @@ const ScheduleEdit = () => {
             {!isLoading && !data && (
                 <div className="h-full flex flex-col items-center justify-center">
                     <NoUserFound height={280} width={280} />
-                    <h3 className="mt-8">No user found!</h3>
+                    <h3 className="mt-8">
+                        {t('page.schedule.no_data', 'No schedule found!')}
+                    </h3>
                 </div>
             )}
             {!isLoading && data && (
@@ -176,7 +191,7 @@ const ScheduleEdit = () => {
                                     icon={<TbArrowNarrowLeft />}
                                     onClick={handleBack}
                                 >
-                                    Back
+                                    {t('page.back', 'Back')}
                                 </Button>
                                 <div className="flex items-center">
                                     <Button
@@ -188,14 +203,14 @@ const ScheduleEdit = () => {
                                         icon={<TbTrash />}
                                         onClick={handleDelete}
                                     >
-                                        Delete
+                                        {t('page.delete', 'Delete')}
                                     </Button>
                                     <Button
                                         variant="solid"
                                         type="submit"
                                         loading={isSubmiting}
                                     >
-                                        Save
+                                        {t('page.save', 'Save')}
                                     </Button>
                                 </div>
                             </div>
@@ -204,15 +219,19 @@ const ScheduleEdit = () => {
                     <ConfirmDialog
                         isOpen={deleteConfirmationOpen}
                         type="danger"
-                        title="Remove customers"
+                        title={`${t('page.delete', 'Delete')} ${t('page.schedule.schedule', 'Schedules')}`}
                         onClose={handleCancel}
                         onRequestClose={handleCancel}
                         onCancel={handleCancel}
                         onConfirm={handleConfirmDelete}
+                        cancelText={t('page.employee.cancel', 'Cancel')}
+                        confirmText={t('page.employee.confirm', 'Confirm')}
                     >
                         <p>
-                            Are you sure you want to remove this customer? This
-                            action can&apos;t be undo.{' '}
+                            {t(
+                                'page.schedule.delete_confirm_message',
+                                'Are you sure you want to remove these schedules? This action cannot be undo.',
+                            )}
                         </p>
                     </ConfirmDialog>
                 </>

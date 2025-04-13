@@ -4,15 +4,18 @@ import ScheduleListTable from './components/ScheduleListTable'
 import ScheduleListActionTools from './components/ScheduleListActionTools'
 import CustomersListTableTools from './components/ScheduleListTableTools'
 import ScheduleListSelected from './components/ScheduleListSelected'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const ScheduleList = () => {
+    const { t } = useTranslation()
+
     return (
         <>
             <Container>
                 <AdaptiveCard>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <h3>Schedules</h3>
+                            <h3>{t('page.schedule.schedule', 'Schedules')}</h3>
                             <ScheduleListActionTools />
                         </div>
                         <CustomersListTableTools />

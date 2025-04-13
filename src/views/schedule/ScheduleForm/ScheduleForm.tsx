@@ -47,7 +47,7 @@ const validationSchema: ZodType<ScheduleFormSchema> = z.object({
 })
 
 const ScheduleForm = (props: ScheduleFormProps) => {
-    const { onFormSubmit, defaultValues = {}, children } = props
+    const { onFormSubmit, defaultValues = {}, children, newSchedule } = props
 
     const {
         handleSubmit,
@@ -84,6 +84,7 @@ const ScheduleForm = (props: ScheduleFormProps) => {
                             control={control}
                             errors={errors}
                             defaultValues={defaultValues}
+                            newSchedule={newSchedule}
                         />
                     </div>
                 </div>

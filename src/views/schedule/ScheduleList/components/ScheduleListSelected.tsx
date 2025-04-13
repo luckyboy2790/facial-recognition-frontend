@@ -5,8 +5,11 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useScheduleList'
 import { TbChecks } from 'react-icons/tb'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const ScheduleListSelected = () => {
+    const { t } = useTranslation()
+
     const { selectedSchedule, mutate, deleteSchedules } = useEmployeeList()
 
     const { user } = useAuth()
@@ -59,9 +62,14 @@ const ScheduleListSelected = () => {
                                         <span className="font-semibold flex items-center gap-1">
                                             <span className="heading-text">
                                                 {selectedSchedule.length}{' '}
-                                                Schedules
+                                                {t(
+                                                    'page.schedule.schedule',
+                                                    'Schedules',
+                                                )}
                                             </span>
-                                            <span>selected</span>
+                                            <span>
+                                                {t('page.select', 'selected')}
+                                            </span>
                                         </span>
                                     </span>
                                 )}
@@ -77,7 +85,7 @@ const ScheduleListSelected = () => {
                                     }
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('page.delete', 'Delete')}
                                 </Button>
                             </div>
                         </div>
@@ -87,16 +95,20 @@ const ScheduleListSelected = () => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove schedules"
+                title={`${t('page.delete', 'Delete')} ${t('page.attendance.schedule', 'Schedules')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these schedules? This action
-                    can&apos;t be undo.{' '}
+                    {t(
+                        'page.schedule.delete_confirm_message',
+                        'Are you sure you want to remove these schedules? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>

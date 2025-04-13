@@ -126,7 +126,40 @@
             "off_time": "Hora de descanso",
             "break_in_time": "Hora de entrada de descanso",
             "break_out_time": "Hora de salida de descanso",
-            "write_reason_message": "Por favor escribe el motivo"
+            "write_reason_message": "Por favor escribe el motivo",
+            "attendance_create_success_message": "¡Asistencia creada exitosamente!",
+            "attendance_update_success_message": "¡Asistencia actualizado exitosamente!",
+            "attendance_delete_success_message": "¡Asistencia eliminado!",
+            "no_data": "¡No se encontró asistencia!"
+        },
+        "schedule": {
+            "schedule": "Cronogramas",
+            "employee": "Empleadas",
+            "time": "Hora(de inicio)",
+            "hours": "Horas",
+            "rest_days": "Días de descanso",
+            "from": "Desde(Fecha)",
+            "to": "Hasta(Fecha)",
+            "status": "Estado",
+            "present": "Presente",
+            "previous": "Anterior",
+            "monday": "Lunes",
+            "tuesday": "Martes",
+            "wednesday": "Miércoles",
+            "thursday": "Jueves",
+            "friday": "Viernes",
+            "saturday": "Sábado",
+            "sunday": "Domingo",
+            "start_time": "Hora de inicio",
+            "off_time": "Hora de descanso",
+            "total_hours": "Horas totales",
+            "choose_rest_days": "Elija días de descanso",
+            "delete_confirm_message": "¿Seguro que desea eliminar estas programaciones? Esta acción no se puede deshacer.",
+            "schedule_discarded": "¡Programación descartada!",
+            "schedule_create_success_message": "¡Programación creada exitosamente!",
+            "schedule_update_success_message": "¡Programación actualizado exitosamente!",
+            "schedule_delete_success_message": "¡Programación eliminado!",
+            "no_data": "¡No se encontró ningún horario!"
         },
         "view": "Vista",
         "create": "Crear",
@@ -143,6 +176,7 @@
         "delete": "Borrar",
         "add_new": "Agregar nuevo",
         "select": "seleccionado",
-        "page": "Página"
+        "page": "Página",
+        "quick_search": "Búsqueda rápida..."
     }
 }
