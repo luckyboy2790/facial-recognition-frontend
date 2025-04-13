@@ -5,11 +5,14 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useEmployeeList'
 import { TbChecks } from 'react-icons/tb'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CustomerListSelected = () => {
     const { selectedCustomer, mutate, deleteEmployees } = useEmployeeList()
 
     const { user } = useAuth()
+
+    const { t } = useTranslation()
 
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
 
@@ -59,9 +62,17 @@ const CustomerListSelected = () => {
                                         <span className="font-semibold flex items-center gap-1">
                                             <span className="heading-text">
                                                 {selectedCustomer.length}{' '}
-                                                Customers
+                                                {t(
+                                                    'page.employee.employee',
+                                                    'Employees',
+                                                )}
                                             </span>
-                                            <span>selected</span>
+                                            <span>
+                                                {t(
+                                                    'page.employee.select',
+                                                    'selected',
+                                                )}
+                                            </span>
                                         </span>
                                     </span>
                                 )}
@@ -77,7 +88,7 @@ const CustomerListSelected = () => {
                                     }
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('page.employee.delete', 'Delete')}
                                 </Button>
                             </div>
                         </div>
@@ -87,16 +98,20 @@ const CustomerListSelected = () => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove customers"
+                title={`${t('page.employee.delete', 'Delete')} ${t('page.employee.employee', 'Employees')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these customers? This action
-                    can&apos;t be undo.{' '}
+                    {t(
+                        'page.employee.delete_confirm',
+                        'Are you sure you want to remove these customers? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>

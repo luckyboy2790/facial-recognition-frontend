@@ -13,6 +13,7 @@ import { NumericInput } from '@/components/shared'
 import { useAuth } from '@/auth'
 import { DatePicker } from 'antd'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type AddressSectionProps = FormSectionBaseProps & {
     setValue: UseFormSetValue<any>
@@ -45,6 +46,8 @@ const EmployeeDetailSection = ({
     setValue,
     companyId,
 }: AddressSectionProps) => {
+    const { t } = useTranslation()
+
     const [companyOptions, setCompanyOptions] = useState<optionType[]>([])
     const [departmentOptions, setDepartmentOptions] = useState<optionType[]>([])
     const [jobTitleOptions, setJobTitleOptions] = useState<optionType[]>([])
@@ -128,23 +131,28 @@ const EmployeeDetailSection = ({
     }, [company])
 
     const employmentTypeOption = [
-        { label: 'Regular', value: 'Regular' },
-        { label: 'Trainee', value: 'Trainee' },
+        { label: t('page.employee.regular', 'Regular'), value: 'Regular' },
+        { label: t('page.employee.trainee', 'Trainee'), value: 'Trainee' },
     ]
 
     const employmentStatusOption = [
-        { label: 'Active', value: 'Active' },
-        { label: 'Archived', value: 'Archived' },
+        { label: t('page.employee.active', 'Active'), value: 'Active' },
+        { label: t('page.employee.archived', 'Archived'), value: 'Archived' },
     ]
 
     return (
         <>
             <Card>
-                <h4 className="mb-6">Employee Details(Designation)</h4>
+                <h4 className="mb-6">
+                    {t(
+                        'page.employee.employee_detail',
+                        'Employee Details(Designation)',
+                    )}
+                </h4>
 
                 {user.account_type === 'SuperAdmin' && (
                     <FormItem
-                        label="Company"
+                        label={t('page.employee.company', 'Company')}
                         invalid={Boolean(errors.company)}
                         errorMessage={errors.company?.message}
                     >
@@ -154,7 +162,10 @@ const EmployeeDetailSection = ({
                             render={({ field }) => (
                                 <Select
                                     className="mb-4"
-                                    placeholder="Please Select"
+                                    placeholder={t(
+                                        'page.select_placeholder',
+                                        'Please Select',
+                                    )}
                                     options={companyOptions}
                                     value={companyOptions.find(
                                         (option) =>
@@ -172,7 +183,7 @@ const EmployeeDetailSection = ({
 
                 <div className="grid md:grid-cols-2 gap-4">
                     <FormItem
-                        label="Department"
+                        label={t('page.employee.department', 'Department')}
                         invalid={Boolean(errors.department)}
                         errorMessage={errors.department?.message}
                     >
@@ -182,7 +193,10 @@ const EmployeeDetailSection = ({
                             render={({ field }) => (
                                 <Select
                                     className="mb-4"
-                                    placeholder="Please Select"
+                                    placeholder={t(
+                                        'page.select_placeholder',
+                                        'Please Select',
+                                    )}
                                     options={departmentOptions}
                                     value={departmentOptions.find(
                                         (option) =>
@@ -205,7 +219,7 @@ const EmployeeDetailSection = ({
                     </FormItem>
 
                     <FormItem
-                        label="Job Title"
+                        label={t('page.employee.job_title', 'Job Title')}
                         invalid={Boolean(errors.jobTitle)}
                         errorMessage={errors.jobTitle?.message}
                     >
@@ -215,7 +229,10 @@ const EmployeeDetailSection = ({
                             render={({ field }) => (
                                 <Select
                                     className="mb-4"
-                                    placeholder="Please Select"
+                                    placeholder={t(
+                                        'page.select_placeholder',
+                                        'Please Select',
+                                    )}
                                     options={jobTitleOptions}
                                     value={jobTitleOptions.find(
                                         (option) =>
@@ -240,7 +257,7 @@ const EmployeeDetailSection = ({
 
                 <div className="grid md:grid-cols-2 gap-4">
                     <FormItem
-                        label="PIN password"
+                        label={t('page.employee.pin_password', 'PIN password')}
                         invalid={Boolean(errors.pin)}
                         errorMessage={errors.pin?.message}
                     >
@@ -250,7 +267,10 @@ const EmployeeDetailSection = ({
                             render={({ field }) => (
                                 <NumericInput
                                     autoComplete="off"
-                                    placeholder="PIN (Between 6~10 numeric digits)"
+                                    placeholder={t(
+                                        'page.employee.pin_password_placeholder',
+                                        'PIN (Between 6~10 numeric digits)',
+                                    )}
                                     {...field}
                                 />
                             )}
@@ -258,7 +278,10 @@ const EmployeeDetailSection = ({
                     </FormItem>
 
                     <FormItem
-                        label="Email Address (Company)"
+                        label={t(
+                            'page.employee.email_company',
+                            'Email Address (Company)',
+                        )}
                         invalid={Boolean(errors.companyEmail)}
                         errorMessage={errors.companyEmail?.message}
                     >
@@ -269,7 +292,11 @@ const EmployeeDetailSection = ({
                                 <Input
                                     type="text"
                                     autoComplete="off"
-                                    placeholder="email"
+                                    className="lowercase"
+                                    placeholder={t(
+                                        'page.employee.email',
+                                        'email',
+                                    )}
                                     {...field}
                                 />
                             )}
@@ -278,7 +305,7 @@ const EmployeeDetailSection = ({
                 </div>
 
                 <FormItem
-                    label="Leave Group"
+                    label={t('page.employee.leave_group', 'Leave Group')}
                     invalid={Boolean(errors.leaveGroup)}
                     errorMessage={errors.leaveGroup?.message}
                 >
@@ -288,7 +315,10 @@ const EmployeeDetailSection = ({
                         render={({ field }) => (
                             <Select
                                 className="mb-4"
-                                placeholder="Please Select"
+                                placeholder={t(
+                                    'page.select_placeholder',
+                                    'Please Select',
+                                )}
                                 options={leaveGroupOptions}
                                 value={leaveGroupOptions.find(
                                     (option) => option.value === field.value,
@@ -310,11 +340,19 @@ const EmployeeDetailSection = ({
                 </FormItem>
             </Card>
             <Card>
-                <h4 className="mb-6">Employment Information</h4>
+                <h4 className="mb-6">
+                    {t(
+                        'page.employee.employment_information',
+                        'Employment Information',
+                    )}
+                </h4>
 
                 <div className="grid md:grid-cols-2 gap-4">
                     <FormItem
-                        label="Employment Type"
+                        label={t(
+                            'page.employee.employment_type',
+                            'Employment Type',
+                        )}
                         invalid={Boolean(errors.employmentType)}
                         errorMessage={errors.employmentType?.message}
                     >
@@ -324,7 +362,10 @@ const EmployeeDetailSection = ({
                             render={({ field }) => (
                                 <Select
                                     className="mb-4"
-                                    placeholder="Please Select"
+                                    placeholder={t(
+                                        'page.select_placeholder',
+                                        'Please Select',
+                                    )}
                                     options={employmentTypeOption}
                                     value={employmentTypeOption.find(
                                         (option) =>
@@ -347,7 +388,10 @@ const EmployeeDetailSection = ({
                     </FormItem>
 
                     <FormItem
-                        label="Employment Status"
+                        label={t(
+                            'page.employee.employment_status',
+                            'Employment Status',
+                        )}
                         invalid={Boolean(errors.employmentStatus)}
                         errorMessage={errors.employmentStatus?.message}
                     >
@@ -357,7 +401,10 @@ const EmployeeDetailSection = ({
                             render={({ field }) => (
                                 <Select
                                     className="mb-4"
-                                    placeholder="Please Select"
+                                    placeholder={t(
+                                        'page.select_placeholder',
+                                        'Please Select',
+                                    )}
                                     options={employmentStatusOption}
                                     value={employmentStatusOption.find(
                                         (option) =>
@@ -382,7 +429,10 @@ const EmployeeDetailSection = ({
 
                 <div className="grid md:grid-cols-2 gap-4">
                     <FormItem
-                        label="Official Start Date"
+                        label={t(
+                            'page.employee.official_start_date',
+                            'Official Start Date',
+                        )}
                         invalid={Boolean(errors.officialStartDate)}
                         errorMessage={errors.officialStartDate?.message}
                     >
@@ -391,7 +441,10 @@ const EmployeeDetailSection = ({
                             control={control}
                             render={({ field }) => (
                                 <DatePicker
-                                    placeholder="Date"
+                                    placeholder={t(
+                                        'page.date_placeholder',
+                                        'Date',
+                                    )}
                                     className="w-full"
                                     style={{
                                         height: '48px',
@@ -413,7 +466,10 @@ const EmployeeDetailSection = ({
                     </FormItem>
 
                     <FormItem
-                        label="Date Regularized"
+                        label={t(
+                            'page.employee.date_regularized',
+                            'Date Regularized',
+                        )}
                         invalid={Boolean(errors.dateRegularized)}
                         errorMessage={errors.dateRegularized?.message}
                     >
@@ -422,7 +478,10 @@ const EmployeeDetailSection = ({
                             control={control}
                             render={({ field }) => (
                                 <DatePicker
-                                    placeholder="Date"
+                                    placeholder={t(
+                                        'page.date_placeholder',
+                                        'Date',
+                                    )}
                                     className="w-full"
                                     style={{
                                         height: '48px',

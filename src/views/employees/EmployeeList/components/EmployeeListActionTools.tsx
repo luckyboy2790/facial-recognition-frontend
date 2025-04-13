@@ -1,9 +1,12 @@
 import Button from '@/components/ui/Button'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { TbUserPlus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 
 const CustomerListActionTools = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     return (
         <div className="flex flex-col md:flex-row gap-3">
@@ -12,7 +15,7 @@ const CustomerListActionTools = () => {
                 icon={<TbUserPlus className="text-xl" />}
                 onClick={() => navigate('/employee-create')}
             >
-                Add new
+                {t('page.employee.add_new', 'Add new')}
             </Button>
         </div>
     )

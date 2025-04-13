@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 import isEmpty from 'lodash/isEmpty'
 import type { Employee } from '../EmployeeList/types'
 import DesignationSection from './DesignationSection'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const { TabNav, TabList, TabContent } = Tabs
 
@@ -18,6 +19,8 @@ type ProfileSectionProps = {
 
 const CustomerDetails = () => {
     const { id } = useParams()
+
+    const { t } = useTranslation()
 
     const { data, isLoading } = useSWR(
         ['/api/customers', { id: id as string }],
@@ -42,9 +45,17 @@ const CustomerDetails = () => {
                         <Tabs defaultValue="personal">
                             <TabList>
                                 <TabNav value="personal">
-                                    Personal Information
+                                    {t(
+                                        'page.employee.personal_information',
+                                        'Personal Information',
+                                    )}
                                 </TabNav>
-                                <TabNav value="designation">Designation</TabNav>
+                                <TabNav value="designation">
+                                    {t(
+                                        'page.employee.designation',
+                                        'Designation',
+                                    )}
+                                </TabNav>
                             </TabList>
                             <div className="p-4">
                                 <TabContent value="personal">

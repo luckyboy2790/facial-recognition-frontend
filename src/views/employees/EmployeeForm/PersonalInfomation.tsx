@@ -12,6 +12,7 @@ import type { FormSectionBaseProps } from './types'
 import type { ControlProps, OptionProps } from 'react-select'
 import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -72,6 +73,8 @@ const CustomControl = ({ children, ...props }: ControlProps<CountryOption>) => {
 }
 
 const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
+    const { t } = useTranslation()
+
     const dialCodeList = useMemo(() => {
         const newCountryList: Array<CountryOption> = JSON.parse(
             JSON.stringify(countryList),
@@ -85,10 +88,15 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
 
     return (
         <Card>
-            <h4 className="mb-6">Personal Information</h4>
+            <h4 className="mb-6">
+                {t(
+                    'page.employee.personal_information',
+                    'Personal Information',
+                )}
+            </h4>
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="First Name"
+                    label={t('page.employee.first_name', 'First Name')}
                     invalid={Boolean(errors.firstName)}
                     errorMessage={errors.firstName?.message}
                 >
@@ -99,7 +107,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="First Name"
+                                placeholder={t(
+                                    'page.employee.first_name',
+                                    'First Name',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -108,7 +119,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                     />
                 </FormItem>
                 <FormItem
-                    label="Last Name"
+                    label={t('page.employee.last_name', 'Last Name')}
                     invalid={Boolean(errors.lastName)}
                     errorMessage={errors.lastName?.message}
                 >
@@ -119,7 +130,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="Last Name"
+                                placeholder={t(
+                                    'page.employee.last_name',
+                                    'Last Name',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -131,7 +145,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
 
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="Gender"
+                    label={t('page.employee.gender', 'Gender')}
                     invalid={Boolean(errors.gender)}
                     errorMessage={errors.gender?.message}
                 >
@@ -141,7 +155,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         render={({ field }) => (
                             <Select
                                 className="mb-4"
-                                placeholder="Please Select"
+                                placeholder={t(
+                                    'page.select_placeholder',
+                                    'Please Select',
+                                )}
                                 options={genderOptions}
                                 value={genderOptions.find(
                                     (option) => option.value === field.value,
@@ -155,7 +172,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                 </FormItem>
 
                 <FormItem
-                    label="Civil Status"
+                    label={t('page.employee.civil_status', 'Civil Status')}
                     invalid={Boolean(errors.civilStatus)}
                     errorMessage={errors.civilStatus?.message}
                 >
@@ -165,7 +182,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         render={({ field }) => (
                             <Select
                                 className="mb-4"
-                                placeholder="Please Select"
+                                placeholder={t(
+                                    'page.select_placeholder',
+                                    'Please Select',
+                                )}
                                 options={CivilStatusOptions}
                                 value={CivilStatusOptions.find(
                                     (option) => option.value === field.value,
@@ -181,7 +201,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
 
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="Height"
+                    label={t('page.employee.height', 'Height')}
                     invalid={Boolean(errors.height)}
                     errorMessage={errors.height?.message}
                 >
@@ -191,7 +211,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         render={({ field }) => (
                             <NumericInput
                                 autoComplete="off"
-                                placeholder="Height"
+                                placeholder={t(
+                                    'page.employee.height',
+                                    'Height',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -200,7 +223,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                     />
                 </FormItem>
                 <FormItem
-                    label="Weight"
+                    label={t('page.employee.weight', 'Weight')}
                     invalid={Boolean(errors.weight)}
                     errorMessage={errors.weight?.message}
                 >
@@ -210,7 +233,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         render={({ field }) => (
                             <NumericInput
                                 autoComplete="off"
-                                placeholder="Weight"
+                                placeholder={t(
+                                    'page.employee.weight',
+                                    'Weight',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -222,7 +248,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
 
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="Email"
+                    label={t('page.employee.email', 'Email')}
                     invalid={Boolean(errors.email)}
                     errorMessage={errors.email?.message}
                 >
@@ -233,7 +259,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             <Input
                                 type="email"
                                 autoComplete="off"
-                                placeholder="Email"
+                                placeholder={t('page.employee.email', 'Email')}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -249,7 +275,9 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             Boolean(errors.dialCode)
                         }
                     >
-                        <label className="form-label mb-2">Phone number</label>
+                        <label className="form-label mb-2">
+                            {t('page.employee.phone_number', 'Phone Number')}
+                        </label>
                         <Controller
                             name="dialCode"
                             control={control}
@@ -288,7 +316,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             render={({ field }) => (
                                 <NumericInput
                                     autoComplete="off"
-                                    placeholder="Phone Number"
+                                    placeholder={t(
+                                        'page.employee.phone_number',
+                                        'Phone Number',
+                                    )}
                                     value={field.value}
                                     onChange={field.onChange}
                                     onBlur={field.onBlur}
@@ -301,7 +332,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
 
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="Age"
+                    label={t('page.employee.age', 'Age')}
                     invalid={Boolean(errors.age)}
                     errorMessage={errors.age?.message}
                 >
@@ -311,7 +342,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         render={({ field }) => (
                             <NumericInput
                                 autoComplete="off"
-                                placeholder="Age"
+                                placeholder={t('page.employee.age', 'Age')}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -320,7 +351,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                     />
                 </FormItem>
                 <FormItem
-                    label="Birthday"
+                    label={t('page.employee.birthday', 'Birthday')}
                     invalid={Boolean(errors.birthday)}
                     errorMessage={errors.birthday?.message}
                 >
@@ -329,7 +360,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         control={control}
                         render={({ field }) => (
                             <DatePicker
-                                placeholder="Date"
+                                placeholder={t('page.date_placeholder', 'Date')}
                                 className="w-full"
                                 style={{ height: '48px', borderRadius: '12px' }}
                                 value={
@@ -348,7 +379,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
 
             <div className="grid md:grid-cols-2 gap-4">
                 <FormItem
-                    label="National Id"
+                    label={t('page.employee.national_id', 'National ID')}
                     invalid={Boolean(errors.nationalId)}
                     errorMessage={errors.nationalId?.message}
                 >
@@ -359,14 +390,20 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="City, Province, Country"
+                                placeholder={t(
+                                    'page.employee.national_id_placeholder',
+                                    'City, Province, Country',
+                                )}
                                 {...field}
                             />
                         )}
                     />
                 </FormItem>
                 <FormItem
-                    label="Place of birthday"
+                    label={t(
+                        'page.employee.place_of_birthday',
+                        'Place of Birth',
+                    )}
                     invalid={Boolean(errors.placeOfBirth)}
                     errorMessage={errors.placeOfBirth?.message}
                 >
@@ -377,7 +414,10 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="House/Unit Number, Building, Street, City, Province, Country"
+                                placeholder={t(
+                                    'page.employee.place_of_birthday_placeholder',
+                                    'House/Unit Number, Building, Street, City, Province, Country',
+                                )}
                                 {...field}
                             />
                         )}
@@ -386,7 +426,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
             </div>
 
             <FormItem
-                label="Address"
+                label={t('page.employee.address', 'Address')}
                 invalid={Boolean(errors.address)}
                 errorMessage={errors.address?.message}
             >
@@ -397,7 +437,7 @@ const OverviewSection = ({ control, errors }: OverviewSectionProps) => {
                         <Input
                             type="text"
                             autoComplete="off"
-                            placeholder="Address"
+                            placeholder={t('page.employee.address', 'Address')}
                             {...field}
                         />
                     )}

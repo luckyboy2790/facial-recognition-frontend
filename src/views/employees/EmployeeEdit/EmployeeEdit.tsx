@@ -16,6 +16,7 @@ import type { Employee } from '../EmployeeList/types'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ProfileSectionProps = {
@@ -24,6 +25,8 @@ type ProfileSectionProps = {
 
 const CustomerEdit = () => {
     const { id } = useParams()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -105,7 +108,10 @@ const CustomerEdit = () => {
 
             toast.push(
                 <Notification type="success">
-                    Employee updated successfully!
+                    {t(
+                        'page.employee.employee_create_success_message',
+                        'Employee updated successfully!',
+                    )}
                 </Notification>,
                 { placement: 'top-center' },
             )
@@ -136,7 +142,10 @@ const CustomerEdit = () => {
                 setDeleteConfirmationOpen(false)
                 toast.push(
                     <Notification type="success">
-                        Customer deleted!
+                        {t(
+                            'page.employee.customer_delete_success_message',
+                            'Customer deleted!',
+                        )}
                     </Notification>,
                     { placement: 'top-center' },
                 )
@@ -252,7 +261,7 @@ const CustomerEdit = () => {
                                     icon={<TbArrowNarrowLeft />}
                                     onClick={handleBack}
                                 >
-                                    Back
+                                    {t('page.back', 'Back')}
                                 </Button>
                                 <div className="flex items-center">
                                     <Button
@@ -264,14 +273,14 @@ const CustomerEdit = () => {
                                         icon={<TbTrash />}
                                         onClick={handleDelete}
                                     >
-                                        Delete
+                                        {t('page.delete', 'Delete')}
                                     </Button>
                                     <Button
                                         variant="solid"
                                         type="submit"
                                         loading={isSubmiting}
                                     >
-                                        Save
+                                        {t('page.save', 'Save')}
                                     </Button>
                                 </div>
                             </div>
@@ -280,15 +289,19 @@ const CustomerEdit = () => {
                     <ConfirmDialog
                         isOpen={deleteConfirmationOpen}
                         type="danger"
-                        title="Remove customers"
+                        title={`${t('page.employee.delete', 'Delete')} ${t('page.employee.employee', 'Employees')}`}
                         onClose={handleCancel}
                         onRequestClose={handleCancel}
                         onCancel={handleCancel}
                         onConfirm={handleConfirmDelete}
+                        cancelText={t('page.employee.cancel', 'Cancel')}
+                        confirmText={t('page.employee.confirm', 'Confirm')}
                     >
                         <p>
-                            Are you sure you want to remove this customer? This
-                            action can&apos;t be undo.{' '}
+                            {t(
+                                'page.employee.delete_confirm',
+                                'Are you sure you want to remove these customers? This action cannot be undo.',
+                            )}
                         </p>
                     </ConfirmDialog>
                 </>

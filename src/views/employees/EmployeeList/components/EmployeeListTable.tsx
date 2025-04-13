@@ -13,6 +13,7 @@ import type { TableQueries } from '@/@types/common'
 import { apiArchiveEmployee } from '@/services/employeeService'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const statusColor: Record<string, string> = {
@@ -49,9 +50,11 @@ const ActionColumn = ({
     detail: Employee
     handleArchiveEmployee: () => void
 }) => {
+    const { t } = useTranslation()
+
     return (
         <div className="flex items-center gap-3">
-            <Tooltip title="View">
+            <Tooltip title={t('page.view', 'View')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -60,7 +63,7 @@ const ActionColumn = ({
                     <TbEye />
                 </div>
             </Tooltip>
-            <Tooltip title="Edit">
+            <Tooltip title={t('page.edit', 'Edit')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -69,7 +72,7 @@ const ActionColumn = ({
                     <TbPencil />
                 </div>
             </Tooltip>
-            <Tooltip title="Archive">
+            <Tooltip title={t('page.archive', 'Archive')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -84,6 +87,8 @@ const ActionColumn = ({
 
 const CustomerListTable = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -133,7 +138,7 @@ const CustomerListTable = () => {
     const columns: ColumnDef<Employee>[] = useMemo(
         () => [
             {
-                header: 'Name',
+                header: t('page.employee.name', 'Name'),
                 accessorKey: 'full_name',
                 cell: (props) => {
                     const row = props.row.original
@@ -141,23 +146,23 @@ const CustomerListTable = () => {
                 },
             },
             {
-                header: 'Company',
+                header: t('page.employee.company', 'Company'),
                 accessorKey: 'company.company_name',
             },
             {
-                header: 'Department',
+                header: t('page.employee.department', 'Department'),
                 accessorKey: 'department.department_name',
             },
             {
-                header: 'Position',
+                header: t('page.employee.position', 'Position'),
                 accessorKey: 'job_title.job_title',
             },
             {
-                header: 'Leave Privileges',
+                header: t('page.employee.leave_privilege', 'Leave Privileges'),
                 accessorKey: 'leave_group.group_name',
             },
             {
-                header: 'Status',
+                header: t('page.employee.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
@@ -165,7 +170,12 @@ const CustomerListTable = () => {
                         <div className="flex items-center">
                             <Tag className={statusColor[row.employee_status]}>
                                 <span className="capitalize">
-                                    {row.employee_status}
+                                    {row.employee_status === 'Active'
+                                        ? t('page.employee.active', 'Active')
+                                        : t(
+                                              'page.employee.archived',
+                                              'Archived',
+                                          )}
                                 </span>
                             </Tag>
                         </div>
@@ -189,7 +199,7 @@ const CustomerListTable = () => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

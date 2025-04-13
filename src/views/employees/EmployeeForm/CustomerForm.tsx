@@ -12,6 +12,7 @@ import { z } from 'zod'
 import type { ZodType } from 'zod'
 import type { CommonProps } from '@/@types/common'
 import type { CustomerFormSchema } from './types'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type CustomerFormProps = {
     onFormSubmit: (values: CustomerFormSchema) => void
@@ -19,55 +20,97 @@ type CustomerFormProps = {
     newCustomer: boolean
 } & CommonProps
 
-const validationSchema: ZodType<any> = z.object({
-    firstName: z.string().min(1, { message: 'First name required' }),
-    lastName: z.string().min(1, { message: 'Last name required' }),
-    gender: z.string().min(1, { message: 'Gender required' }),
-
-    civilStatus: z.string(),
-    email: z
-        .string()
-        .min(1, { message: 'Email required' })
-        .email({ message: 'Invalid email' }),
-    dialCode: z.string().optional(),
-    phoneNumber: z.string(),
-    address: z.string(),
-    img: z.string().min(1, { message: 'Civil Status required' }),
-    height: z.string(),
-    weight: z.string(),
-    age: z.string(),
-    birthday: z.string(),
-    nationalId: z.string().min(1, { message: 'National Id required' }),
-    placeOfBirth: z.string(),
-    department: z.string().min(1, { message: 'Department name required' }),
-    company: z.string().min(1, { message: 'Company name required' }),
-    jobTitle: z.string().min(1, { message: 'Job Title required' }),
-    pin: z
-        .string()
-        .regex(/^\d{6,10}$/, {
-            message: 'PIN must be between 6 and 10 numeric digits',
-        })
-        .refine((val) => Number(val) >= 0 && Number(val) <= 9999999999, {
-            message: 'PIN must be a 4-digit number between 1000 and 9999',
-        }),
-    companyEmail: z.string(),
-    leaveGroup: z.string().min(1, { message: 'Leave group required' }),
-    employmentType: z.string().min(1, {message: "Employee Type required"}),
-    employmentStatus: z.string(),
-    officialStartDate: z.string().optional(),
-    dateRegularized: z.string().optional(),
-    faceDescriptor: z
-        .array(z.number(), {
-            message: 'Face descriptor must be an array of numbers',
-        })
-        .nonempty({ message: 'Face descriptor is required' })
-        .refine((arr) => arr.length === 128, {
-            message: 'Face descriptor must have exactly 128 values',
-        }),
-})
-
 const CustomerForm = (props: CustomerFormProps) => {
+    const { t } = useTranslation()
     const { onFormSubmit, defaultValues, children, newCustomer } = props
+
+    const validationSchema: ZodType<any> = z.object({
+        firstName: z.string().min(1, {
+            message: t(
+                'page.employee.first_name_require',
+                'First name required',
+            ),
+        }),
+        lastName: z.string().min(1, {
+            message: t('page.employee.last_name_require', 'Last name required'),
+        }),
+        gender: z.string().min(1, {
+            message: t('page.employee.gender_require', 'Gender required'),
+        }),
+
+        civilStatus: z.string(),
+        email: z
+            .string()
+            .min(1, {
+                message: t('page.employee.email_require', 'Email required'),
+            })
+            .email({ message: 'Invalid email' }),
+        dialCode: z.string().optional(),
+        phoneNumber: z.string(),
+        address: z.string(),
+        img: z.string().min(1, { message: 'Civil Status required' }),
+        height: z.string(),
+        weight: z.string(),
+        age: z.string(),
+        birthday: z.string(),
+        nationalId: z.string().min(1, {
+            message: t(
+                'page.employee.national_id_require',
+                'National Id required',
+            ),
+        }),
+        placeOfBirth: z.string(),
+        department: z.string().min(1, {
+            message: t(
+                'page.employee.company_name_require',
+                'Department name required',
+            ),
+        }),
+        company: z.string().min(1, {
+            message: t(
+                'page.employee.department_name_require',
+                'Company name required',
+            ),
+        }),
+        jobTitle: z.string().min(1, {
+            message: t('page.employee.job_title_require', 'Job Title required'),
+        }),
+        pin: z
+            .string()
+            .regex(/^\d{6,10}$/, {
+                message: 'PIN must be between 6 and 10 numeric digits',
+            })
+            .refine((val) => Number(val) >= 0 && Number(val) <= 9999999999, {
+                message: t(
+                    'page.employee.PIN_require',
+                    'PIN must be a 4-digit number between 1000 and 9999',
+                ),
+            }),
+        companyEmail: z.string(),
+        leaveGroup: z.string().min(1, {
+            message: t(
+                'page.employee.leave_group_require',
+                'Leave group required',
+            ),
+        }),
+        employmentType: z.string().min(1, {
+            message: t(
+                'page.employee.employee_type_require',
+                'Employee Type required',
+            ),
+        }),
+        employmentStatus: z.string(),
+        officialStartDate: z.string().optional(),
+        dateRegularized: z.string().optional(),
+        faceDescriptor: z
+            .array(z.number(), {
+                message: 'Face descriptor must be an array of numbers',
+            })
+            .nonempty({ message: 'Face descriptor is required' })
+            .refine((arr) => arr.length === 128, {
+                message: 'Face descriptor must have exactly 128 values',
+            }),
+    })
 
     const {
         handleSubmit,

@@ -8,6 +8,7 @@ import { Controller, UseFormSetValue } from 'react-hook-form'
 import { HiOutlineUser } from 'react-icons/hi'
 import * as faceapi from 'face-api.js'
 import type { FormSectionBaseProps } from './types'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type ProfileImageSectionProps = FormSectionBaseProps & {
@@ -21,6 +22,8 @@ const ProfileImage = ({
     newCustomer,
     errors,
 }: ProfileImageSectionProps) => {
+    const { t } = useTranslation()
+
     const [faceDescriptor, setFaceDescriptor] = useState<number[] | null>(null)
     const [modelsLoaded, setModelsLoaded] = useState(false)
     const [isUpdateImage, setIsUpdateImage] = useState(false)
@@ -129,7 +132,7 @@ const ProfileImage = ({
 
     return (
         <Card>
-            <h4 className="mb-6">Image</h4>
+            <h4 className="mb-6">{t('page.employee.image', 'Image')}</h4>
             <div className="bg-gray-100 dark:bg-gray-700 rounded-lg text-center p-4">
                 <div className="text-center">
                     <Controller
@@ -178,8 +181,14 @@ const ProfileImage = ({
                                             disabled={!modelsLoaded}
                                         >
                                             {modelsLoaded
-                                                ? 'Upload Image'
-                                                : 'Loading Models...'}
+                                                ? t(
+                                                      'page.employee.upload_image',
+                                                      'Upload Image',
+                                                  )
+                                                : t(
+                                                      'page.employee.loading_model',
+                                                      'Loading model...',
+                                                  )}
                                         </Button>
                                     </Upload>
                                     {((faceDescriptor &&
@@ -187,7 +196,10 @@ const ProfileImage = ({
                                         newCustomer) ||
                                         isChecked) && (
                                         <p className="mt-2 text-sm text-green-600">
-                                            Image uploaded successfully.
+                                            {t(
+                                                'page.employee.upload_success',
+                                                'Image uploaded successfully.',
+                                            )}
                                         </p>
                                     )}
                                     {((faceDescriptor &&
@@ -199,8 +211,10 @@ const ProfileImage = ({
                                             isUpdateImage) ||
                                         (!isChecked && isUpdateImage)) && (
                                         <p className="mt-2 text-sm text-red-600">
-                                            Image is not recognized, please
-                                            upload other.
+                                            {t(
+                                                'page.employee.upload_failed',
+                                                'Image is not recognized, please upload other.',
+                                            )}
                                         </p>
                                     )}
                                 </>

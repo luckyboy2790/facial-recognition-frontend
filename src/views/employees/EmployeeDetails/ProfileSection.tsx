@@ -12,6 +12,7 @@ import { Employee } from '../EmployeeList/types'
 import { apiDeleteEmployees } from '@/services/employeeService'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type CustomerInfoFieldProps = {
@@ -52,6 +53,8 @@ const ProfileSection = ({ data }: ProfileSectionProps) => {
     const { user } = useAuth()
 
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -116,13 +119,16 @@ const ProfileSection = ({ data }: ProfileSectionProps) => {
                     <h4 className="font-bold">{data.full_name}</h4>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-y-7 gap-x-4 mt-10">
-                    <CustomerInfoField title="Email" value={data.email} />
                     <CustomerInfoField
-                        title="Phone"
+                        title={t('page.employee.email', 'Email')}
+                        value={data.email}
+                    />
+                    <CustomerInfoField
+                        title={t('page.employee.phone_number', 'Phone Number')}
                         value={data?.phone_number}
                     />
                     <CustomerInfoField
-                        title="Date of birth"
+                        title={t('page.employee.birthday', 'Birthday')}
                         value={formatDate(data?.birthday)}
                     />
                 </div>
@@ -135,22 +141,25 @@ const ProfileSection = ({ data }: ProfileSectionProps) => {
                         icon={<HiOutlineTrash />}
                         onClick={handleDialogOpen}
                     >
-                        Delete
+                        {t('page.employee.delete', 'Delete')}
                     </Button>
                 </div>
                 <ConfirmDialog
                     isOpen={dialogOpen}
                     type="danger"
-                    title="Delete customer"
+                    title={`${t('page.employee.delete', 'Delete')} ${t('page.employee.employee', 'Employees')}`}
                     onClose={handleDialogClose}
                     onRequestClose={handleDialogClose}
                     onCancel={handleDialogClose}
                     onConfirm={handleDelete}
+                    cancelText={t('page.employee.cancel', 'Cancel')}
+                    confirmText={t('page.employee.confirm', 'Confirm')}
                 >
                     <p>
-                        Are you sure you want to delete this customer? All
-                        record related to this customer will be deleted as well.
-                        This action cannot be undone.
+                        {t(
+                            'page.employee.delete_confirm',
+                            'Are you sure you want to remove these customers? This action cannot be undo.',
+                        )}
                     </p>
                 </ConfirmDialog>
             </div>
