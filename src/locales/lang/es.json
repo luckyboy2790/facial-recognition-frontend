@@ -185,7 +185,8 @@
             "leave_create_success_message": "¡Licencia creada exitosamente!",
             "leave_update_success_message": "¡Licencia actualizado exitosamente!",
             "leave_delete_success_message": "¡Licencia eliminado!",
-            "no_data": "¡No se encontró ninguna licencia!"
+            "no_data": "¡No se encontró ninguna licencia!",
+            "leave_discarded": "¡Dejar descartado!"
         },
         "user": {
             "user": "Usuarias",

@@ -8,6 +8,7 @@ import { apiTotalLeaveTypesList } from '@/services/leaveTypeService'
 import { LeaveType } from '@/views/leaveTypes/types'
 import { DatePicker } from 'antd'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type OverviewSectionProps = FormSectionBaseProps
 
@@ -29,6 +30,8 @@ const OverviewSection = ({
     defaultValues?: Partial<LeaveFormSchema>
 }) => {
     const [employeeOptions, setEmployeeOptions] = useState<OptionType[]>([])
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,19 +56,14 @@ const OverviewSection = ({
         fetchData()
     }, [])
 
-    const getCurrentDate = () => {
-        const now = new Date()
-        const year = now.getFullYear()
-        const month = String(now.getMonth() + 1).padStart(2, '0')
-
-        return `${year}-${month}-01`
-    }
-
     return (
         <Card>
-            <h4 className="mb-6">{newLeave ? 'Leave Create' : 'Leave Edit'}</h4>
+            <h4 className="mb-6">
+                {t('page.leave.leave', 'Leave')}{' '}
+                {newLeave ? t('page.create', 'Create') : t('page.edit', 'Edit')}
+            </h4>
             <FormItem
-                label="Leave Type"
+                label={t('page.leave.employee', 'Employee')}
                 invalid={Boolean(errors.leaveType)}
                 errorMessage={errors.leaveType?.message}
             >
@@ -75,7 +73,10 @@ const OverviewSection = ({
                     render={({ field }) => (
                         <Select
                             className="mb-4"
-                            placeholder="Please Select"
+                            placeholder={t(
+                                'page.select_placeholder',
+                                'Please Select',
+                            )}
                             options={employeeOptions}
                             value={employeeOptions.find(
                                 (option) => option.value === field.value,
@@ -88,7 +89,7 @@ const OverviewSection = ({
 
             <div className="flex justify-center w-full gap-4 items-center">
                 <FormItem
-                    label="Leave from"
+                    label={t('page.leave.from', 'Leave from')}
                     invalid={Boolean(errors.leaveFrom)}
                     errorMessage={errors.leaveFrom?.message}
                     className="w-1/2"
@@ -98,7 +99,10 @@ const OverviewSection = ({
                         control={control}
                         render={({ field }) => (
                             <DatePicker
-                                placeholder="Date"
+                                placeholder={t(
+                                    'page.date_placeholder',
+                                    'Select Date',
+                                )}
                                 className="w-full"
                                 style={{ height: '48px', borderRadius: '12px' }}
                                 value={
@@ -114,7 +118,7 @@ const OverviewSection = ({
                     />
                 </FormItem>
                 <FormItem
-                    label="Leave to"
+                    label={t('page.leave.to', 'Leave to')}
                     invalid={Boolean(errors.leaveTo)}
                     errorMessage={errors.leaveTo?.message}
                     className="w-1/2"
@@ -124,7 +128,10 @@ const OverviewSection = ({
                         control={control}
                         render={({ field }) => (
                             <DatePicker
-                                placeholder="Date"
+                                placeholder={t(
+                                    'page.date_placeholder',
+                                    'Select Date',
+                                )}
                                 className="w-full"
                                 style={{ height: '48px', borderRadius: '12px' }}
                                 value={
@@ -142,7 +149,7 @@ const OverviewSection = ({
             </div>
 
             <FormItem
-                label="Return Date"
+                label={t('page.leave.return_date', 'Return Date')}
                 invalid={Boolean(errors.leaveReturn)}
                 errorMessage={errors.leaveReturn?.message}
             >
@@ -151,7 +158,10 @@ const OverviewSection = ({
                     control={control}
                     render={({ field }) => (
                         <DatePicker
-                            placeholder="Date"
+                            placeholder={t(
+                                'page.date_placeholder',
+                                'Select Date',
+                            )}
                             className="w-full"
                             style={{ height: '48px', borderRadius: '12px' }}
                             value={
@@ -168,7 +178,7 @@ const OverviewSection = ({
             </FormItem>
 
             <FormItem
-                label="Reason"
+                label={t('page.leave.reason', 'Reason')}
                 invalid={Boolean(errors.reason)}
                 errorMessage={errors.reason?.message}
             >
@@ -180,7 +190,7 @@ const OverviewSection = ({
                             type="text"
                             textArea
                             autoComplete="off"
-                            placeholder="Reason"
+                            placeholder={t('page.leave.reason', 'Reason')}
                             value={field.value}
                             onChange={field.onChange}
                             onBlur={field.onBlur}
