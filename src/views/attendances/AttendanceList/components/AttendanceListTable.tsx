@@ -162,11 +162,15 @@ const AttendanceListTable = () => {
                     <div>
                         {props.row.original.status_timein === 'Late In'
                             ? t('page.attendance.late_in', 'Late In')
-                            : t('page.attendance.in_time', 'Time In')}
+                            : props.row.original.status_timein === ''
+                              ? ''
+                              : t('page.attendance.in_time', 'Time In')}
                         /{' '}
                         {props.row.original.status_timeout === 'Early Out'
                             ? t('page.attendance.early_out', 'Early Out')
-                            : t('page.attendance.out_time', 'Time Out')}
+                            : props.row.original.status_timeout === ''
+                              ? ''
+                              : t('page.attendance.out_time', 'Time Out')}
                     </div>
                 ),
             },
