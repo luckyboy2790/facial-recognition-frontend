@@ -351,6 +351,19 @@
             "permission_delete_denide": "No tienes permiso para eliminar la tabla de permisos.",
             "fill_all_fields_message": "Rellene todos los campos"
         },
+        "job_title": {
+            "add_job_title": "Agregar título de trabajo",
+            "job_title_name": "Nombre del título del trabajo",
+            "job_titles": "Títulos de trabajo",
+            "department_name": "Nombre del departamento",
+            "delete_confirm_message": "¿Seguro que quieres eliminar estos títulos de trabajo? Esta acción no se puede deshacer.",
+            "select_department_placeholder": "Seleccionar departamento",
+            "select_company_placeholder": "Seleccionar empresa",
+            "permission_create_denide": "No tienes permiso para crear la tabla de títulos de trabajo.",
+            "permission_update_denide": "No tienes permiso para actualizar la tabla de títulos de trabajo.",
+            "permission_delete_denide": "No tienes permiso para eliminar la tabla de permisos.",
+            "fill_all_fields_message": "Rellene todos los campos"
+        },
         "view": "Vista",
         "create": "Crear",
         "discard": "Descartar",

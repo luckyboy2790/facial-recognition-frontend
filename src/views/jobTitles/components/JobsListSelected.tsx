@@ -5,10 +5,13 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useJobsList'
 import { TbChecks } from 'react-icons/tb'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyListSelected = () => {
     const { selectedJobTitle, mutateJobTitles, deleteJobTitles } =
         useEmployeeList()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -60,9 +63,14 @@ const CompanyListSelected = () => {
                                         <span className="font-semibold flex items-center gap-1">
                                             <span className="heading-text">
                                                 {selectedJobTitle.length}{' '}
-                                                JobTitles
+                                                {t(
+                                                    'page.job_title.job_titles',
+                                                    'Job Titles',
+                                                )}
                                             </span>
-                                            <span>selected</span>
+                                            <span>
+                                                {t('page.select', 'selected')}
+                                            </span>
                                         </span>
                                     </span>
                                 )}
@@ -78,7 +86,7 @@ const CompanyListSelected = () => {
                                     }
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('page.delete', 'Delete')}
                                 </Button>
                             </div>
                         </div>
@@ -88,16 +96,20 @@ const CompanyListSelected = () => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove obTitless"
+                title={`${t('page.delete', 'Delete')} ${t('page.job_title.job_titles', 'Job Titles')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these companies? This action
-                    can&apos;t be undo.{' '}
+                    {t(
+                        'page.job_title.delete_confirm_message',
+                        'Are you sure you want to remove these job titles? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>

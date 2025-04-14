@@ -7,16 +7,21 @@ import JobsListTableTools from './components/JobsListTableTools'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { FaLock } from 'react-icons/fa'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyContent = () => {
     const { user } = useAuth()
+
+    const { t } = useTranslation()
 
     return (
         <>
             <Container>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                        <h3>Add Job Title</h3>
+                        <h3>
+                            {t('page.job_title.add_job_title', 'Add Job Title')}
+                        </h3>
                         <JobsActionTools />
                     </div>
                     {permissionChecker(user, 'jobTitles', 'create') === false &&

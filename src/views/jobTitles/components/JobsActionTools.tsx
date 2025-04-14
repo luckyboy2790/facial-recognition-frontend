@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { apiGetAllData } from '@/services/employeeService'
 import Papa from 'papaparse'
 import { apiCreateJobTitle } from '@/services/JobTitleService'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type JobTitleCreateData = {
     departmentId: string | null
@@ -21,6 +22,8 @@ type responseType = {
 
 const CompanyActionTools = () => {
     const { mutateJobTitles } = useJobTitleList()
+
+    const { t } = useTranslation()
 
     const [jobTitleList, setJobTitleList] = useState<JobTitle[]>([])
 
@@ -71,7 +74,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <div className="w-full">
@@ -80,7 +83,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudUpload className="text-xl" />}
                 >
                     <label htmlFor="file-upload" className="cursor-pointer">
-                        Import CSV
+                        {t('page.import_csv', 'Import CSV')}
                     </label>
                 </Button>
                 <input

@@ -8,6 +8,7 @@ import useSWR from 'swr'
 import { GetCompanyListResponse } from '@/views/companies/types'
 import { apiTotalCompanies } from '@/services/CompanyService'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type JobTitleCreateData = {
     departmentId: string | null
@@ -26,6 +27,8 @@ const AddJobTitleSection = () => {
     const [jobTitle, setJobTitle] = useState<string>('')
     const [company, setCompany] = useState<string | null>(null)
     const [companyNames, setCompanyNames] = useState<OptionType[]>([])
+
+    const { t } = useTranslation()
 
     const [optionData, setOptionData] = useState<OptionType[]>([])
 
@@ -92,7 +95,10 @@ const AddJobTitleSection = () => {
             ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
-                        You have to fill all fields.
+                        {t(
+                            'page.fill_all_fields_message',
+                            'You have to fill all fields.',
+                        )}
                     </Notification>,
                 )
 
@@ -116,13 +122,16 @@ const AddJobTitleSection = () => {
         <>
             <div className="flex flex-col gap-4">
                 <Input
-                    placeholder="Job Title"
+                    placeholder={t('page.employee.job_title', 'Job Title')}
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
                 />
                 {user.account_type === 'SuperAdmin' && (
                     <Select
-                        placeholder="Select company"
+                        placeholder={t(
+                            'page.job_title.select_company_placeholder',
+                            'Select company',
+                        )}
                         className="w-full"
                         options={companyNames}
                         value={
@@ -137,7 +146,10 @@ const AddJobTitleSection = () => {
                 )}
                 <Select
                     className="mb-4"
-                    placeholder="Select Department"
+                    placeholder={t(
+                        'page.job_title.select_department_placeholder',
+                        'Select Department',
+                    )}
                     options={optionData}
                     value={
                         optionData.find(
@@ -158,7 +170,7 @@ const AddJobTitleSection = () => {
                     onClick={handleSubmit}
                     loading={isLoading}
                 >
-                    Create
+                    {t('page.create', 'Create')}
                 </Button>
             </div>
         </>
