@@ -6,10 +6,13 @@ import { ToggleDrawer } from '@/components/shared'
 import type { ToggleDrawerRef } from '@/components/shared/ToggleDrawer'
 import AboutContent from './components/About'
 import Attributions from './components/Attributions'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const defaultNavValue = 'about'
 
 const Setting = () => {
+    const { t } = useTranslation()
+
     const [selectedNav, setSelectedNav] = useState(defaultNavValue)
 
     const { larger, smaller } = useResponsive()
@@ -32,7 +35,7 @@ const Setting = () => {
                             />
                         </ToggleDrawer>
                     )}
-                    <h3>Setting</h3>
+                    <h3>{t('page.setting.setting', 'Setting')}</h3>
                 </div>
                 <div className="flex gap-12 mt-6">
                     {larger.xl && (
