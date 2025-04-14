@@ -4,11 +4,14 @@ import { GiReturnArrow } from 'react-icons/gi'
 import useEmployeeList from '../hooks/useEmployeeList'
 import { CSVLink } from 'react-csv'
 import { TbCloudDownload } from 'react-icons/tb'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CustomerListActionTools = () => {
     const navigate = useNavigate()
 
     const { customerList } = useEmployeeList()
+
+    const { t } = useTranslation()
 
     const filteredUserList = customerList.map((user) => ({
         'Employee Name': user.employeeData?.full_name,
@@ -24,7 +27,7 @@ const CustomerListActionTools = () => {
                 icon={<GiReturnArrow className="text-xl" />}
                 onClick={() => navigate('/reports')}
             >
-                Return
+                {t('page.return', 'Return')}
             </Button>
             <CSVLink
                 className="w-full"
@@ -35,7 +38,7 @@ const CustomerListActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
         </div>

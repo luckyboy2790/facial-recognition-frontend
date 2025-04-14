@@ -11,6 +11,7 @@ import EmployeesHiredByYear from './components/EmployeesHiredByYearChart'
 import classNames from 'classnames'
 import { Employee } from '@/views/employees/EmployeeList/types'
 import { apiGetTotalEmployeeList } from '@/services/employeeService'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type EmployeeListResponse = {
     employeeData: Employee[]
@@ -18,6 +19,8 @@ type EmployeeListResponse = {
 
 const EmployeeList = () => {
     const [isViewed, setIsViewed] = useState<boolean>(false)
+
+    const { t } = useTranslation()
 
     const handleChange = (isViewed: boolean) => {
         setIsViewed(!isViewed)
@@ -170,7 +173,12 @@ const EmployeeList = () => {
             <Container>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                        <h3>Organizational Profile</h3>
+                        <h3>
+                            {t(
+                                'page.report.organizational_profile',
+                                'Organizational Profile',
+                            )}
+                        </h3>
                         <EmployeeListActionTools
                             isViewed={isViewed}
                             handleChange={handleChange}

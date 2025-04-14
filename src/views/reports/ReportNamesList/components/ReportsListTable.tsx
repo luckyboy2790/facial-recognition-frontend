@@ -12,8 +12,11 @@ import {
     FaBirthdayCake,
     FaClock,
 } from 'react-icons/fa'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CustomerListTable = () => {
+    const { t } = useTranslation()
+
     const NameColumn = ({ row }: { row: Report }) => {
         return (
             <div className="flex items-center">
@@ -22,7 +25,80 @@ const CustomerListTable = () => {
                     className={`hover:text-primary ml-2 rtl:mr-2 font-semibold text-gray-900 dark:text-gray-100`}
                     to={`/reports/${row.id}`}
                 >
-                    {row.reportName}
+                    {(() => {
+                        switch (row.reportName) {
+                            case 'Employee Attendance Report':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.employee_attendance_report',
+                                            'Employee Attendance Report',
+                                        )}
+                                    </span>
+                                )
+                            case 'Employee Birthdays':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.employee_birthday',
+                                            'Employee Birthdays',
+                                        )}
+                                    </span>
+                                )
+
+                            case 'Employee Leave Report':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.employee_leave_report',
+                                            'Employee Leave Report',
+                                        )}
+                                    </span>
+                                )
+
+                            case 'Employee List Report':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.employee_list_report',
+                                            'Employee List Report',
+                                        )}
+                                    </span>
+                                )
+
+                            case 'Employee Schedule Report':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.employee_schedule_report',
+                                            'Employee Schedule Report',
+                                        )}
+                                    </span>
+                                )
+
+                            case 'Organizational Profile':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.organizational_profile',
+                                            'Organizational Profile',
+                                        )}
+                                    </span>
+                                )
+
+                            case 'User Accounts Report':
+                                return (
+                                    <span>
+                                        {t(
+                                            'page.report.user_account_report',
+                                            'User Accounts Report',
+                                        )}
+                                    </span>
+                                )
+                            default:
+                                return row.reportName
+                        }
+                    })()}
                 </Link>
             </div>
         )
@@ -31,19 +107,15 @@ const CustomerListTable = () => {
     const columns: ColumnDef<Report>[] = useMemo(
         () => [
             {
-                header: 'Report name',
+                header: t('page.report.report_name', 'Report name'),
                 accessorKey: 'reportName',
                 cell: (props) => {
                     const row = props.row.original
                     return <NameColumn row={row} />
                 },
             },
-            {
-                header: 'Last viewed',
-                accessorKey: 'lastViewed',
-            },
         ],
-        [],
+        [t],
     )
 
     const customerList = [

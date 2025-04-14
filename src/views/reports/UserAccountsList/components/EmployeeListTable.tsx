@@ -6,6 +6,7 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { User } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     Enabled:
@@ -24,34 +25,40 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<User>[] = useMemo(
         () => [
             {
-                header: 'Employee Name',
+                header: t('page.report.employee_name', 'Employee Name'),
                 id: 'employeeName',
                 cell: (props) => (
                     <span>{props.row.original.employeeData?.full_name}</span>
                 ),
             },
             {
-                header: 'Email',
+                header: t('page.user.email', 'Email'),
                 id: 'email',
                 cell: (props) => <span>{props.row.original.email}</span>,
             },
             {
-                header: 'Account Type',
+                header: t('page.user.type', 'Type'),
                 id: 'accountType',
                 cell: (props) => <span>{props.row.original.account_type}</span>,
             },
             {
-                header: 'Status',
+                header: t('page.user.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
                             <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                                <span className="capitalize">
+                                    {row.status === 'Enabled'
+                                        ? t('page.user.enabled', 'Enabled')
+                                        : t('page.user.disabled', 'Disabled')}
+                                </span>
                             </Tag>
                         </div>
                     )
@@ -59,7 +66,7 @@ const CustomerListTable = () => {
             },
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

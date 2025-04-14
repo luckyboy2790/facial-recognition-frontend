@@ -1,5 +1,6 @@
 import { Chart } from '@/components/shared'
 import { COLORS } from '@/constants/chart.constant'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 interface AgeDemographicsProps {
     ageChartData: {
@@ -9,9 +10,10 @@ interface AgeDemographicsProps {
 }
 
 const AgeDemographics = ({ ageChartData }: AgeDemographicsProps) => {
+    const { t } = useTranslation()
     return (
         <div className="flex flex-col justify-between">
-            <div>Age Demographics</div>
+            <div>{t('page.report.age_demographics', 'Age Demographics')}</div>
             <Chart
                 type="radar"
                 customOptions={{

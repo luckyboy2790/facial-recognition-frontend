@@ -7,6 +7,7 @@ import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
 import dayjs from 'dayjs'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CustomerListTable = () => {
     const {
@@ -18,6 +19,8 @@ const CustomerListTable = () => {
         setSelectAllCustomer,
         selectedCustomer,
     } = useCustomerList()
+
+    const { t } = useTranslation()
 
     const { setting } = useAuth()
 
@@ -67,15 +70,15 @@ const CustomerListTable = () => {
     const columns: ColumnDef<Attendance>[] = useMemo(
         () => [
             {
-                header: 'Date',
+                header: t('page.attendance.date', 'Date'),
                 accessorKey: 'date',
             },
             {
-                header: 'Employee Name',
+                header: t('page.attendance.employee', 'Employee'),
                 accessorKey: 'employeeData.full_name',
             },
             {
-                header: 'Time In',
+                header: t('page.attendance.time_in', 'Time In'),
                 accessorKey: 'time_in',
                 cell: (props) => (
                     <div>
@@ -87,7 +90,7 @@ const CustomerListTable = () => {
                 ),
             },
             {
-                header: 'Time Out',
+                header: t('page.attendance.time_out', 'Time Out'),
                 accessorKey: 'time_out',
                 cell: (props) => (
                     <div>
@@ -99,11 +102,11 @@ const CustomerListTable = () => {
                 ),
             },
             {
-                header: 'Total Hours',
+                header: t('page.attendance.total_hours', 'Total Hours'),
                 accessorKey: 'total_hours',
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

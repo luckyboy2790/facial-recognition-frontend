@@ -1,5 +1,6 @@
 import Chart from 'react-apexcharts'
 import { COLORS } from '@/constants/chart.constant'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CivilStatusDemographics = ({
     civilStatusChartData,
@@ -9,9 +10,16 @@ const CivilStatusDemographics = ({
         series: number[]
     }
 }) => {
+    const { t } = useTranslation()
+
     return (
         <>
-            <div>Civil Status Demographics</div>
+            <div>
+                {t(
+                    'page.report.civil_status_demographics',
+                    'Civil Status Demographics',
+                )}
+            </div>
             <Chart
                 options={{
                     colors: COLORS,

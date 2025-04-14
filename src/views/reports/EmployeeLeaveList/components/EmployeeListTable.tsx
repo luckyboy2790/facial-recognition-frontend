@@ -8,6 +8,7 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Leave } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     Approved:
@@ -27,46 +28,57 @@ const LeaveListTable = () => {
         selectedLeave,
     } = useLeaveList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<Leave>[] = useMemo(
         () => [
             {
-                header: 'Employee Name',
+                header: t('page.report.employee_name', 'Employee Name'),
                 id: 'employeeName',
                 cell: (props) => (
                     <span>{props.row.original.employeeData.full_name}</span>
                 ),
             },
             {
-                header: 'Type',
+                header: t('page.leave.leave_type', 'Leave Type'),
                 id: 'leaveType',
                 cell: (props) => (
                     <span>{props.row.original.leaveTypeData.leave_name}</span>
                 ),
             },
             {
-                header: 'Leave From',
+                header: t('page.leave.from', 'Leave From'),
                 id: 'leaveFrom',
                 cell: (props) => <span>{props.row.original.leaveFrom}</span>,
             },
             {
-                header: 'Leave To',
+                header: t('page.leave.to', 'Leave To'),
                 id: 'leaveTo',
                 cell: (props) => <span>{props.row.original.leaveTo}</span>,
             },
             {
-                header: 'Reason',
+                header: t('page.leave.reason', 'Reason'),
                 id: 'reason',
                 cell: (props) => <span>{props.row.original.reason}</span>,
             },
             {
-                header: 'Status',
+                header: t('page.leave.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
                             <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                                <span className="capitalize">
+                                    {row.status === 'Approved'
+                                        ? t('page.leave.approved', 'Approved')
+                                        : row.status === 'Pending'
+                                          ? t('page.leave.pending', 'Pending')
+                                          : t(
+                                                'page.leave.declined',
+                                                'Declined',
+                                            )}
+                                </span>
                             </Tag>
                         </div>
                     )

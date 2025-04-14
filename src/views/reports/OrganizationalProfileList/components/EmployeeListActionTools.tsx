@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { GiReturnArrow } from 'react-icons/gi'
 import { TbColumns1 } from 'react-icons/tb'
 import { TbColumns2 } from 'react-icons/tb'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 interface EmployeeListActionToolProps {
     isViewed: boolean
@@ -15,6 +16,8 @@ const EmployeeListActionTools = ({
 }: EmployeeListActionToolProps) => {
     const navigate = useNavigate()
 
+    const { t } = useTranslation()
+
     return (
         <div className="flex flex-col md:flex-row gap-3">
             <Button
@@ -22,7 +25,7 @@ const EmployeeListActionTools = ({
                 icon={<GiReturnArrow className="text-xl" />}
                 onClick={() => navigate('/reports')}
             >
-                Return
+                {t('page.return', 'Return')}
             </Button>
 
             <Button
@@ -36,7 +39,7 @@ const EmployeeListActionTools = ({
                 className="w-full"
                 onClick={() => handleChange(isViewed)}
             >
-                View
+                {t('page.report.view', 'View')}
             </Button>
         </div>
     )

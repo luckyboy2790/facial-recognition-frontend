@@ -8,6 +8,7 @@ import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     Present:
@@ -25,6 +26,8 @@ const CustomerListTable = () => {
         setSelectAllCustomer,
         selectedCustomer,
     } = useCustomerList()
+
+    const { t } = useTranslation()
 
     const { setting } = useAuth()
 
@@ -74,11 +77,11 @@ const CustomerListTable = () => {
     const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
-                header: 'Employee Name',
+                header: t('page.report.employee_name', 'Employee Name'),
                 accessorKey: 'employee_data.full_name',
             },
             {
-                header: 'Start Time',
+                header: t('page.schedule.start_time', 'Start Time'),
                 accessorKey: 'start_time',
                 cell: (props) => (
                     <div>
@@ -90,7 +93,7 @@ const CustomerListTable = () => {
                 ),
             },
             {
-                header: 'Off Time',
+                header: t('page.schedule.', 'Off Time'),
                 accessorKey: 'off_time',
                 cell: (props) => (
                     <div>
@@ -102,23 +105,100 @@ const CustomerListTable = () => {
                 ),
             },
             {
-                header: 'Start Date',
+                header: t('page.start_date', 'Start Date'),
                 accessorKey: 'formattedFromDate',
             },
             {
-                header: 'End Date',
+                header: t('page.end_date', 'End Date'),
                 accessorKey: 'formattedToDate',
             },
             {
-                header: 'Hours',
+                header: t('page.schedule.hours', 'Hours'),
                 accessorKey: 'total_hours',
             },
             {
-                header: 'Rest Days',
+                header: t('page.schedule.rest_days', 'Rest Days'),
                 accessorKey: 'rest_days',
+                cell: (props) => (
+                    <div>
+                        {props.row.original.rest_days.map((item, index) => (
+                            <div key={index}>
+                                {(() => {
+                                    switch (item) {
+                                        case 'Monday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.monday',
+                                                        'Monday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Tuesday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.tuesday',
+                                                        'Tuesday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Wednesday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.wednesday',
+                                                        'Wednesday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Thursday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.thursday',
+                                                        'Thursday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Friday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.friday',
+                                                        'Friday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Saturday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.saturday',
+                                                        'Saturday',
+                                                    )}
+                                                </span>
+                                            )
+                                        case 'Sunday':
+                                            return (
+                                                <span>
+                                                    {t(
+                                                        'page.schedule.sunday',
+                                                        'Sunday',
+                                                    )}
+                                                </span>
+                                            )
+                                        default:
+                                            return <span>{item}</span>
+                                    }
+                                })()}
+                            </div>
+                        ))}
+                    </div>
+                ),
             },
             {
-                header: 'Status',
+                header: t('page.schedule.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
@@ -127,8 +207,11 @@ const CustomerListTable = () => {
                             <Tag className={statusColor[row.status]}>
                                 <span className="capitalize">
                                     {row.status === 'Present'
-                                        ? 'Present Schedule'
-                                        : 'Past Schedule'}
+                                        ? `${t('page.schedule.present', 'Present')} ${t('page.dashboard.schedule', 'Schedule')}`
+                                        : t(
+                                              'page.schedule.previous',
+                                              'Previous',
+                                          )}
                                 </span>
                             </Tag>
                         </div>
@@ -136,7 +219,7 @@ const CustomerListTable = () => {
                 },
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

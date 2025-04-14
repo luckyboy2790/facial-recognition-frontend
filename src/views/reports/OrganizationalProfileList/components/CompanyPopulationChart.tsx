@@ -1,5 +1,6 @@
 import Chart from 'react-apexcharts'
 import { COLORS } from '@/constants/chart.constant'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyPopulation = ({
     companyChartData,
@@ -9,9 +10,12 @@ const CompanyPopulation = ({
         series: number[]
     }
 }) => {
+    const { t } = useTranslation()
     return (
         <div className="flex flex-col justify-between">
-            <div>Company Population</div>
+            <div>
+                {t('page.report.company_population', 'Company Population')}
+            </div>
             <Chart
                 options={{
                     colors: COLORS,

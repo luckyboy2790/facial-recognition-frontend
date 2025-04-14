@@ -8,6 +8,7 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Employee } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const statusColor: Record<string, string> = {
     active: 'bg-emerald-200 dark:bg-emerald-200 text-gray-900 dark:text-gray-900',
@@ -25,26 +26,28 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<Employee>[] = useMemo(
         () => [
             {
-                header: 'Employee Name',
+                header: t('page.report.employee_name', 'Employee Name'),
                 accessorKey: 'full_name',
             },
             {
-                header: 'Department',
+                header: t('page.employee.department', 'Department'),
                 accessorKey: 'department.department_name',
             },
             {
-                header: 'Position',
+                header: t('page.employee.position', 'Position'),
                 accessorKey: 'job_title.job_title',
             },
             {
-                header: 'Birthday',
+                header: t('page.employee.birthday', 'Birthday'),
                 accessorKey: 'birthday',
             },
             {
-                header: 'Contact Number',
+                header: t('page.report.contact_number', 'Contact Number'),
                 id: 'contactNumber',
                 cell: (props) => (
                     <div>
@@ -55,7 +58,7 @@ const CustomerListTable = () => {
             },
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

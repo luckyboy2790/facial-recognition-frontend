@@ -6,6 +6,7 @@ import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Employee } from '../types'
 import type { TableQueries } from '@/@types/common'
 import ReportDataTable from '@/components/shared/ReportDataTable'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CustomerListTable = () => {
     const {
@@ -18,26 +19,28 @@ const CustomerListTable = () => {
         selectedCustomer,
     } = useCustomerList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<Employee>[] = useMemo(
         () => [
             {
-                header: 'Employee Name',
+                header: t('page.report.employee_name', 'Employee Name'),
                 accessorKey: 'full_name',
             },
             {
-                header: 'Age',
+                header: t('page.employee.age', 'Age'),
                 accessorKey: 'age',
             },
             {
-                header: 'Gender',
+                header: t('page.employee.gender', 'Gender'),
                 accessorKey: 'gender',
             },
             {
-                header: 'Civil Status',
+                header: t('page.employee.civil_status', 'Civil Status'),
                 accessorKey: 'civil_status',
             },
             {
-                header: 'Conttact Number',
+                header: t('page.report.contact_number', 'Contact Number'),
                 id: 'contactNumber',
                 cell: (props) => (
                     <div>
@@ -47,16 +50,30 @@ const CustomerListTable = () => {
                 ),
             },
             {
-                header: 'Email',
+                header: t('page.employee.email', 'Email'),
                 accessorKey: 'email',
             },
             {
-                header: 'Employment Status',
+                header: t('page.employee.type', 'Type'),
                 accessorKey: 'employee_type',
+                cell: (props) => (
+                    <div>
+                        {props.row.original.employee_type === 'Regular'
+                            ? t('page.employee.regular', 'Regular')
+                            : t('page.employee.trainee', 'Trainee')}
+                    </div>
+                ),
             },
             {
-                header: 'Employment Status',
+                header: t('page.employee.status', 'Status'),
                 accessorKey: 'employee_status',
+                cell: (props) => (
+                    <div>
+                        {props.row.original.employee_status === 'Active'
+                            ? t('page.employee.active', 'Active')
+                            : t('page.employee.archived', 'Archived')}
+                    </div>
+                ),
             },
         ],
         [],

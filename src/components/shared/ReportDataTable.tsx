@@ -29,6 +29,7 @@ import type { TableProps } from '@/components/ui/Table'
 import type { SkeletonProps } from '@/components/ui/Skeleton'
 import type { Ref, ChangeEvent, ReactNode } from 'react'
 import type { CheckboxProps } from '@/components/ui/Checkbox'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 export type OnSortParam = { order: 'asc' | 'desc' | ''; key: string | number }
 
@@ -93,6 +94,8 @@ function ReportDataTable<T>(props: DataTableProps<T>) {
         ...rest
     } = props
 
+    const { t } = useTranslation()
+
     const { pageSize, pageIndex, total } = pagingData
 
     const [sorting, setSorting] = useState<ColumnSort[] | null>(null)
@@ -101,7 +104,7 @@ function ReportDataTable<T>(props: DataTableProps<T>) {
         () =>
             pageSizes.map((number) => ({
                 value: number,
-                label: `${number} / page`,
+                label: `${number} / ${t('page.page', 'page')}`,
             })),
         [pageSizes],
     )

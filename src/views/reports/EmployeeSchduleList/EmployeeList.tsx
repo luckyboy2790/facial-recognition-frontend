@@ -3,15 +3,23 @@ import Container from '@/components/shared/Container'
 import EmployeeListTable from './components/EmployeeListTable'
 import EmployeeListActionTools from './components/EmployeeListActionTools'
 import CustomersListTableTools from './components/EmployeeListTableTools'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const EmployeeList = () => {
+    const { t } = useTranslation()
+
     return (
         <>
             <Container>
                 <AdaptiveCard>
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <h3>Employee Schedule Report</h3>
+                            <h3>
+                                {t(
+                                    'page.report.employee_schedule_report',
+                                    'Employee Schedule Report',
+                                )}
+                            </h3>
                             <EmployeeListActionTools />
                         </div>
                         <CustomersListTableTools />
