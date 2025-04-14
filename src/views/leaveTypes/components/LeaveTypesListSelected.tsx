@@ -5,9 +5,12 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useEmployeeList from '../hooks/useLeaveTypesList'
 import { TbChecks } from 'react-icons/tb'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyListSelected = () => {
     const { selectedLeaveType, mutate, deleteLeaveTypes } = useEmployeeList()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -59,9 +62,14 @@ const CompanyListSelected = () => {
                                         <span className="font-semibold flex items-center gap-1">
                                             <span className="heading-text">
                                                 {selectedLeaveType.length}{' '}
-                                                LeaveTypes
+                                                {t(
+                                                    'page.leave_type.leave_types',
+                                                    'Leave Types',
+                                                )}
                                             </span>
-                                            <span>selected</span>
+                                            <span>
+                                                {t('page.select', 'selected')}
+                                            </span>
                                         </span>
                                     </span>
                                 )}
@@ -77,7 +85,7 @@ const CompanyListSelected = () => {
                                     }
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('page.delete', 'Delete')}
                                 </Button>
                             </div>
                         </div>
@@ -87,16 +95,20 @@ const CompanyListSelected = () => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove customers"
+                title={`${t('page.delete', 'Delete')} ${t('page.leave_type.leave_types', 'Leave Types')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these companies? This action
-                    can&apos;t be undo.{' '}
+                    {t(
+                        'page.leave_type.delete_confirm_message',
+                        'Are you sure you want to remove these leave types? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>

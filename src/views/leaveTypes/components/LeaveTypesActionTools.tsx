@@ -15,6 +15,7 @@ import {
 } from '@/services/leaveTypeService'
 import Papa from 'papaparse'
 import useLeaveTypeList from '../hooks/useLeaveTypesList'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type LeaveTypeCreateData = {
     leaveName: string
@@ -23,6 +24,8 @@ type LeaveTypeCreateData = {
 
 const CompanyActionTools = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const { mutate } = useLeaveTypeList()
 
@@ -75,7 +78,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <div className="w-full">
@@ -84,7 +87,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudUpload className="text-xl" />}
                 >
                     <label htmlFor="file-upload" className="cursor-pointer">
-                        Import CSV
+                        {t('page.import_csv', 'Import CSV')}
                     </label>
                 </Button>
                 <input
@@ -100,7 +103,7 @@ const CompanyActionTools = () => {
                 icon={<FaPlus className="text-xl" />}
                 onClick={() => navigate('/leavegroup')}
             >
-                Add leave group
+                {t('page.leave_type.add_leave_group', 'Add leave group')}
             </Button>
         </div>
     )

@@ -5,6 +5,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { LeaveType } from '../types'
 import type { TableQueries } from '@/@types/common'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyListTable = () => {
     const {
@@ -18,14 +19,16 @@ const CompanyListTable = () => {
         selectedLeaveType,
     } = useLeaveTypeList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<LeaveType>[] = useMemo(
         () => [
             {
-                header: 'Leave Name',
+                header: t('page.leave_type.leave_type_name', 'Leave Name'),
                 accessorKey: 'leave_name',
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

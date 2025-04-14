@@ -9,6 +9,7 @@ import useLeaveTypeList from '../hooks/useLeaveTypesList'
 import { apiTotalCompanies } from '@/services/CompanyService'
 import { GetCompanyListResponse } from '@/views/companies/types'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type LeaveTypeCreateData = {
     leaveName: string
@@ -25,6 +26,8 @@ const AddLeaveTypeSection = () => {
     const [company, setCompany] = useState<string | null>(null)
     const [companyNames, setCompanyNames] = useState<OptionType[]>([])
     const { mutate } = useLeaveTypeList()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -65,7 +68,7 @@ const AddLeaveTypeSection = () => {
             ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
-                        You have to fill company name.
+                        {'You have to fill company name.'}
                     </Notification>,
                 )
 
@@ -90,13 +93,19 @@ const AddLeaveTypeSection = () => {
         <>
             <div className="flex flex-col gap-4 mb-5">
                 <Input
-                    placeholder='Leave Name (e.g. "Vacation Leave, Sick Leave")'
+                    placeholder={t(
+                        'page.leave_type.leave_type_name_placeholder',
+                        'Leave Name (e.g. "Vacation Leave, Sick Leave")',
+                    )}
                     value={leaveName}
                     onChange={(e) => setLeaveName(e.target.value)}
                 />
                 {user.account_type === 'SuperAdmin' && (
                     <Select
-                        placeholder="Select company"
+                        placeholder={t(
+                            'page.leave_type.select_company_placeholder',
+                            'Select company',
+                        )}
                         className="w-full"
                         options={companyNames}
                         value={
@@ -117,7 +126,7 @@ const AddLeaveTypeSection = () => {
                     onClick={handleSubmit}
                     loading={isLoading}
                 >
-                    Create
+                    {t('page.create', 'Create')}
                 </Button>
             </div>
         </>

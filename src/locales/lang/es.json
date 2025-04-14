@@ -364,6 +364,19 @@
             "permission_delete_denide": "No tienes permiso para eliminar la tabla de permisos.",
             "fill_all_fields_message": "Rellene todos los campos"
         },
+        "leave_type": {
+            "add_leave_type": "Agregar tipo de licencia",
+            "leave_type_name": "Nombre de la licencia",
+            "leave_type_name_placeholder": "Nombre de la licencia (p. ej., 'Vacaciones, enfermedad')",
+            "leave_types": "Tipos de licencia",
+            "add_leave_group": "Agregar grupo de licencia",
+            "delete_confirm_message": "¿Seguro que quieres eliminar estos tipos de licencia? Esta acción no se puede deshacer.",
+            "select_company_placeholder": "Seleccionar empresa",
+            "permission_create_denide": "No tienes permiso para crear la tabla de tipos de licencia.",
+            "permission_update_denide": "No tienes permiso para actualizar la tabla de tipos de licencia.",
+            "permission_delete_denide": "No tienes permiso para eliminar la tabla de permisos.",
+            "fill_all_fields_message": "Rellene todos los campos"
+        },
         "view": "Vista",
         "create": "Crear",
         "discard": "Descartar",
