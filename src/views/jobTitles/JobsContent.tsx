@@ -30,8 +30,10 @@ const CompanyContent = () => {
                             <div className="flex flex-col gap-4 justify-center items-center">
                                 <FaLock className="text-6xl" />
                                 <p className="text-sm">
-                                    You don't have permission to access to
-                                    create job titles.
+                                    {t(
+                                        'page.job_title.permission_create_denide',
+                                        "You don't have permission to access to create job titles.",
+                                    )}
                                 </p>
                             </div>
                         </div>
