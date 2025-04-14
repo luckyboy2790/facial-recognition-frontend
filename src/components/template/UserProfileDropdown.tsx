@@ -116,7 +116,7 @@ const _UserDropdown = () => {
                             </span>
                             <span>
                                 {t(
-                                    'page.setting.switch_account',
+                                    'page.header.switch_account',
                                     'Switch to My Account',
                                 )}
                             </span>

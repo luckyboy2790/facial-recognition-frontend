@@ -1,13 +1,21 @@
 import { PasswordInput } from '@/components/shared'
 import { FormItem } from '@/components/ui'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { Controller, useFormContext } from 'react-hook-form'
 
 const ChangePasswordForm = () => {
     const { control } = useFormContext()
 
+    const { t } = useTranslation()
+
     return (
         <div className="flex flex-col gap-4">
-            <FormItem label="Current Password">
+            <FormItem
+                label={t(
+                    'page.account_setting.current_password',
+                    'Current Password',
+                )}
+            >
                 <Controller
                     name="currentPassword"
                     control={control}
@@ -15,7 +23,10 @@ const ChangePasswordForm = () => {
                     render={({ field }) => (
                         <PasswordInput
                             type="text"
-                            placeholder="Current Password"
+                            placeholder={t(
+                                'page.account_setting.current_password',
+                                'Current Password',
+                            )}
                             autoComplete="off"
                             value={field.value}
                             onChange={field.onChange}
@@ -24,7 +35,9 @@ const ChangePasswordForm = () => {
                     )}
                 />
             </FormItem>
-            <FormItem label="New Password">
+            <FormItem
+                label={t('page.account_setting.new_password', 'New Password')}
+            >
                 <Controller
                     name="newPassword"
                     control={control}
@@ -32,7 +45,10 @@ const ChangePasswordForm = () => {
                     render={({ field }) => (
                         <PasswordInput
                             type="text"
-                            placeholder="New Password"
+                            placeholder={t(
+                                'page.account_setting.new_password',
+                                'New Password',
+                            )}
                             autoComplete="off"
                             value={field.value}
                             onChange={field.onChange}
@@ -41,7 +57,12 @@ const ChangePasswordForm = () => {
                     )}
                 />
             </FormItem>
-            <FormItem label="Confirm Password">
+            <FormItem
+                label={t(
+                    'page.account_setting.confirm_password',
+                    'Confirm Password',
+                )}
+            >
                 <Controller
                     name="confirmPassword"
                     control={control}
@@ -49,7 +70,10 @@ const ChangePasswordForm = () => {
                     render={({ field }) => (
                         <PasswordInput
                             type="text"
-                            placeholder="Confirm Password"
+                            placeholder={t(
+                                'page.account_setting.confirm_password',
+                                'Confirm Password',
+                            )}
                             autoComplete="off"
                             value={field.value}
                             onChange={field.onChange}

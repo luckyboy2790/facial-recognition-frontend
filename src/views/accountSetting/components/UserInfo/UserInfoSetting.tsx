@@ -8,10 +8,13 @@ import { UserInfo } from '../../type'
 import { useNavigate } from 'react-router-dom'
 import { useSessionUser, useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const SystemSetting = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const methods = useForm({
         defaultValues: {
@@ -92,7 +95,10 @@ const SystemSetting = () => {
 
             toast.push(
                 <Notification type="success">
-                    Setting Saved Successfully
+                    {t(
+                        'page.account_setting.setting_save_success',
+                        'Setting Saved Successfully',
+                    )}
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -128,11 +134,11 @@ const SystemSetting = () => {
                                 icon={<TbArrowNarrowLeft />}
                                 onClick={() => navigate(-1)}
                             >
-                                Back
+                                {t('page.back', 'Back')}
                             </Button>
 
                             <Button variant="solid" type="submit">
-                                Save
+                                {t('page.save', 'Save')}
                             </Button>
                         </div>
                     </Container>

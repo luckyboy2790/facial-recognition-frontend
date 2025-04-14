@@ -1,4 +1,5 @@
 import classNames from '@/utils/classNames'
+import useTranslation from '@/utils/hooks/useTranslation'
 import { FaUser, FaUserLock } from 'react-icons/fa'
 
 type ProjectDetailsNavigationProps = {
@@ -6,18 +7,31 @@ type ProjectDetailsNavigationProps = {
     onChange: (value: string) => void
 }
 
-const navigation = [
-    { label: 'User Information', value: 'userInfo', icon: <FaUser /> },
-    { label: 'Change Password', value: 'changePassword', icon: <FaUserLock /> },
-]
-
 const ProjectDetailsNavigation = ({
     selected,
     onChange,
 }: ProjectDetailsNavigationProps) => {
+    const { t } = useTranslation()
+
     const handleClick = (value: string) => {
         onChange(value)
     }
+
+    const navigation = [
+        {
+            label: t(
+                'page.account_setting.user_information',
+                'User Information',
+            ),
+            value: 'userInfo',
+            icon: <FaUser />,
+        },
+        {
+            label: t('page.account_setting.change_password', 'Change Password'),
+            value: 'changePassword',
+            icon: <FaUserLock />,
+        },
+    ]
 
     return (
         <div className="w-[250px]">

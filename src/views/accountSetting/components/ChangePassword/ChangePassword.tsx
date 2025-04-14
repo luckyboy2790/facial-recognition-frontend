@@ -6,6 +6,7 @@ import { Button, Form, Notification, toast } from '@/components/ui'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 export type Password = {
@@ -16,6 +17,8 @@ export type Password = {
 
 const AboutContent = () => {
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     const methods = useForm({
         defaultValues: {
@@ -39,7 +42,12 @@ const AboutContent = () => {
                 formData.confirmPassword === ''
             ) {
                 toast.push(
-                    <Notification type="warning">Fill all fields</Notification>,
+                    <Notification type="warning">
+                        {t(
+                            'page.account_setting.fill_all_fields_message',
+                            'Fill all fields',
+                        )}
+                    </Notification>,
                     {
                         placement: 'top-center',
                     },
@@ -51,7 +59,10 @@ const AboutContent = () => {
             if (formData.newPassword !== formData.confirmPassword) {
                 toast.push(
                     <Notification type="warning">
-                        Passwords are not matched
+                        {t(
+                            'page.account_setting.password_not_matched',
+                            'Passwords are not matched',
+                        )}
                     </Notification>,
                     {
                         placement: 'top-center',
@@ -67,8 +78,10 @@ const AboutContent = () => {
             if (!passwordRegex.test(formData.newPassword)) {
                 toast.push(
                     <Notification type="warning">
-                        Password must be at least 8 characters long and include
-                        uppercase, lowercase, a number, and a special character.
+                        {t(
+                            'page.account_setting.password_invalid',
+                            'Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.',
+                        )}
                     </Notification>,
                     {
                         placement: 'top-center',
@@ -106,7 +119,10 @@ const AboutContent = () => {
 
             toast.push(
                 <Notification type="success">
-                    Setting Saved Successfully
+                    {t(
+                        'page.account_setting.setting_save_success',
+                        'Setting Saved Successfully',
+                    )}
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -154,11 +170,11 @@ const AboutContent = () => {
                                     icon={<TbArrowNarrowLeft />}
                                     onClick={() => navigate(-1)}
                                 >
-                                    Back
+                                    {t('page.back', 'Back')}
                                 </Button>
 
                                 <Button variant="solid" type="submit">
-                                    Save
+                                    {t('page.save', 'Save')}
                                 </Button>
                             </div>
                         </Container>

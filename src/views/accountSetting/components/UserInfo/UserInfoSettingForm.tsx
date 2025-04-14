@@ -2,14 +2,19 @@ import React from 'react'
 import { AdaptiveCard } from '@/components/shared'
 import { FormItem, Input } from '@/components/ui'
 import { Controller, useFormContext } from 'react-hook-form'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const LocalizationSetting = () => {
+    const { t } = useTranslation()
+
     const { control } = useFormContext()
 
     return (
         <div className="flex flex-col gap-4">
             <AdaptiveCard>
-                <FormItem label="First Name">
+                <FormItem
+                    label={t('page.account_setting.first_name', 'First Name')}
+                >
                     <Controller
                         name="first_name"
                         control={control}
@@ -17,7 +22,10 @@ const LocalizationSetting = () => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="Name"
+                                placeholder={t(
+                                    'page.account_setting.first_name',
+                                    'First Name',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -26,7 +34,9 @@ const LocalizationSetting = () => {
                     />
                 </FormItem>
 
-                <FormItem label="Last Name">
+                <FormItem
+                    label={t('page.account_setting.last_name', 'Last Name')}
+                >
                     <Controller
                         name="last_name"
                         control={control}
@@ -34,7 +44,10 @@ const LocalizationSetting = () => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="Name"
+                                placeholder={t(
+                                    'page.account_setting.last_name',
+                                    'Last Name',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -43,7 +56,7 @@ const LocalizationSetting = () => {
                     />
                 </FormItem>
 
-                <FormItem label="Email">
+                <FormItem label={t('page.account_setting.email', 'Email')}>
                     <Controller
                         name="email"
                         control={control}
@@ -51,7 +64,10 @@ const LocalizationSetting = () => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="Email"
+                                placeholder={t(
+                                    'page.account_setting.email',
+                                    'Email',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -60,7 +76,7 @@ const LocalizationSetting = () => {
                     />
                 </FormItem>
 
-                <FormItem label="Role">
+                <FormItem label={t('page.account_setting.role', 'Role')}>
                     <Controller
                         name="role"
                         control={control}
@@ -68,7 +84,10 @@ const LocalizationSetting = () => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="Role"
+                                placeholder={t(
+                                    'page.account_setting.role',
+                                    'Role',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
@@ -78,7 +97,7 @@ const LocalizationSetting = () => {
                     />
                 </FormItem>
 
-                <FormItem label="Status">
+                <FormItem label={t('page.account_setting.status', 'Status')}>
                     <Controller
                         name="status"
                         control={control}
@@ -86,7 +105,10 @@ const LocalizationSetting = () => {
                             <Input
                                 type="text"
                                 autoComplete="off"
-                                placeholder="Status"
+                                placeholder={t(
+                                    'page.account_setting.status',
+                                    'Status',
+                                )}
                                 value={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
