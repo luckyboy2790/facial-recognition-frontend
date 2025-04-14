@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSessionUser, useToken } from '@/store/authStore'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 const SystemSetting = () => {
@@ -35,6 +36,8 @@ const SystemSetting = () => {
     const [settingId, setSettingId] = useState<string>('')
 
     const { token } = useToken()
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -139,11 +142,11 @@ const SystemSetting = () => {
                                 icon={<TbArrowNarrowLeft />}
                                 onClick={() => navigate(-1)}
                             >
-                                Back
+                                {t('page.back', 'Back')}
                             </Button>
 
                             <Button variant="solid" type="submit">
-                                Save
+                                {t('page.save', 'Save')}
                             </Button>
                         </div>
                     </Container>

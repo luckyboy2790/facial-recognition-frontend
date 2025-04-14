@@ -7,6 +7,7 @@ import type { ToggleDrawerRef } from '@/components/shared/ToggleDrawer'
 import SystemSetting from './components/SystemSetting'
 import AboutContent from './components/About'
 import Attributions from './components/Attributions'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const defaultNavValue = 'system'
 
@@ -21,6 +22,8 @@ const Setting = () => {
 
     const drawerRef = useRef<ToggleDrawerRef>(null)
 
+    const { t } = useTranslation()
+
     return (
         <>
             <div className="flex flex-col gap-4">
@@ -33,7 +36,7 @@ const Setting = () => {
                             />
                         </ToggleDrawer>
                     )}
-                    <h3>Setting</h3>
+                    <h3>{t('page.setting.setting', 'Setting')}</h3>
                 </div>
                 <div className="flex gap-12 mt-6">
                     {larger.xl && (

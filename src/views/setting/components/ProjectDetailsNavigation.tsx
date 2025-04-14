@@ -2,22 +2,37 @@ import classNames from '@/utils/classNames'
 import { GrSystem } from 'react-icons/gr'
 import { FcAbout } from 'react-icons/fc'
 import { MdAttribution } from 'react-icons/md'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type ProjectDetailsNavigationProps = {
     selected: string
     onChange: (value: string) => void
 }
 
-const navigation = [
-    { label: 'System', value: 'system', icon: <GrSystem /> },
-    { label: 'About', value: 'about', icon: <FcAbout /> },
-    { label: 'Attributions', value: 'attributions', icon: <MdAttribution /> },
-]
-
 const ProjectDetailsNavigation = ({
     selected,
     onChange,
 }: ProjectDetailsNavigationProps) => {
+    const { t } = useTranslation()
+
+    const navigation = [
+        {
+            label: t('page.setting.system', 'System'),
+            value: 'system',
+            icon: <GrSystem />,
+        },
+        {
+            label: t('page.setting.about', 'About'),
+            value: 'about',
+            icon: <FcAbout />,
+        },
+        {
+            label: t('page.setting.attributions', 'Attributions'),
+            value: 'attributions',
+            icon: <MdAttribution />,
+        },
+    ]
+
     const handleClick = (value: string) => {
         onChange(value)
     }

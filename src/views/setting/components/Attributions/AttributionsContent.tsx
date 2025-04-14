@@ -1,51 +1,53 @@
 import { AdaptiveCard } from '@/components/shared'
 import AttributionCard from './AttributionCard'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type AttributionCardProps = {
     title: string
     copyright: string
 }
 
-const attributionData: AttributionCardProps[] = [
-    {
-        title: 'Laravel',
-        copyright: 'Copyright (c) Taylor Otwell',
-    },
-    {
-        title: 'Bootstrap',
-        copyright: 'Copyright 2011-2020 Twitter, Inc.',
-    },
-    {
-        title: 'Semantic UI',
-        copyright: 'Copyright (c) 2015 Semantic Org',
-    },
-    {
-        title: 'jQuery JavaScript Library',
-        copyright: 'Copyright jQuery Foundation and other contributors',
-    },
-    {
-        title: 'DataTables',
-        copyright: 'Copyright 2008-2020 SpryMedia Ltd',
-    },
-    {
-        title: 'Chart.js',
-        copyright: 'Copyright 201 Chart.js Contributors',
-    },
-    {
-        title: 'Moment.js',
-        copyright: 'Copyright (c) JS Foundation and other contributors',
-    },
-    {
-        title: 'Air Datepicker',
-        copyright: 'Copyright (c) 2016 Timofey Marochkin',
-    },
-    {
-        title: 'MDTimePicker',
-        copyright: 'Copyright (c) 2017 Dionlee Uy',
-    },
-]
-
 const AttributionsContent = () => {
+    const { t } = useTranslation()
+
+    const attributionData: AttributionCardProps[] = [
+        {
+            title: 'Laravel',
+            copyright: 'Copyright (c) Taylor Otwell',
+        },
+        {
+            title: 'Bootstrap',
+            copyright: 'Copyright 2011-2020 Twitter, Inc.',
+        },
+        {
+            title: 'Semantic UI',
+            copyright: 'Copyright (c) 2015 Semantic Org',
+        },
+        {
+            title: 'jQuery JavaScript Library',
+            copyright: 'Copyright jQuery Foundation and other contributors',
+        },
+        {
+            title: 'DataTables',
+            copyright: 'Copyright 2008-2020 SpryMedia Ltd',
+        },
+        {
+            title: 'Chart.js',
+            copyright: 'Copyright 201 Chart.js Contributors',
+        },
+        {
+            title: 'Moment.js',
+            copyright: 'Copyright (c) JS Foundation and other contributors',
+        },
+        {
+            title: 'Air Datepicker',
+            copyright: 'Copyright (c) 2016 Timofey Marochkin',
+        },
+        {
+            title: 'MDTimePicker',
+            copyright: 'Copyright (c) 2017 Dionlee Uy',
+        },
+    ]
     return (
         <div className="flex flex-col gap-4">
             <h5>Legal Notice</h5>
