@@ -7,15 +7,22 @@ import DepartmentsListTableTools from './components/DepartmentsListTableTools'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { FaLock } from 'react-icons/fa'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyContent = () => {
     const { user } = useAuth()
+    const { t } = useTranslation()
     return (
         <>
             <Container>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                        <h3>Add Department</h3>
+                        <h3>
+                            {t(
+                                'page.department.add_department',
+                                'Add Department',
+                            )}
+                        </h3>
                         <DepartmentsActionTools />
                     </div>
                     {permissionChecker(user, 'department', 'create') ===
@@ -24,8 +31,10 @@ const CompanyContent = () => {
                             <div className="flex flex-col gap-4 justify-center items-center">
                                 <FaLock className="text-6xl" />
                                 <p className="text-sm">
-                                    You don't have permission to access to
-                                    create department.
+                                    {t(
+                                        'page.department.permission_create_denide',
+                                        "You don't have permission to access to create department.",
+                                    )}
                                 </p>
                             </div>
                         </div>

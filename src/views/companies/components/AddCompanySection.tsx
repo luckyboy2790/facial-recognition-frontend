@@ -32,7 +32,10 @@ const AddCompanySection = () => {
             if (companyName === '') {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
-                        You have to fill company name.
+                        {t(
+                            'page.company.fill_all_fields_message',
+                            'You have to fill company name.',
+                        )}
                     </Notification>,
                 )
 

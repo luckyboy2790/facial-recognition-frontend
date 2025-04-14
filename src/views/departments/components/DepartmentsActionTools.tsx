@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { apiGetAllData } from '@/services/employeeService'
 import Papa from 'papaparse'
 import { apiCreateDepartment } from '@/services/DepartmentService'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type DepartmentCreateData = {
     departmentName: string
@@ -19,6 +20,8 @@ type responseType = {
 
 const DepartmentctionTools = () => {
     const { mutate } = useDepartmentList()
+
+    const { t } = useTranslation()
 
     const [departmentList, setDepartmentList] = useState<Department[]>([])
 
@@ -68,7 +71,7 @@ const DepartmentctionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <div className="w-full">
@@ -77,7 +80,7 @@ const DepartmentctionTools = () => {
                     icon={<TbCloudUpload className="text-xl" />}
                 >
                     <label htmlFor="file-upload" className="cursor-pointer">
-                        Import CSV
+                        {t('page.import_csv', 'Import CSV')}
                     </label>
                 </Button>
                 <input

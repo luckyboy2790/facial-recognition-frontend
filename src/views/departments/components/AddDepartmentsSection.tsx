@@ -15,6 +15,7 @@ import useDepartmentList from '../hooks/useDepartmentsList'
 import { apiTotalCompanies } from '@/services/CompanyService'
 import { GetCompanyListResponse } from '@/views/companies/types'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type DepartmentCreateData = {
     departmentName: string
@@ -30,6 +31,8 @@ const AddDepartmentSection = () => {
     const [departmentName, setDepartmentName] = useState<string>('')
     const [company, setCompany] = useState<string | null>(null)
     const [companyNames, setCompanyNames] = useState<OptionType[]>([])
+
+    const { t } = useTranslation()
 
     const { mutate } = useDepartmentList()
 
@@ -73,7 +76,10 @@ const AddDepartmentSection = () => {
             ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
-                        You have to fill department name.
+                        {t(
+                            'page.department.fill_all_fields_message',
+                            'You have to fill department name.',
+                        )}
                     </Notification>,
                 )
 
@@ -97,14 +103,20 @@ const AddDepartmentSection = () => {
         <>
             <div className="flex flex-col justify-between items-center gap-4">
                 <Input
-                    placeholder="Department Name"
+                    placeholder={t(
+                        'page.department.department_name',
+                        'Department Name',
+                    )}
                     required
                     value={departmentName}
                     onChange={(e) => setDepartmentName(e.target.value)}
                 />
                 {user.account_type === 'SuperAdmin' && (
                     <Select
-                        placeholder="Select company"
+                        placeholder={t(
+                            'page.department.select_company_placeholder',
+                            'Select company',
+                        )}
                         className="w-full"
                         options={companyNames}
                         value={
@@ -124,7 +136,7 @@ const AddDepartmentSection = () => {
                         onClick={handleSubmit}
                         disabled={isLoading}
                     >
-                        Create
+                        {t('page.create', 'Create')}
                     </Button>
                 </div>
             </div>

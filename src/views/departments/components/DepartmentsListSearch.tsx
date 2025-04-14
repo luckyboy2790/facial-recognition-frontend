@@ -1,6 +1,7 @@
 import DebouceInput from '@/components/shared/DebouceInput'
 import { TbSearch } from 'react-icons/tb'
 import { Ref } from 'react'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type DepartmentListSearchProps = {
     onInputChange: (value: string) => void
@@ -10,10 +11,12 @@ type DepartmentListSearchProps = {
 const DepartmentListSearch = (props: DepartmentListSearchProps) => {
     const { onInputChange, ref } = props
 
+    const { t } = useTranslation()
+
     return (
         <DebouceInput
             ref={ref}
-            placeholder="Quick search..."
+            placeholder={t('page.quick_search', 'Quick search...')}
             suffix={<TbSearch className="text-lg" />}
             onChange={(e) => onInputChange(e.target.value)}
         />

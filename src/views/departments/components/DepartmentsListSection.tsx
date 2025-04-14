@@ -5,6 +5,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Department } from '../types'
 import type { TableQueries } from '@/@types/common'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const DepartmentListTable = () => {
     const {
@@ -18,10 +19,12 @@ const DepartmentListTable = () => {
         selectedDepartment,
     } = useDepartmentList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<Department>[] = useMemo(
         () => [
             {
-                header: 'Department',
+                header: t('page.employee.department', 'Department'),
                 accessorKey: 'department_name',
             },
             // {

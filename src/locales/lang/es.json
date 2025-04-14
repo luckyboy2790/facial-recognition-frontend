@@ -334,12 +334,22 @@
             "add_company": "Agregar empresa",
             "company_name": "Nombre de la empresa",
             "companies": "Compañías",
-            "delete_confirm_message": "¿Seguro que quieres eliminar estas empresas? Esta acción no se puede deshacer."
+            "delete_confirm_message": "¿Seguro que quieres eliminar estas empresas? Esta acción no se puede deshacer.",
+            "permission_create_denide": "No tienes permiso para crear la tabla de empresas.",
+            "permission_update_denide": "No tienes permiso para actualizar la tabla de empresas.",
+            "permission_delete_denide": "No tienes permiso para eliminar la tabla de permisos.",
+            "fill_all_fields_message": "Rellene todos los campos"
         },
         "department": {
             "add_department": "Agregar departamento",
             "department_name": "Nombre del departamento",
-            "no_data": "¡No se encontró ningún departamento!"
+            "departments": "Departamentos",
+            "delete_confirm_message": "¿Seguro que quieres eliminar estos departamentos? Esta acción no se puede deshacer.",
+            "select_company_placeholder": "Seleccionar empresa",
+            "permission_create_denide": "No tienes permiso para crear la tabla de departamentos.",
+            "permission_update_denide": "No tienes permiso para actualizar la tabla de departamentos.",
+            "permission_delete_denide": "No tienes permiso para eliminar la tabla de permisos.",
+            "fill_all_fields_message": "Rellene todos los campos"
         },
         "view": "Vista",
         "create": "Crear",

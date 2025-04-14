@@ -5,10 +5,13 @@ import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import useDepartmentList from '../hooks/useDepartmentsList'
 import { TbChecks } from 'react-icons/tb'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const DepartmentListSelected = () => {
     const { selectedDepartment, mutate, deleteDepartments } =
         useDepartmentList()
+
+    const { t } = useTranslation()
 
     const { user } = useAuth()
 
@@ -60,9 +63,14 @@ const DepartmentListSelected = () => {
                                         <span className="font-semibold flex items-center gap-1">
                                             <span className="heading-text">
                                                 {selectedDepartment.length}{' '}
-                                                Departments
+                                                {t(
+                                                    'page.department.departments',
+                                                    'Departments',
+                                                )}
                                             </span>
-                                            <span>selected</span>
+                                            <span>
+                                                {t('page.select', 'selected')}
+                                            </span>
                                         </span>
                                     </span>
                                 )}
@@ -78,7 +86,7 @@ const DepartmentListSelected = () => {
                                     }
                                     onClick={handleDelete}
                                 >
-                                    Delete
+                                    {t('page.delete', 'Delete')}
                                 </Button>
                             </div>
                         </div>
@@ -88,16 +96,20 @@ const DepartmentListSelected = () => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove departments"
+                title={`${t('page.delete', 'Delete')} ${t('page.department.departments', 'Departments')}`}
                 onClose={handleCancel}
                 onRequestClose={handleCancel}
                 onCancel={handleCancel}
                 onConfirm={handleConfirmDelete}
+                cancelText={t('page.employee.cancel', 'Cancel')}
+                confirmText={t('page.employee.confirm', 'Confirm')}
             >
                 <p>
                     {' '}
-                    Are you sure you want to remove these departments? This
-                    action can&apos;t be undo.{' '}
+                    {t(
+                        'page.department.delete_confirm_message',
+                        'Are you sure you want to remove these departments? This action cannot be undo.',
+                    )}{' '}
                 </p>
             </ConfirmDialog>
         </>
