@@ -9,6 +9,7 @@ import useLeaveTypeList from '../hooks/useLeaveGroupsList'
 import { apiGetAllData } from '@/services/employeeService'
 import Papa from 'papaparse'
 import { apiCreateLeaveGroup } from '@/services/leaveGroupService'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type responseType = {
     leaveGroup: LeaveGroup[]
@@ -24,6 +25,8 @@ type LeaveGroupCreateData = {
 
 const CompanyActionTools = () => {
     const { mutateLeaveGroup } = useLeaveTypeList()
+
+    const { t } = useTranslation()
 
     const [leaveGroupList, setLeaveGroupList] = useState<LeaveGroup[]>([])
 
@@ -76,7 +79,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <div className="w-full">
@@ -85,7 +88,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudUpload className="text-xl" />}
                 >
                     <label htmlFor="file-upload" className="cursor-pointer">
-                        Import CSV
+                        {t('page.import_csv', 'Import CSV')}
                     </label>
                 </Button>
                 <input

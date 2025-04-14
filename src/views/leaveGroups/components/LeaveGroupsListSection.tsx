@@ -27,6 +27,7 @@ import {
 import useSWR from 'swr'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type LeaveGroupData = {
     _id: string
@@ -42,9 +43,10 @@ const statusColor: Record<string, string> = {
 }
 
 const ActionColumn = ({ onEdit }: { onEdit: () => void }) => {
+    const { t } = useTranslation()
     return (
         <div className="flex items-center gap-3">
-            <Tooltip title="Edit">
+            <Tooltip title={t('page.edit', 'Edit')}>
                 <div
                     className={`text-xl cursor-pointer select-none font-semibold`}
                     role="button"
@@ -71,6 +73,8 @@ const CompanyListTable = () => {
         mutateLeaveGroup,
     } = useLeaveTypeList()
 
+    const { t } = useTranslation()
+
     const [groupStatus, setGroupStatus] = useState<string>('')
     const [leaveGroupName, setLeaveGroupName] = useState('')
     const [description, setDescription] = useState('')
@@ -86,11 +90,11 @@ const CompanyListTable = () => {
 
     const statusOption = [
         {
-            label: 'Active',
+            label: t('page.leave_group.active', 'Active'),
             value: 'Active',
         },
         {
-            label: 'Disabled',
+            label: t('page.leave_group.disabled', 'Disabled'),
             value: 'Disabled',
         },
     ]
@@ -110,7 +114,10 @@ const CompanyListTable = () => {
         ) {
             toast.push(
                 <Notification type="warning">
-                    You don't have permission to update leave group.
+                    {t(
+                        'page.leave_group.permission_update_denide',
+                        "You don't have permission to update leave group.",
+                    )}
                 </Notification>,
                 { placement: 'top-center' },
             )
@@ -186,26 +193,33 @@ const CompanyListTable = () => {
     const columns: ColumnDef<LeaveGroup>[] = useMemo(
         () => [
             {
-                header: 'Group Name',
+                header: t('page.leave_group.group_name', 'Group Name'),
                 accessorKey: 'group_name',
             },
             {
-                header: 'Description',
+                header: t('page.leave_group.description', 'Description'),
                 accessorKey: 'description',
             },
             {
-                header: 'Privilege',
+                header: t('page.leave_group.privilege', 'Privilege'),
                 accessorKey: 'leaveTypeNames',
             },
             {
-                header: 'Status',
+                header: t('page.leave_group.status', 'Status'),
                 accessorKey: 'status',
                 cell: (props) => {
                     const row = props.row.original
                     return (
                         <div className="flex items-center">
                             <Tag className={statusColor[row.status]}>
-                                <span className="capitalize">{row.status}</span>
+                                <span className="capitalize">
+                                    {row.status === 'Active'
+                                        ? t('page.leave_group.active', 'Active')
+                                        : t(
+                                              'page.leave_group.disabled',
+                                              'Disabled',
+                                          )}
+                                </span>
                             </Tag>
                         </div>
                     )
@@ -221,7 +235,7 @@ const CompanyListTable = () => {
                 ),
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {
@@ -294,17 +308,25 @@ const CompanyListTable = () => {
                 onClose={onDialogClose}
                 onRequestClose={onDialogClose}
             >
-                <h5 className="mb-4">Dialog Title</h5>
+                <h5 className="mb-4">
+                    {t('page.leave_group.edit_leave_group', 'Edit Leave Group')}
+                </h5>
 
                 <div className="flex flex-col gap-4">
                     <Input
-                        placeholder="Leave Group Name"
+                        placeholder={t(
+                            'page.leave_group.leave_group_name',
+                            'Leave Group Name',
+                        )}
                         value={leaveGroupName}
                         onChange={(e) => setLeaveGroupName(e.target.value)}
                     />
 
                     <Input
-                        placeholder="Description"
+                        placeholder={t(
+                            'page.leave_group.description',
+                            'Description',
+                        )}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
@@ -314,7 +336,10 @@ const CompanyListTable = () => {
                             isMulti
                             size="md"
                             className="mb-4"
-                            placeholder="Select Leave Privileges"
+                            placeholder={t(
+                                'page.leave_group.select_leave_privileges_placeholder',
+                                'Select Leave Privileges',
+                            )}
                             options={leaveGroupOptions}
                             value={leaveGroupOptions.filter((option) =>
                                 leaveTypes.includes(option.value),
@@ -331,7 +356,10 @@ const CompanyListTable = () => {
                         <Select
                             size="md"
                             className="mb-4"
-                            placeholder="Select Status"
+                            placeholder={t(
+                                'page.leave_group.select_status_placeholder',
+                                'Select Status',
+                            )}
                             options={statusOption}
                             value={
                                 statusOption.find(
@@ -352,14 +380,14 @@ const CompanyListTable = () => {
                         variant="plain"
                         onClick={onDialogClose}
                     >
-                        Cancel
+                        {t('page.employee.cancel', 'Cancel')}
                     </Button>
                     <Button
                         variant="solid"
                         onClick={handleEdit}
                         loading={isCreatLeaveGroupLoading}
                     >
-                        Okay
+                        {t('page.save', 'Save')}
                     </Button>
                 </div>
             </Dialog>

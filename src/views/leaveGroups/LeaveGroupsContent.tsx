@@ -6,16 +6,24 @@ import LeaveGroupsListTableTools from './components/LeaveGroupsListTableTools'
 import { useAuth } from '@/auth'
 import { permissionChecker } from '@/services/PermissionChecker'
 import { FaLock } from 'react-icons/fa'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyContent = () => {
     const { user } = useAuth()
+
+    const { t } = useTranslation()
 
     return (
         <>
             <Container>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                        <h3>Add Leave Groups</h3>
+                        <h3>
+                            {t(
+                                'page.leave_group.add_leave_group',
+                                'Add Leave Groups',
+                            )}
+                        </h3>
                     </div>
                     {permissionChecker(user, 'leaveGroup', 'create') ===
                         false && user.account_type === 'Admin' ? (
@@ -23,8 +31,10 @@ const CompanyContent = () => {
                             <div className="flex flex-col gap-4 justify-center items-center">
                                 <FaLock className="text-6xl" />
                                 <p className="text-sm">
-                                    You don't have permission to access to
-                                    create leave groups.
+                                    {t(
+                                        'page.leave_group.permission_create_denide',
+                                        "You don't have permission to access to create leave groups.",
+                                    )}
                                 </p>
                             </div>
                         </div>

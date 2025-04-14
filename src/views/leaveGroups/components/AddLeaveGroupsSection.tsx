@@ -8,6 +8,7 @@ import { apiCreateLeaveGroup } from '@/services/leaveGroupService'
 import { apiTotalCompanies } from '@/services/CompanyService'
 import { GetCompanyListResponse } from '@/views/companies/types'
 import { useAuth } from '@/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type LeaveGroupCreateData = {
     leaveGroupName: string
@@ -35,13 +36,15 @@ const AddLeaveTypeSection = () => {
 
     const { user } = useAuth()
 
+    const { t } = useTranslation()
+
     const statusOption = [
         {
-            label: 'Active',
+            label: t('page.leave_group.active', 'Active'),
             value: 'Active',
         },
         {
-            label: 'Disabled',
+            label: t('page.leave_group.disabled', 'Disabled'),
             value: 'Disabled',
         },
     ]
@@ -114,7 +117,10 @@ const AddLeaveTypeSection = () => {
             ) {
                 toast.push(
                     <Notification title={'error'} type={'danger'}>
-                        You have to fill company name.
+                        {t(
+                            'page.leave_group.fill_all_fields_message',
+                            'You have to fill company name.',
+                        )}
                     </Notification>,
                 )
 
@@ -141,20 +147,29 @@ const AddLeaveTypeSection = () => {
         <>
             <div className="flex flex-col gap-4">
                 <Input
-                    placeholder="Leave Group Name"
+                    placeholder={t(
+                        'page.leave_group.leave_group_name',
+                        'Leave Group Name',
+                    )}
                     value={leaveGroupName}
                     onChange={(e) => setLeaveGroupName(e.target.value)}
                 />
 
                 <Input
-                    placeholder="Description"
+                    placeholder={t(
+                        'page.leave_group.description',
+                        'Description',
+                    )}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
 
                 {user.account_type === 'SuperAdmin' && (
                     <Select
-                        placeholder="Select company"
+                        placeholder={t(
+                            'page.leave_group.select_company_placeholder',
+                            'Select company',
+                        )}
                         className="w-full"
                         options={companyNames}
                         value={
@@ -173,7 +188,10 @@ const AddLeaveTypeSection = () => {
                         isMulti
                         size="md"
                         className="mb-4"
-                        placeholder="Select Leave Privileges"
+                        placeholder={t(
+                            'page.leave_group.select_leave_privileges_placeholder',
+                            'Select Leave Privileges',
+                        )}
                         options={leaveGroupOptions}
                         value={leaveGroupOptions.filter((option) =>
                             leaveTypes.includes(option.value),
@@ -190,7 +208,10 @@ const AddLeaveTypeSection = () => {
                     <Select
                         size="md"
                         className="mb-4"
-                        placeholder="Select Status"
+                        placeholder={t(
+                            'page.leave_group.select_status_placeholder',
+                            'Select Status',
+                        )}
                         options={statusOption}
                         value={
                             statusOption.find(
@@ -212,7 +233,7 @@ const AddLeaveTypeSection = () => {
                         onClick={handleSubmit}
                         loading={isLoading}
                     >
-                        Create
+                        {t('page.create', 'Create')}
                     </Button>
                 </div>
             </div>
