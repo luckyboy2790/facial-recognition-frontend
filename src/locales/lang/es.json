@@ -416,6 +416,21 @@
             "password_not_matched": "Las contraseñas no coinciden.",
             "password_invalid": "La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas, un número y un carácter especial."
         },
+        "clock": {
+            "check_in": "Registrarse",
+            "check_in_description": "Regístrate para tu asistencia",
+            "check_out": "Verificar",
+            "check_out_descriptinon": "Consulta tu asistencia",
+            "break_in": "Interrumpir",
+            "break_in_description": "Intrusión para su asistencia",
+            "break_out": "Fugarse",
+            "break_out_description": "Desglose para su asistencia",
+            "access_denied": "¡Acceso denegado!",
+            "access_denied_message": "No tienes permiso para visitar esta página.",
+            "pin_message": "Tu cara no es reconocida, debes ingresar PIN.",
+            "pin_code": "Introduzca el código PIN",
+            "employee_not_exist": "Las empleadas no existen!"
+        },
         "view": "Vista",
         "create": "Crear",
         "discard": "Descartar",

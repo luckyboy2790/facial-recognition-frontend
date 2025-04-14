@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSessionUser } from '@/store/authStore'
 import SpaceSignBoard from '@/assets/svg/SpaceSignBoard'
 import { Spinner } from '@/components/ui'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type Setting = {
@@ -18,31 +19,45 @@ type Setting = {
     ipRestriction: string
 }
 
-const btns = [
-    {
-        title: 'Check In',
-        description: 'Check-in for your attendance',
-        icon: <FaBusinessTime />,
-    },
-    {
-        title: 'Check Out',
-        description: 'Check out for your attendance',
-        icon: <FaBusinessTime />,
-    },
-    {
-        title: 'Break In',
-        description: 'Break-in for your attendance',
-        icon: <LuAlarmClockPlus />,
-    },
-    {
-        title: 'Break Out',
-        description: 'Break-out for your attendance',
-        icon: <LuAlarmClockCheck />,
-    },
-]
-
 const CheckInOutContent = () => {
+    const { t } = useTranslation()
+
     const setSetting = useSessionUser((state) => state.setSetting)
+
+    const btns = [
+        {
+            title: t('page.clock.check_in', 'Check In'),
+            description: t(
+                'page.clock.check_in_description',
+                'Check-in for your attendance',
+            ),
+            icon: <FaBusinessTime />,
+        },
+        {
+            title: t('page.clock.check_out', 'Check Out'),
+            description: t(
+                'page.clock.check_in_description',
+                'Check out for your attendance',
+            ),
+            icon: <FaBusinessTime />,
+        },
+        {
+            title: t('page.clock.break_in', 'Break In'),
+            description: t(
+                'page.clock.check_in_description',
+                'Break-in for your attendance',
+            ),
+            icon: <LuAlarmClockPlus />,
+        },
+        {
+            title: t('page.clock.break_out', 'Break Out'),
+            description: t(
+                'page.clock.check_in_description',
+                'Break-out for your attendance',
+            ),
+            icon: <LuAlarmClockCheck />,
+        },
+    ]
 
     const [isAccess, setIsAccess] = useState<boolean>(false)
 
@@ -139,9 +154,14 @@ const CheckInOutContent = () => {
                 <div className="w-full h-full flex flex-col justify-center items-center">
                     <SpaceSignBoard height={300} width={300} />
                     <div className="mt-10 text-center">
-                        <h3 className="mb-2">Access Denied!</h3>
+                        <h3 className="mb-2">
+                            {t('page.clock.access_denied', 'Access Denied!')}
+                        </h3>
                         <p className="text-base">
-                            You have no permission to visit this page
+                            {t(
+                                'page.clock.access_denied_message',
+                                'You have no permission to visit this page',
+                            )}
                         </p>
                     </div>
                 </div>

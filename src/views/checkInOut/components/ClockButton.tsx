@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { Notification, toast } from '@/components/ui'
 import { NumericInput, PasswordInput } from '@/components/shared'
 import PinInput from './PinInput'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 interface BoardCardProps {
     title: String
@@ -17,6 +18,9 @@ interface BoardCardProps {
 
 const ClockButton = (props: BoardCardProps) => {
     const { title, description, icon, timezone } = props
+
+    const { t } = useTranslation()
+
     const navigate = useNavigate()
 
     const [dialogIsOpen, setIsOpen] = useState(false)
@@ -53,7 +57,10 @@ const ClockButton = (props: BoardCardProps) => {
         if (recoStatus === false) {
             toast.push(
                 <Notification type="warning">
-                    Your face is not recognized, you have to input PIN.
+                    {t(
+                        'page.clock.pin_message',
+                        'Your face is not recognized, you have to input PIN.',
+                    )}
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -105,10 +112,10 @@ const ClockButton = (props: BoardCardProps) => {
                         variant="plain"
                         onClick={(e: any) => onDialogClose(e)}
                     >
-                        Cancel
+                        {t('page.employee.cancel', 'Cancel')}
                     </Button>
                     <Button variant="solid" onClick={(e: any) => onDialogOk(e)}>
-                        Okay
+                        {t('page.employee.confirm', 'Confirm')}
                     </Button>
                 </div>
             </Dialog>

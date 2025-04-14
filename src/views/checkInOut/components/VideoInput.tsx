@@ -10,6 +10,7 @@ import sleep from '@/utils/sleep'
 import { useToken } from '@/store/authStore'
 import { useAuth } from '@/auth'
 import { User } from '@/@types/auth'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const WIDTH = 420
 const HEIGHT = 420
@@ -47,6 +48,7 @@ class VideoInput extends Component<
         token: string | null
         setRecoStatus: Dispatch<SetStateAction<boolean>>
         user: User
+        t: any
     },
     State
 > {
@@ -61,6 +63,7 @@ class VideoInput extends Component<
         token: string | null
         setRecoStatus: Dispatch<SetStateAction<boolean>>
         user: User
+        t: any
     }) {
         super(props)
         this.state = {
@@ -81,7 +84,10 @@ class VideoInput extends Component<
         if (Object.keys(data).length <= 0) {
             toast.push(
                 <Notification type="warning">
-                    The employees do not exist!
+                    {this.props.t(
+                        'page.clock.employee_not_exist',
+                        'The employees do not exist!',
+                    )}
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -442,6 +448,8 @@ export default function VideoInputWithRouter({
 
     const { user } = useAuth()
 
+    const { t } = useTranslation()
+
     return (
         <VideoInput
             onCloseDialog={onCloseDialog}
@@ -451,6 +459,7 @@ export default function VideoInputWithRouter({
             token={typeof token === 'string' ? token : null}
             setRecoStatus={setRecoStatus}
             user={user}
+            t={t}
         />
     )
 }

@@ -6,6 +6,7 @@ import {
     apiPinEmployeeCheckOut,
 } from '@/services/AttendanceService'
 import { useToken } from '@/store/authStore'
+import useTranslation from '@/utils/hooks/useTranslation'
 import sleep from '@/utils/sleep'
 import { Attendance } from '@/views/attendances/AttendanceList/types'
 import { Employee } from '@/views/employees/EmployeeList/types'
@@ -23,6 +24,8 @@ const PinInput = ({
     onPinDialogOk: (e: any) => void
 }) => {
     const [pin, setPin] = useState('')
+
+    const { t } = useTranslation()
 
     const { token } = useToken()
 
@@ -238,7 +241,9 @@ const PinInput = ({
     return (
         <>
             <div className="flex flex-col items-center justify-center gap-5 text-white">
-                <h2 className="mb-6 text-2xl font-semibold">Enter PIN code</h2>
+                <h2 className="mb-6 text-2xl font-semibold">
+                    {t('page.clock.pin_code', 'Enter PIN code')}
+                </h2>
                 <DebouceInput
                     onChange={(e) => handlePinChange(e)}
                     inputMode="numeric"
@@ -251,7 +256,7 @@ const PinInput = ({
                     variant="plain"
                     onClick={() => onPinDialogClose()}
                 >
-                    Cancel
+                    {t('page.employee.cancel', 'Cancel')}
                 </Button>
                 <Button
                     variant="solid"
@@ -260,7 +265,7 @@ const PinInput = ({
                         handleMatch()
                     }}
                 >
-                    Okay
+                    {t('page.employee.confirm', 'Confirm')}
                 </Button>
             </div>
         </>
