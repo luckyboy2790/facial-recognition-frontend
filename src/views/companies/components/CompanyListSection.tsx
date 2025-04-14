@@ -5,6 +5,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import type { OnSortParam, ColumnDef, Row } from '@/components/shared/DataTable'
 import type { Company } from '../types'
 import type { TableQueries } from '@/@types/common'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 const CompanyListTable = () => {
     const {
@@ -18,14 +19,16 @@ const CompanyListTable = () => {
         selectedCompany,
     } = useCompanyList()
 
+    const { t } = useTranslation()
+
     const columns: ColumnDef<Company>[] = useMemo(
         () => [
             {
-                header: 'Company Name',
+                header: t('page.company.company_name', 'Company Name'),
                 accessorKey: 'company_name',
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {

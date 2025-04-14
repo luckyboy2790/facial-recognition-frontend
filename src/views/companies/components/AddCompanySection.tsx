@@ -5,6 +5,7 @@ import { FaPlus } from 'react-icons/fa'
 import useSWR from 'swr'
 import { CompanyCreateResponse } from '../types'
 import useCompanyList from '../hooks/useCompanyList'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type CompanyCreateData = {
     companyName: string
@@ -13,6 +14,8 @@ type CompanyCreateData = {
 const AddCompanySection = () => {
     const [companyName, setCompanyName] = useState<string>('')
     const { mutate } = useCompanyList()
+
+    const { t } = useTranslation()
 
     const createCompany = async () => {
         return apiCreateCompany<CompanyCreateResponse, CompanyCreateData>({
@@ -51,7 +54,7 @@ const AddCompanySection = () => {
     return (
         <div className="flex justify-between items-center gap-4">
             <Input
-                placeholder="Company name"
+                placeholder={t('page.company.company_name', 'Company name')}
                 required
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
@@ -62,7 +65,7 @@ const AddCompanySection = () => {
                 onClick={handleSubmit}
                 disabled={isLoading}
             >
-                Create
+                {t('page.create', 'Create')}
             </Button>
         </div>
     )

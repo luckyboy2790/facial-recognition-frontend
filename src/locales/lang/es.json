@@ -330,6 +330,17 @@
             "overlay": "Superposición",
             "blank": "En blanco"
         },
+        "company": {
+            "add_company": "Agregar empresa",
+            "company_name": "Nombre de la empresa",
+            "companies": "Compañías",
+            "delete_confirm_message": "¿Seguro que quieres eliminar estas empresas? Esta acción no se puede deshacer."
+        },
+        "department": {
+            "add_department": "Agregar departamento",
+            "department_name": "Nombre del departamento",
+            "no_data": "¡No se encontró ningún departamento!"
+        },
         "view": "Vista",
         "create": "Crear",
         "discard": "Descartar",
@@ -351,6 +362,7 @@
         "fill_all_fields_message": "Rellene todos los campos",
         "wrong_message": "¡Algo salió mal!",
         "change_saved": "¡Cambios guardados!",
-        "return": "Regresar"
+        "return": "Regresar",
+        "import_csv": "Importar CSV"
     }
 }

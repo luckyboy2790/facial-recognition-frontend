@@ -6,6 +6,7 @@ import { Company, CompanyCreateResponse } from '../types'
 import { apiCreateCompany, apiTotalCompanies } from '@/services/CompanyService'
 import Papa from 'papaparse'
 import useCompanyList from '../hooks/useCompanyList'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type ResponseType = {
     list: Company[]
@@ -19,6 +20,8 @@ type CompanyCreateData = {
 
 const CompanyActionTools = () => {
     const { mutate } = useCompanyList()
+
+    const { t } = useTranslation()
 
     const [companyList, setCompanyList] = useState<Company[]>([])
 
@@ -67,7 +70,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudDownload className="text-xl" />}
                     className="w-full"
                 >
-                    Download
+                    {t('page.download', 'Download')}
                 </Button>
             </CSVLink>
             <div className="w-full">
@@ -76,7 +79,7 @@ const CompanyActionTools = () => {
                     icon={<TbCloudUpload className="text-xl" />}
                 >
                     <label htmlFor="file-upload" className="cursor-pointer">
-                        Import CSV
+                        {t('page.import_csv', 'Import CSV')}
                     </label>
                 </Button>
                 <input
