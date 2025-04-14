@@ -121,7 +121,7 @@ const CustomerListTable = () => {
                 accessorKey: 'rest_days',
                 cell: (props) => (
                     <div>
-                        {props.row.original.rest_days.map((item, index) => (
+                        {props.row.original?.rest_days?.map((item, index) => (
                             <div key={index}>
                                 {(() => {
                                     switch (item) {
