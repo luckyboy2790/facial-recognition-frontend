@@ -21,6 +21,7 @@ import {
 import { useAuth } from '@/auth'
 import type { JSX } from 'react'
 import classNames from 'classnames'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type DropdownList = {
     label: string
@@ -30,46 +31,47 @@ type DropdownList = {
 
 type SidePanelProps = CommonProps
 
-const clockItemList: DropdownList[] = [
-    {
-        label: 'Clock In/Out',
-        path: '/clock',
-        icon: <FaRegClock />,
-    },
-]
-
-const employeeItemList: DropdownList[] = [
-    {
-        label: 'New Employee',
-        path: '/employee-create',
-        icon: <FaUserPlus />,
-    },
-]
-
-const dropdownItemList: DropdownList[] = [
-    {
-        label: 'Company',
-        path: '/company',
-        icon: <FaUniversity />,
-    },
-    {
-        label: 'Department',
-        path: '/department',
-        icon: <FaCubes />,
-    },
-    {
-        label: 'Job Title',
-        path: '/jobtitle',
-        icon: <FaPencilAlt />,
-    },
-    {
-        label: 'Leave Type',
-        path: '/leavetype',
-        icon: <FaRegCalendarAlt />,
-    },
-]
-
 const _QuickAccessDropdown = (props: SidePanelProps) => {
+    const { t } = useTranslation()
+
+    const clockItemList: DropdownList[] = [
+        {
+            label: t('page.header.clock_in_out', 'Clock In/Out'),
+            path: '/clock',
+            icon: <FaRegClock />,
+        },
+    ]
+
+    const employeeItemList: DropdownList[] = [
+        {
+            label: t('page.header.new_employee', 'New Employee'),
+            path: '/employee-create',
+            icon: <FaUserPlus />,
+        },
+    ]
+
+    const dropdownItemList: DropdownList[] = [
+        {
+            label: t('page.employee.company', 'Company'),
+            path: '/company',
+            icon: <FaUniversity />,
+        },
+        {
+            label: t('page.employee.department', 'Department'),
+            path: '/department',
+            icon: <FaCubes />,
+        },
+        {
+            label: t('page.employee.job_title', 'Job Title'),
+            path: '/jobtitle',
+            icon: <FaPencilAlt />,
+        },
+        {
+            label: t('page.leave.leave_type', 'Leave Type'),
+            path: '/leavetype',
+            icon: <FaRegCalendarAlt />,
+        },
+    ]
     const { className } = props
 
     const { user } = useAuth()
@@ -89,7 +91,7 @@ const _QuickAccessDropdown = (props: SidePanelProps) => {
                 <div className="py-2 px-3 flex items-center gap-3">
                     <PiLinkBold className="text-xl" />
                     <div className="font-bold text-gray-900 dark:text-gray-100">
-                        QUICK ACCESS
+                        {t('page.header.quick_access', 'QUICK ACCESS')}
                     </div>
                 </div>
             </Dropdown.Item>

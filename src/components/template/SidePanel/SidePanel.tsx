@@ -5,11 +5,14 @@ import SidePanelContent, { SidePanelContentProps } from './SidePanelContent'
 import withHeaderItem from '@/utils/hoc/withHeaderItem'
 import { useThemeStore } from '@/store/themeStore'
 import type { CommonProps } from '@/@types/common'
+import useTranslation from '@/utils/hooks/useTranslation'
 
 type SidePanelProps = SidePanelContentProps & CommonProps
 
 const _SidePanel = (props: SidePanelProps) => {
     const { className, ...rest } = props
+
+    const { t } = useTranslation()
 
     const panelExpand = useThemeStore((state) => state.panelExpand)
     const direction = useThemeStore((state) => state.direction)
@@ -40,7 +43,7 @@ const _SidePanel = (props: SidePanelProps) => {
                 <PiGearDuotone />
             </div>
             <Drawer
-                title="Theme Config"
+                title={t('page.header.theme_config', 'Theme Config')}
                 isOpen={panelExpand}
                 placement={direction === 'rtl' ? 'left' : 'right'}
                 width={375}

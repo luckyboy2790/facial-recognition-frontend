@@ -7,6 +7,7 @@ import { PiUserDuotone, PiGearDuotone, PiSignOutDuotone } from 'react-icons/pi'
 import { FaUserLock } from 'react-icons/fa'
 import { useAuth } from '@/auth'
 import { useEffect, useState, type JSX } from 'react'
+import useTranslation from '@/utils/hooks/useTranslation'
 const domain = import.meta.env.VITE_BACKEND_ENDPOINT
 
 type DropdownList = {
@@ -17,6 +18,8 @@ type DropdownList = {
 
 const _UserDropdown = () => {
     const { img, full_name, email } = useSessionUser((state) => state.user)
+
+    const { t } = useTranslation()
 
     const [isPersonal, setIsPersonal] = useState<boolean>(false)
 
@@ -48,7 +51,7 @@ const _UserDropdown = () => {
 
     const dropdownItemList: DropdownList[] = [
         {
-            label: 'Account Setting',
+            label: t('page.header.account_setting', 'Account Setting'),
             path:
                 user.account_type === 'Employee' || isPersonal
                     ? '/personal/account-setting'
@@ -111,7 +114,12 @@ const _UserDropdown = () => {
                             <span className="text-xl">
                                 <FaUserLock />
                             </span>
-                            <span>Switch to My Account</span>
+                            <span>
+                                {t(
+                                    'page.setting.switch_account',
+                                    'Switch to My Account',
+                                )}
+                            </span>
                         </span>
                     </a>
                 </Dropdown.Item>
@@ -125,7 +133,7 @@ const _UserDropdown = () => {
                 <span className="text-xl">
                     <PiSignOutDuotone />
                 </span>
-                <span>Sign Out</span>
+                <span>{t('page.header.sign_out', 'Sign Out')}</span>
             </Dropdown.Item>
         </Dropdown>
     )
