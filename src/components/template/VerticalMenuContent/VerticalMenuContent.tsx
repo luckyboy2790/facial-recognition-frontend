@@ -71,25 +71,27 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
                 {navTree.map((nav) => (
                     <Fragment key={nav.key}>
                         {nav.type === NAV_ITEM_TYPE_ITEM && (
-                            <VerticalSingleMenuItem
-                                key={nav.key}
-                                currentKey={activedRoute?.key}
-                                parentKeys={defaulExpandKey}
-                                nav={nav}
-                                sideCollapsed={collapsed}
-                                direction={direction}
-                                indent={indent}
-                                renderAsIcon={cascade <= 0}
-                                showIcon={cascade <= 0}
-                                userAuthority={userAuthority}
-                                showTitle={
-                                    collapsed
-                                        ? cascade >= 1
-                                        : cascade <= MAX_CASCADE_LEVEL
-                                }
-                                t={t as TraslationFn}
-                                onLinkClick={handleLinkClick}
-                            />
+                            <>
+                                <VerticalSingleMenuItem
+                                    key={nav.key}
+                                    currentKey={activedRoute?.key}
+                                    parentKeys={defaulExpandKey}
+                                    nav={nav}
+                                    sideCollapsed={collapsed}
+                                    direction={direction}
+                                    indent={indent}
+                                    renderAsIcon={cascade <= 0}
+                                    showIcon={cascade <= 0}
+                                    userAuthority={userAuthority}
+                                    showTitle={
+                                        collapsed
+                                            ? cascade >= 1
+                                            : cascade <= MAX_CASCADE_LEVEL
+                                    }
+                                    t={t as TraslationFn}
+                                    onLinkClick={handleLinkClick}
+                                />
+                            </>
                         )}
                         {nav.type === NAV_ITEM_TYPE_COLLAPSE && (
                             <VerticalCollapsedMenuItem

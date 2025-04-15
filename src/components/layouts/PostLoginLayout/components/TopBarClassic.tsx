@@ -29,11 +29,11 @@ const TopBarClassic = ({ children }: CommonProps) => {
                             className="shadow dark:shadow-2xl"
                             headerStart={
                                 <>
-                                    {smaller.lg && <MobileNav />}
+                                    {smaller.xl && <MobileNav />}
                                     <HeaderLogo />
                                 </>
                             }
-                            headerMiddle={<>{larger.lg && <HorizontalNav />}</>}
+                            headerMiddle={<>{larger.xl && <HorizontalNav />}</>}
                             headerEnd={
                                 <>
                                     <LanguageSelector />

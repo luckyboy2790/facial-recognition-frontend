@@ -60,13 +60,6 @@ const LayoutSwitcher = () => {
             srcDark: '/img/thumbs/layouts/decked-dark.jpg',
             svg: <ContentOverlaySvg height={'100%'} width={'100%'} />,
         },
-        {
-            value: LAYOUT_BLANK,
-            label: t('page.header.blank', 'Blank'),
-            src: '/img/thumbs/layouts/blank.jpg',
-            srcDark: '/img/thumbs/layouts/blank-dark.jpg',
-            svg: <BlankSvg height={'100%'} width={'100%'} />,
-        },
     ]
 
     return (
