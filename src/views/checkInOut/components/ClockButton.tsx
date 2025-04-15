@@ -94,11 +94,12 @@ const ClockButton = (props: BoardCardProps) => {
                 <VideoInputWithRouter
                     onCloseDialog={() => setIsOpen(false)}
                     type={`${
-                        title === t('page.clock.check_in', 'Check In')
+                        title === t('page.clock.check_in', '🟢 Check In')
                             ? 'time_in'
-                            : title === t('page.clock.break_in', 'Break In')
+                            : title === t('page.clock.break_in', '🔴 Check Out')
                               ? 'break_in'
-                              : title === t('page.clock.break_out', 'Break Out')
+                              : title ===
+                                  t('page.clock.break_out', '☕ Break In')
                                 ? 'break_out'
                                 : 'time_out'
                     }`}
@@ -128,11 +129,12 @@ const ClockButton = (props: BoardCardProps) => {
                 <PinInput
                     onPinDialogClose={() => setPinDialogIsOpen(false)}
                     type={`${
-                        title === t('page.clock.check_in', 'Check In')
+                        title === t('page.clock.check_in', '🟢 Check In')
                             ? 'time_in'
-                            : title === t('page.clock.break_in', 'Break In')
+                            : title === t('page.clock.break_in', '🔴 Check Out')
                               ? 'break_in'
-                              : title === t('page.clock.break_out', 'Break Out')
+                              : title ===
+                                  t('page.clock.break_out', '☕ Break In')
                                 ? 'break_out'
                                 : 'time_out'
                     }`}
