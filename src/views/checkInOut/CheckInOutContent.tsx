@@ -26,7 +26,7 @@ const CheckInOutContent = () => {
 
     const btns = [
         {
-            title: t('page.clock.check_in', 'Check In'),
+            title: t('page.clock.check_in', '🟢 Check In'),
             description: t(
                 'page.clock.check_in_description',
                 'Check-in for your attendance',
@@ -34,7 +34,7 @@ const CheckInOutContent = () => {
             icon: <FaBusinessTime />,
         },
         {
-            title: t('page.clock.check_out', 'Check Out'),
+            title: t('page.clock.check_out', '🔴 Check Out'),
             description: t(
                 'page.clock.check_in_description',
                 'Check out for your attendance',
@@ -42,7 +42,7 @@ const CheckInOutContent = () => {
             icon: <FaBusinessTime />,
         },
         {
-            title: t('page.clock.break_in', 'Break In'),
+            title: t('page.clock.break_in', '☕ Break In'),
             description: t(
                 'page.clock.check_in_description',
                 'Break-in for your attendance',
@@ -50,7 +50,7 @@ const CheckInOutContent = () => {
             icon: <LuAlarmClockPlus />,
         },
         {
-            title: t('page.clock.break_out', 'Break Out'),
+            title: t('page.clock.break_out', '🔃 Break Out'),
             description: t(
                 'page.clock.check_in_description',
                 'Break-out for your attendance',
