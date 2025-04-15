@@ -345,7 +345,10 @@ class VideoInput extends Component<
 
                     toast.push(
                         <Notification type="success">
-                            Face recognized!
+                            {this.props.t(
+                                'face_recognized',
+                                'Face recognized!',
+                            )}
                         </Notification>,
                         {
                             placement: 'top-center',
@@ -358,7 +361,13 @@ class VideoInput extends Component<
 
                     toast.push(
                         <Notification type="warning">
-                            {responseData.message}
+                            {this.props.t(
+                                responseData?.translationKey,
+                                (responseData.message,
+                                {
+                                    time_in: responseData?.time_in,
+                                }),
+                            )}
                         </Notification>,
                         {
                             placement: 'top-center',

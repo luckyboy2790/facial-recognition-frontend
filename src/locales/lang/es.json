@@ -429,7 +429,9 @@
             "access_denied_message": "No tienes permiso para visitar esta página.",
             "pin_message": "Tu cara no es reconocida, debes ingresar PIN.",
             "pin_code": "Introduzca el código PIN",
-            "employee_not_exist": "Las empleadas no existen!"
+            "employee_not_exist": "Las empleadas no existen!",
+            "face_recognized": "¡Cara reconocida!",
+            "record_success": "¡Grabado exitosamente!"
         },
         "view": "Vista",
         "create": "Crear",
@@ -454,5 +456,16 @@
         "change_saved": "¡Cambios guardados!",
         "return": "Regresar",
         "import_csv": "Importar CSV"
-    }
+    },
+    "employee_clocked_in": "El empleado ya ha marcado su entrada hoy a las {{time_in}}",
+    "empty_time_in": "Debes ingresar la hora.",
+    "no_schedule": "No se encontró ningún horario activo para este empleado.",
+    "today_rest_day": "Hoy es día de descanso para este empleado.",
+    "rest_day": "Este día {{time_in}} es un día de descanso para este empleado.",
+    "no_attendance": "No hay datos de asistencia para este empleado.",
+    "left_work": "Este empleado ya dejó el trabajo.",
+    "taken_break": "Este empleado ya se ha tomado un descanso.",
+    "no_start_break": "Este empleado no inició el descanso.",
+    "taking_break": "Este empleado está tomando un descanso.",
+    "finish_break": "Este empleado ya terminó su descanso."
 }

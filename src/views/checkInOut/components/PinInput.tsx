@@ -184,7 +184,10 @@ const PinInput = ({
 
                     toast.push(
                         <Notification type="success">
-                            Face recognized!
+                            {t(
+                                'page.clock.record_success',
+                                'Record successfully!',
+                            )}
                         </Notification>,
                         {
                             placement: 'top-center',
@@ -197,7 +200,13 @@ const PinInput = ({
 
                     toast.push(
                         <Notification type="warning">
-                            {responseData.message}
+                            {t(
+                                responseData?.translationKey,
+                                (responseData.message,
+                                {
+                                    time_in: responseData?.time_in,
+                                }),
+                            )}
                         </Notification>,
                         {
                             placement: 'top-center',

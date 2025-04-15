@@ -14,5 +14,16 @@
             "my_leave": "My Leave",
             "my_setting": "My Setting"
         }
-    }
+    },
+    "employee_clocked_in": "The employee already clocked in today at {{time_in}}",
+    "empty_time_in": "You have to input time in.",
+    "no_schedule": "No active schedule found for this employee.",
+    "today_rest_day": "Today is a rest day for this employee.",
+    "rest_day": "This day ({{time_in}}) is a rest day for this employee.",
+    "no_attendance": "There is no attendance data for this employee.",
+    "left_work": "This employee has already left work.",
+    "taken_break": "This employee has already taken a break.",
+    "no_start_break": "This employee didn't start break.",
+    "taking_break": "This employee is taking a break.",
+    "finish_break": "This employee has already finished his break."
 }
