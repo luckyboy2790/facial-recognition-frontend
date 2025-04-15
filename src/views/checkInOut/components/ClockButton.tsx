@@ -35,10 +35,12 @@ const ClockButton = (props: BoardCardProps) => {
 
     const onPinDialogClose = (e: MouseEvent) => {
         setPinDialogIsOpen(false)
+        setRecoStatus(true)
     }
 
     const onPinDialogOk = (e: MouseEvent) => {
         setPinDialogIsOpen(false)
+        setRecoStatus(true)
     }
 
     const openDialog = () => {
@@ -127,7 +129,10 @@ const ClockButton = (props: BoardCardProps) => {
             >
                 <h5 className="mb-4">{title}</h5>
                 <PinInput
-                    onPinDialogClose={() => setPinDialogIsOpen(false)}
+                    onPinDialogClose={() => {
+                        setPinDialogIsOpen(false)
+                        setRecoStatus(true)
+                    }}
                     type={`${
                         title === t('page.clock.check_in', '🟢 Check In')
                             ? 'time_in'
