@@ -15,6 +15,7 @@ import { apiArchiveSchedule } from '@/services/ScheduleService'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
 import useTranslation from '@/utils/hooks/useTranslation'
+import useLocale from '@/utils/hooks/useLocale'
 
 const statusColor: Record<string, string> = {
     Previous:
@@ -83,6 +84,27 @@ const ScheduleListTable = () => {
         }
 
         return trimmedTime
+    }
+
+    const { locale } = useLocale()
+
+    function formatDate(dateStr: string, language: string = 'es'): string {
+        const date = new Date(dateStr)
+
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'short',
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+        }
+
+        const formatter = new Intl.DateTimeFormat(
+            language === 'en' ? 'en-US' : 'es-ES',
+            options,
+        )
+        const formattedDate = formatter.format(date)
+
+        return `${formattedDate}`
     }
 
     const columns: ColumnDef<Schedule>[] = useMemo(
@@ -196,10 +218,16 @@ const ScheduleListTable = () => {
             {
                 header: t('page.schedule.from', 'From (Date)'),
                 accessorKey: 'formattedFromDate',
+                cell: (props) => (
+                    <div>{formatDate(props.row.original.from, locale)}</div>
+                ),
             },
             {
                 header: t('page.schedule.to', 'To (Date)'),
                 accessorKey: 'formattedToDate',
+                cell: (props) => (
+                    <div>{formatDate(props.row.original.to, locale)}</div>
+                ),
             },
             {
                 header: t('page.schedule.status', 'Status'),
@@ -223,7 +251,7 @@ const ScheduleListTable = () => {
                 },
             },
         ],
-        [],
+        [t, locale],
     )
 
     const handleSetTableData = (data: TableQueries) => {

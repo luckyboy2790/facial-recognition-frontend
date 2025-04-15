@@ -9,6 +9,7 @@ import ReportDataTable from '@/components/shared/ReportDataTable'
 import { useAuth } from '@/auth'
 import dayjs from 'dayjs'
 import useTranslation from '@/utils/hooks/useTranslation'
+import useLocale from '@/utils/hooks/useLocale'
 
 const statusColor: Record<string, string> = {
     Present:
@@ -74,6 +75,27 @@ const CustomerListTable = () => {
         return trimmedTime
     }
 
+    const { locale } = useLocale()
+
+    function formatDate(dateStr: string, language: string = 'es'): string {
+        const date = new Date(dateStr)
+
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'short',
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+        }
+
+        const formatter = new Intl.DateTimeFormat(
+            language === 'en' ? 'en-US' : 'es-ES',
+            options,
+        )
+        const formattedDate = formatter.format(date)
+
+        return `${formattedDate}`
+    }
+
     const columns: ColumnDef<Schedule>[] = useMemo(
         () => [
             {
@@ -105,12 +127,18 @@ const CustomerListTable = () => {
                 ),
             },
             {
-                header: t('page.start_date', 'Start Date'),
+                header: t('page.schedule.from', 'From (Date)'),
                 accessorKey: 'formattedFromDate',
+                cell: (props) => (
+                    <div>{formatDate(props.row.original.from, locale)}</div>
+                ),
             },
             {
-                header: t('page.end_date', 'End Date'),
+                header: t('page.schedule.to', 'To (Date)'),
                 accessorKey: 'formattedToDate',
+                cell: (props) => (
+                    <div>{formatDate(props.row.original.to, locale)}</div>
+                ),
             },
             {
                 header: t('page.schedule.hours', 'Hours'),
@@ -219,7 +247,7 @@ const CustomerListTable = () => {
                 },
             },
         ],
-        [t],
+        [t, locale],
     )
 
     const handleSetTableData = (data: TableQueries) => {

@@ -121,7 +121,28 @@ const DashboardContent = () => {
                     label2: t('page.dashboard.rest_days', 'Rest Days'),
                     value2: result.recentSchedule.rest_days.map(
                         (item: string, index: number) => (
-                            <span key={index}>{`${item}, `}</span>
+                            <span key={index}>{`
+                                ${(() => {
+                                    switch (item) {
+                                        case 'Monday':
+                                            return `${t('page.schedule.monday', 'Monday')}, `
+                                        case 'Tuesday':
+                                            return `${t('page.schedule.tuesday', 'Tuesday')}, `
+                                        case 'Wednesday':
+                                            return `${t('page.schedule.wednesday', 'Wednesday')}, `
+                                        case 'Thursday':
+                                            return `${t('page.schedule.thursday', 'Thursday')}, `
+                                        case 'Friday':
+                                            return `${t('page.schedule.friday', 'Friday')}, `
+                                        case 'Saturday':
+                                            return `${t('page.schedule.saturday', 'Saturday')}, `
+                                        case 'Sunday':
+                                            return `${t('page.schedule.sunday', 'Sunday')}, `
+                                        default:
+                                            return item // If item does not match any case, return the item as is
+                                    }
+                                })()}
+                            `}</span>
                         ),
                     ),
                     icon: <FaRegUserCircle />,

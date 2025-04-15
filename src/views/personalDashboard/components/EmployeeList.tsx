@@ -9,11 +9,14 @@ import { MdDragIndicator } from 'react-icons/md'
 import type { DropResult } from '@hello-pangea/dnd'
 import type { Task } from '../types'
 import useTranslation from '@/utils/hooks/useTranslation'
+import useLocale from '@/utils/hooks/useLocale'
 
 const { TBody } = Table
 
 const EmployeeList = () => {
     const { updateOrdered, updateGroups, ordered, groups } = useTasksStore()
+
+    const { locale } = useLocale()
 
     const { t } = useTranslation()
 
@@ -94,18 +97,28 @@ const EmployeeList = () => {
         return `${hours}:${minutesString} ${period}`
     }
 
-    const changeDateFormat = (fromDate: string, toDate: string) => {
+    const changeDateFormat = (
+        fromDate: string,
+        toDate: string,
+        language: string,
+    ) => {
         const from = new Date(fromDate)
         const to = new Date(toDate)
 
-        const fromMonthDay = from.toLocaleDateString('en-US', {
-            month: 'short',
-            day: '2-digit',
-        })
-        const toMonthDay = to.toLocaleDateString('en-US', {
-            month: 'short',
-            day: '2-digit',
-        })
+        const fromMonthDay = from.toLocaleDateString(
+            language === 'en' ? 'en-US' : 'es-ES',
+            {
+                month: 'short',
+                day: '2-digit',
+            },
+        )
+        const toMonthDay = to.toLocaleDateString(
+            language === 'en' ? 'en-US' : 'es-ES',
+            {
+                month: 'short',
+                day: '2-digit',
+            },
+        )
 
         const year = from.getFullYear()
 
@@ -243,6 +256,7 @@ const EmployeeList = () => {
                                                                                     scheduleDate={changeDateFormat(
                                                                                         item.from,
                                                                                         item.to,
+                                                                                        locale,
                                                                                     )}
                                                                                     description={
                                                                                         item.reason
