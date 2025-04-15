@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import type { ReactNode, Ref } from 'react'
 import utc from 'dayjs/plugin/utc'
 import { useAuth } from '@/auth'
+import useLocale from '@/utils/hooks/useLocale'
 dayjs.extend(utc)
 
 type TaskItemProps = Partial<{
@@ -90,6 +91,36 @@ const TaskItem = (props: TaskItemProps) => {
         return trimmedTime
     }
 
+    const { locale } = useLocale()
+
+    function formatDate(
+        dateStr: string | null | undefined,
+        language: string = 'es',
+    ): string {
+        if (!dateStr) return '-'
+
+        const date = new Date(dateStr)
+
+        if (isNaN(date.getTime())) {
+            return '-'
+        }
+
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'short',
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+        }
+
+        const formatter = new Intl.DateTimeFormat(
+            language === 'en' ? 'en-US' : 'es-ES',
+            options,
+        )
+        const formattedDate = formatter.format(date)
+
+        return `${formattedDate}`
+    }
+
     return (
         <Tr ref={ref} {...rest}>
             {showDragger && <Td className="w-[40px] text-lg">{dragger}</Td>}
@@ -118,7 +149,7 @@ const TaskItem = (props: TaskItemProps) => {
                 )}
             >
                 <span className={classNames('heading-text font-semibold')}>
-                    {startDate ? dayjs(startDate).format('MMMM DD, YYYY') : '-'}
+                    {formatDate(startDate, locale)}
                 </span>
             </Td>
 
