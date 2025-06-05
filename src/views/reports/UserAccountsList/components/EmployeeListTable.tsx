@@ -33,18 +33,18 @@ const CustomerListTable = () => {
                 header: t('page.report.employee_name', 'Employee Name'),
                 id: 'employeeName',
                 cell: (props) => (
-                    <span>{props.row.original.employeeData?.full_name}</span>
+                    <span>{props.row.original?.employeeData?.full_name}</span>
                 ),
             },
             {
                 header: t('page.user.email', 'Email'),
                 id: 'email',
-                cell: (props) => <span>{props.row.original.email}</span>,
+                cell: (props) => <span>{props.row.original?.email}</span>,
             },
             {
                 header: t('page.user.type', 'Type'),
                 id: 'accountType',
-                cell: (props) => <span>{props.row.original.account_type}</span>,
+                cell: (props) => <span>{props.row.original?.account_type}</span>,
             },
             {
                 header: t('page.user.status', 'Status'),

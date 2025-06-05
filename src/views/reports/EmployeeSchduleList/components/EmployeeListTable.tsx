@@ -108,7 +108,7 @@ const CustomerListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.start_time,
+                            props.row.original?.start_time,
                             setting.timeFormat,
                         )}
                     </div>
@@ -120,7 +120,7 @@ const CustomerListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.off_time,
+                            props.row.original?.off_time,
                             setting.timeFormat,
                         )}
                     </div>
@@ -130,14 +130,14 @@ const CustomerListTable = () => {
                 header: t('page.schedule.from', 'From (Date)'),
                 accessorKey: 'formattedFromDate',
                 cell: (props) => (
-                    <div>{formatDate(props.row.original.from, locale)}</div>
+                    <div>{formatDate(props.row.original?.from, locale)}</div>
                 ),
             },
             {
                 header: t('page.schedule.to', 'To (Date)'),
                 accessorKey: 'formattedToDate',
                 cell: (props) => (
-                    <div>{formatDate(props.row.original.to, locale)}</div>
+                    <div>{formatDate(props.row.original?.to, locale)}</div>
                 ),
             },
             {

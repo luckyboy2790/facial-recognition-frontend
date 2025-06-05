@@ -109,7 +109,7 @@ const AttendanceListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.time_in,
+                            props.row.original?.time_in,
                             setting.timeFormat,
                         )}
                     </div>
@@ -121,7 +121,7 @@ const AttendanceListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.time_out,
+                            props.row.original?.time_out,
                             setting.timeFormat,
                         )}
                     </div>
@@ -133,7 +133,7 @@ const AttendanceListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.break_in,
+                            props.row.original?.break_in,
                             setting.timeFormat,
                         )}
                     </div>
@@ -145,7 +145,7 @@ const AttendanceListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.break_out,
+                            props.row.original?.break_out,
                             setting.timeFormat,
                         )}
                     </div>
@@ -160,15 +160,15 @@ const AttendanceListTable = () => {
                 id: 'status',
                 cell: (props) => (
                     <div>
-                        {props.row.original.status_timein === 'Late In'
+                        {props.row.original?.status_timein === 'Late In'
                             ? t('page.attendance.late_in', 'Late In')
-                            : props.row.original.status_timein === ''
+                            : props.row.original?.status_timein === ''
                               ? ''
                               : t('page.attendance.in_time', 'Time In')}
                         /{' '}
-                        {props.row.original.status_timeout === 'Early Out'
+                        {props.row.original?.status_timeout === 'Early Out'
                             ? t('page.attendance.early_out', 'Early Out')
-                            : props.row.original.status_timeout === ''
+                            : props.row.original?.status_timeout === ''
                               ? ''
                               : t('page.attendance.out_time', 'Time Out')}
                     </div>

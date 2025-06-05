@@ -31,7 +31,7 @@ const CompanyListTable = () => {
                 header: t('page.job_title.department_name', 'Department Name'),
                 accessorKey: 'department_name',
                 cell: (props) => (
-                    <div>{props.row.original.department.department_name}</div>
+                    <div>{props.row.original?.department?.department_name}</div>
                 ),
             },
         ],

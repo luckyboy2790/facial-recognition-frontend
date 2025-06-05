@@ -178,12 +178,12 @@ const ScheduleListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.start_time,
+                            props.row.original?.start_time,
                             setting.timeFormat,
                         )}
                         {' - '}
                         {formatTime(
-                            props.row.original.off_time,
+                            props.row.original?.off_time,
                             setting.timeFormat,
                         )}
                     </div>
@@ -198,7 +198,7 @@ const ScheduleListTable = () => {
                 accessorKey: 'rest_days',
                 cell: (props) => (
                     <div>
-                        {props.row.original.rest_days.map((item, index) => (
+                        {props.row.original?.rest_days?.map((item, index) => (
                             <div key={index}>
                                 {(() => {
                                     switch (item) {
@@ -278,14 +278,14 @@ const ScheduleListTable = () => {
                 header: t('page.schedule.from', 'From (Date)'),
                 accessorKey: 'formattedFromDate',
                 cell: (props) => (
-                    <div>{formatDate(props.row.original.from, locale)}</div>
+                    <div>{formatDate(props.row.original?.from, locale)}</div>
                 ),
             },
             {
                 header: t('page.schedule.to', 'To (Date)'),
                 accessorKey: 'formattedToDate',
                 cell: (props) => (
-                    <div>{formatDate(props.row.original.to, locale)}</div>
+                    <div>{formatDate(props.row.original?.to, locale)}</div>
                 ),
             },
             {

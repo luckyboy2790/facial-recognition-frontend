@@ -44,8 +44,8 @@ const CustomerListTable = () => {
                 id: 'contactNumber',
                 cell: (props) => (
                     <div>
-                        {props.row.original.dial_code}{' '}
-                        {props.row.original.phone_number}
+                        {props.row.original?.dial_code}{' '}
+                        {props.row.original?.phone_number}
                     </div>
                 ),
             },
@@ -58,7 +58,7 @@ const CustomerListTable = () => {
                 accessorKey: 'employee_type',
                 cell: (props) => (
                     <div>
-                        {props.row.original.employee_type === 'Regular'
+                        {props.row.original?.employee_type === 'Regular'
                             ? t('page.employee.regular', 'Regular')
                             : t('page.employee.trainee', 'Trainee')}
                     </div>
@@ -69,7 +69,7 @@ const CustomerListTable = () => {
                 accessorKey: 'employee_status',
                 cell: (props) => (
                     <div>
-                        {props.row.original.employee_status === 'Active'
+                        {props.row.original?.employee_status === 'Active'
                             ? t('page.employee.active', 'Active')
                             : t('page.employee.archived', 'Archived')}
                     </div>

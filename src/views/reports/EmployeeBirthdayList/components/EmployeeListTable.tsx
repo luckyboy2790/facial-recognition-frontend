@@ -51,8 +51,8 @@ const CustomerListTable = () => {
                 id: 'contactNumber',
                 cell: (props) => (
                     <div>
-                        {props.row.original.dial_code}{' '}
-                        {props.row.original.phone_number}
+                        {props.row.original?.dial_code}{' '}
+                        {props.row.original?.phone_number}
                     </div>
                 ),
             },

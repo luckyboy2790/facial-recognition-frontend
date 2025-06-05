@@ -83,7 +83,7 @@ const CustomerListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.time_in,
+                            props.row.original?.time_in,
                             setting.timeFormat,
                         )}
                     </div>
@@ -95,7 +95,7 @@ const CustomerListTable = () => {
                 cell: (props) => (
                     <div>
                         {formatTime(
-                            props.row.original.time_out,
+                            props.row.original?.time_out,
                             setting.timeFormat,
                         )}
                     </div>

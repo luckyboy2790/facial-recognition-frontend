@@ -36,30 +36,30 @@ const LeaveListTable = () => {
                 header: t('page.report.employee_name', 'Employee Name'),
                 id: 'employeeName',
                 cell: (props) => (
-                    <span>{props.row.original.employeeData.full_name}</span>
+                    <span>{props.row.original?.employeeData?.full_name}</span>
                 ),
             },
             {
                 header: t('page.leave.leave_type', 'Leave Type'),
                 id: 'leaveType',
                 cell: (props) => (
-                    <span>{props.row.original.leaveTypeData.leave_name}</span>
+                    <span>{props.row.original?.leaveTypeData?.leave_name}</span>
                 ),
             },
             {
                 header: t('page.leave.from', 'Leave From'),
                 id: 'leaveFrom',
-                cell: (props) => <span>{props.row.original.leaveFrom}</span>,
+                cell: (props) => <span>{props.row.original?.leaveFrom}</span>,
             },
             {
                 header: t('page.leave.to', 'Leave To'),
                 id: 'leaveTo',
-                cell: (props) => <span>{props.row.original.leaveTo}</span>,
+                cell: (props) => <span>{props.row.original?.leaveTo}</span>,
             },
             {
                 header: t('page.leave.reason', 'Reason'),
                 id: 'reason',
-                cell: (props) => <span>{props.row.original.reason}</span>,
+                cell: (props) => <span>{props.row.original?.reason}</span>,
             },
             {
                 header: t('page.leave.status', 'Status'),
@@ -85,7 +85,7 @@ const LeaveListTable = () => {
                 },
             },
         ],
-        [],
+        [t],
     )
 
     const handleSetTableData = (data: TableQueries) => {
