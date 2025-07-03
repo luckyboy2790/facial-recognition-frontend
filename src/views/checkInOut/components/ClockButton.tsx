@@ -98,10 +98,10 @@ const ClockButton = (props: BoardCardProps) => {
                     type={`${
                         title === t('page.clock.check_in', '🟢 Check In')
                             ? 'time_in'
-                            : title === t('page.clock.break_in', '🔴 Check Out')
+                            : title === t('page.clock.break_in', '☕ Break In')
                               ? 'break_in'
                               : title ===
-                                  t('page.clock.break_out', '☕ Break In')
+                                  t('page.clock.break_out', '🔃 Break Out')
                                 ? 'break_out'
                                 : 'time_out'
                     }`}
@@ -136,10 +136,10 @@ const ClockButton = (props: BoardCardProps) => {
                     type={`${
                         title === t('page.clock.check_in', '🟢 Check In')
                             ? 'time_in'
-                            : title === t('page.clock.break_in', '🔴 Check Out')
+                            : title === t('page.clock.break_in', '☕ Break In')
                               ? 'break_in'
                               : title ===
-                                  t('page.clock.break_out', '☕ Break In')
+                                  t('page.clock.break_out', '🔃 Break Out')
                                 ? 'break_out'
                                 : 'time_out'
                     }`}
