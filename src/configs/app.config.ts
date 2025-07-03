@@ -14,7 +14,7 @@ const appConfig: AppConfig = {
     authenticatedEntryPath: '/dashboard',
     personalAuthenticatedEntryPath: '/personal/dashboard',
     unAuthenticatedEntryPath: '/sign-in',
-    locale: 'en',
+    locale: 'es',
     accessTokenPersistStrategy: 'cookies',
     enableMock: true,
     activeNavTranslation: true,
